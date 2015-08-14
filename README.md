@@ -1,5 +1,5 @@
 # Kliva
-This repository is used for feature/bug tracking only.
+This repository is used for feature/bug tracking and contains open source UWP version of Kliva.
 
 ### Info
 Kliva ( Swedish for to climb / to strive )
