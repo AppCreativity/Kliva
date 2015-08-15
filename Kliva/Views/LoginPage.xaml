@@ -8,7 +8,37 @@
     mc:Ignorable="d"
     DataContext="{Binding Login, Source={StaticResource Locator}}">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <VisualStateManager.VisualStateGroups>
+        <VisualStateGroup>
+            <VisualState x:Name="Mobile">
+                <VisualState.StateTriggers>
+                    <AdaptiveTrigger MinWindowWidth="320" />
+                </VisualState.StateTriggers>
+            </VisualState>
+            <VisualState x:Name="Desktop">
+                <VisualState.StateTriggers>
+                    <AdaptiveTrigger MinWindowWidth="720" />
+                </VisualState.StateTriggers>
+            </VisualState>
+        </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
 
+    <Grid x:Name="LayoutRoot"
+          Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel x:Name="TitlePanel"
+                    Background="{StaticResource KlivaMainBrush}"
+                    Grid.Row="0">
+            <TextBlock Text="Title" Foreground="Black"/>
+        </StackPanel>
+
+        <StackPanel x:Name="ContentPanel"
+                    Grid.Row="1">
+            <Button Content="Try me"/>
+        </StackPanel>
     </Grid>
 </Page>
