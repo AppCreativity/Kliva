@@ -1,6 +1,7 @@
 ﻿using System;
 using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
+using Kliva.Views;
 
 namespace Kliva.ViewModels
 {

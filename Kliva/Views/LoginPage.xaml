@@ -1,44 +1,45 @@
 ﻿<Page
-    x:Class="Kliva.LoginPage"
+    x:Class="Kliva.Views.LoginPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Kliva"
+    xmlns:local="using:Kliva.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    DataContext="{Binding Login, Source={StaticResource Locator}}">
+    mc:Ignorable="d">
+    <!-- " DataContext="{Binding Login, Source={StaticResource Locator}}"> -->
 
-    <VisualStateManager.VisualStateGroups>
-        <VisualStateGroup>
-            <VisualState x:Name="Mobile">
-                <VisualState.StateTriggers>
-                    <AdaptiveTrigger MinWindowWidth="320" />
-                </VisualState.StateTriggers>
-            </VisualState>
-            <VisualState x:Name="Desktop">
-                <VisualState.StateTriggers>
-                    <AdaptiveTrigger MinWindowWidth="720" />
-                </VisualState.StateTriggers>
-            </VisualState>
-        </VisualStateGroup>
-    </VisualStateManager.VisualStateGroups>
+    <Grid x:Name="LayoutRoot">
+        <Grid.Background>
+            <ImageBrush Stretch="UniformToFill" ImageSource="ms-appx:///Assets/Brooks.jpg"/>
+        </Grid.Background>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="Mobile">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="320" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="Desktop">
+                    <VisualState.Setters>
+                        <Setter Target="LayoutRoot.(Panel.Background)" Value="{x:Null}"/>
+                    </VisualState.Setters>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="720" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
 
-    <Grid x:Name="LayoutRoot"
-          Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-
-        <StackPanel x:Name="TitlePanel"
-                    Background="{StaticResource KlivaMainBrush}"
-                    Grid.Row="0">
-            <TextBlock Text="Title" Foreground="Black"/>
-        </StackPanel>
-
-        <StackPanel x:Name="ContentPanel"
-                    Grid.Row="1">
-            <Button Content="Try me"/>
-        </StackPanel>
+        <RelativePanel x:Name="ContentPanel"
+                       VerticalAlignment="Bottom">
+            <Button x:Name="LoginButton"
+                    Style="{StaticResource KlivaButton}"
+                    Content="log in with strava"/>
+            <Button x:Name="NewAccountButton"
+                    Style="{StaticResource KlivaButton}"
+                    Content="create new strava account"
+                    Margin="0,10,0,0"
+                    RelativePanel.Below="{Binding ElementName=LoginButton}"/>
+        </RelativePanel>
     </Grid>
 </Page>
