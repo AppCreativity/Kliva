@@ -6,6 +6,7 @@ using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -78,6 +79,14 @@ namespace Kliva
 
             if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
                 view.SetPreferredMinSize(new Size(width:720, height:320));
+
+            if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile")
+            {
+                var statusbar = Windows.UI.ViewManagement.StatusBar.GetForCurrentView();
+                statusbar.BackgroundOpacity = 100;
+                statusbar.BackgroundColor = (Color)App.Current.Resources["KlivaMainColor"];
+                statusbar.ForegroundColor = Windows.UI.Colors.White;
+            }
 
             // Ensure the current window is active
             Window.Current.Activate();
