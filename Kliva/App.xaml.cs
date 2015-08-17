@@ -72,7 +72,7 @@ namespace Kliva
 
                 bool stravaTokenAvailabe = !string.IsNullOrEmpty(await ServiceLocator.Current.GetInstance<ISettingsService>().GetStoredStravaAccessToken());
 
-                rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                rootFrame.Navigate(stravaTokenAvailabe ? typeof(MainPage) : typeof(LoginPage), e.Arguments);
             }
 
             var view = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
