@@ -5,6 +5,7 @@ using Microsoft.Practices.ServiceLocation;
 using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -72,6 +73,12 @@ namespace Kliva
 
                 rootFrame.Navigate(typeof(MainPage), e.Arguments);
             }
+
+            var view = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
+
+            if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
+                view.SetPreferredMinSize(new Size(width:720, height:320));
+
             // Ensure the current window is active
             Window.Current.Activate();
         }

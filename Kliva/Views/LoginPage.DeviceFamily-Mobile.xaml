@@ -13,7 +13,8 @@
         </Grid.Background>
 
         <RelativePanel x:Name="ContentPanel"
-                       VerticalAlignment="Bottom">
+                       VerticalAlignment="Bottom"
+                       Margin="10,0,10,10">
             <Button x:Name="LoginButton"
                     Style="{StaticResource KlivaButton}"
                     Content="log in with strava"/>

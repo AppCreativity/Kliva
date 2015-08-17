@@ -18,7 +18,7 @@
         <Setter Property="Background" Value="{StaticResource KlivaDarkBrush}" />
         <Setter Property="Foreground" Value="White" />
         <Setter Property="FontFamily" Value="{StaticResource OpenSansFontLight}" />
-        <Setter Property="FontSize" Value="24" />
+        <Setter Property="FontSize" Value="12" />
     </Style>
 
 </ResourceDictionary>
