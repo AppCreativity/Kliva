@@ -13,5 +13,17 @@
             <ImageBrush Stretch="UniformToFill" ImageSource="ms-appx:///Assets/Merckx_1920.jpg"/>
         </Grid.Background>
 
+
+        <RelativePanel x:Name="ContentPanel"
+                       VerticalAlignment="Bottom">
+            <Button x:Name="LoginButton"
+                    Style="{StaticResource KlivaButton}"
+                    Content="log in with strava"/>
+            <Button x:Name="NewAccountButton"
+                    Style="{StaticResource KlivaButton}"
+                    Content="create new strava account"
+                    Margin="0,10,0,0"
+                    RelativePanel.Below="{Binding ElementName=LoginButton}"/>
+        </RelativePanel>
     </Grid>
 </Page>
