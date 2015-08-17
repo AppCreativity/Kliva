@@ -78,14 +78,19 @@ namespace Kliva
             var view = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
 
             if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
-                view.SetPreferredMinSize(new Size(width:720, height:320));
+            {
+                view.SetPreferredMinSize(new Size(width: 720, height: 320));
+                var titleBar = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar;
+                titleBar.BackgroundColor = titleBar.ButtonBackgroundColor = (Color)App.Current.Resources["KlivaMainColor"];                
+                titleBar.ForegroundColor = titleBar.ButtonForegroundColor = Windows.UI.Colors.White;                
+            }
 
             if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile")
             {
-                var statusbar = Windows.UI.ViewManagement.StatusBar.GetForCurrentView();
-                statusbar.BackgroundOpacity = 100;
-                statusbar.BackgroundColor = (Color)App.Current.Resources["KlivaMainColor"];
-                statusbar.ForegroundColor = Windows.UI.Colors.White;
+                var statusBar = Windows.UI.ViewManagement.StatusBar.GetForCurrentView();
+                statusBar.BackgroundOpacity = 100;
+                statusBar.BackgroundColor = (Color)App.Current.Resources["KlivaMainColor"];
+                statusBar.ForegroundColor = Windows.UI.Colors.White;
             }
 
             // Ensure the current window is active
