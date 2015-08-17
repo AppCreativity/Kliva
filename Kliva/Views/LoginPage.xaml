@@ -10,36 +10,8 @@
 
     <Grid x:Name="LayoutRoot">
         <Grid.Background>
-            <ImageBrush Stretch="UniformToFill" ImageSource="ms-appx:///Assets/Brooks.jpg"/>
+            <ImageBrush Stretch="UniformToFill" ImageSource="ms-appx:///Assets/Merckx_1920.jpg"/>
         </Grid.Background>
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState x:Name="Mobile">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="320" />
-                    </VisualState.StateTriggers>
-                </VisualState>
-                <VisualState x:Name="Desktop">
-                    <VisualState.Setters>
-                        <Setter Target="LayoutRoot.(Panel.Background)" Value="{x:Null}"/>
-                    </VisualState.Setters>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="720" />
-                    </VisualState.StateTriggers>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
 
-        <RelativePanel x:Name="ContentPanel"
-                       VerticalAlignment="Bottom">
-            <Button x:Name="LoginButton"
-                    Style="{StaticResource KlivaButton}"
-                    Content="log in with strava"/>
-            <Button x:Name="NewAccountButton"
-                    Style="{StaticResource KlivaButton}"
-                    Content="create new strava account"
-                    Margin="0,10,0,0"
-                    RelativePanel.Below="{Binding ElementName=LoginButton}"/>
-        </RelativePanel>
     </Grid>
 </Page>
