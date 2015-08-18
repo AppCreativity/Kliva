@@ -79,7 +79,7 @@ namespace Kliva
 
             if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
             {
-                view.SetPreferredMinSize(new Size(width: 720, height: 320));
+                view.SetPreferredMinSize(new Size(width: 800, height: 600));
                 var titleBar = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar;
                 titleBar.BackgroundColor = titleBar.ButtonBackgroundColor = (Color)App.Current.Resources["KlivaMainColor"];                
                 titleBar.ForegroundColor = titleBar.ButtonForegroundColor = Windows.UI.Colors.White;                
