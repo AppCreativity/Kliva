@@ -5,13 +5,31 @@
     xmlns:local="using:Kliva.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:triggers="using:WindowsStateTriggers"
     mc:Ignorable="d">
     <!-- " DataContext="{Binding Login, Source={StaticResource Locator}}"> -->
 
     <Grid x:Name="LayoutRoot">
-        <Grid.Background>
-            <ImageBrush Stretch="UniformToFill" ImageSource="ms-appx:///Assets/Merckx_1920.jpg"/>
-        </Grid.Background>
+        <!--<VisualStateManager.VisualStateGroups>
+            <VisualStateGroup >
+                <VisualState x:Name="desktop">
+                    <VisualState.StateTriggers>
+                        <triggers:DeviceFamilyStateTrigger DeviceFamily="Desktop" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="LayoutRoot.(Grid.Background)" Value="ms-appx:///Assets/Merckx_1920.jpg"/>                        
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="mobile">
+                    <VisualState.StateTriggers>
+                        <triggers:DeviceFamilyStateTrigger DeviceFamily="Mobile" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="LayoutRoot.(Grid.Background)" Value="ms-appx:///Assets/Brooks.jpg"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>-->
 
         <RelativePanel x:Name="ContentPanel"
                        VerticalAlignment="Bottom"
