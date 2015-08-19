@@ -3,9 +3,9 @@
   "version": 1,
   "targets": {
     "UAP,Version=v10.0": {
-      "Cimbalino.Toolkit/2.0.0-beta1": {
+      "Cimbalino.Toolkit/2.0.0-beta3": {
         "dependencies": {
-          "Cimbalino.Toolkit.Core": "[2.0.0-beta1, )"
+          "Cimbalino.Toolkit.Core": "[2.0.0-beta3, )"
         },
         "compile": {
           "lib/uap10.0/Cimbalino.Toolkit.dll": {}
@@ -14,7 +14,7 @@
           "lib/uap10.0/Cimbalino.Toolkit.dll": {}
         }
       },
-      "Cimbalino.Toolkit.Core/2.0.0-beta1": {
+      "Cimbalino.Toolkit.Core/2.0.0-beta3": {
         "dependencies": {
           "Microsoft.Bcl.Compression": "[3.9.83, )"
         },
@@ -1647,9 +1647,9 @@
       }
     },
     "UAP,Version=v10.0/win10-arm": {
-      "Cimbalino.Toolkit/2.0.0-beta1": {
+      "Cimbalino.Toolkit/2.0.0-beta3": {
         "dependencies": {
-          "Cimbalino.Toolkit.Core": "[2.0.0-beta1, )"
+          "Cimbalino.Toolkit.Core": "[2.0.0-beta3, )"
         },
         "compile": {
           "lib/uap10.0/Cimbalino.Toolkit.dll": {}
@@ -1658,7 +1658,7 @@
           "lib/uap10.0/Cimbalino.Toolkit.dll": {}
         }
       },
-      "Cimbalino.Toolkit.Core/2.0.0-beta1": {
+      "Cimbalino.Toolkit.Core/2.0.0-beta3": {
         "dependencies": {
           "Microsoft.Bcl.Compression": "[3.9.83, )"
         },
@@ -3381,9 +3381,9 @@
       }
     },
     "UAP,Version=v10.0/win10-arm-aot": {
-      "Cimbalino.Toolkit/2.0.0-beta1": {
+      "Cimbalino.Toolkit/2.0.0-beta3": {
         "dependencies": {
-          "Cimbalino.Toolkit.Core": "[2.0.0-beta1, )"
+          "Cimbalino.Toolkit.Core": "[2.0.0-beta3, )"
         },
         "compile": {
           "lib/uap10.0/Cimbalino.Toolkit.dll": {}
@@ -3392,7 +3392,7 @@
           "lib/uap10.0/Cimbalino.Toolkit.dll": {}
         }
       },
-      "Cimbalino.Toolkit.Core/2.0.0-beta1": {
+      "Cimbalino.Toolkit.Core/2.0.0-beta3": {
         "dependencies": {
           "Microsoft.Bcl.Compression": "[3.9.83, )"
         },
@@ -5087,9 +5087,9 @@
       }
     },
     "UAP,Version=v10.0/win10-x86": {
-      "Cimbalino.Toolkit/2.0.0-beta1": {
+      "Cimbalino.Toolkit/2.0.0-beta3": {
         "dependencies": {
-          "Cimbalino.Toolkit.Core": "[2.0.0-beta1, )"
+          "Cimbalino.Toolkit.Core": "[2.0.0-beta3, )"
         },
         "compile": {
           "lib/uap10.0/Cimbalino.Toolkit.dll": {}
@@ -5098,7 +5098,7 @@
           "lib/uap10.0/Cimbalino.Toolkit.dll": {}
         }
       },
-      "Cimbalino.Toolkit.Core/2.0.0-beta1": {
+      "Cimbalino.Toolkit.Core/2.0.0-beta3": {
         "dependencies": {
           "Microsoft.Bcl.Compression": "[3.9.83, )"
         },
@@ -6826,9 +6826,9 @@
       }
     },
     "UAP,Version=v10.0/win10-x86-aot": {
-      "Cimbalino.Toolkit/2.0.0-beta1": {
+      "Cimbalino.Toolkit/2.0.0-beta3": {
         "dependencies": {
-          "Cimbalino.Toolkit.Core": "[2.0.0-beta1, )"
+          "Cimbalino.Toolkit.Core": "[2.0.0-beta3, )"
         },
         "compile": {
           "lib/uap10.0/Cimbalino.Toolkit.dll": {}
@@ -6837,7 +6837,7 @@
           "lib/uap10.0/Cimbalino.Toolkit.dll": {}
         }
       },
-      "Cimbalino.Toolkit.Core/2.0.0-beta1": {
+      "Cimbalino.Toolkit.Core/2.0.0-beta3": {
         "dependencies": {
           "Microsoft.Bcl.Compression": "[3.9.83, )"
         },
@@ -8532,9 +8532,9 @@
       }
     },
     "UAP,Version=v10.0/win10-x64": {
-      "Cimbalino.Toolkit/2.0.0-beta1": {
+      "Cimbalino.Toolkit/2.0.0-beta3": {
         "dependencies": {
-          "Cimbalino.Toolkit.Core": "[2.0.0-beta1, )"
+          "Cimbalino.Toolkit.Core": "[2.0.0-beta3, )"
         },
         "compile": {
           "lib/uap10.0/Cimbalino.Toolkit.dll": {}
@@ -8543,7 +8543,7 @@
           "lib/uap10.0/Cimbalino.Toolkit.dll": {}
         }
       },
-      "Cimbalino.Toolkit.Core/2.0.0-beta1": {
+      "Cimbalino.Toolkit.Core/2.0.0-beta3": {
         "dependencies": {
           "Microsoft.Bcl.Compression": "[3.9.83, )"
         },
@@ -10271,9 +10271,9 @@
       }
     },
     "UAP,Version=v10.0/win10-x64-aot": {
-      "Cimbalino.Toolkit/2.0.0-beta1": {
+      "Cimbalino.Toolkit/2.0.0-beta3": {
         "dependencies": {
-          "Cimbalino.Toolkit.Core": "[2.0.0-beta1, )"
+          "Cimbalino.Toolkit.Core": "[2.0.0-beta3, )"
         },
         "compile": {
           "lib/uap10.0/Cimbalino.Toolkit.dll": {}
@@ -10282,7 +10282,7 @@
           "lib/uap10.0/Cimbalino.Toolkit.dll": {}
         }
       },
-      "Cimbalino.Toolkit.Core/2.0.0-beta1": {
+      "Cimbalino.Toolkit.Core/2.0.0-beta3": {
         "dependencies": {
           "Microsoft.Bcl.Compression": "[3.9.83, )"
         },
@@ -11978,8 +11978,8 @@
     }
   },
   "libraries": {
-    "Cimbalino.Toolkit/2.0.0-beta1": {
-      "sha512": "cSXUmz1n3IGX3Ep9PQdS3YJNxlGS0jMsBpC0FOtsHtti/dIwYxYEhb0nC4DdDnOI2Dach0ndy5WMRb5MybT1EA==",
+    "Cimbalino.Toolkit/2.0.0-beta3": {
+      "sha512": "fanxayqAxNguS52uQnoDlal/zoAT8RqUTDwIYQHRW/NG3d72qQxHxudYjRNY6+OEVL/nlIfy6wfuTvMSeyu0Cg==",
       "type": "Package",
       "files": [
         "_rels/.rels",
@@ -11987,7 +11987,7 @@
         "lib/uap10.0/Cimbalino.Toolkit.dll",
         "lib/uap10.0/Cimbalino.Toolkit.pdb",
         "lib/uap10.0/Cimbalino.Toolkit.pri",
-        "lib/uap10.0/Cimbalino.Toolkit/Properties/Cimbalino.Toolkit.rd.xml",
+        "lib/uap10.0/Cimbalino.Toolkit.xml",
         "lib/win81/Cimbalino.Toolkit.dll",
         "lib/win81/Cimbalino.Toolkit.pdb",
         "lib/win81/Cimbalino.Toolkit.pri",
@@ -12003,12 +12003,12 @@
         "tools/win8/Uninstall.ps1",
         "tools/wpa81/Install.ps1",
         "tools/wpa81/Uninstall.ps1",
-        "package/services/metadata/core-properties/97f4d22f0f9749ba8ae7fdf941c424a4.psmdcp",
+        "package/services/metadata/core-properties/0403c85deb5243fa9202f7294a4c0b0a.psmdcp",
         "[Content_Types].xml"
       ]
     },
-    "Cimbalino.Toolkit.Core/2.0.0-beta1": {
-      "sha512": "H6KNqHjZUdWsIC58xHI3QN/qVHqCn4ioFRqdj7Ydd22/Y/HJr3kPXVAPS6d/DMY44tLGxRhew5qaG2oE2ZisZQ==",
+    "Cimbalino.Toolkit.Core/2.0.0-beta3": {
+      "sha512": "z2OGF42oec7U3imTRjQ7l9K029wO5irg6S7EbsjRzG8do/6u3GZnzEWRXwI7rx/mCJsAgEb8YmqLjg4BtJBKpA==",
       "type": "Package",
       "files": [
         "_rels/.rels",
@@ -12019,7 +12019,7 @@
         "lib/uap10.0/Cimbalino.Toolkit.Core.dll",
         "lib/uap10.0/Cimbalino.Toolkit.Core.pdb",
         "lib/uap10.0/Cimbalino.Toolkit.Core.pri",
-        "lib/uap10.0/Cimbalino.Toolkit.Core/Properties/Cimbalino.Toolkit.Core.rd.xml",
+        "lib/uap10.0/Cimbalino.Toolkit.Core.xml",
         "lib/win81/Cimbalino.Toolkit.Core.dll",
         "lib/win81/Cimbalino.Toolkit.Core.pdb",
         "lib/win81/Cimbalino.Toolkit.Core.pri",
@@ -12032,7 +12032,7 @@
         "lib/wpa81/Cimbalino.Toolkit.Core.pri",
         "lib/wpa81/Cimbalino.Toolkit.Core.xml",
         "tools/Cimbalino.Toolkit.Core.targets",
-        "package/services/metadata/core-properties/da251313135e4eb9a4404619068e1221.psmdcp",
+        "package/services/metadata/core-properties/d142cb96ee9c47e0a16bc68985780260.psmdcp",
         "[Content_Types].xml"
       ]
     },
@@ -15705,7 +15705,7 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "Cimbalino.Toolkit >= 2.0.0-beta1",
+      "Cimbalino.Toolkit >= 2.0.0-beta3",
       "Microsoft.ApplicationInsights >= 1.0.0",
       "Microsoft.ApplicationInsights.PersistenceChannel >= 1.0.0",
       "Microsoft.ApplicationInsights.WindowsApps >= 1.0.0",
