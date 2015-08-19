@@ -10,14 +10,17 @@
     <!-- " DataContext="{Binding Login, Source={StaticResource Locator}}"> -->
 
     <Grid x:Name="LayoutRoot">
-        <!--<VisualStateManager.VisualStateGroups>
+        <Grid.Background>
+            <ImageBrush x:Name="LayoutRootBackground" ImageSource="" Stretch="UniformToFill" />
+        </Grid.Background>
+        <VisualStateManager.VisualStateGroups>
             <VisualStateGroup >
                 <VisualState x:Name="desktop">
                     <VisualState.StateTriggers>
                         <triggers:DeviceFamilyStateTrigger DeviceFamily="Desktop" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="LayoutRoot.(Grid.Background)" Value="ms-appx:///Assets/Merckx_1920.jpg"/>                        
+                        <Setter Target="LayoutRootBackground.ImageSource" Value="ms-appx:///Assets/Merckx_1920.jpg"/>                        
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="mobile">
@@ -25,11 +28,11 @@
                         <triggers:DeviceFamilyStateTrigger DeviceFamily="Mobile" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="LayoutRoot.(Grid.Background)" Value="ms-appx:///Assets/Brooks.jpg"/>
+                        <Setter Target="LayoutRootBackground.ImageSource" Value="ms-appx:///Assets/Brooks.jpg"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>-->
+        </VisualStateManager.VisualStateGroups>
 
         <RelativePanel x:Name="ContentPanel"
                        VerticalAlignment="Bottom"
