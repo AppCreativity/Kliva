@@ -11,7 +11,7 @@
 
     <Grid x:Name="LayoutRoot">
         <Grid.Background>
-            <ImageBrush x:Name="LayoutRootBackground" ImageSource="" Stretch="UniformToFill" />
+            <ImageBrush x:Name="LayoutRootBackground" Stretch="UniformToFill" />
         </Grid.Background>
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup >
@@ -20,7 +20,9 @@
                         <triggers:DeviceFamilyStateTrigger DeviceFamily="Desktop" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="LayoutRootBackground.ImageSource" Value="ms-appx:///Assets/Merckx_1920.jpg"/>                        
+                        <Setter Target="LayoutRootBackground.ImageSource" Value="ms-appx:///Assets/Merckx_1920.jpg"/>
+                        <Setter Target="ContentPanel.HorizontalAlignment" Value="Center" />
+                        <Setter Target="ContentPanel.Margin" Value="0,0,0,100" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="mobile">
@@ -29,15 +31,15 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="LayoutRootBackground.ImageSource" Value="ms-appx:///Assets/Brooks.jpg"/>
+                        <Setter Target="ContentPanel.HorizontalAlignment" Value="Left" />
+                        <Setter Target="ContentPanel.Margin" Value="10,0,10,10" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
         <RelativePanel x:Name="ContentPanel"
-                       VerticalAlignment="Bottom"
-                       HorizontalAlignment="Center"
-                       Margin="0,0,0,100">
+                       VerticalAlignment="Bottom">
             <Button x:Name="LoginButton"
                     Style="{StaticResource KlivaButton}"
                     Content="log in with strava"/>
