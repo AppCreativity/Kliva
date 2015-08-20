@@ -104,6 +104,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\AccessToken.cs" />
     <Compile Include="Models\AppVersion.cs" />
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\Settings.cs" />
