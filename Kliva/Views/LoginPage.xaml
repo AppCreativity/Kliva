@@ -20,7 +20,7 @@
                         <triggers:DeviceFamilyStateTrigger DeviceFamily="Desktop" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="LayoutRootBackground.ImageSource" Value="ms-appx:///Assets/Merckx_1920.jpg"/>
+                        <Setter Target="LayoutRoot.(Grid.Background).(ImageBrush.ImageSource)" Value="ms-appx:///Assets/Merckx_1920.jpg"/>
                         <Setter Target="ContentPanel.HorizontalAlignment" Value="Center" />
                         <Setter Target="ContentPanel.Margin" Value="0,0,0,100" />
                     </VisualState.Setters>
@@ -30,7 +30,7 @@
                         <triggers:DeviceFamilyStateTrigger DeviceFamily="Mobile" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="LayoutRootBackground.ImageSource" Value="ms-appx:///Assets/Brooks.jpg"/>
+                        <Setter Target="LayoutRoot.(Grid.Background).(ImageBrush.ImageSource)" Value="ms-appx:///Assets/Brooks.jpg"/>
                         <Setter Target="ContentPanel.HorizontalAlignment" Value="Left" />
                         <Setter Target="ContentPanel.Margin" Value="10,0,10,10" />
                     </VisualState.Setters>
