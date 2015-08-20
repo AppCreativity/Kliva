@@ -33,7 +33,7 @@ namespace Kliva.Services
             var responseString = await response.Content.ReadAsStringAsync();
 
             var accessToken = JsonConvert.DeserializeObject<AccessToken>(responseString);
-            await ServiceLocator.Current.GetInstance<SettingsService>().SetStravaAccessToken(accessToken.Token);
+            await ServiceLocator.Current.GetInstance<ISettingsService>().SetStravaAccessToken(accessToken.Token);
         }
 
         public async Task GetAuthorizationCode()
