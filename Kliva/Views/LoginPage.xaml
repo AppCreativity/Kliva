@@ -6,8 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:triggers="using:WindowsStateTriggers"
-    mc:Ignorable="d">
-    <!-- " DataContext="{Binding Login, Source={StaticResource Locator}}"> -->
+    mc:Ignorable="d"
+    DataContext="{Binding Login, Source={StaticResource Locator}}">
 
     <Grid x:Name="LayoutRoot">
         <Grid.Background>
@@ -42,7 +42,8 @@
                        VerticalAlignment="Bottom">
             <Button x:Name="LoginButton"
                     Style="{StaticResource KlivaButton}"
-                    Content="log in with strava"/>
+                    Content="log in with strava"
+                    Command="{Binding LoginCommand}"/>
             <Button x:Name="NewAccountButton"
                     Style="{StaticResource KlivaButton}"
                     Content="create new strava account"
