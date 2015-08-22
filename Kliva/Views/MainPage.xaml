@@ -9,7 +9,5 @@
     DataContext="{Binding Main, Source={StaticResource Locator}}">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Button Content="push me"
-                Command="{Binding TestCommand}"/>
     </Grid>
 </Page>

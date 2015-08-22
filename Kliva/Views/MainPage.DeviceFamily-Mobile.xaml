@@ -1,0 +1,39 @@
+﻿<Page
+    x:Class="Kliva.Views.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Kliva.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    DataContext="{Binding Main, Source={StaticResource Locator}}">
+
+    <Page.BottomAppBar>
+        <CommandBar x:Name="BottomAppBar" Background="{StaticResource KlivaMainBrush}">
+            <AppBarButton x:Name="AppBarStats"
+                          Label="statistics"
+                          Icon="FourBars"
+                          />
+            <AppBarButton x:Name="AppBarProfile"
+                          Label="profile"
+                          Icon="Contact"
+                          />
+            <!--<AppBarButton x:Name="AppBarClub"
+                          >
+            </AppBarButton>-->
+
+            <CommandBar.SecondaryCommands>
+                <AppBarButton x:Name="AppBarSettings"
+                              Label="settings"
+                              />
+                <AppBarButton x:Name="AppBarLogout"
+                              Label="log out"
+                              Command="{Binding LogoutCommand}"
+                              />
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    </Grid>
+</Page>

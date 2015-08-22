@@ -52,6 +52,14 @@ namespace Kliva.Services
             return null;
         }
 
+        public async Task RemoveStravaAccessToken()
+        {
+            if (_settings != null)
+                _settings.StravaAccessToken = string.Empty;
+
+            await this.SetStravaAccessToken(string.Empty);
+        }
+
         //public Task<AppVersion> GetStoredAppVersion()
         //{
         //    if (_settings != null)

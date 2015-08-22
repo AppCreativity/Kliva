@@ -8,6 +8,8 @@ namespace Kliva.Services.Interfaces
         Task<string> GetStoredStravaAccessToken();
         Task SetStravaAccessToken(string stravaAccessToken);
 
+        Task RemoveStravaAccessToken();
+
         //Task<AppVersion> GetStoredAppVersion();
     }
 }
