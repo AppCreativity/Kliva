@@ -16,6 +16,18 @@ namespace Kliva.Services
         Success
     }
 
+    public class StravaServiceEventArgs : EventArgs
+    {
+        public StravaServiceStatus Status { get; private set; }
+        public Exception Exception { get; private set; }
+
+        public StravaServiceEventArgs(StravaServiceStatus status, Exception ex = null)
+        {
+            this.Status = status;
+            this.Exception = ex;
+        }
+    }
+
     public class StravaService : IStravaService
     {
         private string ParseAuthorizationResponse(string responseData)
@@ -26,21 +38,40 @@ namespace Kliva.Services
 
         private async Task GetAccessToken(string authorizationCode)
         {
-            var values = new List<KeyValuePair<string, string>>
+            try
+            {
+                var values = new List<KeyValuePair<string, string>>
                     {
                         new KeyValuePair<string, string>("client_id", StravaIdentityConstants.STRAVA_AUTHORITY_CLIENT_ID),
                         new KeyValuePair<string, string>("client_secret", StravaIdentityConstants.STRAVA_AUTHORITY_CLIENT_SECRET),
                         new KeyValuePair<string, string>("code", authorizationCode)
                     };
 
-            var httpClient = new HttpClient(new HttpClientHandler());
-            var response = await httpClient.PostAsync(Constants.STRAVA_AUTHORITY_TOKEN_URL, new FormUrlEncodedContent(values));
-            response.EnsureSuccessStatusCode();
-            var responseString = await response.Content.ReadAsStringAsync();
+                var httpClient = new HttpClient(new HttpClientHandler());
+                var response = await httpClient.PostAsync(Constants.STRAVA_AUTHORITY_TOKEN_URL, new FormUrlEncodedContent(values));
+                response.EnsureSuccessStatusCode();
+                var responseString = await response.Content.ReadAsStringAsync();
 
-            var accessToken = JsonConvert.DeserializeObject<AccessToken>(responseString);
-            await ServiceLocator.Current.GetInstance<ISettingsService>().SetStravaAccessToken(accessToken.Token);
+                var accessToken = JsonConvert.DeserializeObject<AccessToken>(responseString);
+                await ServiceLocator.Current.GetInstance<ISettingsService>().SetStravaAccessToken(accessToken.Token);
+
+                OnStatusEvent(new StravaServiceEventArgs(StravaServiceStatus.Success));
+            }
+            catch(Exception ex)
+            {
+                OnStatusEvent(new StravaServiceEventArgs(StravaServiceStatus.Failed, ex));
+            }
         }
+
+        #region Event handlers
+        public event EventHandler<StravaServiceEventArgs> StatusEvent;
+
+        protected virtual void OnStatusEvent(StravaServiceEventArgs e)
+        {
+            EventHandler<StravaServiceEventArgs> handler = StatusEvent;
+            if (handler != null) handler(this, e);
+        }
+        #endregion
 
         public async Task GetAuthorizationCode()
         {
@@ -58,7 +89,7 @@ namespace Kliva.Services
             }
             catch(Exception ex)
             {
-
+                OnStatusEvent(new StravaServiceEventArgs(StravaServiceStatus.Failed, ex));
             }
         }
     }
