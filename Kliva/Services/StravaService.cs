@@ -10,6 +10,12 @@ using Windows.Security.Authentication.Web;
 
 namespace Kliva.Services
 {
+    public enum StravaServiceStatus
+    {
+        Failed,
+        Success
+    }
+
     public class StravaService : IStravaService
     {
         private string ParseAuthorizationResponse(string responseData)

@@ -9,14 +9,17 @@
     DataContext="{Binding Main, Source={StaticResource Locator}}">
 
     <Page.BottomAppBar>
-        <CommandBar x:Name="BottomAppBar" Background="{StaticResource KlivaMainBrush}">
+        <CommandBar x:Name="BottomAppBar" Background="{StaticResource KlivaMainBrush}"
+                    Foreground="White">
             <AppBarButton x:Name="AppBarStats"
                           Label="statistics"
                           Icon="FourBars"
+                          Foreground="White"
                           />
             <AppBarButton x:Name="AppBarProfile"
                           Label="profile"
                           Icon="Contact"
+                          Foreground="White"
                           />
             <!--<AppBarButton x:Name="AppBarClub"
                           >
