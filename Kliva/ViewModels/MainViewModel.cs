@@ -31,7 +31,7 @@ namespace Kliva.ViewModels
 
             await _settingsService.RemoveStravaAccessToken();
 
-            //Remove the current 'login pageParam' back entry and navigate to the login page
+            //Remove the current 'main page' back entry and navigate to the login page
             _navigationService.Navigate<LoginPage>();
             _navigationService.RemoveBackEntry();
 

@@ -13,6 +13,7 @@ namespace Kliva.ViewModels
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
             SimpleIoc.Default.Register<INavigationService, NavigationService>();
+            SimpleIoc.Default.Register<IMessageBoxService, MessageBoxService>();
             SimpleIoc.Default.Register<IStorageService, StorageService>();
             SimpleIoc.Default.Register<ISettingsService, SettingsService>();
             SimpleIoc.Default.Register<IStravaService, StravaService>();

@@ -9,34 +9,37 @@ namespace Kliva.ViewModels
     public class LoginViewModel : KlivaBaseViewModel
     {
         private IStravaService _stravaService;
+        private IMessageBoxService _messageBoxService;
 
         public RelayCommand LoginCommand { get; private set; }
 
-        public LoginViewModel(INavigationService navigationService, IStravaService stravaService) : base(navigationService)
+        public LoginViewModel(INavigationService navigationService, IMessageBoxService messageBoxService, IStravaService stravaService) : base(navigationService)
         {
             _stravaService = stravaService;
+            _messageBoxService = messageBoxService;
             _stravaService.StatusEvent += OnStravaStatusEvent;
 
             this.LoginCommand = new RelayCommand(async () => await _stravaService.GetAuthorizationCode());
         }
 
-        private void OnStravaStatusEvent(object sender, Services.StravaServiceEventArgs e)
+        private async void OnStravaStatusEvent(object sender, Services.StravaServiceEventArgs e)
         {
             switch (e.Status)
             {
                 case StravaServiceStatus.Success:
                     _stravaService.StatusEvent -= OnStravaStatusEvent;
 
-                    //Remove the current 'login pageParam' back entry and navigate to the main page
+                    //Remove the current 'login page' back entry and navigate to the main page
                     _navigationService.Navigate<MainPage>();
                     _navigationService.RemoveBackEntry();
 
-                    //this.IsBusy = false;
+                    this.IsBusy = false;
                     break;
                 case StravaServiceStatus.Failed:
-                    //this.IsBusy = false;
+                    this.IsBusy = false;
 
-                    //await _messageBoxService.ShowAsync(Resources.Error_Login, Resources.Error);
+                    //TODO: Glenn - Add more text value through resources
+                    await _messageBoxService.ShowAsync("Something happend...", "Error");
                     break;
             }
         }
