@@ -4,12 +4,21 @@ using GalaSoft.MvvmLight.Command;
 using Kliva.Views;
 using System.Threading.Tasks;
 using Kliva.Services.Interfaces;
+using System.Collections.ObjectModel;
+using Kliva.Models;
 
 namespace Kliva.ViewModels
 {
     public class MainViewModel : KlivaBaseViewModel
     {
         private ISettingsService _settingsService;
+
+        private ObservableCollection<Activity> _activities = new ObservableCollection<Activity>();
+        public ObservableCollection<Activity> Activities
+        {
+            get { return _activities; }
+            set { Set(() => Activities, ref _activities, value); }
+        }
 
         private RelayCommand _logoutCommand;
         public RelayCommand LogoutCommand
@@ -37,6 +46,5 @@ namespace Kliva.ViewModels
 
             //this.IsBusy = false;
         }
-
     }
 }

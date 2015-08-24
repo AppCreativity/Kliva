@@ -104,7 +104,14 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ActivityFeedControl.xaml.cs">
+      <DependentUpon>ActivityFeedControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\AccessToken.cs" />
+    <Compile Include="Models\Activity.cs" />
+    <Compile Include="Models\ActivityMeta.cs" />
+    <Compile Include="Models\ActivitySummary.cs" />
+    <Compile Include="Models\ActivityType.cs" />
     <Compile Include="Models\AppVersion.cs" />
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\Settings.cs" />
@@ -119,6 +126,7 @@
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
+    <Compile Include="Views\Interfaces\IBasePage.cs" />
     <Compile Include="Views\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
@@ -150,6 +158,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\ActivityFeedControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\LoginPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

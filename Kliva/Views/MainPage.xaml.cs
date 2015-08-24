@@ -1,4 +1,7 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿using System;
+using Kliva.ViewModels;
+using Kliva.Views.Interfaces;
+using Windows.UI.Xaml.Controls;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -12,6 +15,14 @@ namespace Kliva.Views
         public MainPage()
         {
             this.InitializeComponent();
+        }
+
+        public MainViewModel ViewModel
+        {
+            get
+            {
+                return (MainViewModel)DataContext;
+            }
         }
     }
 }
