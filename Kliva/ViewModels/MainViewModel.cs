@@ -1,12 +1,12 @@
-﻿using System;
-using Cimbalino.Toolkit.Services;
+﻿using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
-using Kliva.Views;
-using System.Threading.Tasks;
-using Kliva.Services.Interfaces;
-using System.Collections.ObjectModel;
 using Kliva.Models;
+using Kliva.Services.Interfaces;
 using Kliva.ViewModels.Interfaces;
+using Kliva.Views;
+using System;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace Kliva.ViewModels
 {
