@@ -122,11 +122,11 @@
     <Compile Include="Services\Interfaces\IStravaService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\StravaService.cs" />
+    <Compile Include="ViewModels\Interfaces\IStravaViewModel.cs" />
     <Compile Include="ViewModels\KlivaBaseViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
-    <Compile Include="Views\Interfaces\IBasePage.cs" />
     <Compile Include="Views\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>

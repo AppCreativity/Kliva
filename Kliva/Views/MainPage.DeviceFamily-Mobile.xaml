@@ -5,6 +5,7 @@
     xmlns:local="using:Kliva.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:klivacontrols="using:Kliva.Controls"    
     mc:Ignorable="d"
     DataContext="{Binding Main, Source={StaticResource Locator}}">
 
@@ -38,5 +39,6 @@
     </Page.BottomAppBar>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <klivacontrols:ActivityFeedControl />
     </Grid>
 </Page>

@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using Kliva.Services.Interfaces;
 using System.Collections.ObjectModel;
 using Kliva.Models;
+using Kliva.ViewModels.Interfaces;
 
 namespace Kliva.ViewModels
 {
-    public class MainViewModel : KlivaBaseViewModel
+    public class MainViewModel : KlivaBaseViewModel, IStravaViewModel
     {
         private ISettingsService _settingsService;
 
