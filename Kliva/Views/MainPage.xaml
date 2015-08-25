@@ -5,9 +5,26 @@
     xmlns:local="using:Kliva"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"    
-    mc:Ignorable="d"
-    DataContext="{Binding Main, Source={StaticResource Locator}}">
+    mc:Ignorable="d">
+    <!--DataContext="{Binding Main, Source={StaticResource Locator}}">-->
 
-    <Grid>
-    </Grid>
+    <SplitView x:Name="LayoutRoot"               
+               DisplayMode="CompactOverlay"
+               IsPaneOpen="False"
+               CompactPaneLength="50"
+               OpenPaneLength="150"
+               PaneBackground="{StaticResource KlivaMainBrush}">
+        <SplitView.Pane>
+            <StackPanel VerticalAlignment="Bottom">
+                <Button x:Name="HamburgerButton"
+                        FontFamily="Segoe MDL2 Assets" Content="&#xE700;"
+                        Width="50" Height="50"
+                        Foreground="White"
+                        Background="Transparent" />
+            </StackPanel>
+        </SplitView.Pane>
+        <SplitView.Content>
+            <StackPanel></StackPanel>
+        </SplitView.Content>
+    </SplitView>
 </Page>
