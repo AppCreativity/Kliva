@@ -10,6 +10,10 @@
     DataContext="{Binding Login, Source={StaticResource Locator}}">
 
     <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
         <Grid.Background>
             <ImageBrush x:Name="LayoutRootBackground" Stretch="UniformToFill" />
         </Grid.Background>
@@ -23,6 +27,7 @@
                         <Setter Target="LayoutRoot.(Grid.Background).(ImageBrush.ImageSource)" Value="ms-appx:///Assets/Merckx_1920.jpg"/>
                         <Setter Target="ContentPanel.HorizontalAlignment" Value="Center" />
                         <Setter Target="ContentPanel.Margin" Value="0,0,0,100" />
+                        <Setter Target="TitlePanel.Visibility" Value="Collapsed" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="mobile">
@@ -33,13 +38,22 @@
                         <Setter Target="LayoutRoot.(Grid.Background).(ImageBrush.ImageSource)" Value="ms-appx:///Assets/Brooks.jpg"/>
                         <Setter Target="ContentPanel.HorizontalAlignment" Value="Left" />
                         <Setter Target="ContentPanel.Margin" Value="10,0,10,10" />
+                        <Setter Target="TitlePanel.Visibility" Value="Visible" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
+        <StackPanel x:Name="TitlePanel"
+                    Grid.Row="0"
+                    Background="{StaticResource KlivaMainBrush}">
+            <TextBlock Text="Kliva"
+                       Style="{StaticResource TitleTextBlock}"/>
+        </StackPanel>
+        
         <RelativePanel x:Name="ContentPanel"
-                       VerticalAlignment="Bottom">
+                       VerticalAlignment="Bottom"
+                       Grid.Row="1">
             <Button x:Name="LoginButton"
                     Style="{StaticResource KlivaButton}"
                     Content="log in with strava"

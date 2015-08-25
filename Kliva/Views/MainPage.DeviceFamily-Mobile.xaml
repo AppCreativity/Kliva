@@ -29,17 +29,31 @@
             <CommandBar.SecondaryCommands>
                 <AppBarButton x:Name="AppBarSettings"
                               Label="settings"
+                              FontFamily="{StaticResource OpenSansFontLight}"
                               Command="{Binding SettingsCommand}"
                               />
                 <AppBarButton x:Name="AppBarLogout"
                               Label="log out"
+                              FontFamily="{StaticResource OpenSansFontLight}"
                               Command="{Binding LogoutCommand}"
                               />
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <klivacontrols:ActivityFeedControl />
+    <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel x:Name="TitlePanel"
+                    Grid.Row="0"
+                    Background="{StaticResource KlivaMainBrush}">
+            <TextBlock Text="Kliva"
+                       Style="{StaticResource TitleTextBlock}"/>
+        </StackPanel>
+        
+        <klivacontrols:ActivityFeedControl Grid.Row="1"/>
     </Grid>
 </Page>

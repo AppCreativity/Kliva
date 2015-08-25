@@ -15,4 +15,10 @@
         <Setter Property="FontSize" Value="22" />
     </Style>
 
+    <Style x:Name="TitleTextBlock"
+           TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource OpenSansFontLight}" />
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+
 </ResourceDictionary>
