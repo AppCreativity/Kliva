@@ -20,6 +20,7 @@ namespace Kliva.ViewModels
 
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<LoginViewModel>();
+            SimpleIoc.Default.Register<SettingsViewModel>();
         }
 
         public MainViewModel Main
@@ -30,6 +31,11 @@ namespace Kliva.ViewModels
         public LoginViewModel Login
         {
             get { return ServiceLocator.Current.GetInstance<LoginViewModel>(); }
+        }
+
+        public SettingsViewModel Settings
+        {
+            get { return ServiceLocator.Current.GetInstance<SettingsViewModel>(); }
         }
     }
 }

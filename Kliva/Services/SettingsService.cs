@@ -5,6 +5,7 @@ using Microsoft.Practices.ServiceLocation;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 using System;
+using Windows.ApplicationModel;
 
 namespace Kliva.Services
 {
@@ -60,7 +61,7 @@ namespace Kliva.Services
             await this.SetStravaAccessToken(string.Empty);
         }
 
-        //public Task<AppVersion> GetStoredAppVersion()
+        //public async Task<AppVersion> GetStoredAppVersion()
         //{
         //    if (_settings != null)
         //        return _settings.AppVersion;

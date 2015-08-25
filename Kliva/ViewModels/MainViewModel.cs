@@ -22,13 +22,10 @@ namespace Kliva.ViewModels
         }
 
         private RelayCommand _logoutCommand;
-        public RelayCommand LogoutCommand
-        {
-            get
-            {
-                return _logoutCommand ?? (_logoutCommand = new RelayCommand(async () => await this.Logout()));
-            }
-        }
+        public RelayCommand LogoutCommand => _logoutCommand ?? (_logoutCommand = new RelayCommand(async () => await this.Logout()));
+
+        private RelayCommand _settingsCommand;
+        public RelayCommand SettingsCommand => _settingsCommand ?? (_settingsCommand = new RelayCommand(() => _navigationService.Navigate<SettingsPage>()));
 
         public MainViewModel(INavigationService navigationService, ISettingsService settingsService) : base(navigationService)
         {
