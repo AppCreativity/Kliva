@@ -15,12 +15,11 @@
         <Setter Property="FontSize" Value="18" />
     </Style>
 
-    <Style x:Name="TitleTextBlock"
+    <Style x:Name="TitleTextBlock" BasedOn="{StaticResource BaseTextBlock}"
            TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource OpenSansFontLight}" />
         <Setter Property="FontSize" Value="20" />
         <Setter Property="Margin" Value="14,-5,0,2" />        
-        <Setter Property="Foreground" Value="White" />
     </Style>
 
 </ResourceDictionary>

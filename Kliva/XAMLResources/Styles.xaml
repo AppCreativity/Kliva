@@ -13,4 +13,8 @@
     <FontFamily x:Key="OpenSansFontBold">/Assets/Fonts/OpenSans-Bold.ttf#Open Sans</FontFamily>
     <FontFamily x:Key="OpenSansFontSemibold">/Assets/Fonts/OpenSans-Semibold.ttf#Open Sans</FontFamily>
 
+    <Style x:Name="BaseTextBlock" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+
 </ResourceDictionary>

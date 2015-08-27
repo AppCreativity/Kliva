@@ -14,6 +14,13 @@ namespace Kliva.ViewModels
     {
         private ISettingsService _settingsService;
 
+        private bool _isPaneOpen = false;
+        public bool IsPaneOpen
+        {
+            get { return _isPaneOpen; }
+            set { Set(() => IsPaneOpen, ref _isPaneOpen, value); }
+        }
+
         private ObservableCollection<Activity> _activities = new ObservableCollection<Activity>();
         public ObservableCollection<Activity> Activities
         {
@@ -23,6 +30,9 @@ namespace Kliva.ViewModels
 
         private RelayCommand _logoutCommand;
         public RelayCommand LogoutCommand => _logoutCommand ?? (_logoutCommand = new RelayCommand(async () => await this.Logout()));
+
+        private RelayCommand _hamburgerCommand;
+        public RelayCommand HamburgerCommand => _hamburgerCommand ?? (_hamburgerCommand = new RelayCommand(() => this.IsPaneOpen = !this.IsPaneOpen));
 
         private RelayCommand _settingsCommand;
         public RelayCommand SettingsCommand => _settingsCommand ?? (_settingsCommand = new RelayCommand(() => _navigationService.Navigate<SettingsPage>()));

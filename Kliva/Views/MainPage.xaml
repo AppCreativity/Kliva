@@ -5,22 +5,32 @@
     xmlns:local="using:Kliva"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"    
-    mc:Ignorable="d">
-    <!--DataContext="{Binding Main, Source={StaticResource Locator}}">-->
+    mc:Ignorable="d"
+    DataContext="{Binding Main, Source={StaticResource Locator}}">
 
     <SplitView x:Name="LayoutRoot"               
                DisplayMode="CompactOverlay"
-               IsPaneOpen="False"
+               IsPaneOpen="{Binding IsPaneOpen, Mode=TwoWay}"
                CompactPaneLength="50"
-               OpenPaneLength="150"
+               OpenPaneLength="160"
                PaneBackground="{StaticResource KlivaMainBrush}">
         <SplitView.Pane>
             <StackPanel VerticalAlignment="Bottom">
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="SettingsButton"
+                            Style="{StaticResource PaneButton}"
+                            Content="&#xE713;"                            
+                            Command="{Binding SettingsCommand}"
+                            />
+                    <TextBlock Text="settings"
+                               VerticalAlignment="Center"
+                               Style="{StaticResource BaseTextBlock}" />
+                </StackPanel>
                 <Button x:Name="HamburgerButton"
-                        FontFamily="Segoe MDL2 Assets" Content="&#xE700;"
-                        Width="50" Height="50"
-                        Foreground="White"
-                        Background="Transparent" />
+                        Style="{StaticResource PaneButton}"
+                        Content="&#xE700;"
+                        Command="{Binding HamburgerCommand}"
+                        />                
             </StackPanel>
         </SplitView.Pane>
         <SplitView.Content>
