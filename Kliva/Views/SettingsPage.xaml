@@ -6,22 +6,22 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:triggers="using:WindowsStateTriggers"
-    mc:Ignorable="d"
-    DataContext="{Binding Settings, Source={StaticResource Locator}}">
+    mc:Ignorable="d">
+    <!--DataContext="{Binding Settings, Source={StaticResource Locator}}">-->
 
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <!--<VisualStateManager.VisualStateGroups>
+        <VisualStateManager.VisualStateGroups>
             <VisualStateGroup >
                 <VisualState x:Name="desktop">
                     <VisualState.StateTriggers>
                         <triggers:DeviceFamilyStateTrigger DeviceFamily="Desktop" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="TitlePanel.Visibility" Value="Collapsed" />
+                        <Setter Target="SettingsPivot.Margin" Value="48,0" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="mobile">
@@ -29,11 +29,11 @@
                         <triggers:DeviceFamilyStateTrigger DeviceFamily="Mobile" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="TitlePanel.Visibility" Value="Visible" />
+                        <Setter Target="SettingsPivot.Margin" Value="0" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>-->
+        </VisualStateManager.VisualStateGroups>
 
         <StackPanel x:Name="TitlePanel"
                     Grid.Row="0"
@@ -41,8 +41,16 @@
             <TextBlock Text="settings"
                        Style="{StaticResource TitleTextBlock}"/>
         </StackPanel>
-        <Pivot Grid.Row="1">
-            
+        <Pivot x:Name="SettingsPivot" Grid.Row="1">
+            <PivotItem Header="what's new">
+
+            </PivotItem>
+            <PivotItem Header="general">
+
+            </PivotItem>
+            <PivotItem Header="about">
+
+            </PivotItem>
         </Pivot>
     </Grid>
 </Page>
