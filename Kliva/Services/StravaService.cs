@@ -30,6 +30,14 @@ namespace Kliva.Services
 
     public class StravaService : IStravaService
     {
+        public IStravaActivityService StravaActivityService
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<IStravaActivityService>();
+            }
+        }
+
         private string ParseAuthorizationResponse(string responseData)
         {
             var authorizationCodeIndex = responseData.IndexOf("&code=", StringComparison.Ordinal) + 6;

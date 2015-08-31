@@ -8,6 +8,13 @@ namespace Kliva.Services
 {
     public class StravaActivityService : IStravaActivityService
     {
+        private ISettingsService _settingsService;
+
+        public StravaActivityService(ISettingsService settingsService)
+        {
+            _settingsService = settingsService;
+        }
+
         /// <summary>
         /// Gets all the activities asynchronously. Pagination is supported.
         /// </summary>
@@ -16,8 +23,14 @@ namespace Kliva.Services
         /// <returns>A list of activities.</returns>
         public async Task<List<ActivitySummary>> GetActivitiesAsync(int page, int perPage)
         {
-            string getUrl = String.Format("{0}?page={1}&per_page={2}&access_token={3}", Endpoints.Activities, page, perPage, Authentication.AccessToken);
-            string json = await Http.WebRequest.SendGetAsync(new Uri(getUrl));
+            var accessToken = await _settingsService.GetStoredStravaAccessToken();
+
+            //TODO: Glenn - Optional parameters should be treated as such!
+            //string getUrl = String.Format("{0}?page={1}&per_page={2}&access_token={3}", Endpoints.Activities, page, perPage, accessToken);
+            string getUrl = String.Format("{0}?access_token={1}", Endpoints.Activities, accessToken);
+            //string json = await Http.WebRequest.SendGetAsync(new Uri(getUrl));
+
+            return null;
         }
     }
 }

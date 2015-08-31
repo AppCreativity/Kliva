@@ -17,6 +17,7 @@ namespace Kliva.ViewModels
             SimpleIoc.Default.Register<IStorageService, StorageService>();
             SimpleIoc.Default.Register<ISettingsService, SettingsService>();
             SimpleIoc.Default.Register<IStravaService, StravaService>();
+            SimpleIoc.Default.Register<IStravaActivityService, StravaActivityService>();
 
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<LoginViewModel>();

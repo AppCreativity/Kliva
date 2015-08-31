@@ -13,6 +13,7 @@ namespace Kliva.ViewModels
     public class MainViewModel : KlivaBaseViewModel, IStravaViewModel
     {
         private ISettingsService _settingsService;
+        private IStravaService _stravaService;
 
         private bool _isPaneOpen = false;
         public bool IsPaneOpen
@@ -37,9 +38,13 @@ namespace Kliva.ViewModels
         private RelayCommand _settingsCommand;
         public RelayCommand SettingsCommand => _settingsCommand ?? (_settingsCommand = new RelayCommand(() => _navigationService.Navigate<SettingsPage>()));
 
-        public MainViewModel(INavigationService navigationService, ISettingsService settingsService) : base(navigationService)
+        private RelayCommand _viewLoadedCommand;
+        public RelayCommand ViewLoadedCommand => _viewLoadedCommand ?? (_viewLoadedCommand = new RelayCommand(async () => await this.ViewLoaded()));
+
+        public MainViewModel(INavigationService navigationService, ISettingsService settingsService, IStravaService stravaService) : base(navigationService)
         {
             _settingsService = settingsService;
+            _stravaService = stravaService;
         }
 
         private async Task Logout()
@@ -53,6 +58,11 @@ namespace Kliva.ViewModels
             _navigationService.RemoveBackEntry();
 
             //this.IsBusy = false;
+        }
+
+        private async Task ViewLoaded()
+        {
+            var t = await _stravaService.StravaActivityService.GetActivitiesAsync(0, 30);
         }
     }
 }

@@ -117,6 +117,7 @@
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Models\StravaIdentityConstants.cs" />
     <Compile Include="Services\ApplicationInfoService.cs" />
+    <Compile Include="Services\Endpoints.cs" />
     <Compile Include="Services\Interfaces\IApplicationInfoService.cs" />
     <Compile Include="Services\Interfaces\ISettingsService.cs" />
     <Compile Include="Services\Interfaces\IStravaActivityService.cs" />
