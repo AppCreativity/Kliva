@@ -114,8 +114,11 @@
     <Compile Include="Models\ActivityType.cs" />
     <Compile Include="Models\AppVersion.cs" />
     <Compile Include="Models\Constants.cs" />
+    <Compile Include="Models\Limit.cs" />
+    <Compile Include="Models\Limits.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Models\StravaIdentityConstants.cs" />
+    <Compile Include="Models\Usage.cs" />
     <Compile Include="Services\ApplicationInfoService.cs" />
     <Compile Include="Services\Endpoints.cs" />
     <Compile Include="Services\Interfaces\IApplicationInfoService.cs" />
@@ -125,6 +128,7 @@
     <Compile Include="Services\StravaActivityService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\StravaService.cs" />
+    <Compile Include="Services\WebRequest.cs" />
     <Compile Include="ViewModels\Interfaces\IStravaViewModel.cs" />
     <Compile Include="ViewModels\KlivaBaseViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
