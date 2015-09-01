@@ -28,7 +28,7 @@
             </VisualStateManager.VisualStateGroups>
 
             <TextBlock x:Name="ActivityName"
-                       Text="{x:Bind Name}"
+                       Text="{x:Bind Name, Mode=OneWay}"
                        RelativePanel.AlignTopWithPanel="True"/>
         </RelativePanel>
     </DataTemplate>
