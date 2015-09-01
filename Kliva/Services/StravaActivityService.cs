@@ -33,12 +33,14 @@ namespace Kliva.Services
                 string getUrl = String.Format("{0}?access_token={1}", Endpoints.Activities, accessToken);
                 string json = await WebRequest.SendGetAsync(new Uri(getUrl));
 
-                var t = Unmarshaller<List<ActivitySummary>>.Unmarshal(json);
+                //TODO: Glenn - Google maps?
+                return Unmarshaller<List<ActivitySummary>>.Unmarshal(json);
             }
             catch(Exception ex)
             {
                 //TODO: Glenn - Use logger to log errors ( Google )
             }
+
             return null;
         }
     }

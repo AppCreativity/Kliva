@@ -4,9 +4,18 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Kliva"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"    
-    mc:Ignorable="d"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"       
+    xmlns:klivacontrols="using:Kliva.Controls"
+    mc:Ignorable="d"    
     DataContext="{Binding Main, Source={StaticResource Locator}}">
+
+    <interactivity:Interaction.Behaviors>
+        <core:EventTriggerBehavior EventName="Loaded">
+            <core:InvokeCommandAction Command="{Binding ViewLoadedCommand}" />
+        </core:EventTriggerBehavior>
+    </interactivity:Interaction.Behaviors>
 
     <SplitView x:Name="LayoutRoot"               
                DisplayMode="CompactOverlay"
@@ -34,7 +43,9 @@
             </StackPanel>
         </SplitView.Pane>
         <SplitView.Content>
-            <StackPanel></StackPanel>
+            <StackPanel>
+                <klivacontrols:ActivityFeedControl/>
+            </StackPanel>
         </SplitView.Content>
     </SplitView>
 </Page>

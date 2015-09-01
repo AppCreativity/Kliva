@@ -22,8 +22,8 @@ namespace Kliva.ViewModels
             set { Set(() => IsPaneOpen, ref _isPaneOpen, value); }
         }
 
-        private ObservableCollection<Activity> _activities = new ObservableCollection<Activity>();
-        public ObservableCollection<Activity> Activities
+        private ObservableCollection<ActivitySummary> _activities = new ObservableCollection<ActivitySummary>();
+        public ObservableCollection<ActivitySummary> Activities
         {
             get { return _activities; }
             set { Set(() => Activities, ref _activities, value); }
@@ -62,7 +62,10 @@ namespace Kliva.ViewModels
 
         private async Task ViewLoaded()
         {
-            var t = await _stravaService.StravaActivityService.GetActivitiesAsync(0, 30);
+            this.Activities.Clear();
+            var activities = await _stravaService.StravaActivityService.GetActivitiesAsync(0, 30);
+            foreach (ActivitySummary activity in activities)
+                this.Activities.Add(activity);
         }
     }
 }

@@ -4,12 +4,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:viewModels="using:Kliva.ViewModels"
     xmlns:local="using:Kliva"
+    xmlns:resources="using:Kliva.XAMLResources"
     RequestedTheme="Light">
     <Application.Resources>
         <ResourceDictionary>
             <viewModels:ViewModelLocator x:Key="Locator"/>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="XAMLResources/DeviceFamilyStyles.xaml" />
+                <ResourceDictionary Source="XAMLResources/DeviceFamilyStyles.xaml" />                
+                <ResourceDictionary Source="XAMLResources/DeviceFamilyDataTemplates.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

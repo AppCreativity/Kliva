@@ -5,6 +5,6 @@ namespace Kliva.ViewModels.Interfaces
 {
     public interface IStravaViewModel
     {
-        ObservableCollection<Activity> Activities { get; set; }
+        ObservableCollection<ActivitySummary> Activities { get; set; }
     }
 }

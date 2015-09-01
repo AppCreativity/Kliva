@@ -10,9 +10,10 @@
     d:DesignWidth="400">
 
     <ListView x:Name="ActivityList"
-                      Grid.Row="1"                      
-                      ItemsSource="{x:Bind ViewModel.Activities}"                      
-                      HorizontalContentAlignment="Stretch">
+              Grid.Row="1"                      
+              ItemsSource="{x:Bind ViewModel.Activities}"
+              ItemTemplate="{Binding ActivityListItemDataTemplate}"
+              HorizontalContentAlignment="Stretch">
         <ListView.ItemContainerStyle>
             <Style TargetType="ListViewItem">
                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />

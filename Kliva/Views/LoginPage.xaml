@@ -51,18 +51,18 @@
                        Style="{StaticResource TitleTextBlock}"/>
         </StackPanel>
         
-        <RelativePanel x:Name="ContentPanel"
-                       VerticalAlignment="Bottom"
+        <RelativePanel x:Name="ContentPanel"                       
                        Grid.Row="1">
             <Button x:Name="LoginButton"
                     Style="{StaticResource KlivaButton}"
                     Content="log in with strava"
-                    Command="{Binding LoginCommand}"/>
+                    Command="{Binding LoginCommand}"
+                    RelativePanel.Above="{Binding ElementName=NewAccountButton}" />
             <Button x:Name="NewAccountButton"
                     Style="{StaticResource KlivaButton}"
                     Content="create new strava account"
                     Margin="0,10,0,0"
-                    RelativePanel.Below="{Binding ElementName=LoginButton}"/>
+                    RelativePanel.AlignBottomWithPanel="True" />
         </RelativePanel>
     </Grid>
 </Page>
