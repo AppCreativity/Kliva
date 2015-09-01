@@ -43,9 +43,7 @@
             </StackPanel>
         </SplitView.Pane>
         <SplitView.Content>
-            <StackPanel>
-                <klivacontrols:ActivityFeedControl/>
-            </StackPanel>
+            <klivacontrols:ActivityFeedControl/>
         </SplitView.Content>
     </SplitView>
 </Page>
