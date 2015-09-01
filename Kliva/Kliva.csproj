@@ -107,6 +107,7 @@
     <Compile Include="Controls\ActivityFeedControl.xaml.cs">
       <DependentUpon>ActivityFeedControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Unmarshaller.cs" />
     <Compile Include="Models\AccessToken.cs" />
     <Compile Include="Models\Activity.cs" />
     <Compile Include="Models\ActivityMeta.cs" />
@@ -128,7 +129,7 @@
     <Compile Include="Services\StravaActivityService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\StravaService.cs" />
-    <Compile Include="Services\WebRequest.cs" />
+    <Compile Include="Helpers\WebRequest.cs" />
     <Compile Include="ViewModels\Interfaces\IStravaViewModel.cs" />
     <Compile Include="ViewModels\KlivaBaseViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />

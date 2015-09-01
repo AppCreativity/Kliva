@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
+using Kliva.Helpers;
 
 namespace Kliva.Services
 {
@@ -23,13 +24,21 @@ namespace Kliva.Services
         /// <returns>A list of activities.</returns>
         public async Task<List<ActivitySummary>> GetActivitiesAsync(int page, int perPage)
         {
-            var accessToken = await _settingsService.GetStoredStravaAccessToken();
+            try
+            {
+                var accessToken = await _settingsService.GetStoredStravaAccessToken();
 
-            //TODO: Glenn - Optional parameters should be treated as such!
-            //string getUrl = String.Format("{0}?page={1}&per_page={2}&access_token={3}", Endpoints.Activities, page, perPage, accessToken);
-            string getUrl = String.Format("{0}?access_token={1}", Endpoints.Activities, accessToken);
-            //string json = await Http.WebRequest.SendGetAsync(new Uri(getUrl));
+                //TODO: Glenn - Optional parameters should be treated as such!
+                //string getUrl = String.Format("{0}?page={1}&per_page={2}&access_token={3}", Endpoints.Activities, page, perPage, accessToken);
+                string getUrl = String.Format("{0}?access_token={1}", Endpoints.Activities, accessToken);
+                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
 
+                var t = Unmarshaller<List<ActivitySummary>>.Unmarshal(json);
+            }
+            catch(Exception ex)
+            {
+                //TODO: Glenn - Use logger to log errors ( Google )
+            }
             return null;
         }
     }
