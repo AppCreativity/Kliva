@@ -12,7 +12,7 @@
     <ListView x:Name="ActivityList"
               Grid.Row="1"                      
               ItemsSource="{x:Bind ViewModel.Activities, Mode=OneWay}"
-              ItemTemplate="{Binding ActivityListItemDataTemplate}"
+              ItemTemplate="{StaticResource ActivityListItemDataTemplate}"
               HorizontalContentAlignment="Stretch">
         <ListView.ItemContainerStyle>
             <Style TargetType="ListViewItem">
