@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using Kliva.Helpers;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
-using Kliva.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Kliva.Services
 {

@@ -2,7 +2,7 @@
 
 namespace Kliva.Models
 {
-    public class ActivityMeta
+    public class ActivityMeta : BaseClass
     {
         /// <summary>
         /// The id of the activity. This id is provided by Strava at upload.

@@ -27,6 +27,13 @@
                 </VisualStateGroup>
             </VisualStateManager.VisualStateGroups>
 
+            <!--<Ellipse RelativePanel.AlignTopWithPanel="True"
+                     RelativePanel.AlignLeftWithPanel="True">
+                <Ellipse.Fill>
+                    <ImageBrush Stretch="UniformToFill" ImageSource="{Binding Athlete.ProfileMediumFormatted}" />
+                </Ellipse.Fill>
+            </Ellipse>-->
+
             <TextBlock x:Name="ActivityName"
                        Text="{x:Bind Name, Mode=OneWay}"
                        RelativePanel.AlignTopWithPanel="True"/>

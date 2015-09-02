@@ -5,7 +5,7 @@ namespace Kliva.Models
     /// <summary>
     /// This class represents an athlete.
     /// </summary>
-    public class AthleteMeta
+    public class AthleteMeta : BaseClass
     {
         /// <summary>
         /// The Strava athlete id.

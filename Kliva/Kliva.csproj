@@ -115,6 +115,8 @@
     <Compile Include="Models\ActivityType.cs" />
     <Compile Include="Models\AppVersion.cs" />
     <Compile Include="Models\AthleteMeta.cs" />
+    <Compile Include="Models\AthleteSummary.cs" />
+    <Compile Include="Models\BaseClass.cs" />
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\Limit.cs" />
     <Compile Include="Models\Limits.cs" />
