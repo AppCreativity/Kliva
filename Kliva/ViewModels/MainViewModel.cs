@@ -63,7 +63,7 @@ namespace Kliva.ViewModels
         private async Task ViewLoaded()
         {
             this.Activities.Clear();
-            var activities = await _stravaService.StravaActivityService.GetActivitiesAsync(0, 30);
+            var activities = await _stravaService.StravaActivityService.GetFollowersActivitiesAsync(0, 30);
             foreach (ActivitySummary activity in activities)
                 this.Activities.Add(activity);
         }

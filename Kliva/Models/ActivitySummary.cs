@@ -343,7 +343,7 @@ namespace Kliva.Models
         /// <summary>
         /// Meta object of the athlete of this activity.
         /// </summary>
-        //[JsonProperty("athlete")]
-        //public AthleteMeta Athlete { get; set; }
+        [JsonProperty("athlete")]
+        public AthleteMeta Athlete { get; set; }
     }
 }

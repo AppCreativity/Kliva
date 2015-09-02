@@ -36,7 +36,34 @@ namespace Kliva.Services
                 //TODO: Glenn - Google maps?
                 return Unmarshaller<List<ActivitySummary>>.Unmarshal(json);
             }
-            catch(Exception ex)
+            catch (Exception ex)
+            {
+                //TODO: Glenn - Use logger to log errors ( Google )
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the latest activities of the currently authenticated athletes followers asynchronously.
+        /// </summary>
+        /// <param name="page">The page of activities.</param>
+        /// <param name="perPage">The amount of activities per page.</param>
+        /// <returns>A list of activities from your followers.</returns>
+        public async Task<List<ActivitySummary>> GetFollowersActivitiesAsync(int page, int perPage)
+        {
+            try
+            {
+                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+
+                //TODO: Glenn - Optional parameters should be treated as such!
+                //string getUrl = String.Format("{0}?page={1}&per_page={2}&access_token={3}", Endpoints.ActivitiesFollowers, page, perPage, accessToken);
+                string getUrl = string.Format("{0}?&access_token={1}", Endpoints.ActivitiesFollowers, accessToken);
+                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
+
+                return Unmarshaller<List<ActivitySummary>>.Unmarshal(json);
+            }
+            catch (Exception ex)
             {
                 //TODO: Glenn - Use logger to log errors ( Google )
             }
