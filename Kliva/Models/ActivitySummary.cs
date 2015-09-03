@@ -8,7 +8,7 @@ namespace Kliva.Models
     /// <summary>
     /// Represents a less detailed version of an activity.
     /// </summary>
-    public class ActivitySummary : ActivityMeta
+    public partial class ActivitySummary : ActivityMeta
     {
         /// <summary>
         /// The activity's name.
@@ -345,7 +345,13 @@ namespace Kliva.Models
         /// </summary>
         [JsonProperty("athlete")]
         public AthleteMeta AthleteMeta { get; set; }
+    }
 
+    /// <summary>
+    /// Seperated added fields from original response class!
+    /// </summary>
+    public partial class ActivitySummary
+    {
         private AthleteSummary _athlete;
         public AthleteSummary Athlete
         {

@@ -1,9 +1,11 @@
-﻿using Kliva.Models;
+﻿using GalaSoft.MvvmLight.Threading;
+using Kliva.Models;
 using Kliva.Services.Interfaces;
 using Microsoft.Practices.ServiceLocation;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.Security.Authentication.Web;
@@ -35,6 +37,14 @@ namespace Kliva.Services
             get
             {
                 return ServiceLocator.Current.GetInstance<IStravaActivityService>();
+            }
+        }
+
+        public IStravaAthleteService StravaAthleteService
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<IStravaAthleteService>();
             }
         }
 
@@ -71,6 +81,34 @@ namespace Kliva.Services
             }
         }
 
+        private async void GetActivitySummaryRelations(IEnumerable<ActivitySummary> activities)
+        {
+            var results = (from activity in activities
+                           select new
+                           {
+                               Activity = activity,
+                               AthleteTask = this.StravaAthleteService.GetAthleteAsync(activity.AthleteMeta.Id.ToString()),
+                               //PhotoTask = (activity.TotalPhotoCount > 0) ? this.GetPhotosAsync(activity.Id.ToString()) : Task.FromResult<List<Photo>>(null)
+                               //PhotoTask = this.GetPhotosAsync(activity.Id.ToString())
+                           }).ToList();
+
+            List<Task> tasks = new List<Task>();
+            tasks.AddRange(results.Select(t => t.AthleteTask));
+            //tasks.AddRange(results.Select(t => t.PhotoTask));
+
+            await Task.WhenAll(tasks);
+
+            foreach (var pair in results)
+            {
+                var actualPair = pair;
+                DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                {
+                    actualPair.Activity.Athlete = actualPair.AthleteTask.Result;
+                    //actualPair.Activity.AllPhotos = actualPair.PhotoTask.Result;
+                });
+            }
+        }
+
         #region Event handlers
         public event EventHandler<StravaServiceEventArgs> StatusEvent;
 
@@ -99,6 +137,14 @@ namespace Kliva.Services
             {
                 OnStatusEvent(new StravaServiceEventArgs(StravaServiceStatus.Failed, ex));
             }
+        }
+
+        public async Task<List<ActivitySummary>> GetActivitiesWithAthletesAsync(int page, int perPage)
+        {
+            List<ActivitySummary> activities = await this.StravaActivityService.GetFollowersActivitiesAsync(page, perPage);
+            this.GetActivitySummaryRelations(activities);
+
+            return activities;
         }
     }
 }

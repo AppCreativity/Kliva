@@ -1,4 +1,5 @@
-﻿using Kliva.Services;
+﻿using GalaSoft.MvvmLight.Threading;
+using Kliva.Services;
 using Kliva.Services.Interfaces;
 using Kliva.Views;
 using Microsoft.Practices.ServiceLocation;
@@ -43,6 +44,8 @@ namespace Kliva
                 this.DebugSettings.EnableFrameRateCounter = false;
             }
 #endif
+
+            DispatcherHelper.Initialize();
 
             Frame rootFrame = Window.Current.Content as Frame;
 

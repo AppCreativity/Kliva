@@ -5,7 +5,7 @@ namespace Kliva.Models
     /// <summary>
     /// Athletes are Strava users, Strava users are athletes. This is a less detailed version of an athlete.
     /// </summary>
-    public class AthleteSummary : AthleteMeta
+    public partial class AthleteSummary : AthleteMeta
     {
         /// <summary>
         /// The athletes first name.
@@ -24,17 +24,6 @@ namespace Kliva.Models
         /// </summary>
         [JsonProperty("profile_medium")]
         public string ProfileMedium { get; set; }
-
-        public string ProfileMediumFormatted
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(this.ProfileMedium) && this.ProfileMedium.Contains("http"))
-                    return ProfileMedium;
-                else
-                    return Constants.STRAVA_DEFAULT_AVATAR;
-            }
-        }
 
         /// <summary>
         /// Url to a 124x124 pixel profile picture. You can use the ImageLoader class to load this picture.
@@ -104,5 +93,22 @@ namespace Kliva.Models
         /// </summary>
         [JsonProperty("approve_followers")]
         public bool ApproveFollowers { get; set; }
+    }
+
+    /// <summary>
+    /// Seperated added fields from original response class!
+    /// </summary>
+    public partial class AthleteSummary
+    {
+        public string ProfileMediumFormatted
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(this.ProfileMedium) && this.ProfileMedium.Contains("http"))
+                    return ProfileMedium;
+                else
+                    return Constants.STRAVA_DEFAULT_AVATAR;
+            }
+        }
     }
 }

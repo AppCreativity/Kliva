@@ -128,9 +128,11 @@
     <Compile Include="Services\Interfaces\IApplicationInfoService.cs" />
     <Compile Include="Services\Interfaces\ISettingsService.cs" />
     <Compile Include="Services\Interfaces\IStravaActivityService.cs" />
+    <Compile Include="Services\Interfaces\IStravaAthleteService.cs" />
     <Compile Include="Services\Interfaces\IStravaService.cs" />
     <Compile Include="Services\StravaActivityService.cs" />
     <Compile Include="Services\SettingsService.cs" />
+    <Compile Include="Services\StravaAthleteService.cs" />
     <Compile Include="Services\StravaService.cs" />
     <Compile Include="Helpers\WebRequest.cs" />
     <Compile Include="ViewModels\Interfaces\IStravaViewModel.cs" />

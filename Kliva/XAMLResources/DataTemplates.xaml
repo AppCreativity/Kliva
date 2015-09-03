@@ -7,6 +7,7 @@
 
     <DataTemplate x:Key="ActivityListItemDataTemplate"
                   x:DataType="models:ActivitySummary">
+
         <RelativePanel x:Name="ActivityListItemPanel">
             <VisualStateManager.VisualStateGroups>
                 <VisualStateGroup >
@@ -27,16 +28,18 @@
                 </VisualStateGroup>
             </VisualStateManager.VisualStateGroups>
 
-            <!--<Ellipse RelativePanel.AlignTopWithPanel="True"
-                     RelativePanel.AlignLeftWithPanel="True">
+            <Ellipse x:Name="AthleteProfilePicture"
+                     Style="{StaticResource ProfileEllipse}"
+                     RelativePanel.AlignTopWithPanel="True">
                 <Ellipse.Fill>
-                    <ImageBrush Stretch="UniformToFill" ImageSource="{Binding Athlete.ProfileMediumFormatted}" />
+                    <ImageBrush Stretch="UniformToFill" ImageSource="{x:Bind Athlete.ProfileMediumFormatted, Mode=OneWay}" />
                 </Ellipse.Fill>
-            </Ellipse>-->
+            </Ellipse>
 
             <TextBlock x:Name="ActivityName"
                        Text="{x:Bind Name, Mode=OneWay}"
-                       RelativePanel.AlignTopWithPanel="True"/>
+                       RelativePanel.AlignTopWithPanel="True"
+                       RelativePanel.RightOf="{Binding ElementName=AthleteProfilePicture}"/>
         </RelativePanel>
     </DataTemplate>
 

@@ -9,6 +9,9 @@
     <Color x:Key="KlivaDarkColor">#b65033</Color>
     <SolidColorBrush x:Key="KlivaDarkBrush" Color="{StaticResource KlivaDarkColor}" />
 
+    <Color x:Key="SeperatorColor">LightGray</Color>
+    <SolidColorBrush x:Key="SeperatorBrush" Color="{StaticResource SeperatorColor}" />
+
     <FontFamily x:Key="OpenSansFontLight">/Assets/Fonts/OpenSans-Light.ttf#Open Sans</FontFamily>
     <FontFamily x:Key="OpenSansFontBold">/Assets/Fonts/OpenSans-Bold.ttf#Open Sans</FontFamily>
     <FontFamily x:Key="OpenSansFontSemibold">/Assets/Fonts/OpenSans-Semibold.ttf#Open Sans</FontFamily>
@@ -131,6 +134,14 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <Style x:Name="ProfileEllipse" TargetType="Ellipse">
+        <Setter Property="Height" Value="42" />
+        <Setter Property="Width" Value="42" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
     </Style>
 
 </ResourceDictionary>

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Kliva.Models;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Kliva.Services.Interfaces
@@ -10,5 +12,7 @@ namespace Kliva.Services.Interfaces
         event EventHandler<StravaServiceEventArgs> StatusEvent;
 
         Task GetAuthorizationCode();
+
+        Task<List<ActivitySummary>> GetActivitiesWithAthletesAsync(int page, int perPage);
     }
 }
