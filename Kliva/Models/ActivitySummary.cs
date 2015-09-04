@@ -358,5 +358,18 @@ namespace Kliva.Models
             get { return _athlete; }
             set { Set(() => Athlete, ref _athlete, value); }
         }
+
+        private List<Photo> _allPhotos;
+        public List<Photo> AllPhotos
+        {
+            get { return _allPhotos; }
+            set { Set(() => AllPhotos, ref _allPhotos, value); }
+        }
+
+        /// <summary>
+        /// Number of photos ( Instagram & Strava ).
+        /// </summary>
+        [JsonProperty("total_photo_count")]
+        public int TotalPhotoCount { get; set; }
     }
 }

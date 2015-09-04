@@ -88,13 +88,12 @@ namespace Kliva.Services
                            {
                                Activity = activity,
                                AthleteTask = this.StravaAthleteService.GetAthleteAsync(activity.AthleteMeta.Id.ToString()),
-                               //PhotoTask = (activity.TotalPhotoCount > 0) ? this.GetPhotosAsync(activity.Id.ToString()) : Task.FromResult<List<Photo>>(null)
-                               //PhotoTask = this.GetPhotosAsync(activity.Id.ToString())
+                               PhotoTask = (activity.TotalPhotoCount > 0) ? this.StravaActivityService.GetPhotosAsync(activity.Id.ToString()) : Task.FromResult<List<Photo>>(null)
                            }).ToList();
 
             List<Task> tasks = new List<Task>();
             tasks.AddRange(results.Select(t => t.AthleteTask));
-            //tasks.AddRange(results.Select(t => t.PhotoTask));
+            tasks.AddRange(results.Select(t => t.PhotoTask));
 
             await Task.WhenAll(tasks);
 
@@ -104,7 +103,7 @@ namespace Kliva.Services
                 DispatcherHelper.CheckBeginInvokeOnUI(() =>
                 {
                     actualPair.Activity.Athlete = actualPair.AthleteTask.Result;
-                    //actualPair.Activity.AllPhotos = actualPair.PhotoTask.Result;
+                    actualPair.Activity.AllPhotos = actualPair.PhotoTask.Result;
                 });
             }
         }
@@ -142,6 +141,8 @@ namespace Kliva.Services
         public async Task<List<ActivitySummary>> GetActivitiesWithAthletesAsync(int page, int perPage)
         {
             List<ActivitySummary> activities = await this.StravaActivityService.GetFollowersActivitiesAsync(page, perPage);
+            //List<ActivitySummary> activities = await this.StravaActivityService.GetActivitiesAsync(page, perPage);
+
             this.GetActivitySummaryRelations(activities);
 
             return activities;

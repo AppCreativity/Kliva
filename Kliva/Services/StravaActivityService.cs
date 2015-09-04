@@ -70,5 +70,29 @@ namespace Kliva.Services
 
             return null;
         }
+
+        /// <summary>
+        /// Returns a list of photos linked to the specified activity.
+        /// </summary>
+        /// <param name="activityId">The activity</param>
+        /// <returns>A list of photos.</returns>
+        public async Task<List<Photo>> GetPhotosAsync(string activityId)
+        {
+            try
+            {
+                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+
+                string getUrl = string.Format("{0}/{1}/photos?access_token={2}", Endpoints.Activity, activityId, accessToken);
+                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
+
+                return Unmarshaller<List<Photo>>.Unmarshal(json);
+            }
+            catch(Exception ex)
+            {
+                //TODO: Glenn - Use logger to log errors ( Google )
+            }
+
+            return null;
+        }
     }
 }

@@ -120,6 +120,7 @@
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\Limit.cs" />
     <Compile Include="Models\Limits.cs" />
+    <Compile Include="Models\Photo.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Models\StravaIdentityConstants.cs" />
     <Compile Include="Models\Usage.cs" />

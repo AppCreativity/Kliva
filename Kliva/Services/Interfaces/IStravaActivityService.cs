@@ -8,5 +8,7 @@ namespace Kliva.Services.Interfaces
     {
         Task<List<ActivitySummary>> GetActivitiesAsync(int page, int perPage);
         Task<List<ActivitySummary>> GetFollowersActivitiesAsync(int page, int perPage);
+
+        Task<List<Photo>> GetPhotosAsync(string activityId);
     }
 }
