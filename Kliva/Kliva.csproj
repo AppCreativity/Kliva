@@ -97,6 +97,7 @@
     <Content Include="Assets\Fonts\OpenSans-Bold.ttf" />
     <Content Include="Assets\Fonts\OpenSans-Light.ttf" />
     <Content Include="Assets\Fonts\OpenSans-Semibold.ttf" />
+    <Content Include="Assets\Fonts\MaterialIcons-Regular.ttf" />
     <None Include="project.json" />
     <None Include="Service References\Application Insights\ConnectedService.json" />
   </ItemGroup>
