@@ -8,7 +8,7 @@
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"       
     xmlns:klivacontrols="using:Kliva.Controls"
-    mc:Ignorable="d"    
+    mc:Ignorable="d"
     DataContext="{Binding Main, Source={StaticResource Locator}}">
 
     <interactivity:Interaction.Behaviors>
@@ -20,27 +20,37 @@
     <SplitView x:Name="LayoutRoot"               
                DisplayMode="CompactOverlay"
                IsPaneOpen="{Binding IsPaneOpen, Mode=TwoWay}"
-               CompactPaneLength="50"
+               CompactPaneLength="60"
                OpenPaneLength="160"
                PaneBackground="{StaticResource KlivaMainBrush}">
         <SplitView.Pane>
-            <StackPanel VerticalAlignment="Bottom">
-                <StackPanel Orientation="Horizontal">
-                    <Button x:Name="SettingsButton"
-                            Style="{StaticResource PaneButton}"
-                            Content="&#xE713;"                            
-                            Command="{Binding SettingsCommand}"
-                            />
-                    <TextBlock Text="settings"
+            <RelativePanel>
+                <Button x:Name="SettingsButton"
+                        Style="{StaticResource PaneButton}"
+                        Command="{Binding SettingsCommand}"
+                        RelativePanel.AlignLeftWithPanel="True"
+                        RelativePanel.AlignRightWithPanel="True"
+                        RelativePanel.Above="{Binding ElementName=HamburgerButton}">
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Style="{StaticResource PaneIcon}"                                  
+                                  Glyph="&#xE713;"
+                                  Margin="0,0,15,0"/>
+                        <TextBlock Text="settings"
                                VerticalAlignment="Center"
                                Style="{StaticResource BaseTextBlock}" />
-                </StackPanel>
+                    </StackPanel>
+                </Button>
                 <Button x:Name="HamburgerButton"
                         Style="{StaticResource PaneButton}"
-                        Content="&#xE700;"
+                        HorizontalContentAlignment="Left"
                         Command="{Binding HamburgerCommand}"
-                        />                
-            </StackPanel>
+                        RelativePanel.AlignLeftWithPanel="True"
+                        RelativePanel.AlignRightWithPanel="True"
+                        RelativePanel.AlignBottomWithPanel="True">
+                    <FontIcon Style="{StaticResource PaneIcon}"
+                              Glyph="&#xE700;" />
+                </Button>
+            </RelativePanel>
         </SplitView.Pane>
         <SplitView.Content>
             <klivacontrols:ActivityFeedControl/>
