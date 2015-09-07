@@ -8,8 +8,8 @@
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"    
     xmlns:klivacontrols="using:Kliva.Controls"
-    mc:Ignorable="d">
-    <!--DataContext="{Binding Main, Source={StaticResource Locator}}">-->
+    mc:Ignorable="d"
+    DataContext="{Binding Main, Source={StaticResource Locator}}">
 
     <interactivity:Interaction.Behaviors>
         <core:EventTriggerBehavior EventName="Loaded">
