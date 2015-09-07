@@ -8,6 +8,16 @@ namespace Kliva.ViewModels
 {
     public class ViewModelLocator
     {
+        private static void Register<T>(bool createImmediately = false) where T : class
+        {
+            SimpleIoc.Default.Register<T>(createImmediately);
+        }
+
+        internal static T Get<T>() where T : class
+        {
+            return SimpleIoc.Default.GetInstance<T>();
+        }
+
         public ViewModelLocator()
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
@@ -20,24 +30,15 @@ namespace Kliva.ViewModels
             SimpleIoc.Default.Register<IStravaActivityService, StravaActivityService>();
             SimpleIoc.Default.Register<IStravaAthleteService, StravaAthleteService>();
 
-            SimpleIoc.Default.Register<MainViewModel>();
-            SimpleIoc.Default.Register<LoginViewModel>();
-            SimpleIoc.Default.Register<SettingsViewModel>();
+            Register<MainViewModel>();
+            Register<LoginViewModel>();
+            Register<SettingsViewModel>();
         }
 
-        public MainViewModel Main
-        {
-            get { return ServiceLocator.Current.GetInstance<MainViewModel>(); }
-        }
+        public MainViewModel Main => Get<MainViewModel>();
 
-        public LoginViewModel Login
-        {
-            get { return ServiceLocator.Current.GetInstance<LoginViewModel>(); }
-        }
+        public LoginViewModel Login => Get<LoginViewModel>();
 
-        public SettingsViewModel Settings
-        {
-            get { return ServiceLocator.Current.GetInstance<SettingsViewModel>(); }
-        }
+        public SettingsViewModel Settings => Get<SettingsViewModel>();
     }
 }
