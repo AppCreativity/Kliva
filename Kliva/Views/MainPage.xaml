@@ -8,9 +8,13 @@
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"       
     xmlns:klivacontrols="using:Kliva.Controls"
+    xmlns:cimbalinoconverters="using:Cimbalino.Toolkit.Converters"
     mc:Ignorable="d"
     DataContext="{Binding Main, Source={StaticResource Locator}}">
 
+    <Page.Resources>
+        <cimbalinoconverters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Page.Resources>
     <interactivity:Interaction.Behaviors>
         <core:EventTriggerBehavior EventName="Loaded">
             <core:InvokeCommandAction Command="{Binding ViewLoadedCommand}" />
@@ -34,10 +38,11 @@
                     <StackPanel Orientation="Horizontal">
                         <FontIcon Style="{StaticResource PaneIcon}"                                  
                                   Glyph="&#xE713;"
-                                  Margin="0,0,15,0"/>
+                                  Margin="0,0,5,0"/>
                         <TextBlock Text="settings"
-                               VerticalAlignment="Center"
-                               Style="{StaticResource BaseTextBlock}" />
+                                   VerticalAlignment="Center"
+                                   Visibility="{Binding IsPaneOpen, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}"
+                                   Style="{StaticResource BaseTextBlock}" />
                     </StackPanel>
                 </Button>
                 <Button x:Name="HamburgerButton"
