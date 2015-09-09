@@ -33,6 +33,7 @@
                         Style="{StaticResource PaneButton}"
                         RelativePanel.AlignLeftWithPanel="True"
                         RelativePanel.AlignRightWithPanel="True"
+
                         RelativePanel.Above="{Binding ElementName=SettingsButton}">
                     <StackPanel Orientation="Horizontal">
                         <PathIcon Data="M21,11 C21,16.55 17.16,21.74 12,23 C6.84,21.74 3,16.55 3,11 L3,5 L12,1 L21,5 L21,11 M12,21 C15.75,20 19,15.54 19,11.22 L19,6.3 L12,3.18 L5,6.3 L5,11.22 C5,15.54 8.25,20 12,21 z"
@@ -41,9 +42,10 @@
                         <TextBlock Text="clubs"
                                    VerticalAlignment="Center"
                                    Visibility="{Binding IsPaneOpen, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}"
-                                   Style="{StaticResource BaseTextBlock}" Margin="10,0,0,0" />
+                                   Style="{StaticResource BaseWhiteTextBlock}" Margin="10,0,0,0" />
                     </StackPanel>
                 </Button>
+
                 <Button x:Name="SettingsButton"
                         Style="{StaticResource PaneButton}"
                         Command="{Binding SettingsCommand}"
@@ -57,7 +59,7 @@
                         <TextBlock Text="settings"
                                    VerticalAlignment="Center"
                                    Visibility="{Binding IsPaneOpen, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}"
-                                   Style="{StaticResource BaseTextBlock}" />
+                                   Style="{StaticResource BaseWhiteTextBlock}" />
                     </StackPanel>
                 </Button>
                 <Button x:Name="HamburgerButton"
@@ -73,7 +75,8 @@
             </RelativePanel>
         </SplitView.Pane>
         <SplitView.Content>
-            <klivacontrols:ActivityFeedControl/>
+            <klivacontrols:ActivityFeedControl
+                Margin="0,10,0,0" />
         </SplitView.Content>
     </SplitView>
 </Page>

@@ -26,33 +26,93 @@
         /// </summary>
         Walk,
         /// <summary>
-        /// Nordic Ski
-        /// </summary>
-        NordicSki,
-        /// <summary>
-        /// Alpine Ski
+        /// AlpineSki
         /// </summary>
         AlpineSki,
         /// <summary>
-        /// Backcountry Ski
+        /// BackcountrySki
         /// </summary>
         BackcountrySki,
         /// <summary>
-        /// Ice Skate
+        /// Canoeing
+        /// </summary>
+        Canoeing,
+        /// <summary>
+        /// CrossCountrySkiing
+        /// </summary>
+        CrossCountrySkiing,
+        /// <summary>
+        /// Crossfit
+        /// </summary>
+        Crossfit,
+        /// <summary>
+        /// EBikeRide
+        /// </summary>
+        EBikeRide,
+        /// <summary>
+        /// Elliptical
+        /// </summary>
+        Elliptical,
+        /// <summary>
+        /// IceSkate
         /// </summary>
         IceSkate,
         /// <summary>
-        /// Inline Skate
+        /// InlineSkate
         /// </summary>
         InlineSkate,
         /// <summary>
-        /// Kite Surf
+        /// Kayaking
+        /// </summary>
+        Kayaking,
+        /// <summary>
+        /// Kitesurf
         /// </summary>
         Kitesurf,
         /// <summary>
-        /// Roller Ski
+        /// NordicSki
+        /// </summary>
+        NordicSki,
+        /// <summary>
+        /// RockClimbing
+        /// </summary>
+        RockClimbing,
+        /// <summary>
+        /// RollerSki
         /// </summary>
         RollerSki,
+        /// <summary>
+        /// Rowing
+        /// </summary>
+        Rowing,
+        /// <summary>
+        /// Snowboard
+        /// </summary>
+        Snowboard,
+        /// <summary>
+        /// Snowshoe
+        /// </summary>
+        Snowshoe,
+        /// <summary>
+        /// StairStepper
+        /// </summary>
+        StairStepper,
+        /// <summary>
+        /// StandUpPaddling
+        /// </summary>
+        StandUpPaddling,
+        /// <summary>
+        /// Surfing
+        /// </summary>
+        Surfing,
+        /// <summary>
+        /// VirtualRide
+        /// </summary>
+        VirtualRide,
+        /// <summary>
+        /// WeightTraining
+        /// </summary>
+        WeightTraining,
         /// <summary>
         /// Windsurf
         /// </summary>
@@ -62,12 +122,8 @@
         /// </summary>
         Workout,
         /// <summary>
-        /// Snowboard
+        /// Yoga
         /// </summary>
-        Snowboard,
-        /// <summary>
-        /// Snowshoe
-        /// </summary>
-        Snowshoe
+        Yoga
     }
 }

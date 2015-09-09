@@ -18,6 +18,11 @@
     <FontFamily x:Key="MaterialFont">/Assets/Fonts/MaterialIcons-Regular.ttf#Material Icons</FontFamily>
 
     <Style x:Name="BaseTextBlock" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource OpenSansFontLight}" />
+    </Style>
+
+    <Style x:Name="BaseWhiteTextBlock" BasedOn="{StaticResource BaseTextBlock}"
+           TargetType="TextBlock">
         <Setter Property="Foreground" Value="White" />
     </Style>
 
@@ -137,12 +142,18 @@
         </Setter>
     </Style>
 
-    <Style x:Name="ProfileEllipse" TargetType="Ellipse">
-        <Setter Property="Height" Value="42" />
-        <Setter Property="Width" Value="42" />
-        <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="VerticalAlignment" Value="Top" />
-        <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
+    <Style x:Name="PaneIcon" TargetType="FontIcon">
+        <Setter Property="Width" Value="40" />
+        <Setter Property="Height" Value="40" />
+        <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+
+    <Style x:Name="PaneButton" TargetType="Button">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
     </Style>
 
 </ResourceDictionary>

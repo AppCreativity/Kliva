@@ -110,5 +110,7 @@ namespace Kliva.Models
                     return Constants.STRAVA_DEFAULT_AVATAR;
             }
         }
+
+        public string FullName => string.Concat(this.FirstName, " ", this.LastName);
     }
 }

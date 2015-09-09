@@ -15,24 +15,17 @@
         <Setter Property="FontSize" Value="22" />
     </Style>
 
-    <Style x:Name="PaneIcon" TargetType="FontIcon">
-        <Setter Property="Width" Value="40" />
-        <Setter Property="Height" Value="40" />
-        <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
-        <Setter Property="Foreground" Value="White" />
-    </Style>
-
-    <Style x:Name="PaneButton" TargetType="Button">
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="HorizontalAlignment" Value="Stretch" />
-    </Style>
-
-    <Style x:Name="TitleTextBlock" BasedOn="{StaticResource BaseTextBlock}"
+    <Style x:Name="TitleTextBlock" BasedOn="{StaticResource BaseWhiteTextBlock}"
            TargetType="TextBlock">
-        <Setter Property="FontFamily" Value="{StaticResource OpenSansFontLight}" />
         <Setter Property="Margin" Value="60,0,0,10" />
     </Style>
-   
+
+    <Style x:Name="ProfileEllipse" TargetType="Ellipse">
+        <Setter Property="Height" Value="50" />
+        <Setter Property="Width" Value="50" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
+    </Style>
+
 </ResourceDictionary>
