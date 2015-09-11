@@ -433,5 +433,21 @@ namespace Kliva.Models
                 return null;
             }
         }
+
+        public string ElevationGainFormatted
+        {
+            get
+            {
+                switch(this.DistanceUnit)
+                {
+                    case DistanceUnitType.Kilometres:
+                        return this.ElevationGain.ToString("F1");
+                    case DistanceUnitType.Miles:
+                        return UnitConverter.ConvertDistance(this.ElevationGain, DistanceUnitType.Metres, DistanceUnitType.Feet).ToString("F1");
+                }
+
+                return null;
+            }
+        }
     }
 }
