@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Kliva.Helpers;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -403,6 +404,33 @@ namespace Kliva.Models
                 }
 
                 return _typeImage;
+            }
+        }
+
+        private DistanceUnitType _distanceUnit;
+        public DistanceUnitType DistanceUnit
+        {
+            get { return _distanceUnit; }
+            set
+            {
+                Set(() => DistanceUnit, ref _distanceUnit, value);
+                RaisePropertyChanged(() => DistanceFormatted);
+            }
+        }
+
+        public string DistanceFormatted
+        {
+            get
+            {
+                switch (this.DistanceUnit)
+                {
+                    case DistanceUnitType.Kilometres:
+                        return UnitConverter.ConvertDistance(this.Distance, DistanceUnitType.Metres, DistanceUnitType.Kilometres).ToString("F1");
+                    case DistanceUnitType.Miles:
+                        return UnitConverter.ConvertDistance(this.Distance, DistanceUnitType.Metres, DistanceUnitType.Miles).ToString("F1");
+                }
+
+                return null;
             }
         }
     }

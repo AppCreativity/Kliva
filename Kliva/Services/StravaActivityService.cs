@@ -3,6 +3,7 @@ using Kliva.Models;
 using Kliva.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Kliva.Services
@@ -22,11 +23,12 @@ namespace Kliva.Services
         /// <param name="page">The page of activities.</param>
         /// <param name="perPage">The amount of activities that are loaded per page.</param>
         /// <returns>A list of activities.</returns>
-        public async Task<List<ActivitySummary>> GetActivitiesAsync(int page, int perPage)
+        public async Task<IEnumerable<ActivitySummary>> GetActivitiesAsync(int page, int perPage)
         {
             try
             {
                 var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitType();
 
                 //TODO: Glenn - Optional parameters should be treated as such!
                 //string getUrl = String.Format("{0}?page={1}&per_page={2}&access_token={3}", Endpoints.Activities, page, perPage, accessToken);
@@ -34,7 +36,7 @@ namespace Kliva.Services
                 string json = await WebRequest.SendGetAsync(new Uri(getUrl));
 
                 //TODO: Glenn - Google maps?
-                return Unmarshaller<List<ActivitySummary>>.Unmarshal(json);
+                return Unmarshaller<List<ActivitySummary>>.Unmarshal(json).Select(activity => { activity.DistanceUnit = defaultDistanceUnitType; return activity; });
             }
             catch (Exception ex)
             {
@@ -50,18 +52,19 @@ namespace Kliva.Services
         /// <param name="page">The page of activities.</param>
         /// <param name="perPage">The amount of activities per page.</param>
         /// <returns>A list of activities from your followers.</returns>
-        public async Task<List<ActivitySummary>> GetFollowersActivitiesAsync(int page, int perPage)
+        public async Task<IEnumerable<ActivitySummary>> GetFollowersActivitiesAsync(int page, int perPage)
         {
             try
             {
                 var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitType();
 
                 //TODO: Glenn - Optional parameters should be treated as such!
                 //string getUrl = String.Format("{0}?page={1}&per_page={2}&access_token={3}", Endpoints.ActivitiesFollowers, page, perPage, accessToken);
                 string getUrl = string.Format("{0}?&access_token={1}", Endpoints.ActivitiesFollowers, accessToken);
                 string json = await WebRequest.SendGetAsync(new Uri(getUrl));
 
-                return Unmarshaller<List<ActivitySummary>>.Unmarshal(json);
+                return Unmarshaller<List<ActivitySummary>>.Unmarshal(json).Select(activity => { activity.DistanceUnit = defaultDistanceUnitType; return activity; });
             }
             catch (Exception ex)
             {

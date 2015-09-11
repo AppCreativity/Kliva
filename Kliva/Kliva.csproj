@@ -108,6 +108,7 @@
     <Compile Include="Controls\ActivityFeedControl.xaml.cs">
       <DependentUpon>ActivityFeedControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\UnitConverter.cs" />
     <Compile Include="Helpers\Unmarshaller.cs" />
     <Compile Include="Models\AccessToken.cs" />
     <Compile Include="Models\Activity.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="Models\AthleteSummary.cs" />
     <Compile Include="Models\BaseClass.cs" />
     <Compile Include="Models\Constants.cs" />
+    <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\Limit.cs" />
     <Compile Include="Models\Limits.cs" />
     <Compile Include="Models\Photo.cs" />

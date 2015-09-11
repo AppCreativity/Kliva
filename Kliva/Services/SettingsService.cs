@@ -61,6 +61,40 @@ namespace Kliva.Services
             await this.SetStravaAccessToken(string.Empty);
         }
 
+        public async Task<DistanceUnitType> GetStoredDistanceUnitType()
+        {
+            if (_settings != null)
+                return _settings.DistanceUnitType;
+
+            bool settingsExists = await this.SettingsServiceExists();
+            if (settingsExists)
+            {
+                string settingsAsString = await ServiceLocator.Current.GetInstance<IStorageService>().Local.ReadAllTextAsync(Constants.SETTINGSSTORE);
+                _settings = JsonConvert.DeserializeObject<Settings>(settingsAsString);
+                return _settings.DistanceUnitType;
+            }
+
+            return DistanceUnitType.Kilometres;
+        }
+        public async Task SetDistanceUnitType(DistanceUnitType distanceUnitType)
+        {
+            if (_settings == null)
+            {
+                bool settingsExists = await this.SettingsServiceExists();
+                if (settingsExists)
+                {
+                    string settingsAsString = await ServiceLocator.Current.GetInstance<IStorageService>().Local.ReadAllTextAsync(Constants.SETTINGSSTORE);
+                    _settings = JsonConvert.DeserializeObject<Settings>(settingsAsString);
+                }
+                else
+                    _settings = new Settings();
+            }
+
+            _settings.DistanceUnitType = distanceUnitType;
+
+            await ServiceLocator.Current.GetInstance<IStorageService>().Local.WriteAllTextAsync(Constants.SETTINGSSTORE, JsonConvert.SerializeObject(_settings));
+        }
+
         //public async Task<AppVersion> GetStoredAppVersion()
         //{
         //    if (_settings != null)

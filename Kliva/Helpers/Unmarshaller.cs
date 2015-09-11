@@ -4,7 +4,7 @@ using System;
 namespace Kliva.Helpers
 {
     /// <summary>
-    /// COnverts a Json string to an object.
+    /// Converts a Json string to an object.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class Unmarshaller<T>

@@ -7,8 +7,10 @@ namespace Kliva.Services.Interfaces
     {
         Task<string> GetStoredStravaAccessToken();
         Task SetStravaAccessToken(string stravaAccessToken);
-
         Task RemoveStravaAccessToken();
+
+        Task<DistanceUnitType> GetStoredDistanceUnitType();
+        Task SetDistanceUnitType(DistanceUnitType distanceUnitType);
 
         //Task<AppVersion> GetStoredAppVersion();
     }
