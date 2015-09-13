@@ -9,18 +9,11 @@ namespace Kliva.ViewModels
 {
     public class SidePaneViewModel : KlivaBaseViewModel
     {
-        private bool _isPaneOpen = true;
+        private bool _isPaneOpen = false;
         public bool IsPaneOpen
         {
             get { return _isPaneOpen; }
             set { Set(() => IsPaneOpen, ref _isPaneOpen, value); }
-        }
-
-        private bool _isPaneVisible = true;
-        public bool IsPaneVisible
-        {
-            get { return _isPaneVisible; }
-            set { Set(() => IsPaneVisible, ref _isPaneVisible, value); }
         }
 
         private SplitViewDisplayMode _displayMode = SplitViewDisplayMode.CompactOverlay;
@@ -46,9 +39,10 @@ namespace Kliva.ViewModels
             if (show)
                 this.DisplayMode = SplitViewDisplayMode.CompactOverlay;
             else
+            {
                 this.DisplayMode = SplitViewDisplayMode.Inline;
-
-            this.IsPaneVisible = show;
+                this.IsPaneOpen = false;
+            }
         }
     }
 }
