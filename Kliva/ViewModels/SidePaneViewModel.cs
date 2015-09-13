@@ -1,7 +1,5 @@
 ﻿using Cimbalino.Toolkit.Services;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using Kliva.Models;
 using Kliva.Views;
 using Windows.UI.Xaml.Controls;
 
