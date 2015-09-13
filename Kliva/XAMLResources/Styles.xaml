@@ -175,11 +175,10 @@
                           VerticalAlignment="Stretch"
                           DataContext="{Binding SidePane, Source={StaticResource Locator}}">
                         <SplitView x:Name="SidePane"
-                                   DisplayMode="CompactOverlay"
+                                   DisplayMode="{Binding DisplayMode, Mode=TwoWay}"
                                    CompactPaneLength="60"
                                    OpenPaneLength="150"
-                                   IsPaneOpen="{Binding IsPaneOpen, Mode=TwoWay}"
-                                   Visibility="{Binding IsPaneVisible, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}"
+                                   IsPaneOpen="{Binding IsPaneOpen, Mode=TwoWay}"                                   
                                    PaneBackground="{StaticResource KlivaMainBrush}">
                             <SplitView.Pane>
                                 <controls:SidePaneControl Width="150" />
@@ -193,13 +192,6 @@
                                                 VerticalAlignment="Stretch" />
                             </SplitView.Content>
                         </SplitView>
-
-                        <ContentControl Content="{TemplateBinding Content}"
-                                        Visibility="{Binding IsPaneVisible, Converter={StaticResource InverseBooleanToVisibilityConverter}, Mode=TwoWay}"                                        
-                                        HorizontalContentAlignment="Stretch"
-                                        VerticalContentAlignment="Stretch"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Stretch"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

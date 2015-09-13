@@ -7,4 +7,10 @@
         Metres,
         Feet
     }
+
+    public enum DisplayMode
+    {
+        CompactOverlay,
+        Inline
+    }
 }
