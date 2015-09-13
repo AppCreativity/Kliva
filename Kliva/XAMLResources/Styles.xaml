@@ -2,7 +2,11 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:Kliva.Controls"
+    xmlns:cimbalinoconverters="using:Cimbalino.Toolkit.Converters"
     xmlns:local="using:Kliva.XAMLResources">
+
+    <cimbalinoconverters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <cimbalinoconverters:BooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" InvertValue="True" />
 
     <Color x:Key="KlivaMainColor">#df8942</Color>
     <SolidColorBrush x:Key="KlivaMainBrush" Color="{StaticResource KlivaMainColor}" />
@@ -170,10 +174,12 @@
                     <Grid HorizontalAlignment="Stretch"
                           VerticalAlignment="Stretch"
                           DataContext="{Binding SidePane, Source={StaticResource Locator}}">
-                        <SplitView DisplayMode="CompactOverlay"
+                        <SplitView x:Name="SidePane"
+                                   DisplayMode="CompactOverlay"
                                    CompactPaneLength="60"
                                    OpenPaneLength="150"
                                    IsPaneOpen="{Binding IsPaneOpen, Mode=TwoWay}"
+                                   Visibility="{Binding IsPaneVisible, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}"
                                    PaneBackground="{StaticResource KlivaMainBrush}">
                             <SplitView.Pane>
                                 <controls:SidePaneControl Width="150" />
@@ -187,6 +193,13 @@
                                                 VerticalAlignment="Stretch" />
                             </SplitView.Content>
                         </SplitView>
+
+                        <ContentControl Content="{TemplateBinding Content}"
+                                        Visibility="{Binding IsPaneVisible, Converter={StaticResource InverseBooleanToVisibilityConverter}, Mode=TwoWay}"                                        
+                                        HorizontalContentAlignment="Stretch"
+                                        VerticalContentAlignment="Stretch"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

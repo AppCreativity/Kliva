@@ -14,6 +14,13 @@ namespace Kliva.ViewModels
             set { Set(() => IsPaneOpen, ref _isPaneOpen, value); }
         }
 
+        private bool _isPaneVisible = true;
+        public bool IsPaneVisible
+        {
+            get { return _isPaneVisible; }
+            set { Set(() => IsPaneVisible, ref _isPaneVisible, value); }
+        }
+
         private RelayCommand _hamburgerCommand;
         public RelayCommand HamburgerCommand => _hamburgerCommand ?? (_hamburgerCommand = new RelayCommand(() => this.IsPaneOpen = !this.IsPaneOpen));
 
@@ -27,7 +34,7 @@ namespace Kliva.ViewModels
 
         internal void ShowHide(bool show)
         {
-            this.IsPaneOpen = show;
+            this.IsPaneVisible = show;
         }
     }
 }
