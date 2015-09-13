@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:viewModels="using:Kliva.ViewModels"
     xmlns:local="using:Kliva"
-    xmlns:resources="using:Kliva.XAMLResources"
     RequestedTheme="Light">
     <Application.Resources>
         <ResourceDictionary>

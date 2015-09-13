@@ -33,12 +33,12 @@ namespace Kliva.ViewModels
             Register<MainViewModel>();
             Register<LoginViewModel>();
             Register<SettingsViewModel>();
+            Register<SidePaneViewModel>();
         }
 
         public MainViewModel Main => Get<MainViewModel>();
-
         public LoginViewModel Login => Get<LoginViewModel>();
-
         public SettingsViewModel Settings => Get<SettingsViewModel>();
+        public SidePaneViewModel SidePane => Get<SidePaneViewModel>();
     }
 }

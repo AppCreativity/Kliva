@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Threading;
+using Kliva.Controls;
 using Kliva.Services;
 using Kliva.Services.Interfaces;
 using Kliva.Views;
@@ -54,7 +55,7 @@ namespace Kliva
             if (rootFrame == null)
             {
                 // Create a Frame to act as the navigation context and navigate to the first page
-                rootFrame = new Frame();
+                rootFrame = new KlivaApplicationFrame();
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
