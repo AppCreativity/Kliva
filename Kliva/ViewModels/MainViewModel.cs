@@ -28,6 +28,10 @@ namespace Kliva.ViewModels
         private RelayCommand _viewLoadedCommand;
         public RelayCommand ViewLoadedCommand => _viewLoadedCommand ?? (_viewLoadedCommand = new RelayCommand(async () => await this.ViewLoaded()));
 
+        //TODO: Glenn - We hooked this up twice, once in SidePaneViewModel and once in MainViewModel
+        private RelayCommand _settingsCommand;
+        public RelayCommand SettingsCommand => _settingsCommand ?? (_settingsCommand = new RelayCommand(() => _navigationService.Navigate<SettingsPage>()));
+
         public MainViewModel(INavigationService navigationService, ISettingsService settingsService, IStravaService stravaService) : base(navigationService)
         {
             _settingsService = settingsService;

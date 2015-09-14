@@ -17,6 +17,79 @@
         </core:EventTriggerBehavior>
     </interactivity:Interaction.Behaviors>
 
-    <klivacontrols:ActivityFeedControl
-                Margin="0,10,0,0" />
+    <Page.BottomAppBar>
+        <CommandBar x:Name="BottomAppBar" Background="{StaticResource KlivaMainBrush}"
+                    Visibility="Collapsed"
+                    Foreground="White">
+            <AppBarButton x:Name="AppBarStats"
+                          Label="statistics"
+                          Icon="FourBars"
+                          Foreground="White"
+                          />
+            <AppBarButton x:Name="AppBarProfile"
+                          Label="profile"
+                          Icon="Contact"
+                          Foreground="White"
+                          />
+            <AppBarButton x:Name="AppBarClub"
+                          Label="clubs"
+                          Foreground="White">
+                <AppBarButton.Icon>
+                    <PathIcon Data="M21,11 C21,16.55 17.16,21.74 12,23 C6.84,21.74 3,16.55 3,11 L3,5 L12,1 L21,5 L21,11 M12,21 C15.75,20 19,15.54 19,11.22 L19,6.3 L12,3.18 L5,6.3 L5,11.22 C5,15.54 8.25,20 12,21 z" HorizontalAlignment="Center" Margin="0,-2.5"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+
+            <CommandBar.SecondaryCommands>
+                <AppBarButton x:Name="AppBarSettings"
+                              Label="settings"
+                              FontFamily="{StaticResource OpenSansFontLight}"
+                              Command="{Binding SettingsCommand}"
+                              />
+                <AppBarButton x:Name="AppBarLogout"
+                              Label="log out"
+                              FontFamily="{StaticResource OpenSansFontLight}"
+                              Command="{Binding LogoutCommand}"
+                              />
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
+
+    <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState x:Name="Mobile">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="320" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="BottomAppBar.Visibility" Value="Visible" />
+                        <Setter Target="TitlePanel.Visibility" Value="Visible" />                        
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Desktop">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="720" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="BottomAppBar.Visibility" Value="Collapsed" />
+                        <Setter Target="TitlePanel.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <StackPanel x:Name="TitlePanel"
+                    Grid.Row="0"
+                    Background="{StaticResource KlivaMainBrush}">
+            <TextBlock Text="Kliva"
+                       Style="{StaticResource TitleTextBlock}"/>
+        </StackPanel>
+
+        <klivacontrols:ActivityFeedControl Margin="0,10,0,0"
+                                           Grid.Row="1"/>
+    </Grid>
 </Page>

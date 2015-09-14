@@ -1,12 +1,23 @@
 ﻿using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
 using Kliva.Views;
+using System;
+using System.Collections.Generic;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml.Controls;
 
 namespace Kliva.ViewModels
 {
     public class SidePaneViewModel : KlivaBaseViewModel
     {
+        private readonly List<Type> _noSidePane = new List<Type>
+        {
+            typeof(LoginPage),
+            typeof(SettingsPage)
+        };
+
+        private Type _pageType;
+
         private bool _isPaneOpen = false;
         public bool IsPaneOpen
         {
@@ -29,11 +40,29 @@ namespace Kliva.ViewModels
 
         public SidePaneViewModel(INavigationService navigationService) : base(navigationService)
         {
-
+            var view = ApplicationView.GetForCurrentView();
+            view.VisibleBoundsChanged += OnVisibleBoundsChanged;
         }
 
-        internal void ShowHide(bool show)
+        private void OnVisibleBoundsChanged(ApplicationView sender, object args)
         {
+            this.ShowHide();
+        }
+
+        internal void ShowHide(Type pageType = null)
+        {
+            //Set current pageType
+            if (pageType != null)
+                _pageType = pageType;
+
+            bool show = true;
+
+            var actualWidth = ApplicationView.GetForCurrentView().VisibleBounds.Width;
+            if (actualWidth < 720)
+                show = false;
+            else
+                show = !_noSidePane.Contains(_pageType);
+
             if (show)
                 this.DisplayMode = SplitViewDisplayMode.CompactOverlay;
             else

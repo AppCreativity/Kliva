@@ -81,6 +81,7 @@ namespace Kliva
 
             var view = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
 
+            //TODO: Glenn - refactor with actual screen size?
             if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
             {
                 view.SetPreferredMinSize(new Size(width: 800, height: 600));
