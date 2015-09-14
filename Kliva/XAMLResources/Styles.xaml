@@ -161,6 +161,22 @@
         <Setter Property="HorizontalAlignment" Value="Stretch" />
     </Style>
 
+    <Style x:Name="KlivaButtonMobile"
+           TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource KlivaDarkBrush}" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontFamily" Value="{StaticResource OpenSansFontLight}" />
+        <Setter Property="FontSize" Value="18" />
+    </Style>
+
+    <Style x:Name="KlivaButtonDesktop"
+           TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource KlivaDarkBrush}" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontFamily" Value="{StaticResource OpenSansFontLight}" />
+        <Setter Property="FontSize" Value="22" />
+    </Style>
+
     <Style TargetType="controls:KlivaApplicationFrame">
         <Setter Property="HorizontalContentAlignment"
                 Value="Stretch" />

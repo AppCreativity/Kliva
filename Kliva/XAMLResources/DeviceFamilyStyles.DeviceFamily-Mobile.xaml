@@ -7,14 +7,6 @@
         <ResourceDictionary Source="Styles.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <Style x:Name="KlivaButton"
-           TargetType="Button">
-        <Setter Property="Background" Value="{StaticResource KlivaDarkBrush}" />
-        <Setter Property="Foreground" Value="White" />
-        <Setter Property="FontFamily" Value="{StaticResource OpenSansFontLight}" />
-        <Setter Property="FontSize" Value="18" />
-    </Style>
-
     <Style x:Name="TitleTextBlock" BasedOn="{StaticResource BaseWhiteTextBlock}"
            TargetType="TextBlock">
         <Setter Property="FontSize" Value="20" />

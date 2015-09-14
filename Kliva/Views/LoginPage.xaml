@@ -18,27 +18,31 @@
             <ImageBrush x:Name="LayoutRootBackground" Stretch="UniformToFill" />
         </Grid.Background>
         <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup >
-                <VisualState x:Name="desktop">
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState x:Name="Mobile">
                     <VisualState.StateTriggers>
-                        <triggers:DeviceFamilyStateTrigger DeviceFamily="Desktop" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="LayoutRoot.(Grid.Background).(ImageBrush.ImageSource)" Value="ms-appx:///Assets/Merckx_1920.jpg"/>
-                        <Setter Target="ContentPanel.HorizontalAlignment" Value="Center" />
-                        <Setter Target="ContentPanel.Margin" Value="0,0,0,100" />
-                        <Setter Target="TitlePanel.Visibility" Value="Collapsed" />
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState x:Name="mobile">
-                    <VisualState.StateTriggers>
-                        <triggers:DeviceFamilyStateTrigger DeviceFamily="Mobile" />
+                        <AdaptiveTrigger MinWindowWidth="320" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="LayoutRoot.(Grid.Background).(ImageBrush.ImageSource)" Value="ms-appx:///Assets/Brooks.jpg"/>
                         <Setter Target="ContentPanel.HorizontalAlignment" Value="Left" />
                         <Setter Target="ContentPanel.Margin" Value="10,0,10,10" />
                         <Setter Target="TitlePanel.Visibility" Value="Visible" />
+                        <Setter Target="LoginButton.Style" Value="{StaticResource KlivaButtonMobile}" />
+                        <Setter Target="NewAccountButton.Style" Value="{StaticResource KlivaButtonMobile}" />                        
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Desktop">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="720" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="LayoutRoot.(Grid.Background).(ImageBrush.ImageSource)" Value="ms-appx:///Assets/Merckx_1920.jpg"/>
+                        <Setter Target="ContentPanel.HorizontalAlignment" Value="Center" />
+                        <Setter Target="ContentPanel.Margin" Value="0,0,0,100" />
+                        <Setter Target="TitlePanel.Visibility" Value="Collapsed" />
+                        <Setter Target="LoginButton.Style" Value="{StaticResource KlivaButtonDesktop}" />
+                        <Setter Target="NewAccountButton.Style" Value="{StaticResource KlivaButtonDesktop}" />                        
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -53,13 +57,11 @@
         
         <RelativePanel x:Name="ContentPanel"                       
                        Grid.Row="1">
-            <Button x:Name="LoginButton"
-                    Style="{StaticResource KlivaButton}"
+            <Button x:Name="LoginButton"                    
                     Content="log in with strava"
                     Command="{Binding LoginCommand}"
                     RelativePanel.Above="{Binding ElementName=NewAccountButton}" />
-            <Button x:Name="NewAccountButton"
-                    Style="{StaticResource KlivaButton}"
+            <Button x:Name="NewAccountButton"                    
                     Content="create new strava account"
                     Margin="0,10,0,0"
                     RelativePanel.AlignBottomWithPanel="True" />
