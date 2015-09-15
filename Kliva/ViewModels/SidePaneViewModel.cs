@@ -57,6 +57,7 @@ namespace Kliva.ViewModels
 
             bool show = true;
 
+            //TODO: Glenn - Verify this solution with these remarks http://stackoverflow.com/questions/31936154/get-screen-resolution-in-win10-uwp-app
             var actualWidth = ApplicationView.GetForCurrentView().VisibleBounds.Width;
             if (actualWidth < 720)
                 show = false;

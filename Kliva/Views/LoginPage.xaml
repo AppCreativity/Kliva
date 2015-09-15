@@ -28,6 +28,7 @@
                         <Setter Target="ContentPanel.HorizontalAlignment" Value="Left" />
                         <Setter Target="ContentPanel.Margin" Value="10,0,10,10" />
                         <Setter Target="TitlePanel.Visibility" Value="Visible" />
+                        <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockMobile}" />
                         <Setter Target="LoginButton.Style" Value="{StaticResource KlivaButtonMobile}" />
                         <Setter Target="NewAccountButton.Style" Value="{StaticResource KlivaButtonMobile}" />                        
                     </VisualState.Setters>
@@ -41,6 +42,7 @@
                         <Setter Target="ContentPanel.HorizontalAlignment" Value="Center" />
                         <Setter Target="ContentPanel.Margin" Value="0,0,0,100" />
                         <Setter Target="TitlePanel.Visibility" Value="Collapsed" />
+                        <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockDesktop}" />
                         <Setter Target="LoginButton.Style" Value="{StaticResource KlivaButtonDesktop}" />
                         <Setter Target="NewAccountButton.Style" Value="{StaticResource KlivaButtonDesktop}" />                        
                     </VisualState.Setters>
@@ -51,8 +53,8 @@
         <StackPanel x:Name="TitlePanel"
                     Grid.Row="0"
                     Background="{StaticResource KlivaMainBrush}">
-            <TextBlock Text="Kliva"
-                       Style="{StaticResource TitleTextBlock}"/>
+            <TextBlock x:Name="TitleTextBlock"
+                       Text="Kliva" />
         </StackPanel>
         
         <RelativePanel x:Name="ContentPanel"                       
@@ -60,7 +62,7 @@
             <Button x:Name="LoginButton"                    
                     Content="log in with strava"
                     Command="{Binding LoginCommand}"
-                    RelativePanel.Above="{Binding ElementName=NewAccountButton}" />
+                    RelativePanel.Above="NewAccountButton" />
             <Button x:Name="NewAccountButton"                    
                     Content="create new strava account"
                     Margin="0,10,0,0"

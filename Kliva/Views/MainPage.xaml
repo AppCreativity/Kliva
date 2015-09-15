@@ -67,7 +67,8 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="BottomAppBar.Visibility" Value="Visible" />
-                        <Setter Target="TitlePanel.Visibility" Value="Visible" />                        
+                        <Setter Target="TitlePanel.Visibility" Value="Visible" />
+                        <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockMobile}" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="Desktop">
@@ -77,6 +78,7 @@
                     <VisualState.Setters>
                         <Setter Target="BottomAppBar.Visibility" Value="Collapsed" />
                         <Setter Target="TitlePanel.Visibility" Value="Collapsed" />
+                        <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockDesktop}" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -85,8 +87,8 @@
         <StackPanel x:Name="TitlePanel"
                     Grid.Row="0"
                     Background="{StaticResource KlivaMainBrush}">
-            <TextBlock Text="Kliva"
-                       Style="{StaticResource TitleTextBlock}"/>
+            <TextBlock x:Name="TitleTextBlock"
+                       Text="Kliva"/>
         </StackPanel>
 
         <klivacontrols:ActivityFeedControl Margin="0,10,0,0"

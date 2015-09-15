@@ -31,6 +31,17 @@
         <Setter Property="Foreground" Value="White" />
     </Style>
 
+    <Style x:Name="TitleTextBlockMobile" BasedOn="{StaticResource BaseWhiteTextBlock}"
+           TargetType="TextBlock">
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="Margin" Value="14,-5,0,2" />
+    </Style>
+
+    <Style x:Name="TitleTextBlockDesktop" BasedOn="{StaticResource BaseWhiteTextBlock}"
+           TargetType="TextBlock">
+        <Setter Property="Margin" Value="60,0,0,10" />
+    </Style>
+
     <Style TargetType="PivotHeaderItem">
         <Setter Property="FontSize" Value="{ThemeResource PivotHeaderItemFontSize}" />
         <Setter Property="FontFamily" Value="{ThemeResource PivotHeaderItemFontFamily}" />
@@ -212,6 +223,22 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <Style x:Name="ProfileEllipseDesktop" TargetType="Ellipse">
+        <Setter Property="Height" Value="50" />
+        <Setter Property="Width" Value="50" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
+    </Style>
+
+    <Style x:Name="ProfileEllipseMobile" TargetType="Ellipse">
+        <Setter Property="Height" Value="42" />
+        <Setter Property="Width" Value="42" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
     </Style>
 
 </ResourceDictionary>

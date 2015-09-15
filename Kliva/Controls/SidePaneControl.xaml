@@ -43,7 +43,7 @@
                         Command="{Binding SettingsCommand}"
                         RelativePanel.AlignLeftWithPanel="True"
                         RelativePanel.AlignRightWithPanel="True"
-                        RelativePanel.Above="{Binding ElementName=HamburgerButton}">
+                        RelativePanel.Above="HamburgerButton">
                 <StackPanel Orientation="Horizontal">
                     <FontIcon Style="{StaticResource PaneIcon}"                                  
                                   Glyph="&#xE713;"
@@ -55,14 +55,14 @@
                 </StackPanel>
             </Button>
             <Button x:Name="HamburgerButton"
-                        Style="{StaticResource PaneButton}"
-                        HorizontalContentAlignment="Left"
-                        Command="{Binding HamburgerCommand}"
-                        RelativePanel.AlignLeftWithPanel="True"
-                        RelativePanel.AlignRightWithPanel="True"
-                        RelativePanel.AlignBottomWithPanel="True">
+                    Style="{StaticResource PaneButton}"
+                    HorizontalContentAlignment="Left"
+                    Command="{Binding HamburgerCommand}"
+                    RelativePanel.AlignLeftWithPanel="True"
+                    RelativePanel.AlignRightWithPanel="True"
+                    RelativePanel.AlignBottomWithPanel="True">
                 <FontIcon Style="{StaticResource PaneIcon}"
-                              Glyph="&#xE700;" />
+                          Glyph="&#xE700;" />
             </Button>
         </RelativePanel>
     </Grid>

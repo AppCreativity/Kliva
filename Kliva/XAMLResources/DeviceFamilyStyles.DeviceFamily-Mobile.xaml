@@ -7,18 +7,5 @@
         <ResourceDictionary Source="Styles.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <Style x:Name="TitleTextBlock" BasedOn="{StaticResource BaseWhiteTextBlock}"
-           TargetType="TextBlock">
-        <Setter Property="FontSize" Value="20" />
-        <Setter Property="Margin" Value="14,-5,0,2" />        
-    </Style>
-
-    <Style x:Name="ProfileEllipse" TargetType="Ellipse">
-        <Setter Property="Height" Value="42" />
-        <Setter Property="Width" Value="42" />
-        <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="VerticalAlignment" Value="Top" />
-        <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
-    </Style>
 
 </ResourceDictionary>
