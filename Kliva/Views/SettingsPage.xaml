@@ -22,6 +22,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="SettingsPivot.Margin" Value="0" />
+                        <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockMobile}" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="Desktop">
@@ -30,6 +31,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="SettingsPivot.Margin" Value="48,0" />
+                        <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockDesktop}" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -38,8 +40,8 @@
         <StackPanel x:Name="TitlePanel"
                     Grid.Row="0"
                     Background="{StaticResource KlivaMainBrush}">
-            <TextBlock Text="settings"
-                       Style="{StaticResource TitleTextBlock}"/>
+            <TextBlock x:Name="TitleTextBlock"
+                       Text="settings" />
         </StackPanel>
         <Pivot x:Name="SettingsPivot" Grid.Row="1">
             <PivotItem Header="what's new">
