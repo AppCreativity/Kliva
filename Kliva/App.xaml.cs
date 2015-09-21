@@ -90,6 +90,7 @@ namespace Kliva
                 titleBar.ForegroundColor = titleBar.ButtonForegroundColor = Windows.UI.Colors.White;                
             }
 
+            //TODO: Glenn - Windows.Foundation.Metadata.ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar")){ .. }
             if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile")
             {
                 var statusBar = Windows.UI.ViewManagement.StatusBar.GetForCurrentView();
