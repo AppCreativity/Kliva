@@ -215,4 +215,4 @@ GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
 
-#StravaIdentityConstants.cs
+StravaIdentityConstants.cs
