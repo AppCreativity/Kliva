@@ -7,6 +7,7 @@
 
     <DataTemplate x:Key="ActivityListItemDataTemplate"
                   x:DataType="models:ActivitySummary">
+        <!-- UserControl needed for visual state manager -->
         <UserControl>
             <Grid>
                 <VisualStateManager.VisualStateGroups>
