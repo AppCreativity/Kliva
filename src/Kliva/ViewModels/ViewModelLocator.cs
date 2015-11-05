@@ -31,12 +31,14 @@ namespace Kliva.ViewModels
             SimpleIoc.Default.Register<IStravaAthleteService, StravaAthleteService>();
 
             Register<MainViewModel>();
+            Register<ActivityDetailViewModel>();
             Register<LoginViewModel>();
             Register<SettingsViewModel>();
             Register<SidePaneViewModel>();
         }
 
         public MainViewModel Main => Get<MainViewModel>();
+        public ActivityDetailViewModel ActivityDetail => Get<ActivityDetailViewModel>();
         public LoginViewModel Login => Get<LoginViewModel>();
         public SettingsViewModel Settings => Get<SettingsViewModel>();
         public SidePaneViewModel SidePane => Get<SidePaneViewModel>();

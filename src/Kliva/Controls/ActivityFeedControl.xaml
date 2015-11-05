@@ -5,13 +5,20 @@
     xmlns:local="using:Kliva.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:Kliva.Models"
+    xmlns:converters="using:Kliva.Converters"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
 
+    <UserControl.Resources>
+        <converters:XBindItemCastingConverter x:Key="XBindItemCastingConverter" />
+    </UserControl.Resources>
+    
     <ListView x:Name="ActivityList"
               Grid.Row="1"                      
               ItemsSource="{x:Bind ViewModel.Activities, Mode=OneWay}"
+              SelectedItem="{x:Bind ViewModel.SelectedActivity, Mode=TwoWay, Converter={StaticResource XBindItemCastingConverter}}"
               ItemTemplate="{StaticResource ActivityListItemDataTemplate}"
               HorizontalContentAlignment="Stretch">
         <ListView.ItemContainerStyle>

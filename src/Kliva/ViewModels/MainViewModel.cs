@@ -7,6 +7,7 @@ using Kliva.Views;
 using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 
 namespace Kliva.ViewModels
 {
@@ -15,11 +16,33 @@ namespace Kliva.ViewModels
         private ISettingsService _settingsService;
         private IStravaService _stravaService;
 
+        public VisualState CurrentState { get; set; }
+
         private ObservableCollection<ActivitySummary> _activities = new ObservableCollection<ActivitySummary>();
         public ObservableCollection<ActivitySummary> Activities
         {
             get { return _activities; }
             set { Set(() => Activities, ref _activities, value); }
+        }
+
+        private ActivitySummary _selectedActivity;
+
+        public ActivitySummary SelectedActivity
+        {
+            get { return _selectedActivity; }
+            set
+            {
+                if (Set(() => SelectedActivity, ref _selectedActivity, value) && value != null)
+                {
+                    //TODO: Change the strings to enums or constants for the visual states
+                    switch (CurrentState.Name)
+                    {
+                        case "Mobile":
+                            _navigationService.Navigate<ActivityDetailPage>();
+                            break;
+                    }
+                }
+            }
         }
 
         private RelayCommand _logoutCommand;

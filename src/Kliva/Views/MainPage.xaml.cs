@@ -1,6 +1,8 @@
-﻿using Kliva.ViewModels;
+﻿using Windows.UI.Xaml;
+using Kliva.ViewModels;
 using Kliva.ViewModels.Interfaces;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -16,6 +18,22 @@ namespace Kliva.Views
         public MainPage()
         {
             this.InitializeComponent();
-        }        
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            UpdateVisualState(VisualStateGroup.CurrentState);
+        }
+
+        private void UpdateVisualState(VisualState currentState)
+        {
+            ViewModel.CurrentState = currentState;
+        }
+
+        private void OnCurrentStateChanged(object sender, VisualStateChangedEventArgs e)
+        {
+            UpdateVisualState(e.NewState);
+        }
     }
 }

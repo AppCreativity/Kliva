@@ -60,7 +60,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="VisualStateGroup">
+            <VisualStateGroup x:Name="VisualStateGroup" CurrentStateChanged="OnCurrentStateChanged">
                 <VisualState x:Name="Mobile">
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="320" />
@@ -69,6 +69,8 @@
                         <Setter Target="BottomAppBar.Visibility" Value="Visible" />
                         <Setter Target="TitlePanel.Visibility" Value="Visible" />
                         <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockMobile}" />
+                        <Setter Target="ListColumn.Width" Value="*" />
+                        <Setter Target="ListItemColumn.Width" Value="0" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="Desktop">
@@ -79,6 +81,8 @@
                         <Setter Target="BottomAppBar.Visibility" Value="Collapsed" />
                         <Setter Target="TitlePanel.Visibility" Value="Collapsed" />
                         <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockDesktop}" />
+                        <Setter Target="ListColumn.Width" Value="*" />
+                        <Setter Target="ListItemColumn.Width" Value="1.8*" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -91,7 +95,14 @@
                        Text="Kliva"/>
         </StackPanel>
 
-        <klivacontrols:ActivityFeedControl Margin="0,10,0,0"
-                                           Grid.Row="1"/>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="ListColumn" />
+                <ColumnDefinition x:Name="ListItemColumn" />
+            </Grid.ColumnDefinitions>
+            
+            <klivacontrols:ActivityFeedControl Margin="0,10,0,0"
+                                               Grid.Column="0"/>
+        </Grid>
     </Grid>
 </Page>
