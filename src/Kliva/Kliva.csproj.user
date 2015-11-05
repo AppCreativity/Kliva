@@ -11,4 +11,7 @@
     <RemoteDebugEnabled>false</RemoteDebugEnabled>
     <UseAuthentication>false</UseAuthentication>
   </PropertyGroup>
+  <PropertyGroup>
+    <ProjectView>ProjectFiles</ProjectView>
+  </PropertyGroup>
 </Project>

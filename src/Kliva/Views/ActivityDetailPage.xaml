@@ -5,9 +5,11 @@
     xmlns:local="using:Kliva.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    xmlns:klivacontrols="using:Kliva.Controls"
+    mc:Ignorable="d"
+    DataContext="{Binding ActivityDetail, Source={StaticResource Locator}}">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+        <klivacontrols:ActivityDetailControl />
     </Grid>
 </Page>

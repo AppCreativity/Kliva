@@ -8,6 +8,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
+using Kliva.Messages;
 
 namespace Kliva.ViewModels
 {
@@ -39,6 +40,7 @@ namespace Kliva.ViewModels
                     {
                         case "Mobile":
                             _navigationService.Navigate<ActivityDetailPage>();
+                            MessengerInstance.Send<ActivitySummaryMessage>(new ActivitySummaryMessage(_selectedActivity));
                             break;
                     }
                 }

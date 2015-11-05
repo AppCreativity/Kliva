@@ -105,6 +105,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ActivityDetailControl.xaml.cs">
+      <DependentUpon>ActivityDetailControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ActivityFeedControl.xaml.cs">
       <DependentUpon>ActivityFeedControl.xaml</DependentUpon>
     </Compile>
@@ -115,6 +118,7 @@
     <Compile Include="Converters\XBindItemCastingConverter.cs" />
     <Compile Include="Helpers\UnitConverter.cs" />
     <Compile Include="Helpers\Unmarshaller.cs" />
+    <Compile Include="Messages\ActivitySummaryMessage.cs" />
     <Compile Include="Models\AccessToken.cs" />
     <Compile Include="Models\Activity.cs" />
     <Compile Include="Models\ActivityMeta.cs" />
@@ -192,6 +196,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\ActivityDetailControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\ActivityFeedControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
