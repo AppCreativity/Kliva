@@ -9,8 +9,27 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <StackPanel>
-        <TextBlock Text="{Binding SelectedActivity.Name, Mode=OneWay}" />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock Text="{Binding SelectedActivity.Name, Mode=OneWay}"
+                   Grid.Row="0"/>
+        
+        <Pivot x:Name="ActivityPivot"
+               Grid.Row="1">
+            <PivotItem Header="statistics">
+                <TextBlock Text="{Binding SelectedActivity.DistanceFormatted}" />
+            </PivotItem>
+            <PivotItem Header="segments">
+
+            </PivotItem>
+            <PivotItem Header="kudos">
+
+            </PivotItem>
+            <PivotItem Header="comments"></PivotItem>
+        </Pivot>
         <!--<TextBlock Text="{x:Bind ViewModel.SelectedActivity.Name, Mode=OneWay}" />-->
-    </StackPanel>
+    </Grid>
 </UserControl>
