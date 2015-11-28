@@ -6,7 +6,7 @@ namespace Kliva.Services.Interfaces
     public interface ISettingsService : IApplicationInfoService
     {
         Task<string> GetStoredStravaAccessToken();
-        Task SetStravaAccessToken(string stravaAccessToken);
+        Task SetStravaAccessTokenAsync(string stravaAccessToken);
         Task RemoveStravaAccessToken();
 
         Task<DistanceUnitType> GetStoredDistanceUnitType();
