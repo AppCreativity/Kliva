@@ -13,12 +13,12 @@ namespace Kliva.Services
     {
         private Settings _settings;
 
-        private async Task<bool> SettingsServiceExists()
+        private Task<bool> SettingsServiceExists()
         {
-            return await ServiceLocator.Current.GetInstance<IStorageService>().Local.FileExistsAsync(Constants.SETTINGSSTORE);
+            return ServiceLocator.Current.GetInstance<IStorageService>().Local.FileExistsAsync(Constants.SETTINGSSTORE);
         }
 
-        public async Task SetStravaAccessToken(string stravaAccessToken)
+        public async Task SetStravaAccessTokenAsync(string stravaAccessToken)
         {
             if (_settings == null)
             {
@@ -53,12 +53,12 @@ namespace Kliva.Services
             return null;
         }
 
-        public async Task RemoveStravaAccessToken()
+        public Task RemoveStravaAccessToken()
         {
             if (_settings != null)
                 _settings.StravaAccessToken = string.Empty;
 
-            await this.SetStravaAccessToken(string.Empty);
+            return SetStravaAccessTokenAsync(string.Empty);
         }
 
         public async Task<DistanceUnitType> GetStoredDistanceUnitType()

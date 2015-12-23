@@ -71,7 +71,7 @@ namespace Kliva.Services
                 var responseString = await response.Content.ReadAsStringAsync();
 
                 var accessToken = JsonConvert.DeserializeObject<AccessToken>(responseString);
-                await ServiceLocator.Current.GetInstance<ISettingsService>().SetStravaAccessToken(accessToken.Token);
+                await ServiceLocator.Current.GetInstance<ISettingsService>().SetStravaAccessTokenAsync(accessToken.Token);
 
                 OnStatusEvent(new StravaServiceEventArgs(StravaServiceStatus.Success));
             }
