@@ -89,8 +89,8 @@ namespace Kliva.ViewModels
             TopMenuItems.Add(new MenuItem() {Icon = "", Title = "statistics"});
             TopMenuItems.Add(new MenuItem() {Icon = "", Title = "profile"});
 
-            TopMenuItems.Add(new MenuItem() { Icon = "", Title = "settings" });
-            TopMenuItems.Add(new MenuItem() { Icon = "", Title = "" });
+            BottomMenuItems.Add(new MenuItem() { Icon = "", Title = "settings" });
+            BottomMenuItems.Add(new MenuItem() { Icon = "", Title = "" });
         }
 
         private void OnVisibleBoundsChanged(ApplicationView sender, object args)
