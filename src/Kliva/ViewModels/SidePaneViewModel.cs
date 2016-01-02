@@ -56,7 +56,13 @@ namespace Kliva.ViewModels
             {
                 if (Set(() => SelectedTopMenuItem, ref _selectedTopMenuItem, value))
                 {
-                    
+                    if (value != null)
+                    {
+                        if (this.IsPaneOpen)
+                            this.IsPaneOpen = !this.IsPaneOpen;
+
+                        SelectedTopMenuItem = null;
+                    }
                 }
             }
         }
