@@ -48,11 +48,31 @@ namespace Kliva.ViewModels
             set { Set(() => BottomMenuItems, ref _bottomMenuItems, value); }
         }
 
-        private MenuItem _selectedMenuItem;
-        public MenuItem SelectedMenuItem
+        private MenuItem _selectedTopMenuItem;
+        public MenuItem SelectedTopMenuItem
         {
-            get { return _selectedMenuItem; }
-            set { Set(() => SelectedMenuItem, ref _selectedMenuItem, value); }
+            get { return _selectedTopMenuItem; }
+            set
+            {
+                if (Set(() => SelectedTopMenuItem, ref _selectedTopMenuItem, value))
+                {
+                    
+                }
+            }
+        }
+
+        private MenuItem _selectedBottomMenuItem;
+        public MenuItem SelectedBottomMenuItem
+        {
+            get { return _selectedBottomMenuItem; }
+            set
+            {
+                if (Set(() => SelectedBottomMenuItem, ref _selectedBottomMenuItem, value))
+                {
+                    if (string.IsNullOrEmpty(SelectedTopMenuItem.Title))
+                        HamburgerCommand.Execute(null);
+                }
+            }
         }
 
         private RelayCommand _hamburgerCommand;

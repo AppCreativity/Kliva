@@ -27,7 +27,7 @@
                  ItemsSource="{x:Bind ViewModel.TopMenuItems}"
                  ItemTemplate="{StaticResource MenuItemDataTemplate}"
                  ItemContainerStyle="{StaticResource MenuItemContainerStyle}"
-                 SelectedItem="{x:Bind ViewModel.SelectedMenuItem, Mode=TwoWay, Converter={StaticResource XBindItemCastingConverter}}"
+                 SelectedItem="{x:Bind ViewModel.SelectedTopMenuItem, Mode=TwoWay, Converter={StaticResource XBindItemCastingConverter}}"
                  Grid.Row="0" />
 
         <ListBox x:Name="BottomMenu"
@@ -36,7 +36,7 @@
                  ItemsSource="{x:Bind ViewModel.BottomMenuItems}"
                  ItemTemplate="{StaticResource MenuItemDataTemplate}"
                  ItemContainerStyle="{StaticResource MenuItemContainerStyle}"
-                 SelectedItem="{x:Bind ViewModel.SelectedMenuItem, Mode=TwoWay, Converter={StaticResource XBindItemCastingConverter}}"
+                 SelectedItem="{x:Bind ViewModel.SelectedBottomMenuItem, Mode=TwoWay, Converter={StaticResource XBindItemCastingConverter}}"
                  Grid.Row="1" />
     </Grid>
 
