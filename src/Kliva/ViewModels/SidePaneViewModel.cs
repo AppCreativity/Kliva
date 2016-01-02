@@ -48,6 +48,13 @@ namespace Kliva.ViewModels
             set { Set(() => BottomMenuItems, ref _bottomMenuItems, value); }
         }
 
+        private MenuItem _selectedMenuItem;
+        public MenuItem SelectedMenuItem
+        {
+            get { return _selectedMenuItem; }
+            set { Set(() => SelectedMenuItem, ref _selectedMenuItem, value); }
+        }
+
         private RelayCommand _hamburgerCommand;
         public RelayCommand HamburgerCommand => _hamburgerCommand ?? (_hamburgerCommand = new RelayCommand(() => this.IsPaneOpen = !this.IsPaneOpen));
 
