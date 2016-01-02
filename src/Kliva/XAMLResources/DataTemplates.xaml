@@ -3,7 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:triggers="using:WindowsStateTriggers"
     xmlns:models="using:Kliva.Models"
-    xmlns:local="using:Kliva.XAMLResources">
+    xmlns:local="using:Kliva.XAMLResources"
+    xmlns:controls="using:Kliva.Controls">
 
     <DataTemplate x:Key="ActivityListItemDataTemplate"
                   x:DataType="models:ActivitySummary">
@@ -115,10 +116,24 @@
         </UserControl>
     </DataTemplate>
 
+    <controls:MenuItemTemplateSelector x:Key="MenuItemTemplateSelector"
+                                       MDL2DataTemplate="{StaticResource MenuItemDataTemplate}"
+                                       MaterialDataTemplate="{StaticResource MenuItemMaterialDataTemplate}" />
+
     <DataTemplate x:Key="MenuItemDataTemplate"
                   x:DataType="models:MenuItem">
         <StackPanel Orientation="Horizontal" Height="48">
             <TextBlock Style="{StaticResource PaneIconTextBlock}" Text="{x:Bind Icon, Mode=OneWay}"/>
+            <TextBlock Text="{x:Bind Title, Mode=OneWay}"
+                       VerticalAlignment="Center"
+                       Style="{StaticResource BaseWhiteTextBlock}" />
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="MenuItemMaterialDataTemplate"
+                  x:DataType="models:MenuItem">
+        <StackPanel Orientation="Horizontal" Height="48">
+            <TextBlock Style="{StaticResource PaneIconMaterialTextBlock}" Text="{x:Bind Icon, Mode=OneWay}"/>
             <TextBlock Text="{x:Bind Title, Mode=OneWay}"
                        VerticalAlignment="Center"
                        Style="{StaticResource BaseWhiteTextBlock}" />

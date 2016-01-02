@@ -15,5 +15,12 @@
             get { return _title; }
             set { Set(() => Title, ref _title, value); }
         }
+
+        private MenuItemType _menuItemType;
+        public MenuItemType MenuItemType
+        {
+            get { return _menuItemType; }
+            set { Set(() => MenuItemType, ref _menuItemType, value); }
+        }
     }
 }

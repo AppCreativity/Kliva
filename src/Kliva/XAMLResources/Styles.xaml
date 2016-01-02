@@ -20,7 +20,7 @@
     <FontFamily x:Key="OpenSansFontLight">/Assets/Fonts/OpenSans-Light.ttf#Open Sans</FontFamily>
     <FontFamily x:Key="OpenSansFontBold">/Assets/Fonts/OpenSans-Bold.ttf#Open Sans</FontFamily>
     <FontFamily x:Key="OpenSansFontSemibold">/Assets/Fonts/OpenSans-Semibold.ttf#Open Sans</FontFamily>
-    <FontFamily x:Key="MaterialFont">/Assets/Fonts/MaterialIcons-Regular.ttf#Material Icons</FontFamily>
+    <FontFamily x:Key="MaterialDesignFont">/Assets/Fonts/materialdesignicons-webfont.ttf#Material Design Icons</FontFamily>
 
     <Style x:Name="BaseTextBlock" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource OpenSansFontLight}" />
@@ -181,6 +181,10 @@
         <Setter Property="TextAlignment" Value="Center" />
     </Style>
 
+    <Style x:Name="PaneIconMaterialTextBlock" BasedOn="{StaticResource PaneIconTextBlock}" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}" />
+    </Style>
+
     <Style x:Name="KlivaButtonMobile"
            TargetType="Button">
         <Setter Property="Background" Value="{StaticResource KlivaDarkBrush}" />
@@ -250,7 +254,7 @@
         <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
     </Style>
 
-    <Style x:Name="MenuItemContainerStyle" TargetType="ListBoxItem">
+    <Style x:Name="MenuItemContainerStyle" TargetType="ListViewItem">
         <Setter Property="Padding" Value="0" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />

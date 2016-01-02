@@ -94,11 +94,12 @@ namespace Kliva.ViewModels
             var view = ApplicationView.GetForCurrentView();
             view.VisibleBoundsChanged += OnVisibleBoundsChanged;
 
-            TopMenuItems.Add(new MenuItem() {Icon = "", Title = "statistics"});
-            TopMenuItems.Add(new MenuItem() {Icon = "", Title = "profile"});
+            TopMenuItems.Add(new MenuItem() { Icon = "", Title = "statistics", MenuItemType = MenuItemType.MDL2 });
+            TopMenuItems.Add(new MenuItem() { Icon = "", Title = "profile", MenuItemType = MenuItemType.MDL2 });
+            TopMenuItems.Add(new MenuItem() { Icon = "", Title = "club", MenuItemType = MenuItemType.Material });
 
-            BottomMenuItems.Add(new MenuItem() { Icon = "", Title = "settings" });
-            BottomMenuItems.Add(new MenuItem() { Icon = "", Title = "" });
+            BottomMenuItems.Add(new MenuItem() { Icon = "", Title = "settings", MenuItemType = MenuItemType.MDL2 });
+            BottomMenuItems.Add(new MenuItem() { Icon = "", Title = "", MenuItemType = MenuItemType.MDL2 });
         }
 
         private void OnVisibleBoundsChanged(ApplicationView sender, object args)

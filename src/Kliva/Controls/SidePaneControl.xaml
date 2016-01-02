@@ -22,15 +22,15 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <ListBox x:Name="TopMenu"
+        <ListView x:Name="TopMenu"
                  Background="Transparent"
                  ItemsSource="{x:Bind ViewModel.TopMenuItems}"
-                 ItemTemplate="{StaticResource MenuItemDataTemplate}"
+                 ItemTemplateSelector="{StaticResource MenuItemTemplateSelector}"                 
                  ItemContainerStyle="{StaticResource MenuItemContainerStyle}"
                  SelectedItem="{x:Bind ViewModel.SelectedTopMenuItem, Mode=TwoWay, Converter={StaticResource XBindItemCastingConverter}}"
                  Grid.Row="0" />
 
-        <ListBox x:Name="BottomMenu"
+        <ListView x:Name="BottomMenu"
                  VerticalAlignment="Bottom"
                  Background="Transparent"
                  ItemsSource="{x:Bind ViewModel.BottomMenuItems}"

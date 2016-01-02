@@ -13,4 +13,10 @@
         CompactOverlay,
         Inline
     }
+
+    public enum MenuItemType
+    {
+        MDL2,
+        Material
+    }
 }
