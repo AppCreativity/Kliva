@@ -115,5 +115,14 @@
         </UserControl>
     </DataTemplate>
 
+    <DataTemplate x:Key="MenuItemDataTemplate"
+                  x:DataType="models:MenuItem">
+        <StackPanel Orientation="Horizontal" Height="48">
+            <TextBlock Style="{StaticResource PaneIconTextBlock}" Text="{x:Bind Icon, Mode=OneWay}"/>
+            <TextBlock Text="{x:Bind Title, Mode=OneWay}"
+                       VerticalAlignment="Center"
+                       Style="{StaticResource BaseWhiteTextBlock}" />
+        </StackPanel>
+    </DataTemplate>
 
 </ResourceDictionary>

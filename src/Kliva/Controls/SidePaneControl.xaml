@@ -15,11 +15,33 @@
         <cimbalinoconverters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
 
-    <Grid>
+    <Grid VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        <ListBox x:Name="TopMenu"
+                     Background="Transparent"
+                     ItemsSource="{x:Bind ViewModel.TopMenuItems}"
+                     ItemTemplate="{StaticResource MenuItemDataTemplate}"
+                     ItemContainerStyle="{StaticResource MenuItemContainerStyle}"
+                     Grid.Row="0" />
+
+        <ListBox x:Name="BottomMenu"
+                    VerticalAlignment="Bottom"
+                    Background="Transparent"
+                    ItemsSource="{x:Bind ViewModel.BottomMenuItems}"
+                    ItemTemplate="{StaticResource MenuItemDataTemplate}"
+                    ItemContainerStyle="{StaticResource MenuItemContainerStyle}"
+                    Grid.Row="1" />
+    </Grid>
+
+    <!--<Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
         <RelativePanel Grid.Row="0">
             <Button x:Name="StatsButton"
                     Style="{StaticResource PaneButton}"
@@ -48,7 +70,7 @@
                                Visibility="{Binding IsPaneOpen, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}"
                                Style="{StaticResource BaseWhiteTextBlock}" />
                 </StackPanel>
-            </Button>                        
+            </Button>
             <Button x:Name="ClubButton"
                     Style="{StaticResource PaneButton}"
                     RelativePanel.Below="ProfileButton"
@@ -65,6 +87,7 @@
                 </StackPanel>
             </Button>
         </RelativePanel>
+        
         <RelativePanel Grid.Row="1">
             <Button x:Name="SettingsButton"
                         Style="{StaticResource PaneButton}"
@@ -93,5 +116,5 @@
                           Glyph="&#xE700;" />
             </Button>
         </RelativePanel>
-    </Grid>
+    </Grid>-->
 </UserControl>

@@ -3,8 +3,10 @@ using GalaSoft.MvvmLight.Command;
 using Kliva.Views;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml.Controls;
+using Kliva.Models;
 
 namespace Kliva.ViewModels
 {
@@ -32,6 +34,20 @@ namespace Kliva.ViewModels
             set { Set(() => DisplayMode, ref _displayMode, value); }
         }
 
+        private ObservableCollection<MenuItem> _topMenuItems = new ObservableCollection<MenuItem>();
+        public ObservableCollection<MenuItem> TopMenuItems
+        {
+            get { return _topMenuItems; }
+            set { Set(() => TopMenuItems, ref _topMenuItems, value); }
+        }
+
+        private ObservableCollection<MenuItem> _bottomMenuItems = new ObservableCollection<MenuItem>();
+        public ObservableCollection<MenuItem> BottomMenuItems
+        {
+            get { return _bottomMenuItems; }
+            set { Set(() => BottomMenuItems, ref _bottomMenuItems, value); }
+        }
+
         private RelayCommand _hamburgerCommand;
         public RelayCommand HamburgerCommand => _hamburgerCommand ?? (_hamburgerCommand = new RelayCommand(() => this.IsPaneOpen = !this.IsPaneOpen));
 
@@ -42,6 +58,12 @@ namespace Kliva.ViewModels
         {
             var view = ApplicationView.GetForCurrentView();
             view.VisibleBoundsChanged += OnVisibleBoundsChanged;
+
+            TopMenuItems.Add(new MenuItem() {Icon = "", Title = "statistics"});
+            TopMenuItems.Add(new MenuItem() {Icon = "", Title = "profile"});
+
+            TopMenuItems.Add(new MenuItem() { Icon = "", Title = "settings" });
+            TopMenuItems.Add(new MenuItem() { Icon = "", Title = "" });
         }
 
         private void OnVisibleBoundsChanged(ApplicationView sender, object args)

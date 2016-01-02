@@ -172,6 +172,15 @@
         <Setter Property="HorizontalAlignment" Value="Stretch" />
     </Style>
 
+    <Style x:Name="PaneIconTextBlock" BasedOn="{StaticResource BaseWhiteTextBlock}" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="Width" Value="48" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="TextAlignment" Value="Center" />
+    </Style>
+
     <Style x:Name="KlivaButtonMobile"
            TargetType="Button">
         <Setter Property="Background" Value="{StaticResource KlivaDarkBrush}" />
@@ -191,10 +200,10 @@
     <Style TargetType="controls:KlivaApplicationFrame">
         <Setter Property="HorizontalContentAlignment"
                 Value="Stretch" />
-        <Setter Property="IsTabStop"
-                Value="False" />
         <Setter Property="VerticalContentAlignment"
                 Value="Stretch" />
+        <Setter Property="IsTabStop"
+                Value="False" />        
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:KlivaApplicationFrame">
@@ -203,12 +212,12 @@
                           DataContext="{Binding SidePane, Source={StaticResource Locator}}">
                         <SplitView x:Name="SidePane"
                                    DisplayMode="{Binding DisplayMode, Mode=TwoWay}"
-                                   CompactPaneLength="60"
-                                   OpenPaneLength="150"
+                                   OpenPaneLength="{ThemeResource SplitViewOpenPaneThemeLength}"
+                                   CompactPaneLength="{ThemeResource SplitViewCompactPaneThemeLength}"                                   
                                    IsPaneOpen="{Binding IsPaneOpen, Mode=TwoWay}"                                   
                                    PaneBackground="{StaticResource KlivaMainBrush}">
                             <SplitView.Pane>
-                                <controls:SidePaneControl Width="150" />
+                                <controls:SidePaneControl Width="{ThemeResource SplitViewOpenPaneThemeLength}" VerticalContentAlignment="Stretch" />
                             </SplitView.Pane>
 
                             <SplitView.Content>
@@ -239,6 +248,12 @@
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
+    </Style>
+
+    <Style x:Name="MenuItemContainerStyle" TargetType="ListBoxItem">
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
     </Style>
 
 </ResourceDictionary>

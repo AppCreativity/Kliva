@@ -1,14 +1,18 @@
 ﻿using Windows.UI.Xaml.Controls;
+using Kliva.ViewModels;
 
 namespace Kliva.Controls
 {
     public sealed partial class SidePaneControl : UserControl
     {
+        private SidePaneViewModel ViewModel => DataContext as SidePaneViewModel;
+
         public SidePaneControl()
         {
             this.InitializeComponent();
-            //TODO: Glenn - Uncomment when using x:Bind in the SidePane control XAML
-            //DataContextChanged += (sender, args) => this.Bindings.Update();
+
+            //Needed when using x:Bind in the SidePane control XAML
+            DataContextChanged += (sender, args) => this.Bindings.Update();
         }
     }
 }
