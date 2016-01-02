@@ -69,9 +69,17 @@ namespace Kliva.ViewModels
             {
                 if (Set(() => SelectedBottomMenuItem, ref _selectedBottomMenuItem, value))
                 {
-                    if (string.IsNullOrEmpty(SelectedTopMenuItem.Title))
-                        HamburgerCommand.Execute(null);
-                }
+                    if (value != null)
+                    {
+                        if (string.IsNullOrEmpty(SelectedBottomMenuItem.Title))
+                            HamburgerCommand.Execute(null);
+
+                        if (SelectedBottomMenuItem.Title.Equals("settings", StringComparison.OrdinalIgnoreCase))
+                            SettingsCommand.Execute(null);
+
+                        SelectedBottomMenuItem = null;
+                    }
+                }                
             }
         }
 

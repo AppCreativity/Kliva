@@ -143,7 +143,10 @@ namespace Kliva.Services
             IEnumerable<ActivitySummary> activities = await this.StravaActivityService.GetFollowersActivitiesAsync(page, perPage);
             //IEnumerable<ActivitySummary> activities = await this.StravaActivityService.GetActivitiesAsync(page, perPage);
 
-            this.GetActivitySummaryRelations(activities);
+            if (activities != null && activities.Any())
+            {
+                this.GetActivitySummaryRelations(activities);
+            }
 
             return activities;
         }
