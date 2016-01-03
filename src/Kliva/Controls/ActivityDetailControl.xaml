@@ -14,7 +14,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <TextBlock Text="{Binding SelectedActivity.Name, Mode=OneWay}"
+        <TextBlock Text="{Binding SelectedActivity.Name}"
+                   Margin="10,0,0,0"
                    Grid.Row="0"/>
         
         <Pivot x:Name="ActivityPivot"

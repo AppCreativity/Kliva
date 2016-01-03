@@ -1,14 +1,11 @@
-﻿using Windows.UI.Xaml;
-using Kliva.ViewModels;
-using Kliva.ViewModels.Interfaces;
+﻿using Kliva.ViewModels.Interfaces;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Cimbalino.Toolkit.Extensions;
 
 namespace Kliva.Views
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class MainPage : Page
     {
         private IStravaViewModel ViewModel => DataContext as IStravaViewModel;
@@ -22,6 +19,9 @@ namespace Kliva.Views
         {
             base.OnNavigatedTo(e);
             UpdateVisualState(VisualStateGroup.CurrentState);
+
+            //TODO: Glenn - Could be we need to 'unselect' current selected activity when we return to the main page. Search it with VisualTree
+            //var t = this.GetVisualDescendents<ListView>();
         }
 
         private void UpdateVisualState(VisualState currentState)
