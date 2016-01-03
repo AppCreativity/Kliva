@@ -8,6 +8,9 @@
     <cimbalinoconverters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <cimbalinoconverters:BooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" InvertValue="True" />
 
+    <Color x:Key="StravaRedColor">#fc4c02</Color>
+    <SolidColorBrush x:Key="StravaRedBrush" Color="{StaticResource StravaRedColor}" />
+
     <Color x:Key="KlivaMainColor">#df8942</Color>
     <SolidColorBrush x:Key="KlivaMainBrush" Color="{StaticResource KlivaMainColor}" />
 

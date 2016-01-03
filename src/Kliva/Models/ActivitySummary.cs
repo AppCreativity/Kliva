@@ -338,8 +338,8 @@ namespace Kliva.Models
         /// <summary>
         /// Map representing the route of the activity.
         /// </summary>
-        //[JsonProperty("map")]
-        //public Map Map { get; set; }
+        [JsonProperty("map")]
+        public Map Map { get; set; }
 
         /// <summary>
         /// Meta object of the athlete of this activity.

@@ -1,4 +1,5 @@
-﻿using Cimbalino.Toolkit.Services;
+﻿using System.Collections.Generic;
+using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
 using Kliva.Messages;
 using Kliva.Models;
@@ -7,7 +8,10 @@ using Kliva.ViewModels.Interfaces;
 using Kliva.Views;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using Windows.Devices.Geolocation;
 using Windows.UI.Xaml;
+using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Practices.ServiceLocation;
 
 namespace Kliva.ViewModels
 {
@@ -41,6 +45,11 @@ namespace Kliva.ViewModels
                             MessengerInstance.Send<ActivitySummaryMessage>(new ActivitySummaryMessage(_selectedActivity));
                             break;
                     }
+
+                    if (!string.IsNullOrEmpty(SelectedActivity?.Map.SummaryPolyline))
+                        ServiceLocator.Current.GetInstance<IMessenger>().Send<ActivityPolylineMessage>(new ActivityPolylineMessage(SelectedActivity.Map.GeoPositions));
+                    else
+                        ServiceLocator.Current.GetInstance<IMessenger>().Send<ActivityPolylineMessage>(new ActivityPolylineMessage(new List<BasicGeoposition>()));
                 }
             }
         }

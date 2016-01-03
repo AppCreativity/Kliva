@@ -1,5 +1,6 @@
 ﻿using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Ioc;
+using GalaSoft.MvvmLight.Messaging;
 using Kliva.Services;
 using Kliva.Services.Interfaces;
 using Microsoft.Practices.ServiceLocation;
@@ -23,6 +24,7 @@ namespace Kliva.ViewModels
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
             SimpleIoc.Default.Register<INavigationService, NavigationService>();
+            SimpleIoc.Default.Register<IMessenger, Messenger>();
             SimpleIoc.Default.Register<IMessageBoxService, MessageBoxService>();
             SimpleIoc.Default.Register<IStorageService, StorageService>();
             SimpleIoc.Default.Register<ISettingsService, SettingsService>();

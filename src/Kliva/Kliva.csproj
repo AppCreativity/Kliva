@@ -94,6 +94,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\End.png" />
     <Content Include="Assets\Fonts\OpenSans-Bold.ttf" />
     <Content Include="Assets\Fonts\OpenSans-Light.ttf" />
     <Content Include="Assets\Fonts\OpenSans-Semibold.ttf" />
@@ -117,8 +118,10 @@
       <DependentUpon>SidePaneControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\XBindItemCastingConverter.cs" />
+    <Compile Include="Helpers\PolylineConverter.cs" />
     <Compile Include="Helpers\UnitConverter.cs" />
     <Compile Include="Helpers\Unmarshaller.cs" />
+    <Compile Include="Messages\ActivityPolylineMessage.cs" />
     <Compile Include="Messages\ActivitySummaryMessage.cs" />
     <Compile Include="Models\AccessToken.cs" />
     <Compile Include="Models\Activity.cs" />
@@ -133,6 +136,7 @@
     <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\Limit.cs" />
     <Compile Include="Models\Limits.cs" />
+    <Compile Include="Models\Map.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\Photo.cs" />
     <Compile Include="Models\Settings.cs" />
@@ -184,6 +188,7 @@
   <ItemGroup>
     <Content Include="Assets\Brooks.jpg" />
     <Content Include="Assets\Merckx_1920.jpg" />
+    <Content Include="Assets\Start.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
