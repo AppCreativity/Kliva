@@ -13,7 +13,7 @@
     <Grid>
         <RelativePanel>
             <TextBlock x:Name="ActivityName"
-                       Text="{Binding SelectedActivity.Name}"
+                       Text="{x:Bind ViewModel.SelectedActivity.Name, Mode=OneWay}"
                        TextWrapping="WrapWholeWords" MaxLines="2"
                        Margin="10,0,10,0"
                        RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
@@ -28,7 +28,7 @@
                    RelativePanel.Below="ActivityMap"
                    RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" >
                 <PivotItem Header="statistics">
-                    <TextBlock Text="{Binding SelectedActivity.DistanceFormatted}" />
+                    <TextBlock Text="{x:Bind ViewModel.SelectedActivity.DistanceFormatted, Mode=OneWay}" />
                 </PivotItem>
                 <PivotItem Header="segments">
 
@@ -39,7 +39,5 @@
                 <PivotItem Header="comments"></PivotItem>
             </Pivot>
         </RelativePanel>
-
-        <!--<TextBlock Text="{x:Bind ViewModel.SelectedActivity.Name, Mode=OneWay}" />-->
     </Grid>
 </UserControl>

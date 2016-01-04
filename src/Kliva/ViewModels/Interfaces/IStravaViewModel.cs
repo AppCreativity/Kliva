@@ -1,10 +1,11 @@
 ﻿using Kliva.Models;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using Windows.UI.Xaml;
 
 namespace Kliva.ViewModels.Interfaces
 {
-    public interface IStravaViewModel
+    public interface IStravaViewModel : INotifyPropertyChanged
     {
         ObservableCollection<ActivitySummary> Activities { get; set; }
         ActivitySummary SelectedActivity { get; set; }
