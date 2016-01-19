@@ -125,6 +125,7 @@
     <Compile Include="Messages\ActivitySummaryMessage.cs" />
     <Compile Include="Models\AccessToken.cs" />
     <Compile Include="Models\Activity.cs" />
+    <Compile Include="Models\ActivityIncrementalCollection.cs" />
     <Compile Include="Models\ActivityMeta.cs" />
     <Compile Include="Models\ActivitySummary.cs" />
     <Compile Include="Models\ActivityType.cs" />
@@ -134,6 +135,7 @@
     <Compile Include="Models\BaseClass.cs" />
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\Enums.cs" />
+    <Compile Include="Models\IncrementalLoadingBase.cs" />
     <Compile Include="Models\Limit.cs" />
     <Compile Include="Models\Limits.cs" />
     <Compile Include="Models\Map.cs" />

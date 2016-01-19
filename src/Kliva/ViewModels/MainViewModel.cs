@@ -18,7 +18,7 @@ namespace Kliva.ViewModels
     public class MainViewModel : KlivaBaseViewModel, IStravaViewModel
     {
         private ISettingsService _settingsService;
-        private IStravaService _stravaService;
+        private IStravaService _stravaService;        
 
         public VisualState CurrentState { get; set; }
 
@@ -27,6 +27,13 @@ namespace Kliva.ViewModels
         {
             get { return _activities; }
             set { Set(() => Activities, ref _activities, value); }
+        }
+
+        private ActivityIncrementalCollection _activityIncrementalCollection;
+        public ActivityIncrementalCollection ActivityIncrementalCollection
+        {
+            get { return _activityIncrementalCollection; }
+            set { Set(() => ActivityIncrementalCollection, ref _activityIncrementalCollection, value); }
         }
 
         private ActivitySummary _selectedActivity;
@@ -58,7 +65,7 @@ namespace Kliva.ViewModels
         public RelayCommand LogoutCommand => _logoutCommand ?? (_logoutCommand = new RelayCommand(async () => await this.Logout()));
 
         private RelayCommand _viewLoadedCommand;
-        public RelayCommand ViewLoadedCommand => _viewLoadedCommand ?? (_viewLoadedCommand = new RelayCommand(async () => await this.ViewLoaded()));
+        public RelayCommand ViewLoadedCommand => _viewLoadedCommand ?? (_viewLoadedCommand = new RelayCommand(ViewLoaded));
 
         //TODO: Glenn - We hooked this up twice, once in SidePaneViewModel and once in MainViewModel
         private RelayCommand _settingsCommand;
@@ -67,7 +74,7 @@ namespace Kliva.ViewModels
         public MainViewModel(INavigationService navigationService, ISettingsService settingsService, IStravaService stravaService) : base(navigationService)
         {
             _settingsService = settingsService;
-            _stravaService = stravaService;
+            _stravaService = stravaService;            
         }
 
         private async Task Logout()
@@ -83,12 +90,16 @@ namespace Kliva.ViewModels
             //this.IsBusy = false;
         }
 
-        private async Task ViewLoaded()
+        private void ViewLoaded()
         {
-            this.Activities.Clear();
-            var activities = await _stravaService.GetActivitiesWithAthletesAsync(0, 30);
-            foreach (ActivitySummary activity in activities)
-                this.Activities.Add(activity);
+            //this.Activities.Clear();
+            //var activities = await _stravaService.GetActivitiesWithAthletesAsync(0, 30);
+
+            //foreach (ActivitySummary activity in activities)
+            //    this.Activities.Add(activity);
+
+            //TODO: Glenn - Do we always need to new this here?
+            ActivityIncrementalCollection = new ActivityIncrementalCollection(_stravaService);
         }
     }
 }

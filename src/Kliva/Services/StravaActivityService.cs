@@ -60,8 +60,7 @@ namespace Kliva.Services
                 var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitType();
 
                 //TODO: Glenn - Optional parameters should be treated as such!
-                //string getUrl = String.Format("{0}?page={1}&per_page={2}&access_token={3}", Endpoints.ActivitiesFollowers, page, perPage, accessToken);
-                string getUrl = string.Format("{0}?&access_token={1}", Endpoints.ActivitiesFollowers, accessToken);
+                string getUrl = $"{Endpoints.ActivitiesFollowers}?page={page}&per_page={perPage}&access_token={accessToken}";
                 string json = await WebRequest.SendGetAsync(new Uri(getUrl));
 
                 return Unmarshaller<List<ActivitySummary>>.Unmarshal(json).Select(activity => { activity.DistanceUnit = defaultDistanceUnitType; return activity; });

@@ -18,6 +18,7 @@ namespace Kliva.ViewModels
         }
 
         public ObservableCollection<ActivitySummary> Activities { get; set; }
+        public ActivityIncrementalCollection ActivityIncrementalCollection { get; set; }
 
         private ActivitySummary _selectedActivity;
         public ActivitySummary SelectedActivity

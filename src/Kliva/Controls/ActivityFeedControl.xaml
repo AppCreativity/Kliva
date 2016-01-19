@@ -16,7 +16,7 @@
     </UserControl.Resources>
     
     <ListView x:Name="ActivityList"
-              ItemsSource="{x:Bind ViewModel.Activities, Mode=OneWay}"
+              ItemsSource="{x:Bind ViewModel.ActivityIncrementalCollection, Mode=OneWay}"
               SelectedItem="{x:Bind ViewModel.SelectedActivity, Mode=TwoWay, Converter={StaticResource XBindItemCastingConverter}}"
               ItemTemplate="{StaticResource ActivityListItemDataTemplate}"
               HorizontalContentAlignment="Stretch">
