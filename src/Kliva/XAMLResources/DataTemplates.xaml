@@ -4,7 +4,8 @@
     xmlns:triggers="using:WindowsStateTriggers"
     xmlns:models="using:Kliva.Models"
     xmlns:local="using:Kliva.XAMLResources"
-    xmlns:controls="using:Kliva.Controls">
+    xmlns:controls="using:Kliva.Controls"
+    xmlns:maps="using:Windows.UI.Xaml.Controls.Maps">
 
     <DataTemplate x:Key="ActivityListItemDataTemplate"
                   x:DataType="models:ActivitySummary">
@@ -32,7 +33,7 @@
                     </VisualStateGroup>
                 </VisualStateManager.VisualStateGroups>
                 <RelativePanel x:Name="ActivityListItemPanel"
-                       Margin="0,0,0,10">
+                               Margin="0,0,0,10">
 
                     <RelativePanel x:Name="TopPanel"
                                    RelativePanel.AlignTopWithPanel="True">

@@ -145,12 +145,17 @@ namespace Kliva.Models
                 var items = await LoadMoreItemsOverrideAsync(c, count);
                 var baseIndex = _storage.Count;
 
-                _storage.AddRange(items);
+                if (items != null)
+                {
+                    _storage.AddRange(items);
 
-                // Now notify of the new items
-                NotifyOfInsertedItems(baseIndex, items.Count);
+                    // Now notify of the new items
+                    NotifyOfInsertedItems(baseIndex, items.Count);
 
-                return new LoadMoreItemsResult { Count = (uint)items.Count };
+                    return new LoadMoreItemsResult {Count = (uint) items.Count};
+                }
+
+                return new LoadMoreItemsResult() {Count=0};
             }
             finally
             {

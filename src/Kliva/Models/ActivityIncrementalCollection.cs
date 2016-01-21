@@ -23,9 +23,15 @@ namespace Kliva.Models
         {
             _hasLoaded = true;
             _activities = await _stravaService.GetActivitiesWithAthletesAsync(_page, 30);
-            ++_page;
 
-            return new List<object>(_activities);
+            if (_activities != null && _activities.Any())
+            {
+                ++_page;
+
+                return new List<object>(_activities);
+            }
+
+            return null;
         }
 
         protected override bool HasMoreItemsOverride()
