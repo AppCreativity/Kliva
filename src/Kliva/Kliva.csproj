@@ -118,11 +118,13 @@
       <DependentUpon>SidePaneControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\XBindItemCastingConverter.cs" />
+    <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\PolylineConverter.cs" />
     <Compile Include="Helpers\UnitConverter.cs" />
     <Compile Include="Helpers\Unmarshaller.cs" />
     <Compile Include="Messages\ActivityPolylineMessage.cs" />
     <Compile Include="Messages\ActivitySummaryMessage.cs" />
+    <Compile Include="Messages\PivotMessage.cs" />
     <Compile Include="Models\AccessToken.cs" />
     <Compile Include="Models\Activity.cs" />
     <Compile Include="Models\ActivityIncrementalCollection.cs" />

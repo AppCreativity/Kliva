@@ -1,5 +1,14 @@
 ﻿namespace Kliva.Models
 {
+    public enum Pivots
+    {
+        Statistics,
+        Kudos,
+        Comments,
+        Segments,
+        Photos
+    }
+
     public enum DistanceUnitType
     {
         Kilometres,

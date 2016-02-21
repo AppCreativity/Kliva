@@ -1,9 +1,11 @@
 ﻿using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Cimbalino.Toolkit.Services;
+using GalaSoft.MvvmLight.Messaging;
 using Kliva.Messages;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
+using Microsoft.Practices.ServiceLocation;
 
 namespace Kliva.ViewModels
 {
@@ -53,6 +55,10 @@ namespace Kliva.ViewModels
                 //Currently the Public API of Strava will not give us the Photo links for 'other' athletes then the one logged in
                 //But we do get the photo count, so we also need to verify the current user vs the one from the activity
                 HasPhotos = athlete.Id == SelectedActivity.Athlete.Id && SelectedActivity.TotalPhotoCount > 0;
+
+                //TODO: Glenn - Why oh why are we not yet able to show/hide PivotItems through Visibility bindable
+                ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage>(new PivotMessage(Pivots.Segments, this.HasSegments));
+                ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage>(new PivotMessage(Pivots.Photos, this.HasPhotos));
             }
         }
     }

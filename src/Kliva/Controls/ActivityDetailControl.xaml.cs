@@ -6,12 +6,14 @@ using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Storage.Streams;
 using Windows.UI;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Maps;
 using GalaSoft.MvvmLight.Messaging;
+using Kliva.Helpers;
 using Kliva.Messages;
+using Kliva.Models;
 using Kliva.ViewModels;
-using Kliva.ViewModels.Interfaces;
 using Microsoft.Practices.ServiceLocation;
 
 namespace Kliva.Controls
@@ -21,12 +23,44 @@ namespace Kliva.Controls
         //public IStravaViewModel ViewModel => DataContext as IStravaViewModel;
         public ActivityDetailViewModel ViewModel => DataContext as ActivityDetailViewModel;
 
+        private Dictionary<Pivots, Tuple<int, PivotItem>> _pivotDictionary = new Dictionary<Pivots, Tuple<int, PivotItem>>();
+
         public ActivityDetailControl()
         {
             this.InitializeComponent();
+            InitializePivots();
+
             //DataContextChanged += (sender, arg) => this.Bindings.Update();
 
-            ServiceLocator.Current.GetInstance<IMessenger>().Register<ActivityPolylineMessage>(this, async message => await this.DrawPolyline(message.Geopositions));
+            ServiceLocator.Current.GetInstance<IMessenger>().Register<ActivityPolylineMessage>(this, async message => await DrawPolyline(message.Geopositions));
+            ServiceLocator.Current.GetInstance<IMessenger>().Register<PivotMessage>(this, AdjustPivots);
+        }
+
+        private void InitializePivots()
+        {
+            int pivotIndex = 0;
+            foreach (PivotItem item in ActivityPivot.Items.ToList())
+            {
+                _pivotDictionary.Add(Enum<Pivots>.Parse((string)item.Header), new Tuple<int, PivotItem>(pivotIndex, item));
+                ++pivotIndex;
+            }
+        }
+
+        private void AdjustPivots(PivotMessage message)
+        {
+            foreach (PivotItem item in ActivityPivot.Items.ToList())
+            {
+                if (item.Visibility == Visibility.Collapsed)
+                    ActivityPivot.Items.Remove(item);
+            }
+
+            if (!ReferenceEquals(message, null) && message.Visible)
+            {
+                Tuple<int, PivotItem> pivotItem = _pivotDictionary[message.Pivot];
+
+                if (!ActivityPivot.Items.Contains(pivotItem.Item2))
+                    ActivityPivot.Items.Insert(pivotItem.Item1, pivotItem.Item2);
+            }
         }
 
         private async Task DrawPolyline(List<BasicGeoposition> geopositions)

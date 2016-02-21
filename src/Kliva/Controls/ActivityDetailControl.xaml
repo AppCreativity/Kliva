@@ -28,16 +28,19 @@
             <Pivot x:Name="ActivityPivot"
                    RelativePanel.Below="ActivityMap"
                    RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" >
-                <PivotItem Header="statistics">
+                <PivotItem x:Name="StatisticsPivot" Header="statistics">
                     <TextBlock Text="{x:Bind ViewModel.SelectedActivity.DistanceFormatted, Mode=OneWay}" />
                 </PivotItem>
-                <PivotItem Header="segments">
-
+                <PivotItem x:Name="SegmentsPivot" Header="segments"
+                           Visibility="{x:Bind ViewModel.HasSegments, Mode=TwoWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    
                 </PivotItem>
-                <PivotItem Header="kudos">
-
+                <PivotItem x:Name="KudosPivot" Header="kudos"></PivotItem>
+                <PivotItem x:Name="CommentsPivot" Header="comments"></PivotItem>
+                <PivotItem x:Name="PhotosPivot" Header="photos"
+                           Visibility="{x:Bind ViewModel.HasPhotos, Mode=TwoWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    
                 </PivotItem>
-                <PivotItem Header="comments"></PivotItem>
             </Pivot>
         </RelativePanel>
     </Grid>
