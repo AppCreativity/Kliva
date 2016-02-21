@@ -141,6 +141,9 @@
     <Compile Include="Models\Map.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\Photo.cs" />
+    <Compile Include="Models\Segment.cs" />
+    <Compile Include="Models\SegmentEffort.cs" />
+    <Compile Include="Models\SegmentSummary.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Models\StravaIdentityConstants.cs" />
     <Compile Include="Models\Usage.cs" />

@@ -18,6 +18,30 @@ namespace Kliva.Services
         }
 
         /// <summary>
+        /// Gets a single activity from Strava asynchronously.
+        /// </summary>
+        /// <param name="id">The Strava activity id.</param>
+        /// <param name="includeEfforts">Used to include all segment efforts in the result.</param>
+        /// <returns>The activity with the specified id.</returns>
+        public async Task<Activity> GetActivityAsync(string id, bool includeEfforts)
+        {
+            try
+            {
+                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                string getUrl = $"{Endpoints.Activity}/{id}?include_all_efforts={includeEfforts}&access_token={accessToken}";
+                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
+
+                return Unmarshaller<Activity>.Unmarshal(json);
+            }
+            catch (Exception ex)
+            {
+                //TODO: Glenn - Use logger to log errors ( Google )
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Gets all the activities asynchronously. Pagination is supported.
         /// </summary>
         /// <param name="page">The page of activities.</param>
@@ -32,7 +56,7 @@ namespace Kliva.Services
 
                 //TODO: Glenn - Optional parameters should be treated as such!
                 //string getUrl = String.Format("{0}?page={1}&per_page={2}&access_token={3}", Endpoints.Activities, page, perPage, accessToken);
-                string getUrl = String.Format("{0}?access_token={1}", Endpoints.Activities, accessToken);
+                string getUrl = $"{Endpoints.Activities}?access_token={accessToken}";
                 string json = await WebRequest.SendGetAsync(new Uri(getUrl));
 
                 //TODO: Glenn - Google maps?

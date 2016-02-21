@@ -17,8 +17,10 @@ namespace Kliva.ViewModels
 {
     public class MainViewModel : KlivaBaseViewModel, IStravaViewModel
     {
-        private ISettingsService _settingsService;
-        private IStravaService _stravaService;        
+        private readonly ISettingsService _settingsService;
+        private readonly IStravaService _stravaService;
+
+        private bool _viewModelLoaded = false;
 
         public VisualState CurrentState { get; set; }
 
@@ -48,10 +50,11 @@ namespace Kliva.ViewModels
                     switch (CurrentState.Name)
                     {
                         case "Mobile":
-                            _navigationService.Navigate<ActivityDetailPage>();
-                            MessengerInstance.Send<ActivitySummaryMessage>(new ActivitySummaryMessage(_selectedActivity));
+                            _navigationService.Navigate<ActivityDetailPage>();                            
                             break;
                     }
+
+                    MessengerInstance.Send<ActivitySummaryMessage>(new ActivitySummaryMessage(_selectedActivity));
 
                     if (!string.IsNullOrEmpty(SelectedActivity?.Map.SummaryPolyline))
                         ServiceLocator.Current.GetInstance<IMessenger>().Send<ActivityPolylineMessage>(new ActivityPolylineMessage(SelectedActivity.Map.GeoPositions));
@@ -92,14 +95,11 @@ namespace Kliva.ViewModels
 
         private void ViewLoaded()
         {
-            //this.Activities.Clear();
-            //var activities = await _stravaService.GetActivitiesWithAthletesAsync(0, 30);
-
-            //foreach (ActivitySummary activity in activities)
-            //    this.Activities.Add(activity);
-
-            //TODO: Glenn - Do we always need to new this here?
-            ActivityIncrementalCollection = new ActivityIncrementalCollection(_stravaService);
+            if (!_viewModelLoaded)
+            {
+                ActivityIncrementalCollection = new ActivityIncrementalCollection(_stravaService);
+                _viewModelLoaded = true;
+            }
         }
     }
 }

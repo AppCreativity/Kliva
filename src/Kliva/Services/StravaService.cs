@@ -138,9 +138,14 @@ namespace Kliva.Services
             }
         }
 
+        public Task<Activity> GetActivityAsync(string id, bool includeEfforts)
+        {
+            return StravaActivityService.GetActivityAsync(id, includeEfforts);
+        }
+
         public async Task<IEnumerable<ActivitySummary>> GetActivitiesWithAthletesAsync(int page, int perPage)
         {
-            IEnumerable<ActivitySummary> activities = await this.StravaActivityService.GetFollowersActivitiesAsync(page, perPage);
+            IEnumerable<ActivitySummary> activities = await StravaActivityService.GetFollowersActivitiesAsync(page, perPage);
             //IEnumerable<ActivitySummary> activities = await this.StravaActivityService.GetActivitiesAsync(page, perPage);
 
             if (activities != null && activities.Any())

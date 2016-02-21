@@ -12,8 +12,8 @@ namespace Kliva.Models
         /// <summary>
         /// A list of segment effort objects.
         /// </summary>
-        //[JsonProperty("segment_efforts")]
-        //public List<SegmentEffort> SegmentEfforts { get; set; }
+        [JsonProperty("segment_efforts")]
+        public List<SegmentEffort> SegmentEfforts { get; set; }
 
         /// <summary>
         /// A summary of the gear used.

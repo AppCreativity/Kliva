@@ -10,6 +10,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Maps;
 using GalaSoft.MvvmLight.Messaging;
 using Kliva.Messages;
+using Kliva.ViewModels;
 using Kliva.ViewModels.Interfaces;
 using Microsoft.Practices.ServiceLocation;
 
@@ -17,7 +18,8 @@ namespace Kliva.Controls
 {
     public sealed partial class ActivityDetailControl : UserControl
     {
-        public IStravaViewModel ViewModel => DataContext as IStravaViewModel;
+        //public IStravaViewModel ViewModel => DataContext as IStravaViewModel;
+        public ActivityDetailViewModel ViewModel => DataContext as ActivityDetailViewModel;
 
         public ActivityDetailControl()
         {

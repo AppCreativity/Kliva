@@ -13,6 +13,7 @@ namespace Kliva.Services.Interfaces
 
         Task GetAuthorizationCode();
 
+        Task<Activity> GetActivityAsync(string id, bool includeEfforts);
         Task<IEnumerable<ActivitySummary>> GetActivitiesWithAthletesAsync(int page, int perPage);
     }
 }
