@@ -130,6 +130,7 @@
     <Compile Include="Models\ActivitySummary.cs" />
     <Compile Include="Models\ActivityType.cs" />
     <Compile Include="Models\AppVersion.cs" />
+    <Compile Include="Models\Athlete.cs" />
     <Compile Include="Models\AthleteMeta.cs" />
     <Compile Include="Models\AthleteSummary.cs" />
     <Compile Include="Models\BaseClass.cs" />

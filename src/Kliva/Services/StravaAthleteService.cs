@@ -8,11 +8,38 @@ namespace Kliva.Services
 {
     public class StravaAthleteService : IStravaAthleteService
     {
-        private ISettingsService _settingsService;
+        private readonly ISettingsService _settingsService;
+        private Athlete _athlete;
 
         public StravaAthleteService(ISettingsService settingsService)
         {
             _settingsService = settingsService;
+        }
+
+        /// <summary>
+        /// Asynchronously receives the currently authenticated athlete.
+        /// </summary>
+        /// <returns>The currently authenticated athlete.</returns>
+        public async Task<Athlete> GetAthleteAsync()
+        {
+            if (_athlete != null)
+                return _athlete;
+
+            try
+            {
+                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+
+                string getUrl = $"{Endpoints.Athlete}?access_token={accessToken}";
+                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
+
+                return _athlete = Unmarshaller<Athlete>.Unmarshal(json);
+            }
+            catch (Exception)
+            {
+                //TODO: Glenn - Use logger to log errors ( Google )
+            }
+
+            return null;
         }
 
         /// <summary>

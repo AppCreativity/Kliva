@@ -18,7 +18,19 @@ namespace Kliva.ViewModels
             set { Set(() => SelectedActivity, ref _selectedActivity, value); }
         }
 
-        public VisualState CurrentState { get; set; }
+        private bool _hasSegments;
+        public bool HasSegments
+        {
+            get { return _hasSegments; }
+            set { Set(() => HasSegments, ref _hasSegments, value); }
+        }
+
+        private bool _hasPhotos;
+        public bool HasPhotos
+        {
+            get { return _hasPhotos; }
+            set { Set(() => HasPhotos, ref _hasPhotos, value); }
+        }
 
         public ActivityDetailViewModel(INavigationService navigationService, IStravaService stravaService) : base(navigationService)
         {
@@ -29,8 +41,19 @@ namespace Kliva.ViewModels
         private async Task LoadActivityDetails(ActivitySummaryMessage message)
         {
             var activity = await _stravaService.GetActivityAsync(message.ActivitySummary.Id.ToString(), true);
+            var athlete = await _stravaService.GetAthleteAsync();
+
             if (activity != null)
+            {
                 SelectedActivity = activity;
+
+                //Currently the Public API of Strava will not give us Segments info for 'other' athletes then the one logged in
+                HasSegments = SelectedActivity.SegmentEfforts != null;
+
+                //Currently the Public API of Strava will not give us the Photo links for 'other' athletes then the one logged in
+                //But we do get the photo count, so we also need to verify the current user vs the one from the activity
+                HasPhotos = athlete.Id == SelectedActivity.Athlete.Id && SelectedActivity.TotalPhotoCount > 0;
+            }
         }
     }
 }
