@@ -17,6 +17,13 @@ namespace Kliva.Services
             _settingsService = settingsService;
         }
 
+        private void SetMetricUnits(ActivitySummary activity, DistanceUnitType distanceUnitType)
+        {            
+            activity.DistanceUnit = distanceUnitType;
+            activity.SpeedUnit = activity.DistanceUnit == DistanceUnitType.Kilometres ? SpeedUnit.KilometresPerHour : SpeedUnit.MilesPerHour;
+            activity.ElevationUnit = activity.DistanceUnit == DistanceUnitType.Kilometres ? DistanceUnitType.Metres : DistanceUnitType.Feet;
+        }
+
         /// <summary>
         /// Gets a single activity from Strava asynchronously.
         /// </summary>
@@ -29,14 +36,13 @@ namespace Kliva.Services
             {
                 var accessToken = await _settingsService.GetStoredStravaAccessToken();
                 var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitType();
-                
+
                 string getUrl = $"{Endpoints.Activity}/{id}?include_all_efforts={includeEfforts}&access_token={accessToken}";
                 string json = await WebRequest.SendGetAsync(new Uri(getUrl));
 
                 var activity = Unmarshaller<Activity>.Unmarshal(json);
+                SetMetricUnits(activity, defaultDistanceUnitType);
 
-                activity.DistanceUnit = defaultDistanceUnitType;
-                activity.SpeedUnit = activity.DistanceUnit == DistanceUnitType.Kilometres ? SpeedUnit.KilometresPerHour : SpeedUnit.MilesPerHour;
                 return activity;
             }
             catch (Exception ex)
@@ -59,7 +65,7 @@ namespace Kliva.Services
             {
                 var accessToken = await _settingsService.GetStoredStravaAccessToken();
                 var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitType();
-                
+
                 //TODO: Glenn - Optional parameters should be treated as such!
                 //string getUrl = String.Format("{0}?page={1}&per_page={2}&access_token={3}", Endpoints.Activities, page, perPage, accessToken);
                 string getUrl = $"{Endpoints.Activities}?access_token={accessToken}";
@@ -68,8 +74,7 @@ namespace Kliva.Services
                 //TODO: Glenn - Google maps?
                 return Unmarshaller<List<ActivitySummary>>.Unmarshal(json).Select(activity =>
                 {
-                    activity.DistanceUnit = defaultDistanceUnitType;
-                    activity.SpeedUnit = activity.DistanceUnit == DistanceUnitType.Kilometres ? SpeedUnit.KilometresPerHour : SpeedUnit.MilesPerHour;
+                    SetMetricUnits(activity, defaultDistanceUnitType);
                     return activity;
                 });
             }
@@ -100,8 +105,7 @@ namespace Kliva.Services
 
                 return Unmarshaller<List<ActivitySummary>>.Unmarshal(json).Select(activity =>
                 {
-                    activity.DistanceUnit = defaultDistanceUnitType;
-                    activity.SpeedUnit = activity.DistanceUnit == DistanceUnitType.Kilometres ? SpeedUnit.KilometresPerHour : SpeedUnit.MilesPerHour;
+                    SetMetricUnits(activity, defaultDistanceUnitType);
                     return activity;
                 });
             }

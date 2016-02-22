@@ -112,13 +112,15 @@
                                    Margin="0,20,0,0"
                                    RelativePanel.Below="TimeMovingFormattedLabelTextBlock"
                                    RelativePanel.AlignLeftWithPanel="True" />
-                        <TextBlock x:Name="ElevationGainFormattedTextBlock"
-                                   Text="{x:Bind ViewModel.SelectedActivity.ElevationGainFormatted, Mode=OneWay}"
+                        <TextBlock x:Name="ElevationGainFormattedTextBlock"                                   
                                    Margin="0,20,0,0"
                                    MinWidth="125"
                                    RelativePanel.RightOf="ElevationLabelTextBlock"
                                    RelativePanel.AlignLeftWith="DistanceFormattedTextBlock"
-                                   RelativePanel.AlignTopWith="ElevationLabelTextBlock" />
+                                   RelativePanel.AlignTopWith="ElevationLabelTextBlock">
+                            <Run Text="{x:Bind ViewModel.SelectedActivity.ElevationGainFormatted, Mode=OneWay}" />
+                            <Run Text="{x:Bind ViewModel.SelectedActivity.ElevationUnit, Mode=OneWay, Converter={StaticResource DistanceUnitToStringConverter}}" />
+                        </TextBlock>
                     </RelativePanel>
                 </PivotItem>
                 <PivotItem x:Name="SegmentsPivot" Header="segments"

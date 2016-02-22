@@ -434,6 +434,17 @@ namespace Kliva.Models
             }
         }
 
+        private DistanceUnitType _elevationUnit;
+        public DistanceUnitType ElevationUnit
+        {
+            get { return _elevationUnit; }
+            set
+            {
+                Set(() => ElevationUnit, ref _elevationUnit, value);
+                RaisePropertyChanged(() => ElevationGainFormatted);
+            }
+        }
+
         public string DistanceFormatted
         {
             get
