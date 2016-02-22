@@ -41,7 +41,7 @@ namespace Kliva.Controls
             int pivotIndex = 0;
             foreach (PivotItem item in ActivityPivot.Items.ToList())
             {
-                _pivotDictionary.Add(Enum<Pivots>.Parse((string)item.Header), new Tuple<int, PivotItem>(pivotIndex, item));
+                _pivotDictionary.Add(Enum<Pivots>.Parse((string)item.Header), Tuple.Create(pivotIndex, item));
                 ++pivotIndex;
             }
         }
