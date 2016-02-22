@@ -118,6 +118,30 @@ namespace Kliva.Services
         }
 
         /// <summary>
+        /// Gets a list of athletes that kudoed the specified activity asynchronously.
+        /// </summary>
+        /// <param name="activityId">The Strava Id of the activity.</param>
+        /// <returns>A list of athletes that kudoed the specified activity.</returns>
+        public async Task<List<Athlete>> GetKudosAsync(string activityId)
+        {
+            try
+            {
+                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+
+                string getUrl = $"{Endpoints.Activity}/{activityId}/kudos?access_token={accessToken}";
+                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
+
+                return Unmarshaller<List<Athlete>>.Unmarshal(json);
+            }
+            catch (Exception)
+            {
+                //TODO: Glenn - Use logger to log errors ( Google )
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Returns a list of photos linked to the specified activity.
         /// </summary>
         /// <param name="activityId">The activity</param>
@@ -128,7 +152,7 @@ namespace Kliva.Services
             {
                 var accessToken = await _settingsService.GetStoredStravaAccessToken();
 
-                string getUrl = string.Format("{0}/{1}/photos?access_token={2}", Endpoints.Activity, activityId, accessToken);
+                string getUrl = $"{Endpoints.Activity}/{activityId}/photos?access_token={accessToken}";
                 string json = await WebRequest.SendGetAsync(new Uri(getUrl));
 
                 return Unmarshaller<List<Photo>>.Unmarshal(json);

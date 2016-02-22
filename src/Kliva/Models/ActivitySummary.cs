@@ -367,6 +367,13 @@ namespace Kliva.Models
             set { Set(() => AllPhotos, ref _allPhotos, value); }
         }
 
+        private List<Athlete> _kudos;
+        public List<Athlete> Kudos
+        {
+            get { return _kudos; }
+            set { Set(() => Kudos, ref _kudos, value); }
+        }
+
         /// <summary>
         /// Number of photos ( Instagram & Strava ).
         /// </summary>

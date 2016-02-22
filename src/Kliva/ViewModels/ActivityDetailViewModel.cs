@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Messaging;
@@ -19,6 +21,13 @@ namespace Kliva.ViewModels
             get { return _selectedActivity; }
             set { Set(() => SelectedActivity, ref _selectedActivity, value); }
         }
+
+        private ObservableCollection<Athlete> _kudos = new ObservableCollection<Athlete>();
+        public ObservableCollection<Athlete> Kudos
+        {
+            get { return _kudos; }
+            set { Set(() => Kudos, ref _kudos, value); }
+        } 
 
         private bool _hasSegments;
         public bool HasSegments
@@ -48,6 +57,13 @@ namespace Kliva.ViewModels
             if (activity != null)
             {
                 SelectedActivity = activity;
+
+                Kudos.Clear();
+                if (activity.KudosCount > 0 && activity.Kudos != null && activity.Kudos.Any())
+                {                    
+                    foreach (Athlete kudo in activity.Kudos)
+                        Kudos.Add(kudo);
+                }
 
                 //Currently the Public API of Strava will not give us Segments info for 'other' athletes then the one logged in
                 HasSegments = SelectedActivity.SegmentEfforts != null;

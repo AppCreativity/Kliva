@@ -160,13 +160,17 @@
                     </RelativePanel>
                 </PivotItem>
                 <PivotItem x:Name="SegmentsPivot" Header="segments"
-                           Visibility="{x:Bind ViewModel.HasSegments, Mode=TwoWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                           Visibility="{x:Bind ViewModel.HasSegments, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
                     
                 </PivotItem>
-                <PivotItem x:Name="KudosPivot" Header="kudos"></PivotItem>
+                <PivotItem x:Name="KudosPivot" Header="kudos">
+                    <ListView x:Name="ActivityKudosList"
+                              ItemsSource="{x:Bind ViewModel.Kudos, Mode=OneWay}"
+                              ItemTemplate="{StaticResource KudosListItemTemplate}" />
+                </PivotItem>
                 <PivotItem x:Name="CommentsPivot" Header="comments"></PivotItem>
                 <PivotItem x:Name="PhotosPivot" Header="photos"
-                           Visibility="{x:Bind ViewModel.HasPhotos, Mode=TwoWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                           Visibility="{x:Bind ViewModel.HasPhotos, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
                     
                 </PivotItem>
             </Pivot>

@@ -87,8 +87,8 @@ namespace Kliva.Services
                            select new
                            {
                                Activity = activity,
-                               AthleteTask = this.StravaAthleteService.GetAthleteAsync(activity.AthleteMeta.Id.ToString()),
-                               PhotoTask = (activity.TotalPhotoCount > 0) ? this.StravaActivityService.GetPhotosAsync(activity.Id.ToString()) : Task.FromResult<List<Photo>>(null)
+                               AthleteTask = StravaAthleteService.GetAthleteAsync(activity.AthleteMeta.Id.ToString()),
+                               PhotoTask = (activity.TotalPhotoCount > 0) ? StravaActivityService.GetPhotosAsync(activity.Id.ToString()) : Task.FromResult<List<Photo>>(null)
                            }).ToList();
 
             List<Task> tasks = new List<Task>();
@@ -148,6 +148,9 @@ namespace Kliva.Services
             Activity activity = await StravaActivityService.GetActivityAsync(id, includeEfforts);
             if (activity != null)
                 await GetActivitySummaryRelations(new List<ActivitySummary>() { activity });
+
+            if (activity.KudosCount > 0)
+                activity.Kudos = await StravaActivityService.GetKudosAsync(id);
 
             return activity;
         }

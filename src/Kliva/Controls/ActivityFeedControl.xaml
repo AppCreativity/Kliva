@@ -19,11 +19,5 @@
               ItemsSource="{x:Bind ViewModel.ActivityIncrementalCollection, Mode=OneWay}"
               SelectedItem="{x:Bind ViewModel.SelectedActivity, Mode=TwoWay, Converter={StaticResource XBindItemCastingConverter}}"
               ItemTemplate="{StaticResource ActivityListItemDataTemplate}"
-              HorizontalContentAlignment="Stretch">
-        <ListView.ItemContainerStyle>
-            <Style TargetType="ListViewItem">
-                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-            </Style>
-        </ListView.ItemContainerStyle>
-    </ListView>
+              HorizontalContentAlignment="Stretch" />
 </UserControl>

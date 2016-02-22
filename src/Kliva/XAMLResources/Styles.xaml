@@ -24,6 +24,8 @@
     <FontFamily x:Key="OpenSansFontBold">/Assets/Fonts/OpenSans-Bold.ttf#Open Sans</FontFamily>
     <FontFamily x:Key="OpenSansFontSemibold">/Assets/Fonts/OpenSans-Semibold.ttf#Open Sans</FontFamily>
     <FontFamily x:Key="MaterialDesignFont">/Assets/Fonts/materialdesignicons-webfont.ttf#Material Design Icons</FontFamily>
+    
+    <!-- NAMED TYPES -->
 
     <Style x:Name="BaseTextBlock" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource OpenSansFontLight}" />
@@ -44,6 +46,73 @@
            TargetType="TextBlock">
         <Setter Property="Margin" Value="60,0,0,10" />
     </Style>
+
+    <Style x:Name="PaneIcon" TargetType="FontIcon">
+        <Setter Property="Width" Value="40" />
+        <Setter Property="Height" Value="40" />
+        <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+
+    <Style x:Name="PaneButton" TargetType="Button">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+    </Style>
+
+    <Style x:Name="PaneIconTextBlock" BasedOn="{StaticResource BaseWhiteTextBlock}" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="Width" Value="48" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="TextAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Name="PaneIconMaterialTextBlock" BasedOn="{StaticResource PaneIconTextBlock}" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}" />
+    </Style>
+
+    <Style x:Name="KlivaButtonMobile"
+           TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource KlivaDarkBrush}" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontFamily" Value="{StaticResource OpenSansFontLight}" />
+        <Setter Property="FontSize" Value="18" />
+    </Style>
+
+    <Style x:Name="KlivaButtonDesktop"
+           TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource KlivaDarkBrush}" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontFamily" Value="{StaticResource OpenSansFontLight}" />
+        <Setter Property="FontSize" Value="22" />
+    </Style>
+
+    <Style x:Name="ProfileEllipseDesktop" TargetType="Ellipse">
+        <Setter Property="Height" Value="50" />
+        <Setter Property="Width" Value="50" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
+    </Style>
+
+    <Style x:Name="ProfileEllipseMobile" TargetType="Ellipse">
+        <Setter Property="Height" Value="42" />
+        <Setter Property="Width" Value="42" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
+    </Style>
+
+    <Style x:Name="MenuItemContainerStyle" TargetType="ListViewItem">
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+    </Style>
+    
+    <!-- GENERAL TYPES -->
 
     <Style TargetType="PivotHeaderItem">
         <Setter Property="FontSize" Value="{ThemeResource PivotHeaderItemFontSize}" />
@@ -161,56 +230,13 @@
         </Setter>
     </Style>
 
-    <Style x:Name="PaneIcon" TargetType="FontIcon">
-        <Setter Property="Width" Value="40" />
-        <Setter Property="Height" Value="40" />
-        <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
-        <Setter Property="Foreground" Value="White" />
-    </Style>
-
-    <Style x:Name="PaneButton" TargetType="Button">
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="HorizontalAlignment" Value="Stretch" />
-    </Style>
-
-    <Style x:Name="PaneIconTextBlock" BasedOn="{StaticResource BaseWhiteTextBlock}" TargetType="TextBlock">
-        <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
-        <Setter Property="FontSize" Value="20" />
-        <Setter Property="Width" Value="48" />
-        <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="TextAlignment" Value="Center" />
-    </Style>
-
-    <Style x:Name="PaneIconMaterialTextBlock" BasedOn="{StaticResource PaneIconTextBlock}" TargetType="TextBlock">
-        <Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}" />
-    </Style>
-
-    <Style x:Name="KlivaButtonMobile"
-           TargetType="Button">
-        <Setter Property="Background" Value="{StaticResource KlivaDarkBrush}" />
-        <Setter Property="Foreground" Value="White" />
-        <Setter Property="FontFamily" Value="{StaticResource OpenSansFontLight}" />
-        <Setter Property="FontSize" Value="18" />
-    </Style>
-
-    <Style x:Name="KlivaButtonDesktop"
-           TargetType="Button">
-        <Setter Property="Background" Value="{StaticResource KlivaDarkBrush}" />
-        <Setter Property="Foreground" Value="White" />
-        <Setter Property="FontFamily" Value="{StaticResource OpenSansFontLight}" />
-        <Setter Property="FontSize" Value="22" />
-    </Style>
-
     <Style TargetType="controls:KlivaApplicationFrame">
         <Setter Property="HorizontalContentAlignment"
                 Value="Stretch" />
         <Setter Property="VerticalContentAlignment"
                 Value="Stretch" />
         <Setter Property="IsTabStop"
-                Value="False" />        
+                Value="False" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:KlivaApplicationFrame">
@@ -241,26 +267,13 @@
         </Setter>
     </Style>
 
-    <Style x:Name="ProfileEllipseDesktop" TargetType="Ellipse">
-        <Setter Property="Height" Value="50" />
-        <Setter Property="Width" Value="50" />
-        <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="VerticalAlignment" Value="Top" />
-        <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
+    <Style TargetType="ListView">
+        <Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </Setter.Value>
+        </Setter>
     </Style>
-
-    <Style x:Name="ProfileEllipseMobile" TargetType="Ellipse">
-        <Setter Property="Height" Value="42" />
-        <Setter Property="Width" Value="42" />
-        <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="VerticalAlignment" Value="Top" />
-        <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
-    </Style>
-
-    <Style x:Name="MenuItemContainerStyle" TargetType="ListViewItem">
-        <Setter Property="Padding" Value="0" />
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="HorizontalContentAlignment" Value="Left" />
-    </Style>
-
 </ResourceDictionary>
