@@ -76,6 +76,7 @@ namespace Kliva.Services
 
             return DistanceUnitType.Kilometres;
         }
+
         public async Task SetDistanceUnitType(DistanceUnitType distanceUnitType)
         {
             if (_settings == null)

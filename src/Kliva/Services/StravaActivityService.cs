@@ -28,10 +28,16 @@ namespace Kliva.Services
             try
             {
                 var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitType();
+                
                 string getUrl = $"{Endpoints.Activity}/{id}?include_all_efforts={includeEfforts}&access_token={accessToken}";
                 string json = await WebRequest.SendGetAsync(new Uri(getUrl));
 
-                return Unmarshaller<Activity>.Unmarshal(json);
+                var activity = Unmarshaller<Activity>.Unmarshal(json);
+
+                activity.DistanceUnit = defaultDistanceUnitType;
+                activity.SpeedUnit = activity.DistanceUnit == DistanceUnitType.Kilometres ? SpeedUnit.KilometresPerHour : SpeedUnit.MilesPerHour;
+                return activity;
             }
             catch (Exception ex)
             {
@@ -53,14 +59,19 @@ namespace Kliva.Services
             {
                 var accessToken = await _settingsService.GetStoredStravaAccessToken();
                 var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitType();
-
+                
                 //TODO: Glenn - Optional parameters should be treated as such!
                 //string getUrl = String.Format("{0}?page={1}&per_page={2}&access_token={3}", Endpoints.Activities, page, perPage, accessToken);
                 string getUrl = $"{Endpoints.Activities}?access_token={accessToken}";
                 string json = await WebRequest.SendGetAsync(new Uri(getUrl));
 
                 //TODO: Glenn - Google maps?
-                return Unmarshaller<List<ActivitySummary>>.Unmarshal(json).Select(activity => { activity.DistanceUnit = defaultDistanceUnitType; return activity; });
+                return Unmarshaller<List<ActivitySummary>>.Unmarshal(json).Select(activity =>
+                {
+                    activity.DistanceUnit = defaultDistanceUnitType;
+                    activity.SpeedUnit = activity.DistanceUnit == DistanceUnitType.Kilometres ? SpeedUnit.KilometresPerHour : SpeedUnit.MilesPerHour;
+                    return activity;
+                });
             }
             catch (Exception ex)
             {
@@ -87,7 +98,12 @@ namespace Kliva.Services
                 string getUrl = $"{Endpoints.ActivitiesFollowers}?page={page}&per_page={perPage}&access_token={accessToken}";
                 string json = await WebRequest.SendGetAsync(new Uri(getUrl));
 
-                return Unmarshaller<List<ActivitySummary>>.Unmarshal(json).Select(activity => { activity.DistanceUnit = defaultDistanceUnitType; return activity; });
+                return Unmarshaller<List<ActivitySummary>>.Unmarshal(json).Select(activity =>
+                {
+                    activity.DistanceUnit = defaultDistanceUnitType;
+                    activity.SpeedUnit = activity.DistanceUnit == DistanceUnitType.Kilometres ? SpeedUnit.KilometresPerHour : SpeedUnit.MilesPerHour;
+                    return activity;
+                });
             }
             catch (Exception ex)
             {

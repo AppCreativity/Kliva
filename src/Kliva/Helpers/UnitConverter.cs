@@ -2,13 +2,6 @@
 
 namespace Kliva.Helpers
 {
-    public enum SpeedUnit
-    {
-        MetresPerSecond,
-        KilometresPerHour,
-        MilesPerHour
-    }
-
     public static class UnitConverter
     {
         public static float[] DistanceConversions =
@@ -21,10 +14,10 @@ namespace Kliva.Helpers
 
         public static string[] DistanceSymbols =
         {
-            "m",
-            "ft",
             "km",
-            "mi"
+            "mi",
+            "m",
+            "ft"
         };
 
         public static float[] SpeedConversions =

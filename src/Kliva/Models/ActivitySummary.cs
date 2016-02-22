@@ -415,6 +415,22 @@ namespace Kliva.Models
             {
                 Set(() => DistanceUnit, ref _distanceUnit, value);
                 RaisePropertyChanged(() => DistanceFormatted);
+
+                //TODO: Glenn - do we need to 'recalculate' other values?
+            }
+        }
+
+        private SpeedUnit _speedUnit;
+        public SpeedUnit SpeedUnit
+        {
+            get { return _speedUnit; }
+            set
+            {
+                Set(() => SpeedUnit, ref _speedUnit, value);
+                RaisePropertyChanged(() => AverageSpeedFormatted);
+                RaisePropertyChanged(() => MaxSpeedFormatted);
+
+                //TODO: Glenn - do we need to 'recalculate' other values?
             }
         }
 
@@ -422,12 +438,44 @@ namespace Kliva.Models
         {
             get
             {
-                switch (this.DistanceUnit)
+                switch (DistanceUnit)
                 {
                     case DistanceUnitType.Kilometres:
-                        return UnitConverter.ConvertDistance(this.Distance, DistanceUnitType.Metres, DistanceUnitType.Kilometres).ToString("F1");
+                        return UnitConverter.ConvertDistance(Distance, DistanceUnitType.Metres, DistanceUnitType.Kilometres).ToString("F1");
                     case DistanceUnitType.Miles:
-                        return UnitConverter.ConvertDistance(this.Distance, DistanceUnitType.Metres, DistanceUnitType.Miles).ToString("F1");
+                        return UnitConverter.ConvertDistance(Distance, DistanceUnitType.Metres, DistanceUnitType.Miles).ToString("F1");
+                }
+
+                return null;
+            }
+        }
+
+        public string AverageSpeedFormatted
+        {
+            get
+            {
+                switch (DistanceUnit)
+                {
+                    case DistanceUnitType.Kilometres:
+                        return UnitConverter.ConvertSpeed(AverageSpeed, SpeedUnit.MetresPerSecond, SpeedUnit.KilometresPerHour).ToString("F1");
+                    case DistanceUnitType.Miles:
+                        return UnitConverter.ConvertSpeed(AverageSpeed, SpeedUnit.MetresPerSecond, SpeedUnit.MilesPerHour).ToString("F1");
+                }
+
+                return null;
+            }
+        }
+
+        public string MaxSpeedFormatted
+        {
+            get
+            {
+                switch (DistanceUnit)
+                {
+                    case DistanceUnitType.Kilometres:
+                        return UnitConverter.ConvertSpeed(MaxSpeed, SpeedUnit.MetresPerSecond, SpeedUnit.KilometresPerHour).ToString("F1");
+                    case DistanceUnitType.Miles:
+                        return UnitConverter.ConvertSpeed(MaxSpeed, SpeedUnit.MetresPerSecond, SpeedUnit.MilesPerHour).ToString("F1");
                 }
 
                 return null;
@@ -438,12 +486,12 @@ namespace Kliva.Models
         {
             get
             {
-                switch(this.DistanceUnit)
+                switch(DistanceUnit)
                 {
                     case DistanceUnitType.Kilometres:
                         return this.ElevationGain.ToString("F1");
                     case DistanceUnitType.Miles:
-                        return UnitConverter.ConvertDistance(this.ElevationGain, DistanceUnitType.Metres, DistanceUnitType.Feet).ToString("F1");
+                        return UnitConverter.ConvertDistance(ElevationGain, DistanceUnitType.Metres, DistanceUnitType.Feet).ToString("F1");
                 }
 
                 return null;

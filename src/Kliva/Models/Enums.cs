@@ -17,6 +17,13 @@
         Feet
     }
 
+    public enum SpeedUnit
+    {
+        MetresPerSecond,
+        KilometresPerHour,
+        MilesPerHour
+    }
+
     public enum DisplayMode
     {
         CompactOverlay,
