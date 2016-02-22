@@ -76,7 +76,6 @@
 
                         <TextBlock x:Name="SpeedMaxFormattedTextBlock"                                   
                                    Margin="0,20,0,0"                                   
-                                   RelativePanel.Below="DistanceFormattedLabelTextBlock"
                                    RelativePanel.RightOf="SpeedAverageFormattedTextBlock"
                                    RelativePanel.AlignTopWith="SpeedLabelTextBlock">
                             <Run Text="{x:Bind ViewModel.SelectedActivity.MaxSpeedFormatted, Mode=OneWay}" />
@@ -121,6 +120,43 @@
                             <Run Text="{x:Bind ViewModel.SelectedActivity.ElevationGainFormatted, Mode=OneWay}" />
                             <Run Text="{x:Bind ViewModel.SelectedActivity.ElevationUnit, Mode=OneWay, Converter={StaticResource DistanceUnitToStringConverter}}" />
                         </TextBlock>
+                        <TextBlock x:Name="ElevationGainFormattedLabelTextBlock"
+                                   Text="gain"
+                                   RelativePanel.Below="ElevationGainFormattedTextBlock"
+                                   RelativePanel.AlignLeftWith="ElevationGainFormattedTextBlock" />                        
+                        
+                        <!-- HEART RATE BLOCK -->
+                        <TextBlock x:Name="HeartRateLabelTextBlock"
+                                   Text="heart rate"
+                                   Margin="0,20,0,0"
+                                   RelativePanel.Below="ElevationGainFormattedLabelTextBlock"
+                                   RelativePanel.AlignLeftWithPanel="True" />
+                        <TextBlock x:Name="HeartRateAverageFormattedTextBlock"
+                                   Margin="0,20,0,0"
+                                   MinWidth="125"
+                                   RelativePanel.RightOf="HeartRateLabelTextBlock"
+                                   RelativePanel.AlignLeftWith="DistanceFormattedTextBlock"
+                                   RelativePanel.AlignTopWith="HeartRateLabelTextBlock">
+                            <Run Text="{x:Bind ViewModel.SelectedActivity.AverageHeartrate, Mode=OneWay}" />
+                            <Run Text="bpm" />
+                        </TextBlock>
+                        <TextBlock x:Name="HeartRateAverageFormattedLabelTextBlock"
+                                   Text="average"
+                                   RelativePanel.Below="HeartRateAverageFormattedTextBlock"
+                                   RelativePanel.AlignLeftWith="HeartRateAverageFormattedTextBlock" />
+
+                        <TextBlock x:Name="HeartRateMaxFormattedTextBlock"                                   
+                                   Margin="0,20,0,0"                                   
+                                   RelativePanel.RightOf="HeartRateAverageFormattedTextBlock"
+                                   RelativePanel.AlignTopWith="HeartRateLabelTextBlock">
+                            <Run Text="{x:Bind ViewModel.SelectedActivity.MaxHeartrate, Mode=OneWay}" />
+                            <Run Text="bpm" />
+                        </TextBlock>
+                        <TextBlock x:Name="HeartRateMaxFormattedLabelTextBlock"
+                                   Text="max"
+                                   Margin="0,0,0,0"
+                                   RelativePanel.Below="HeartRateMaxFormattedTextBlock"
+                                   RelativePanel.AlignLeftWith="HeartRateMaxFormattedTextBlock" />
                     </RelativePanel>
                 </PivotItem>
                 <PivotItem x:Name="SegmentsPivot" Header="segments"
