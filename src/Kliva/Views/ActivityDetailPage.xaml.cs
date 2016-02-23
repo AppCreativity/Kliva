@@ -1,4 +1,5 @@
 ﻿using Windows.UI.Xaml.Controls;
+using Kliva.ViewModels;
 
 namespace Kliva.Views
 {
@@ -7,6 +8,8 @@ namespace Kliva.Views
     /// </summary>
     public sealed partial class ActivityDetailPage : Page
     {
+        private ActivityDetailViewModel ViewModel => DataContext as ActivityDetailViewModel;
+
         public ActivityDetailPage()
         {
             this.InitializeComponent();
