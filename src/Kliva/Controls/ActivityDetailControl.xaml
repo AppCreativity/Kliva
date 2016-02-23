@@ -32,8 +32,21 @@
                              RelativePanel.Below="ActivityName"
                              RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
 
+            <CommandBar x:Name="ActivityDetailCommandBar"
+                        Style="{StaticResource CommandBarWithoutMoreStyle}"
+                        RelativePanel.Below="ActivityMap"
+                        RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+                <CommandBar.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <AppBarButton Icon="Like"
+                                      Visibility="{x:Bind ViewModel.SelectedActivity.HasKudoed, Mode=OneWay, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
+                                      Command="{x:Bind ViewModel.KudosCommand}"/>
+                        <AppBarButton Icon="Message" />
+                    </StackPanel>
+                </CommandBar.Content>
+            </CommandBar>
             <Pivot x:Name="ActivityPivot"
-                   RelativePanel.Below="ActivityMap"
+                   RelativePanel.Below="ActivityDetailCommandBar"
                    RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" >
                 <PivotItem x:Name="StatisticsPivot" Header="statistics">
                     <RelativePanel>
@@ -161,7 +174,6 @@
                 </PivotItem>
                 <PivotItem x:Name="SegmentsPivot" Header="segments"
                            Visibility="{x:Bind ViewModel.HasSegments, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    
                 </PivotItem>
                 <PivotItem x:Name="KudosPivot" Header="kudos">
                     <ListView x:Name="ActivityKudosList"

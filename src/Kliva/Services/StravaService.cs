@@ -170,5 +170,10 @@ namespace Kliva.Services
 
             return activities;
         }
+
+        public Task GiveKudos(string activityId)
+        {
+            return StravaActivityService.GiveKudos(activityId);
+        }
     }
 }

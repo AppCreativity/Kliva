@@ -7,11 +7,13 @@ namespace Kliva.Messages
     {
         public Pivots Pivot { get; set; }
         public bool Visible { get; set; }
+        public bool? Show { get; set; }
 
-        public PivotMessage(Pivots pivot, bool visible)
+        public PivotMessage(Pivots pivot, bool visible, bool? show = null)
         {
-            this.Pivot = pivot;
-            this.Visible = visible;
+            Pivot = pivot;
+            Visible = visible;
+            Show = show;
         }
     }
 }

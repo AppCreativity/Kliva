@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Cimbalino.Toolkit.Services;
+using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Kliva.Messages;
 using Kliva.Models;
@@ -50,15 +51,18 @@ namespace Kliva.ViewModels
             set { Set(() => HasPhotos, ref _hasPhotos, value); }
         }
 
+        private RelayCommand _kudosCommand;
+        public RelayCommand KudosCommand => _kudosCommand ?? (_kudosCommand = new RelayCommand(async () => await OnKudos()));
+
         public ActivityDetailViewModel(INavigationService navigationService, IStravaService stravaService) : base(navigationService)
         {
             _stravaService = stravaService;
-            MessengerInstance.Register<ActivitySummaryMessage>(this, async item => await LoadActivityDetails(item));
+            MessengerInstance.Register<ActivitySummaryMessage>(this, async item => await LoadActivityDetails(item.ActivitySummary.Id.ToString()));
         }
 
-        private async Task LoadActivityDetails(ActivitySummaryMessage message)
+        private async Task LoadActivityDetails(string activityId)
         {
-            var activity = await _stravaService.GetActivityAsync(message.ActivitySummary.Id.ToString(), true);
+            var activity = await _stravaService.GetActivityAsync(activityId, true);
             var athlete = await _stravaService.GetAthleteAsync();
 
             if (activity != null)
@@ -87,9 +91,16 @@ namespace Kliva.ViewModels
                 HasPhotos = athlete.Id == SelectedActivity.Athlete.Id && SelectedActivity.TotalPhotoCount > 0;
 
                 //TODO: Glenn - Why oh why are we not yet able to show/hide PivotItems through Visibility bindable
-                ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage>(new PivotMessage(Pivots.Segments, this.HasSegments));
-                ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage>(new PivotMessage(Pivots.Photos, this.HasPhotos));
+                ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage>(new PivotMessage(Pivots.Segments, HasSegments));
+                ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage>(new PivotMessage(Pivots.Photos, HasPhotos));
             }
+        }
+
+        private async Task OnKudos()
+        {
+            await _stravaService.GiveKudos(SelectedActivity.Id.ToString());
+            await LoadActivityDetails(SelectedActivity.Id.ToString());
+            ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage>(new PivotMessage(Pivots.Kudos, true, true));
         }
     }
 }

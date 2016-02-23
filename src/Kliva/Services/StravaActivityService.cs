@@ -142,6 +142,25 @@ namespace Kliva.Services
         }
 
         /// <summary>
+        /// Give kudos for the specified activity.
+        /// </summary>
+        /// <param name="activityId">The activity you want to give kudos for.</param>
+        public async Task GiveKudos(string activityId)
+        {
+            try
+            {
+                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+
+                string postUrl = $"{Endpoints.Activity}/{activityId}/kudos?access_token={accessToken}";
+                await WebRequest.SendPostAsync(new Uri(postUrl));
+            }
+            catch (Exception)
+            {
+                //TODO: Glenn - Use logger to log errors ( Google )
+            }
+        }
+
+        /// <summary>
         /// Gets all the comments of an activity asynchronously.
         /// </summary>
         /// <param name="activityId">The Strava Id of the activity.</param>

@@ -61,6 +61,9 @@ namespace Kliva.Controls
                 if (!ActivityPivot.Items.Contains(pivotItem.Item2))
                     ActivityPivot.Items.Insert(pivotItem.Item1, pivotItem.Item2);
             }
+
+            if (message.Show.HasValue && message.Show.Value)
+                ActivityPivot.SelectedIndex = ActivityPivot.Items.IndexOf(_pivotDictionary[message.Pivot].Item2);
         }
 
         private async Task DrawPolyline(List<BasicGeoposition> geopositions)
