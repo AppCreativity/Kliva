@@ -162,6 +162,52 @@
         </UserControl>
     </DataTemplate>
 
+    <DataTemplate x:Key="CommentsListItemTemplate"
+                  x:DataType="models:Comment">
+        <UserControl>
+            <Grid>
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="VisualStateGroup">
+                        <VisualState x:Name="Mobile">
+                            <VisualState.StateTriggers>
+                                <AdaptiveTrigger MinWindowWidth="320" />
+                            </VisualState.StateTriggers>
+                            <VisualState.Setters>
+                                <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseMobile}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Desktop">
+                            <VisualState.StateTriggers>
+                                <AdaptiveTrigger MinWindowWidth="720" />
+                            </VisualState.StateTriggers>
+                            <VisualState.Setters>
+                                <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseDesktop}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+                <RelativePanel x:Name="KudosListItemPanel">
+                    <Ellipse x:Name="AthleteProfilePicture"
+                             Margin="0,5,0,5"
+                             RelativePanel.AlignLeftWithPanel="True">
+                        <Ellipse.Fill>
+                            <ImageBrush Stretch="UniformToFill" ImageSource="{x:Bind Athlete.ProfileMediumFormatted, Mode=OneWay}" />
+                        </Ellipse.Fill>
+                    </Ellipse>
+
+                    <TextBlock x:Name="Comment"
+                               Text="{x:Bind Text, Mode=OneWay}"
+                               Style="{StaticResource BaseTextBlock}"
+                               TextWrapping="WrapWholeWords"
+                               Margin="10,0,10,0"
+                               FontSize="14"
+                               RelativePanel.RightOf="AthleteProfilePicture"
+                               RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                </RelativePanel>
+            </Grid>
+        </UserControl>
+    </DataTemplate>
+
     <controls:MenuItemTemplateSelector x:Key="MenuItemTemplateSelector"
                                        MDL2DataTemplate="{StaticResource MenuItemDataTemplate}"
                                        MaterialDataTemplate="{StaticResource MenuItemMaterialDataTemplate}" />

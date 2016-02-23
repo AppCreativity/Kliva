@@ -142,6 +142,30 @@ namespace Kliva.Services
         }
 
         /// <summary>
+        /// Gets all the comments of an activity asynchronously.
+        /// </summary>
+        /// <param name="activityId">The Strava Id of the activity.</param>
+        /// <returns>A list of comments.</returns>
+        public async Task<List<Comment>> GetCommentsAsync(string activityId)
+        {
+            try
+            {
+                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+
+                string getUrl = $"{Endpoints.Activity}/{activityId}/comments?access_token={accessToken}";
+                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
+
+                return Unmarshaller<List<Comment>>.Unmarshal(json);
+            }
+            catch (Exception)
+            {
+                //TODO: Glenn - Use logger to log errors ( Google )
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Returns a list of photos linked to the specified activity.
         /// </summary>
         /// <param name="activityId">The activity</param>

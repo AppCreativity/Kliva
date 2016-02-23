@@ -374,6 +374,13 @@ namespace Kliva.Models
             set { Set(() => Kudos, ref _kudos, value); }
         }
 
+        private List<Comment> _comments;
+        public List<Comment> Comments
+        {
+            get { return _comments; }
+            set { Set(() => Comments, ref _comments, value); }
+        }
+
         /// <summary>
         /// Number of photos ( Instagram & Strava ).
         /// </summary>

@@ -168,7 +168,11 @@
                               ItemsSource="{x:Bind ViewModel.Kudos, Mode=OneWay}"
                               ItemTemplate="{StaticResource KudosListItemTemplate}" />
                 </PivotItem>
-                <PivotItem x:Name="CommentsPivot" Header="comments"></PivotItem>
+                <PivotItem x:Name="CommentsPivot" Header="comments">
+                    <ListView x:Name="ActivityCommentsList"
+                              ItemsSource="{x:Bind ViewModel.Comments, Mode=OneWay}"
+                              ItemTemplate="{StaticResource CommentsListItemTemplate}"/>
+                </PivotItem>
                 <PivotItem x:Name="PhotosPivot" Header="photos"
                            Visibility="{x:Bind ViewModel.HasPhotos, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
                     

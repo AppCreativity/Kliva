@@ -29,6 +29,13 @@ namespace Kliva.ViewModels
             set { Set(() => Kudos, ref _kudos, value); }
         } 
 
+        private ObservableCollection<Comment> _comments = new ObservableCollection<Comment>();
+        public ObservableCollection<Comment> Comments
+        {
+            get { return _comments; }
+            set { Set(() => Comments, ref _comments, value); }
+        }
+
         private bool _hasSegments;
         public bool HasSegments
         {
@@ -63,6 +70,13 @@ namespace Kliva.ViewModels
                 {                    
                     foreach (Athlete kudo in activity.Kudos)
                         Kudos.Add(kudo);
+                }
+
+                Comments.Clear();
+                if (activity.CommentCount > 0 && activity.Comments != null && activity.Comments.Any())
+                {
+                    foreach(Comment comment in activity.Comments)
+                        Comments.Add(comment);
                 }
 
                 //Currently the Public API of Strava will not give us Segments info for 'other' athletes then the one logged in

@@ -139,6 +139,7 @@
     <Compile Include="Models\AthleteMeta.cs" />
     <Compile Include="Models\AthleteSummary.cs" />
     <Compile Include="Models\BaseClass.cs" />
+    <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\IncrementalLoadingBase.cs" />

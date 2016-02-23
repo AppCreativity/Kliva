@@ -12,6 +12,8 @@ namespace Kliva.Services.Interfaces
 
         Task<List<Athlete>> GetKudosAsync(string activityId);
 
+        Task<List<Comment>> GetCommentsAsync(string activityId);
+
         Task<List<Photo>> GetPhotosAsync(string activityId);
     }
 }
