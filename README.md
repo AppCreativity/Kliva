@@ -1,7 +1,7 @@
 # Kliva
 <img src="https://ci.appveyor.com/api/projects/status/esusas0y99tn2982?svg=true" width="250"/>
 
-This repository is used for feature/bug tracking and contains the open-source UWP version of Kliva. 
+This repository is used for feature/bug tracking and contains the open-source UWP (Universal Windows Platform) version of Kliva. 
 
 ### Info
 Kliva ( Swedish for to climb / to strive )
