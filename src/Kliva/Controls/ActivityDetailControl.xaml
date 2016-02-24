@@ -69,7 +69,8 @@
                    RelativePanel.Below="ActivityDetailCommandBar"
                    RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
                 <PivotItem x:Name="StatisticsPivot" Header="statistics">
-                    <RelativePanel>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollMode="Disabled">
+                        <RelativePanel Margin="10,0,0,0">
                         <!-- DISTANCE BLOCK -->
                         <TextBlock x:Name="DistanceLabelTextBlock"
                                    Text="distance"
@@ -191,6 +192,7 @@
                                    RelativePanel.Below="HeartRateMaxFormattedTextBlock"
                                    RelativePanel.AlignLeftWith="HeartRateMaxFormattedTextBlock" />
                     </RelativePanel>
+                    </ScrollViewer>
                 </PivotItem>
                 <PivotItem x:Name="SegmentsPivot" Header="segments"
                            Visibility="{x:Bind ViewModel.HasSegments, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">

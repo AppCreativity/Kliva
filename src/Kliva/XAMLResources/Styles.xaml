@@ -975,6 +975,10 @@
         </Setter>
     </Style>
 
+    <Style TargetType="PivotItem">
+        <Setter Property="Margin" Value="0,0,0,0" />
+    </Style>
+
     <Style TargetType="controls:KlivaApplicationFrame">
         <Setter Property="HorizontalContentAlignment"
                 Value="Stretch" />
