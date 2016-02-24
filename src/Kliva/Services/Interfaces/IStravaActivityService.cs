@@ -11,7 +11,7 @@ namespace Kliva.Services.Interfaces
         Task<IEnumerable<ActivitySummary>> GetFollowersActivitiesAsync(int page, int perPage);
 
         Task<List<Athlete>> GetKudosAsync(string activityId);
-        Task GiveKudos(string activityId);
+        Task GiveKudosAsync(string activityId);
 
         Task<List<Comment>> GetCommentsAsync(string activityId);
 

@@ -121,6 +121,7 @@
     <Compile Include="Converters\SecondsToTimeStringConverter.cs" />
     <Compile Include="Converters\SpeedUnitToStringConverter.cs" />
     <Compile Include="Converters\XBindItemCastingConverter.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\PolylineConverter.cs" />
     <Compile Include="Helpers\UnitConverter.cs" />

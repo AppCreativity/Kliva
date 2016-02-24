@@ -145,7 +145,7 @@ namespace Kliva.Services
         /// Give kudos for the specified activity.
         /// </summary>
         /// <param name="activityId">The activity you want to give kudos for.</param>
-        public async Task GiveKudos(string activityId)
+        public async Task GiveKudosAsync(string activityId)
         {
             try
             {

@@ -98,7 +98,7 @@ namespace Kliva.ViewModels
 
         private async Task OnKudos()
         {
-            await _stravaService.GiveKudos(SelectedActivity.Id.ToString());
+            await _stravaService.GiveKudosAsync(SelectedActivity.Id.ToString());
             await LoadActivityDetails(SelectedActivity.Id.ToString());
             ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage>(new PivotMessage(Pivots.Kudos, true, true));
         }
