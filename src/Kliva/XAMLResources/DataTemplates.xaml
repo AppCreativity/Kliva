@@ -5,7 +5,9 @@
     xmlns:models="using:Kliva.Models"
     xmlns:local="using:Kliva.XAMLResources"
     xmlns:controls="using:Kliva.Controls"
-    xmlns:maps="using:Windows.UI.Xaml.Controls.Maps">
+    xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core">
 
     <DataTemplate x:Key="ActivityListItemDataTemplate"
                   x:DataType="models:ActivitySummary">
@@ -34,6 +36,15 @@
                 </VisualStateManager.VisualStateGroups>
                 <RelativePanel x:Name="ActivityListItemPanel"
                                Margin="0,0,0,10">
+
+                    <interactivity:Interaction.Behaviors>
+                        <core:DataTriggerBehavior Binding="{x:Bind AthleteCount, Mode=OneWay}" ComparisonCondition="GreaterThan" Value="1">
+                            <core:ChangePropertyAction TargetObject="{Binding ElementName=BottomPanel}" PropertyName="Visibility" Value="Visible"/>
+                        </core:DataTriggerBehavior>
+                        <core:DataTriggerBehavior Binding="{x:Bind AthleteCount, Mode=OneWay}" ComparisonCondition="LessThanOrEqual" Value="1">
+                            <core:ChangePropertyAction TargetObject="{Binding ElementName=BottomPanel}" PropertyName="Visibility" Value="Collapsed"/>
+                        </core:DataTriggerBehavior>
+                    </interactivity:Interaction.Behaviors>
 
                     <RelativePanel x:Name="TopPanel"
                                    RelativePanel.AlignTopWithPanel="True">
