@@ -67,7 +67,7 @@
             </CommandBar>
             <Pivot x:Name="ActivityPivot"
                    RelativePanel.Below="ActivityDetailCommandBar"
-                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" >
+                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
                 <PivotItem x:Name="StatisticsPivot" Header="statistics">
                     <RelativePanel>
                         <!-- DISTANCE BLOCK -->
