@@ -9,7 +9,7 @@
     mc:Ignorable="d">
     <!--DataContext="{Binding Settings, Source={StaticResource Locator}}">-->
 
-    <Grid x:Name="LayoutRoot">
+    <Grid x:Name="LayoutRoot" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
