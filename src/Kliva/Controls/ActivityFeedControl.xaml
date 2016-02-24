@@ -62,7 +62,7 @@
                 HorizontalAlignment="Right" VerticalAlignment="Bottom"
                 Click="OnGoToTopButtonClick"
                 Style="{StaticResource EmptyButtonStyle}"
-                Padding="0,0,30,20"
+                Padding="0,0,25,20"
                 Visibility="Collapsed">
             <Image x:Name="image"
                    HorizontalAlignment="Left" VerticalAlignment="Top"
