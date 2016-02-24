@@ -91,8 +91,8 @@
     </Style>
 
     <Style x:Name="ProfileEllipseDesktop" TargetType="Ellipse">
-        <Setter Property="Height" Value="50" />
-        <Setter Property="Width" Value="50" />
+        <Setter Property="Height" Value="55" />
+        <Setter Property="Width" Value="55" />
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
