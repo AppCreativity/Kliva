@@ -124,6 +124,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\PolylineConverter.cs" />
+    <Compile Include="Helpers\ScrollViewerExtensions.cs" />
     <Compile Include="Helpers\UnitConverter.cs" />
     <Compile Include="Helpers\Unmarshaller.cs" />
     <Compile Include="Messages\ActivityPolylineMessage.cs" />
@@ -202,6 +203,7 @@
     <Content Include="Assets\Brooks.jpg" />
     <Content Include="Assets\Merckx_1920.jpg" />
     <Content Include="Assets\Start.png" />
+    <Content Include="Assets\ToTop.scale-240.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

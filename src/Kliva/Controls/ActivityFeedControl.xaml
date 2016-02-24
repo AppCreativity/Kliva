@@ -14,10 +14,60 @@
     <UserControl.Resources>
         <converters:XBindItemCastingConverter x:Key="XBindItemCastingConverter" />
     </UserControl.Resources>
-    
-    <ListView x:Name="ActivityList"
-              ItemsSource="{x:Bind ViewModel.ActivityIncrementalCollection, Mode=OneWay}"
-              SelectedItem="{x:Bind ViewModel.SelectedActivity, Mode=TwoWay, Converter={StaticResource XBindItemCastingConverter}}"
-              ItemTemplate="{StaticResource ActivityListItemDataTemplate}"
-              HorizontalContentAlignment="Stretch" />
+
+    <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroupGoToButton">
+                <VisualState x:Name="HideGoToButton">
+                    <Storyboard>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="GoToTopButton">
+                            <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
+                            <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0"/>
+                        </DoubleAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="GoToTopButton">
+                            <DiscreteObjectKeyFrame KeyTime="0:0:0.4">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+
+                <VisualState x:Name="ShowGoToButton">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="GoToTopButton">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Visible</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="GoToTopButton">
+                            <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                            <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="1"/>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <ListView x:Name="ActivityList"
+                  ItemsSource="{x:Bind ViewModel.ActivityIncrementalCollection, Mode=OneWay}"
+                  SelectedItem="{x:Bind ViewModel.SelectedActivity, Mode=TwoWay, Converter={StaticResource XBindItemCastingConverter}}"
+                  ItemTemplate="{StaticResource ActivityListItemDataTemplate}"
+                  Loaded="OnActivityListLoaded"                  
+                  HorizontalContentAlignment="Stretch" />
+
+        <Button x:Name="GoToTopButton"
+                HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                Click="OnGoToTopButtonClick"
+                Style="{StaticResource EmptyButtonStyle}"
+                Padding="0,0,30,20"
+                Visibility="Collapsed">
+            <Image x:Name="image"
+                   HorizontalAlignment="Left" VerticalAlignment="Top"
+                   Height="42" Width="42"
+                   Source="ms-appx:///Assets/ToTop.png"/>
+        </Button>
+    </Grid>
 </UserControl>
