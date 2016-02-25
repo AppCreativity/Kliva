@@ -81,7 +81,7 @@ namespace Kliva.Services
             }
         }
 
-        private async Task GetActivitySummaryRelations(IEnumerable<ActivitySummary> activities)
+        private async Task GetActivitySummaryRelationsAsync(IEnumerable<ActivitySummary> activities)
         {
             var results = (from activity in activities
                            select new
@@ -150,7 +150,7 @@ namespace Kliva.Services
             Activity activity = await StravaActivityService.GetActivityAsync(id, includeEfforts);
             if (activity != null)
             {
-                await GetActivitySummaryRelations(new List<ActivitySummary> { activity });
+                await GetActivitySummaryRelationsAsync(new List<ActivitySummary> { activity });
 
                 if (activity.KudosCount > 0)
                     activity.Kudos = await StravaActivityService.GetKudosAsync(id);
@@ -168,7 +168,7 @@ namespace Kliva.Services
             //IEnumerable<ActivitySummary> activities = await this.StravaActivityService.GetActivitiesAsync(page, perPage);
 
             if (activities != null && activities.Any())
-                await GetActivitySummaryRelations(activities);
+                await GetActivitySummaryRelationsAsync(activities);
 
             return activities;
         }

@@ -511,31 +511,25 @@ namespace Kliva.Helpers
         #region OnHorizontalOffsetChanged()
         private void OnHorizontalOffsetChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
-            if (_scrollViewer != null)
-            {
-                _scrollViewer.ScrollToHorizontalOffset(e.NewValue);
-            }
+            _scrollViewer?.ChangeView(e.NewValue, null, null);
         }
+
         #endregion
 
         #region OnVerticalOffsetChanged()
         private void OnVerticalOffsetChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
-            if (_scrollViewer != null)
-            {
-                _scrollViewer.ScrollToVerticalOffset(e.NewValue);
-            }
+            _scrollViewer?.ChangeView(null, e.NewValue, null);
         }
+
         #endregion
 
         #region OnZoomFactorChanged()
         private void OnZoomFactorChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
-            if (_scrollViewer != null)
-            {
-                _scrollViewer.ZoomToFactor((float)e.NewValue);
-            }
+            _scrollViewer?.ChangeView(null, null, (float)e.NewValue);
         }
+
         #endregion
 
         #region ScrollToHorizontalOffsetWithAnimation()
