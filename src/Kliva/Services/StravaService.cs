@@ -32,21 +32,11 @@ namespace Kliva.Services
 
     public class StravaService : IStravaService
     {
-        public IStravaActivityService StravaActivityService
-        {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<IStravaActivityService>();
-            }
-        }
+        public IStravaActivityService StravaActivityService => ServiceLocator.Current.GetInstance<IStravaActivityService>();
 
-        public IStravaAthleteService StravaAthleteService
-        {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<IStravaAthleteService>();
-            }
-        }
+        public IStravaAthleteService StravaAthleteService => ServiceLocator.Current.GetInstance<IStravaAthleteService>();
+
+        public IStravaClubService StravaClubService => ServiceLocator.Current.GetInstance<IStravaClubService>();
 
         private string ParseAuthorizationResponse(string responseData)
         {
@@ -176,6 +166,11 @@ namespace Kliva.Services
         public Task GiveKudosAsync(string activityId)
         {
             return StravaActivityService.GiveKudosAsync(activityId);
+        }
+
+        public Task<List<ClubSummary>> GetClubsAsync()
+        {
+            return StravaClubService.GetClubsAsync();
         }
     }
 }

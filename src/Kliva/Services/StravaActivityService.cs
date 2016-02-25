@@ -10,7 +10,7 @@ namespace Kliva.Services
 {
     public class StravaActivityService : IStravaActivityService
     {
-        private ISettingsService _settingsService;
+        private readonly ISettingsService _settingsService;
 
         public StravaActivityService(ISettingsService settingsService)
         {
