@@ -38,6 +38,7 @@ namespace Kliva.ViewModels
             Register<LoginViewModel>();
             Register<SettingsViewModel>();
             Register<SidePaneViewModel>();
+            Register<ClubsViewModel>();
         }
 
         public MainViewModel Main => Get<MainViewModel>();
@@ -45,5 +46,6 @@ namespace Kliva.ViewModels
         public LoginViewModel Login => Get<LoginViewModel>();
         public SettingsViewModel Settings => Get<SettingsViewModel>();
         public SidePaneViewModel SidePane => Get<SidePaneViewModel>();
+        public ClubsViewModel Clubs => Get<ClubsViewModel>();
     }
 }

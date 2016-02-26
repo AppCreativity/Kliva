@@ -32,6 +32,15 @@
 
     public enum MenuItemType
     {
+        Statistics,
+        Profile,
+        Clubs,
+        Settings,
+        Empty
+    }
+
+    public enum MenuItemFontType
+    {
         MDL2,
         Material
     }

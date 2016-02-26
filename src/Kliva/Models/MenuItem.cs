@@ -22,5 +22,12 @@
             get { return _menuItemType; }
             set { Set(() => MenuItemType, ref _menuItemType, value); }
         }
+
+        private MenuItemFontType _menuItemFontType;
+        public MenuItemFontType MenuItemFontType
+        {
+            get { return _menuItemFontType; }
+            set { Set(() => MenuItemFontType, ref _menuItemFontType, value); }
+        }
     }
 }
