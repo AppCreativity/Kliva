@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.UI.Xaml;
 using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -20,7 +19,13 @@ namespace Kliva.ViewModels
         public Activity SelectedActivity
         {
             get { return _selectedActivity; }
-            set { Set(() => SelectedActivity, ref _selectedActivity, value); }
+            set
+            {
+                Set(() => SelectedActivity, ref _selectedActivity, value);
+                RaisePropertyChanged(() => KudosCount);
+                RaisePropertyChanged(() => CommentCount);
+                RaisePropertyChanged(() => PhotoCount);
+            }
         }
 
         private ObservableCollection<Athlete> _kudos = new ObservableCollection<Athlete>();
@@ -50,6 +55,10 @@ namespace Kliva.ViewModels
             get { return _hasPhotos; }
             set { Set(() => HasPhotos, ref _hasPhotos, value); }
         }
+
+        public int KudosCount => SelectedActivity?.KudosCount ?? 0;
+        public int CommentCount => SelectedActivity?.CommentCount ?? 0;
+        public int PhotoCount => SelectedActivity?.TotalPhotoCount ?? 0;
 
         private RelayCommand _kudosCommand;
         public RelayCommand KudosCommand => _kudosCommand ?? (_kudosCommand = new RelayCommand(async () => await OnKudos()));

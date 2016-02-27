@@ -10,12 +10,14 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
-    DataContext="{Binding ActivityDetail, Source={StaticResource Locator}}">
+    DataContext="{Binding ActivityDetail, Source={StaticResource Locator}}"
+    Loaded="ActivityDetailControl_OnLoaded">
 
     <UserControl.Resources>
         <converters:DistanceUnitToStringConverter x:Key="DistanceUnitToStringConverter" />
         <converters:SpeedUnitToStringConverter x:Key="SpeedUnitToStringConverter" />
         <converters:SecondsToTimeStringConverter x:Key="SecondsToTimeStringConverter" />
+        <converters:AddAmountToStringConverter x:Key="AddAmountToStringConverter" />
     </UserControl.Resources>
     
     <Grid>
@@ -197,17 +199,20 @@
                 <PivotItem x:Name="SegmentsPivot" Header="segments"
                            Visibility="{x:Bind ViewModel.HasSegments, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
                 </PivotItem>
-                <PivotItem x:Name="KudosPivot" Header="kudos">
+                <PivotItem x:Name="KudosPivot" 
+                           Header="{x:Bind ViewModel.KudosCount, Converter={StaticResource AddAmountToStringConverter}, ConverterParameter=kudos, Mode=OneWay}">
                     <ListView x:Name="ActivityKudosList"
                               ItemsSource="{x:Bind ViewModel.Kudos, Mode=OneWay}"
                               ItemTemplate="{StaticResource KudosListItemTemplate}" />
                 </PivotItem>
-                <PivotItem x:Name="CommentsPivot" Header="comments">
+                <PivotItem x:Name="CommentsPivot" 
+                           Header="{x:Bind ViewModel.CommentCount, Converter={StaticResource AddAmountToStringConverter}, ConverterParameter=comments, Mode=OneWay}">
                     <ListView x:Name="ActivityCommentsList"
                               ItemsSource="{x:Bind ViewModel.Comments, Mode=OneWay}"
                               ItemTemplate="{StaticResource CommentsListItemTemplate}"/>
                 </PivotItem>
-                <PivotItem x:Name="PhotosPivot" Header="photos"
+                <PivotItem x:Name="PhotosPivot" 
+                           Header="{x:Bind ViewModel.PhotoCount, Converter={StaticResource AddAmountToStringConverter}, ConverterParameter=photos, Mode=OneWay}"
                            Visibility="{x:Bind ViewModel.HasPhotos, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <GridView x:Name="ActivityPhotosGrid"
                               Margin="10,0,0,0"

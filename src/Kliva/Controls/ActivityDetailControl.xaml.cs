@@ -23,27 +23,16 @@ namespace Kliva.Controls
         //public IStravaViewModel ViewModel => DataContext as IStravaViewModel;
         public ActivityDetailViewModel ViewModel => DataContext as ActivityDetailViewModel;
 
-        private Dictionary<Pivots, Tuple<int, PivotItem>> _pivotDictionary = new Dictionary<Pivots, Tuple<int, PivotItem>>();
+        private readonly Dictionary<Pivots, Tuple<int, PivotItem>> _pivotDictionary = new Dictionary<Pivots, Tuple<int, PivotItem>>();
 
         public ActivityDetailControl()
         {
             this.InitializeComponent();
-            InitializePivots();
 
             //DataContextChanged += (sender, arg) => this.Bindings.Update();
 
             ServiceLocator.Current.GetInstance<IMessenger>().Register<ActivityPolylineMessage>(this, async message => await DrawPolyline(message.Geopositions));
             ServiceLocator.Current.GetInstance<IMessenger>().Register<PivotMessage>(this, AdjustPivots);
-        }
-
-        private void InitializePivots()
-        {
-            int pivotIndex = 0;
-            foreach (PivotItem item in ActivityPivot.Items.ToList())
-            {
-                _pivotDictionary.Add(Enum<Pivots>.Parse((string)item.Header), Tuple.Create(pivotIndex, item));
-                ++pivotIndex;
-            }
         }
 
         private void AdjustPivots(PivotMessage message)
@@ -90,6 +79,16 @@ namespace Kliva.Controls
                 var zoomed = false;
                 while (!zoomed)
                     zoomed = await ActivityMap.TrySetViewBoundsAsync(GeoboundingBox.TryCompute(geopositions), null, MapAnimationKind.None);
+            }
+        }
+
+        private void ActivityDetailControl_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            int pivotIndex = 0;
+            foreach (PivotItem item in ActivityPivot.Items.ToList())
+            {
+                _pivotDictionary.Add(Enum<Pivots>.Parse((string)item.Header), Tuple.Create(pivotIndex, item));
+                ++pivotIndex;
             }
         }
     }
