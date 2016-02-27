@@ -1,115 +1,82 @@
 ﻿using Cimbalino.Toolkit.Services;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
-using Microsoft.Practices.ServiceLocation;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
-using System;
-using Windows.ApplicationModel;
 
 namespace Kliva.Services
 {
     public class SettingsService : ApplicationInfoService, ISettingsService
     {
+        private readonly IStorageService _storageService;
         private Settings _settings;
 
-        private Task<bool> SettingsServiceExists()
+        public SettingsService(IStorageService storageService)
         {
-            return ServiceLocator.Current.GetInstance<IStorageService>().Local.FileExistsAsync(Constants.SETTINGSSTORE);
+            _storageService = storageService;
         }
 
         public async Task SetStravaAccessTokenAsync(string stravaAccessToken)
         {
-            if (_settings == null)
-            {
-                bool settingsExists = await this.SettingsServiceExists();
-                if (settingsExists)
-                {
-                    string settingsAsString = await ServiceLocator.Current.GetInstance<IStorageService>().Local.ReadAllTextAsync(Constants.SETTINGSSTORE);
-                    _settings = JsonConvert.DeserializeObject<Settings>(settingsAsString);
-                }
-                else
-                    _settings = new Settings();
-            }
+            await LoadSettings(createIfNotExisting: true);
 
             _settings.StravaAccessToken = stravaAccessToken;
 
-            await ServiceLocator.Current.GetInstance<IStorageService>().Local.WriteAllTextAsync(Constants.SETTINGSSTORE, JsonConvert.SerializeObject(_settings));
+            await SaveSettingsToStorage();
         }
 
         public async Task<string> GetStoredStravaAccessToken()
         {
-            if (_settings != null)
-                return _settings.StravaAccessToken;
-
-            bool settingsExists = await this.SettingsServiceExists();
-            if (settingsExists)
-            {
-                string settingsAsString = await ServiceLocator.Current.GetInstance<IStorageService>().Local.ReadAllTextAsync(Constants.SETTINGSSTORE);
-                _settings = JsonConvert.DeserializeObject<Settings>(settingsAsString);
-                return _settings.StravaAccessToken;
-            }
-
-            return null;
+            await LoadSettings();
+            return _settings?.StravaAccessToken;
         }
 
         public Task RemoveStravaAccessToken()
         {
-            if (_settings != null)
-                _settings.StravaAccessToken = string.Empty;
-
             return SetStravaAccessTokenAsync(string.Empty);
         }
 
         public async Task<DistanceUnitType> GetStoredDistanceUnitType()
         {
-            if (_settings != null)
-                return _settings.DistanceUnitType;
-
-            bool settingsExists = await this.SettingsServiceExists();
-            if (settingsExists)
-            {
-                string settingsAsString = await ServiceLocator.Current.GetInstance<IStorageService>().Local.ReadAllTextAsync(Constants.SETTINGSSTORE);
-                _settings = JsonConvert.DeserializeObject<Settings>(settingsAsString);
-                return _settings.DistanceUnitType;
-            }
-
-            return DistanceUnitType.Kilometres;
+            await LoadSettings();
+            return _settings?.DistanceUnitType ?? DistanceUnitType.Kilometres;
         }
 
         public async Task SetDistanceUnitType(DistanceUnitType distanceUnitType)
         {
-            if (_settings == null)
-            {
-                bool settingsExists = await this.SettingsServiceExists();
-                if (settingsExists)
-                {
-                    string settingsAsString = await ServiceLocator.Current.GetInstance<IStorageService>().Local.ReadAllTextAsync(Constants.SETTINGSSTORE);
-                    _settings = JsonConvert.DeserializeObject<Settings>(settingsAsString);
-                }
-                else
-                    _settings = new Settings();
-            }
+            await LoadSettings(createIfNotExisting: true);
 
             _settings.DistanceUnitType = distanceUnitType;
 
-            await ServiceLocator.Current.GetInstance<IStorageService>().Local.WriteAllTextAsync(Constants.SETTINGSSTORE, JsonConvert.SerializeObject(_settings));
+            await SaveSettingsToStorage();
         }
 
-        //public async Task<AppVersion> GetStoredAppVersion()
-        //{
-        //    if (_settings != null)
-        //        return _settings.AppVersion;
+        private async Task LoadSettings(bool createIfNotExisting = false)
+        {
+            if (_settings == null)
+            {
+                bool settingsExists = await DoesSettingsServiceExist();
+                if (settingsExists)
+                {
+                    string settingsAsString = await _storageService.Local.ReadAllTextAsync(Constants.SETTINGSSTORE);
+                    _settings = JsonConvert.DeserializeObject<Settings>(settingsAsString);
+                }
+                else if (createIfNotExisting)
+                {
+                    _settings = new Settings();
+                }
+            }
+        }
 
-        //    bool settingsExists = await this.SettingsServiceExists();
-        //    if (settingsExists)
-        //    {
-        //        string settingsAsString = await ServiceLocator.Current.GetInstance<IStorageService>().Local.ReadAllTextAsync(Constants.SETTINGSSTORE);
-        //        _settings = JsonConvert.DeserializeObject<Settings>(settingsAsString);
-        //        return _settings.AppVersion;
-        //    }
+        private Task SaveSettingsToStorage()
+        {
+            string serializedSettings = JsonConvert.SerializeObject(_settings);
+            return _storageService.Local.WriteAllTextAsync(Constants.SETTINGSSTORE, serializedSettings);
+        }
 
-        //    return null;
-        //}
+        private Task<bool> DoesSettingsServiceExist()
+        {
+            return _storageService.Local.FileExistsAsync(Constants.SETTINGSSTORE);
+        }
     }
 }

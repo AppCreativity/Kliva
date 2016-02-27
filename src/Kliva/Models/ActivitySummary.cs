@@ -349,7 +349,7 @@ namespace Kliva.Models
     }
 
     /// <summary>
-    /// Seperated added fields from original response class!
+    /// Separated added fields from original response class!
     /// </summary>
     public partial class ActivitySummary
     {
@@ -522,5 +522,10 @@ namespace Kliva.Models
                 return null;
             }
         }
+
+        /// <summary>
+        /// AthleteCount = Athlete + other
+        /// </summary>
+        public int OtherAthleteCount => AthleteCount -1;
     }
 }

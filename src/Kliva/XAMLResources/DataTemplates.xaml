@@ -117,7 +117,7 @@
                         <TextBlock x:Name="AthleteCount"
                                    Margin="10,0,0,0"
                                    RelativePanel.RightOf="AthleteCountImage"
-                                   Text="{x:Bind AthleteCount, Mode=OneWay}"
+                                   Text="{x:Bind OtherAthleteCount, Mode=OneWay}"
                                    FontFamily="{StaticResource OpenSansFontSemibold}"
                                    Foreground="{StaticResource KlivaDarkBrush}"
                                    FontSize="14"
