@@ -227,6 +227,27 @@
         </UserControl>
     </DataTemplate>
 
+    <DataTemplate x:Key="ClubListItemDataTemplate"
+                  x:DataType="models:ClubSummary">
+        <UserControl>
+            <RelativePanel Margin="0,0,0,10">
+                <Image x:Name="ClubProfilePicture"
+                       Source="{x:Bind Profile}"
+                       Margin="0,5,0,5"
+                       Width="80" Height="80"
+                       RelativePanel.AlignLeftWithPanel="True"/>
+                
+                <TextBlock x:Name="ClubName"
+                           Text="{x:Bind Name, Mode=OneWay}"
+                           Style="{StaticResource BaseTextBlock}"
+                           Margin="10,0,0,0"
+                           FontSize="14"                           
+                           RelativePanel.RightOf="ClubProfilePicture"
+                           RelativePanel.AlignVerticalCenterWithPanel="True"/>
+            </RelativePanel>
+        </UserControl>
+    </DataTemplate>
+
     <controls:MenuItemTemplateSelector x:Key="MenuItemTemplateSelector"
                                        MDL2DataTemplate="{StaticResource MenuItemDataTemplate}"
                                        MaterialDataTemplate="{StaticResource MenuItemMaterialDataTemplate}" />

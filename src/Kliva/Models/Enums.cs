@@ -32,6 +32,7 @@
 
     public enum MenuItemType
     {
+        Home,
         Statistics,
         Profile,
         Clubs,

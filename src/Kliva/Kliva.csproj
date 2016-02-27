@@ -112,6 +112,9 @@
     <Compile Include="Controls\ActivityFeedControl.xaml.cs">
       <DependentUpon>ActivityFeedControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ClubFeedControl.xaml.cs">
+      <DependentUpon>ClubFeedControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\KlivaApplicationFrame.cs" />
     <Compile Include="Controls\MenuItemTemplateSelector.cs" />
     <Compile Include="Controls\SidePaneControl.xaml.cs">
@@ -231,6 +234,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\ActivityFeedControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ClubFeedControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

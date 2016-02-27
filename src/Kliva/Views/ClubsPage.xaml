@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:klivacontrols="using:Kliva.Controls"
     mc:Ignorable="d"
     DataContext="{Binding Clubs, Source={StaticResource Locator}}">
 
@@ -38,7 +39,7 @@
                         <AdaptiveTrigger MinWindowWidth="720" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockDesktop}" />
+                        <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockDesktopWithSideBar}" />
                         <Setter Target="ListColumn.Width" Value="*" />
                         <Setter Target="ListItemColumn.Width" Value="1.8*" />                        
                     </VisualState.Setters>
@@ -58,6 +59,9 @@
                 <ColumnDefinition x:Name="ListColumn" />
                 <ColumnDefinition x:Name="ListItemColumn" />
             </Grid.ColumnDefinitions>
+
+            <klivacontrols:ClubFeedControl Margin="0,0,0,0"
+                                           Grid.Column="0" />
         </Grid>
     </Grid>
 </Page>
