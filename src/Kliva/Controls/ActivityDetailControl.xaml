@@ -209,7 +209,10 @@
                 </PivotItem>
                 <PivotItem x:Name="PhotosPivot" Header="photos"
                            Visibility="{x:Bind ViewModel.HasPhotos, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    
+                    <GridView x:Name="ActivityPhotosGrid"
+                              Margin="10,0,0,0"
+                              ItemsSource="{x:Bind ViewModel.SelectedActivity.AllPhotos, Mode=OneWay}"
+                              ItemTemplate="{StaticResource PhotosGridItemTemplate}"/>
                 </PivotItem>
             </Pivot>
         </RelativePanel>

@@ -69,4 +69,14 @@ namespace Kliva.Models
         [JsonProperty("location")]
         public List<double> Location { get; set; }
     }
+
+    /// <summary>
+    /// Seperated added fields from original response class!
+    /// </summary>
+    public partial class Photo
+    {
+        public string ImageThumbnail => !string.IsNullOrEmpty(ImageUrl) ? $"{ImageUrl}media?size=t" : null;
+
+        public string ImageLarge => !string.IsNullOrEmpty(ImageUrl) ? $"{ImageUrl}media?size=l" : null;
+    }
 }

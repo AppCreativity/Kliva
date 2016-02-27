@@ -219,6 +219,14 @@
         </UserControl>
     </DataTemplate>
 
+    <DataTemplate x:Key="PhotosGridItemTemplate"
+                  x:DataType="models:Photo">
+        <UserControl>
+            <Image Source="{x:Bind ImageThumbnail, Mode=OneWay}"
+                   Width="150" Height="150" />
+        </UserControl>
+    </DataTemplate>
+
     <controls:MenuItemTemplateSelector x:Key="MenuItemTemplateSelector"
                                        MDL2DataTemplate="{StaticResource MenuItemDataTemplate}"
                                        MaterialDataTemplate="{StaticResource MenuItemMaterialDataTemplate}" />
