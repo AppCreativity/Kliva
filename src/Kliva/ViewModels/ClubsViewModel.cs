@@ -1,11 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
+using Kliva.Helpers;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
+using Kliva.Views;
 
 namespace Kliva.ViewModels
 {
@@ -15,11 +19,33 @@ namespace Kliva.ViewModels
 
         private bool _viewModelLoaded = false;
 
+        public VisualState CurrentState { get; set; }
+
         private ObservableCollection<ClubSummary> _clubs = new ObservableCollection<ClubSummary>();
         public ObservableCollection<ClubSummary> Clubs
         {
             get { return _clubs; }
             set { Set(() => Clubs, ref _clubs, value); }
+        }
+
+        private ClubSummary _selectedClub;
+        public ClubSummary SelectedClub
+        {
+            get { return _selectedClub; }
+            set
+            {
+                if (Set(() => SelectedClub, ref _selectedClub, value) && value != null)
+                {
+                    {
+                        switch (Enum<AppTarget>.Parse(CurrentState.Name))
+                        {
+                            case AppTarget.Mobile:
+                                _navigationService.Navigate<ClubDetailPage>();
+                                break;
+                        }
+                    }
+                }
+            }
         }
 
         private RelayCommand _viewLoadedCommand;

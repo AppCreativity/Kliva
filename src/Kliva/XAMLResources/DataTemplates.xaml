@@ -230,21 +230,45 @@
     <DataTemplate x:Key="ClubListItemDataTemplate"
                   x:DataType="models:ClubSummary">
         <UserControl>
-            <RelativePanel Margin="0,0,0,10">
-                <Image x:Name="ClubProfilePicture"
-                       Source="{x:Bind Profile}"
-                       Margin="0,5,0,5"
-                       Width="80" Height="80"
-                       RelativePanel.AlignLeftWithPanel="True"/>
-                
-                <TextBlock x:Name="ClubName"
+            <Grid>
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="VisualStateGroup">
+                        <VisualState x:Name="Mobile">
+                            <VisualState.StateTriggers>
+                                <AdaptiveTrigger MinWindowWidth="320" />
+                            </VisualState.StateTriggers>
+                            <VisualState.Setters>
+                                <Setter Target="ClubProfilePicture.Style" Value="{StaticResource ProfileEllipseMobile}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Desktop">
+                            <VisualState.StateTriggers>
+                                <AdaptiveTrigger MinWindowWidth="720" />
+                            </VisualState.StateTriggers>
+                            <VisualState.Setters>
+                                <Setter Target="ClubProfilePicture.Style" Value="{StaticResource ProfileEllipseDesktop}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+                <RelativePanel Margin="0,0,0,10">
+                    <Ellipse x:Name="ClubProfilePicture"
+                             Margin="0,5,0,5"
+                             RelativePanel.AlignLeftWithPanel="True">
+                        <Ellipse.Fill>
+                            <ImageBrush Stretch="UniformToFill" ImageSource="{x:Bind Profile, Mode=OneWay}" />
+                        </Ellipse.Fill>
+                    </Ellipse>
+
+                    <TextBlock x:Name="ClubName"
                            Text="{x:Bind Name, Mode=OneWay}"
                            Style="{StaticResource BaseTextBlock}"
                            Margin="10,0,0,0"
                            FontSize="14"                           
                            RelativePanel.RightOf="ClubProfilePicture"
                            RelativePanel.AlignVerticalCenterWithPanel="True"/>
-            </RelativePanel>
+                </RelativePanel>
+            </Grid>
         </UserControl>
     </DataTemplate>
 

@@ -188,6 +188,9 @@
     <Compile Include="Views\ActivityDetailPage.xaml.cs">
       <DependentUpon>ActivityDetailPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ClubDetailPage.xaml.cs">
+      <DependentUpon>ClubDetailPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ClubsPage.xaml.cs">
       <DependentUpon>ClubsPage.xaml</DependentUpon>
     </Compile>
@@ -247,6 +250,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ActivityDetailPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ClubDetailPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

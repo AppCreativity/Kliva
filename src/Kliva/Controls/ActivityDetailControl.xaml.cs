@@ -84,11 +84,14 @@ namespace Kliva.Controls
 
         private void ActivityDetailControl_OnLoaded(object sender, RoutedEventArgs e)
         {
-            int pivotIndex = 0;
-            foreach (PivotItem item in ActivityPivot.Items.ToList())
+            if (_pivotDictionary.Count == 0)
             {
-                _pivotDictionary.Add(Enum<Pivots>.Parse((string)item.Header), Tuple.Create(pivotIndex, item));
-                ++pivotIndex;
+                int pivotIndex = 0;
+                foreach (PivotItem item in ActivityPivot.Items.ToList())
+                {
+                    _pivotDictionary.Add(Enum<Pivots>.Parse((string)item.Header), Tuple.Create(pivotIndex, item));
+                    ++pivotIndex;
+                }
             }
         }
     }

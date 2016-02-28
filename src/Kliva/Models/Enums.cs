@@ -1,5 +1,11 @@
 ﻿namespace Kliva.Models
 {
+    public enum AppTarget
+    {
+        Desktop,
+        Mobile
+    }
+
     public enum Pivots
     {
         Statistics,

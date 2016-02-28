@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
 using Windows.UI.Xaml;
 using GalaSoft.MvvmLight.Messaging;
+using Kliva.Helpers;
 using Microsoft.Practices.ServiceLocation;
 
 namespace Kliva.ViewModels
@@ -46,10 +47,9 @@ namespace Kliva.ViewModels
             {
                 if (Set(() => SelectedActivity, ref _selectedActivity, value) && value != null)
                 {
-                    //TODO: Change the strings to enums or constants for the visual states
-                    switch (CurrentState.Name)
+                    switch (Enum<AppTarget>.Parse(CurrentState.Name))
                     {
-                        case "Mobile":
+                        case AppTarget.Mobile:
                             _navigationService.Navigate<ActivityDetailPage>();                            
                             break;
                     }

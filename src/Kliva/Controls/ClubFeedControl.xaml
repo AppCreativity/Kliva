@@ -17,6 +17,7 @@
     <Grid>
         <ListView x:Name="ClubList"
                   ItemsSource="{x:Bind ViewModel.Clubs, Mode=OneWay}"
+                  SelectedItem="{x:Bind ViewModel.SelectedClub, Mode=TwoWay, Converter={StaticResource XBindItemCastingConverter}}"
                   ItemTemplate="{StaticResource ClubListItemDataTemplate}"
                   HorizontalContentAlignment="Stretch" />
     </Grid>

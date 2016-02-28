@@ -8,6 +8,7 @@
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:klivacontrols="using:Kliva.Controls"
+    NavigationCacheMode="Required"
     mc:Ignorable="d"
     DataContext="{Binding Clubs, Source={StaticResource Locator}}">
 
@@ -23,7 +24,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="VisualStateGroup">
+            <VisualStateGroup x:Name="VisualStateGroup" CurrentStateChanged="OnCurrentStateChanged">
                 <VisualState x:Name="Mobile">
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="320" />
