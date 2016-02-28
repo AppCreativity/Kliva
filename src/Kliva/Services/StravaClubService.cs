@@ -37,5 +37,51 @@ namespace Kliva.Services
 
             return null;
         }
+
+        /// <summary>
+        /// Gets the club which the specified id.
+        /// </summary>
+        /// <param name="clubId">The id of the club.</param>
+        /// <returns>The Club object containing detailed information about the club.</returns>
+        public async Task<Club> GetClubAsync(string clubId)
+        {
+            try
+            {
+                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                string getUrl = $"{Endpoints.Club}/{clubId}?access_token={accessToken}";
+                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
+
+                return Unmarshaller<Club>.Unmarshal(json);
+            }
+            catch (Exception ex)
+            {
+                //TODO: Glenn - Use logger to log errors ( Google )
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the members of the specified club.
+        /// </summary>
+        /// <param name="clubId">The club's id.</param>
+        /// <returns>The club's members.</returns>
+        public async Task<List<AthleteSummary>> GetClubMembersAsync(string clubId)
+        {
+            try
+            {
+                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                string getUrl = $"{Endpoints.Club}/{clubId}/members?access_token={accessToken}";
+                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
+
+                return Unmarshaller<List<AthleteSummary>>.Unmarshal(json);
+            }
+            catch (Exception ex)
+            {
+                //TODO: Glenn - Use logger to log errors ( Google )
+            }
+
+            return null;
+        }
     }
 }

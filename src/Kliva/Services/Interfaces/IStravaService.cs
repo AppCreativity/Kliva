@@ -21,5 +21,6 @@ namespace Kliva.Services.Interfaces
         Task GiveKudosAsync(string activityId);
 
         Task<List<ClubSummary>> GetClubsAsync();
+        Task<Club> GetClubAsync(string id);        
     }
 }

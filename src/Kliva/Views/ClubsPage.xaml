@@ -63,6 +63,9 @@
 
             <klivacontrols:ClubFeedControl Margin="0,0,0,0"
                                            Grid.Column="0" />
+
+            <klivacontrols:ClubDetailControl Margin="10,0,0,0"
+                                             Grid.Column="1" />
         </Grid>
     </Grid>
 </Page>

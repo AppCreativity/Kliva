@@ -112,6 +112,9 @@
     <Compile Include="Controls\ActivityFeedControl.xaml.cs">
       <DependentUpon>ActivityFeedControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ClubDetailControl.xaml.cs">
+      <DependentUpon>ClubDetailControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ClubFeedControl.xaml.cs">
       <DependentUpon>ClubFeedControl.xaml</DependentUpon>
     </Compile>
@@ -178,6 +181,7 @@
     <Compile Include="Services\StravaService.cs" />
     <Compile Include="Helpers\WebRequest.cs" />
     <Compile Include="ViewModels\ActivityDetailViewModel.cs" />
+    <Compile Include="ViewModels\ClubDetailViewModel.cs" />
     <Compile Include="ViewModels\ClubsViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IStravaViewModel.cs" />
     <Compile Include="ViewModels\KlivaBaseViewModel.cs" />
@@ -239,6 +243,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\ActivityFeedControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ClubDetailControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

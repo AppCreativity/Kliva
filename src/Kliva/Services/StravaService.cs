@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -171,6 +172,20 @@ namespace Kliva.Services
         public Task<List<ClubSummary>> GetClubsAsync()
         {
             return StravaClubService.GetClubsAsync();
+        }
+
+        public async Task<Club> GetClubAsync(string id)
+        {
+            //TODO: Glenn - kick of tasks in Task.Run List<Task>
+
+            Club club = await StravaClubService.GetClubAsync(id);
+            if (club != null)
+            {
+                if (club.MemberCount > 0)
+                    club.Members = await StravaClubService.GetClubMembersAsync(id);
+            }
+
+            return club;
         }
     }
 }

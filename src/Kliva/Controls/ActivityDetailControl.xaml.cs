@@ -82,7 +82,7 @@ namespace Kliva.Controls
             }
         }
 
-        private void ActivityDetailControl_OnLoaded(object sender, RoutedEventArgs e)
+        private void OnActivityDetailControlLoaded(object sender, RoutedEventArgs e)
         {
             if (_pivotDictionary.Count == 0)
             {

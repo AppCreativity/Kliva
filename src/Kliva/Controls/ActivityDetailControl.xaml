@@ -11,7 +11,7 @@
     d:DesignHeight="300"
     d:DesignWidth="400"
     DataContext="{Binding ActivityDetail, Source={StaticResource Locator}}"
-    Loaded="ActivityDetailControl_OnLoaded">
+    Loaded="OnActivityDetailControlLoaded">
 
     <UserControl.Resources>
         <converters:DistanceUnitToStringConverter x:Key="DistanceUnitToStringConverter" />
