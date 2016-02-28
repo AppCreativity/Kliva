@@ -7,6 +7,7 @@ using Windows.UI.Xaml;
 using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
 using Kliva.Helpers;
+using Kliva.Messages;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
 using Kliva.Views;
@@ -43,6 +44,8 @@ namespace Kliva.ViewModels
                                 _navigationService.Navigate<ClubDetailPage>();
                                 break;
                         }
+
+                        MessengerInstance.Send<ClubSummaryMessage>(new ClubSummaryMessage(_selectedClub));
                     }
                 }
             }
