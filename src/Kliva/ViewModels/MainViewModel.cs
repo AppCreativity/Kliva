@@ -25,6 +25,13 @@ namespace Kliva.ViewModels
 
         public VisualState CurrentState { get; set; }
 
+        private string _filterText;
+        public string FilterText
+        {
+            get { return _filterText; }
+            set { Set(() => FilterText, ref _filterText, value); }
+        }
+
         private ObservableCollection<ActivitySummary> _activities = new ObservableCollection<ActivitySummary>();
         public ObservableCollection<ActivitySummary> Activities
         {
@@ -64,6 +71,25 @@ namespace Kliva.ViewModels
             }
         }
 
+        private RelayCommand<string> _filterCommand;
+        public RelayCommand<string> FilterCommand => _filterCommand ?? (_filterCommand = new RelayCommand<string>((item) =>
+        {
+            ActivityFeedFilter filter = Enum<ActivityFeedFilter>.Parse(item);
+            switch (filter)
+            {
+                case ActivityFeedFilter.All:
+                    FilterText = "Showing all activities";
+                    break;
+                case ActivityFeedFilter.Followers:
+                    FilterText = "Showing friends' activities";
+                    break;
+                case ActivityFeedFilter.My:
+                    FilterText = "Showing my activities";
+                    break;
+            }
+            ActivityIncrementalCollection = new ActivityIncrementalCollection(_stravaService, filter);
+        }));
+
         private RelayCommand _logoutCommand;
         public RelayCommand LogoutCommand => _logoutCommand ?? (_logoutCommand = new RelayCommand(async () => await this.Logout()));
 
@@ -87,7 +113,10 @@ namespace Kliva.ViewModels
         public MainViewModel(INavigationService navigationService, ISettingsService settingsService, IStravaService stravaService) : base(navigationService)
         {
             _settingsService = settingsService;
-            _stravaService = stravaService;            
+            _stravaService = stravaService;
+
+            //TODO: Glenn - store selected filter in settings!            
+            FilterText = "Showing all activities";
         }
 
         private async Task Logout()

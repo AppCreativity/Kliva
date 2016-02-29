@@ -110,15 +110,15 @@
             <Button x:Name="FilterButton"
                     Style="{StaticResource EmptyButtonStyle}"
                     Foreground="{StaticResource KlivaMainBrush}"
-                    Content="Showing all activities"
+                    Content="{Binding FilterText}"
                     Margin="10,10,0,10"
                     Grid.Row="0"
                     Grid.Column="0">
                 <Button.Flyout>
                     <MenuFlyout x:Name="FilterFlyout">
-                        <MenuFlyoutItem Text="all activities" />
-                        <MenuFlyoutItem Text="my activities" />
-                        <MenuFlyoutItem Text="friends' activities" />
+                        <MenuFlyoutItem Text="all activities" Command="{Binding FilterCommand}" CommandParameter="all" />
+                        <MenuFlyoutItem Text="my activities" Command="{Binding FilterCommand}" CommandParameter="my" />
+                        <MenuFlyoutItem Text="friends' activities" Command="{Binding FilterCommand}" CommandParameter="followers" />
                     </MenuFlyout>
                 </Button.Flyout>
             </Button>

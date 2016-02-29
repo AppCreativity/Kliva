@@ -59,7 +59,7 @@ namespace Kliva.Services
         /// <param name="page">The page of activities.</param>
         /// <param name="perPage">The amount of activities that are loaded per page.</param>
         /// <returns>A list of activities.</returns>
-        public async Task<IEnumerable<ActivitySummary>> GetActivitiesAsync(int page, int perPage)
+        public async Task<IList<ActivitySummary>> GetActivitiesAsync(int page, int perPage)
         {
             try
             {
@@ -67,8 +67,7 @@ namespace Kliva.Services
                 var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitType();
 
                 //TODO: Glenn - Optional parameters should be treated as such!
-                //string getUrl = String.Format("{0}?page={1}&per_page={2}&access_token={3}", Endpoints.Activities, page, perPage, accessToken);
-                string getUrl = $"{Endpoints.Activities}?access_token={accessToken}";
+                string getUrl = $"{Endpoints.Activities}?page={page}&per_page={perPage}&access_token={accessToken}";
                 string json = await WebRequest.SendGetAsync(new Uri(getUrl));
 
                 //TODO: Glenn - Google maps?
@@ -76,7 +75,7 @@ namespace Kliva.Services
                 {
                     SetMetricUnits(activity, defaultDistanceUnitType);
                     return activity;
-                });
+                }).ToList();
             }
             catch (Exception ex)
             {
@@ -92,7 +91,7 @@ namespace Kliva.Services
         /// <param name="page">The page of activities.</param>
         /// <param name="perPage">The amount of activities per page.</param>
         /// <returns>A list of activities from your followers.</returns>
-        public async Task<IEnumerable<ActivitySummary>> GetFollowersActivitiesAsync(int page, int perPage)
+        public async Task<IList<ActivitySummary>> GetFollowersActivitiesAsync(int page, int perPage)
         {
             try
             {
@@ -107,7 +106,7 @@ namespace Kliva.Services
                 {
                     SetMetricUnits(activity, defaultDistanceUnitType);
                     return activity;
-                });
+                }).ToList();
             }
             catch (Exception ex)
             {

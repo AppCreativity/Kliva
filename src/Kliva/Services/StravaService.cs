@@ -153,13 +153,27 @@ namespace Kliva.Services
             return activity;
         }
 
-        public async Task<IEnumerable<ActivitySummary>> GetActivitiesWithAthletesAsync(int page, int perPage)
+        public async Task<IEnumerable<ActivitySummary>> GetActivitiesWithAthletesAsync(int page, int perPage, ActivityFeedFilter filter)
         {
-            IList<ActivitySummary> activities = (await StravaActivityService.GetFollowersActivitiesAsync(page, perPage)).ToList();
-            //IEnumerable<ActivitySummary> activities = await this.StravaActivityService.GetActivitiesAsync(page, perPage);
+            IList<ActivitySummary> activities = null;
+            switch (filter)
+            {
+                case ActivityFeedFilter.All:
+                case ActivityFeedFilter.Followers:
+                    activities = await StravaActivityService.GetFollowersActivitiesAsync(page, perPage);
+                    break;
+                case ActivityFeedFilter.My:
+                    activities = await StravaActivityService.GetActivitiesAsync(page, perPage);
+                    break;
+            }
 
             if (activities != null && activities.Any())
+            {
                 await GetActivitySummaryRelationsAsync(activities);
+
+                if (filter == ActivityFeedFilter.Followers)
+                    activities = activities.Where(activity => activity.Athlete.Id != StravaAthleteService.Athlete.Id).ToList();
+            }
 
             return activities;
         }

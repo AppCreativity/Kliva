@@ -16,7 +16,7 @@ namespace Kliva.Services.Interfaces
         Task<Athlete> GetAthleteAsync();
 
         Task<Activity> GetActivityAsync(string id, bool includeEfforts);
-        Task<IEnumerable<ActivitySummary>> GetActivitiesWithAthletesAsync(int page, int perPage);
+        Task<IEnumerable<ActivitySummary>> GetActivitiesWithAthletesAsync(int page, int perPage, ActivityFeedFilter filter);
 
         Task GiveKudosAsync(string activityId);
 
