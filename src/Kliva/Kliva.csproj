@@ -97,7 +97,6 @@
     <Content Include="Assets\Fonts\OpenSans-Semibold.ttf" />
     <Content Include="Assets\Fonts\materialdesignicons-webfont.ttf" />
     <None Include="project.json" />
-    <None Include="Service References\Application Insights\ConnectedService.json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -299,9 +298,6 @@
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
     <SDKReference Include="BehaviorsXamlSDKManaged, Version=12.0">
