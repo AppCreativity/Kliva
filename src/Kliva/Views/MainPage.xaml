@@ -109,7 +109,9 @@
 
             <Button x:Name="FilterButton"
                     Style="{StaticResource EmptyButtonStyle}"
+                    Foreground="{StaticResource KlivaMainBrush}"
                     Content="Showing all activities"
+                    Margin="10,10,0,10"
                     Grid.Row="0"
                     Grid.Column="0">
                 <Button.Flyout>
