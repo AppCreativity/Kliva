@@ -26,12 +26,12 @@
                           Label="statistics"
                           Icon="FourBars"
                           Foreground="White"
-                          />
+                          Command="{Binding StatisticsCommand}"/>
             <AppBarButton x:Name="AppBarProfile"
                           Label="profile"
                           Icon="Contact"
                           Foreground="White"
-                          />
+                          Command="{Binding ProfileCommand}"/>
             <AppBarButton x:Name="AppBarClub"
                           Label="clubs"
                           Foreground="White"
