@@ -860,8 +860,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="EmptyButtonStyle"
-           TargetType="ButtonBase">
+    <Style x:Key="EmptyButtonStyle" TargetType="ButtonBase">
         <Setter Property="Background"
                 Value="Transparent" />
         <Setter Property="BorderThickness"
@@ -926,6 +925,11 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+    
+    <Style x:Key="EmptyButtonStyleStretched" BasedOn="{StaticResource EmptyButtonStyle}" TargetType="ButtonBase">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
     </Style>
 
     <!-- GENERAL TYPES -->

@@ -55,7 +55,7 @@
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>
-
+    
     <Grid x:Name="LayoutRoot" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -102,11 +102,32 @@
                 <ColumnDefinition x:Name="ListColumn" />
                 <ColumnDefinition x:Name="ListItemColumn" />
             </Grid.ColumnDefinitions>
-            
-            <klivacontrols:ActivityFeedControl Margin="0,0,0,0"
-                                               Grid.Column="0"/>
-            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Button x:Name="FilterButton"
+                    Style="{StaticResource EmptyButtonStyle}"
+                    Content="Showing all activities"
+                    Grid.Row="0"
+                    Grid.Column="0">
+                <Button.Flyout>
+                    <MenuFlyout x:Name="FilterFlyout">
+                        <MenuFlyoutItem Text="all activities" />
+                        <MenuFlyoutItem Text="my activities" />
+                        <MenuFlyoutItem Text="friends' activities" />
+                    </MenuFlyout>
+                </Button.Flyout>
+            </Button>
+
+            <klivacontrols:ActivityFeedControl x:Name="ActivityFeed"
+                                               Margin="0,0,0,0"
+                                               Grid.Row="1"
+                                               Grid.Column="0" />
+
             <klivacontrols:ActivityDetailControl Margin="10,0,0,0"
+                                                 Grid.Row="0" Grid.RowSpan="2"
                                                  Grid.Column="1" />
         </Grid>
     </Grid>

@@ -9,7 +9,7 @@ namespace Kliva.Services
     public class StravaAthleteService : IStravaAthleteService
     {
         private readonly ISettingsService _settingsService;
-        private Athlete _athlete;
+        public Athlete Athlete { get; set; }
 
         public StravaAthleteService(ISettingsService settingsService)
         {
@@ -22,8 +22,8 @@ namespace Kliva.Services
         /// <returns>The currently authenticated athlete.</returns>
         public async Task<Athlete> GetAthleteAsync()
         {
-            if (_athlete != null)
-                return _athlete;
+            if (Athlete != null)
+                return Athlete;
 
             try
             {
@@ -32,7 +32,7 @@ namespace Kliva.Services
                 string getUrl = $"{Endpoints.Athlete}?access_token={accessToken}";
                 string json = await WebRequest.SendGetAsync(new Uri(getUrl));
 
-                return _athlete = Unmarshaller<Athlete>.Unmarshal(json);
+                return Athlete = Unmarshaller<Athlete>.Unmarshal(json);
             }
             catch (Exception)
             {

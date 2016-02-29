@@ -97,10 +97,11 @@ namespace Kliva.ViewModels
             //this.IsBusy = false;
         }
 
-        private void ViewLoaded()
+        private async void ViewLoaded()
         {
             if (!_viewModelLoaded)
             {
+                var athlete = await _stravaService.GetAthleteAsync();
                 ActivityIncrementalCollection = new ActivityIncrementalCollection(_stravaService);
                 _viewModelLoaded = true;
             }
