@@ -78,6 +78,10 @@ namespace Kliva.ViewModels
 
         private async Task LoadActivityDetails(string activityId)
         {
+            Kudos.Clear();
+            Comments.Clear();
+            RelatedAthletes.Clear();
+
             var activity = await _stravaService.GetActivityAsync(activityId, true);
             var athlete = await _stravaService.GetAthleteAsync();
 
@@ -85,21 +89,18 @@ namespace Kliva.ViewModels
             {
                 SelectedActivity = activity;
 
-                Kudos.Clear();
                 if (activity.KudosCount > 0 && activity.Kudos != null && activity.Kudos.Any())
                 {                    
                     foreach (Athlete kudo in activity.Kudos)
                         Kudos.Add(kudo);
                 }
-
-                Comments.Clear();
+                
                 if (activity.CommentCount > 0 && activity.Comments != null && activity.Comments.Any())
                 {
                     foreach(Comment comment in activity.Comments)
                         Comments.Add(comment);
                 }
-
-                RelatedAthletes.Clear();
+                
                 if (activity.OtherAthleteCount > 0 && activity.RelatedActivities != null && activity.RelatedActivities.Any())
                 {
                     foreach (ActivitySummary relatedActivity in activity.RelatedActivities)
