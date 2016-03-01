@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Kliva.Helpers;
@@ -10,6 +11,9 @@ namespace Kliva.Services
     public class StravaClubService : IStravaClubService
     {
         private readonly ISettingsService _settingsService;
+
+        //TODO: Glenn - When to Invalidate cache?
+        private readonly ConcurrentDictionary<string, Task<Club>> _cachedClubTasks = new ConcurrentDictionary<string, Task<Club>>();
 
         public StravaClubService(ISettingsService settingsService)
         {
@@ -43,22 +47,9 @@ namespace Kliva.Services
         /// </summary>
         /// <param name="clubId">The id of the club.</param>
         /// <returns>The Club object containing detailed information about the club.</returns>
-        public async Task<Club> GetClubAsync(string clubId)
+        public Task<Club> GetClubAsync(string clubId)
         {
-            try
-            {
-                var accessToken = await _settingsService.GetStoredStravaAccessToken();
-                string getUrl = $"{Endpoints.Club}/{clubId}?access_token={accessToken}";
-                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
-
-                return Unmarshaller<Club>.Unmarshal(json);
-            }
-            catch (Exception ex)
-            {
-                //TODO: Glenn - Use logger to log errors ( Google )
-            }
-
-            return null;
+            return _cachedClubTasks.GetOrAdd(clubId, GetClubFromServiceAsync);
         }
 
         /// <summary>
@@ -75,6 +66,24 @@ namespace Kliva.Services
                 string json = await WebRequest.SendGetAsync(new Uri(getUrl));
 
                 return Unmarshaller<List<AthleteSummary>>.Unmarshal(json);
+            }
+            catch (Exception ex)
+            {
+                //TODO: Glenn - Use logger to log errors ( Google )
+            }
+
+            return null;
+        }
+
+        public async Task<Club> GetClubFromServiceAsync(string clubId)
+        {
+            try
+            {
+                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                string getUrl = $"{Endpoints.Club}/{clubId}?access_token={accessToken}";
+                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
+
+                return Unmarshaller<Club>.Unmarshal(json);
             }
             catch (Exception ex)
             {

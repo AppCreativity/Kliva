@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
@@ -9,6 +10,10 @@ namespace Kliva.Services
     public class StravaAthleteService : IStravaAthleteService
     {
         private readonly ISettingsService _settingsService;
+
+        //TODO: Glenn - When to Invalidate cache?
+        private readonly ConcurrentDictionary<string, Task<AthleteSummary>> _cachedAthleteTasks = new ConcurrentDictionary<string, Task<AthleteSummary>>();
+
         public Athlete Athlete { get; set; }
 
         public StravaAthleteService(ISettingsService settingsService)
@@ -47,7 +52,12 @@ namespace Kliva.Services
         /// </summary>
         /// <param name="athleteId">The Strava Id of the athlete.</param>
         /// <returns>The AthleteSummary object of the athlete.</returns>
-        public async Task<AthleteSummary> GetAthleteAsync(string athleteId)
+        public Task<AthleteSummary> GetAthleteAsync(string athleteId)
+        {
+            return _cachedAthleteTasks.GetOrAdd(athleteId, GetAthleteFromServiceAsync);
+        }
+
+        private async Task<AthleteSummary> GetAthleteFromServiceAsync(string athleteId)
         {
             try
             {
