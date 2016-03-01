@@ -15,6 +15,7 @@ Follow up on what your friends achieved and take a look at the location where it
 ### Wiki
 
 Do read our wiki! It contains information on what the app is all about and also what we are currently unable to do because of the use of the public Strava API
+
 [Kliva wiki](https://github.com/AppCreativity/Kliva/wiki)
 
 ### Application
