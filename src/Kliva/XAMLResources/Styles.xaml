@@ -109,6 +109,16 @@
         <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
     </Style>
 
+    <Style x:Name="ActivityImageBorderMobile" TargetType="Border">
+        <Setter Property="Height" Value="20" />
+        <Setter Property="Width" Value="20" />
+    </Style>
+
+    <Style x:Name="ActivityImageBorderDesktop" TargetType="Border">
+        <Setter Property="Height" Value="30" />
+        <Setter Property="Width" Value="30" />
+    </Style>
+
     <Style x:Name="MenuItemContainerStyle" TargetType="ListViewItem">
         <Setter Property="Padding" Value="0" />
         <Setter Property="Background" Value="Transparent" />

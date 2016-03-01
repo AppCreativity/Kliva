@@ -27,6 +27,8 @@
                             </VisualState.StateTriggers>
                             <VisualState.Setters>
                                 <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseMobile}" />
+                                <Setter Target="ActivityImage.Style" Value="{StaticResource ActivityImageBorderMobile}"/>
+                                <Setter Target="ActivityImageIcon.FontSize" Value="12" />
                             </VisualState.Setters>
                         </VisualState>
                         <VisualState x:Name="Desktop">
@@ -35,6 +37,8 @@
                             </VisualState.StateTriggers>
                             <VisualState.Setters>
                                 <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseDesktop}" />
+                                <Setter Target="ActivityImage.Style" Value="{StaticResource ActivityImageBorderDesktop}"/>
+                                <Setter Target="ActivityImageIcon.FontSize" Value="14" />
                             </VisualState.Setters>
                         </VisualState>
                     </VisualStateGroup>
@@ -60,13 +64,15 @@
                             </Ellipse.Fill>
                         </Ellipse>
 
-                        <Canvas x:Name="ActivityImage"
-                                Margin="10,0,0,0"
-                                RelativePanel.AlignVerticalCenterWithPanel="True"
+                        <Border x:Name="ActivityImage" CornerRadius="50"
+                                Margin="-18,0,0,5"
+                                Background="{StaticResource KlivaDarkBrush}"
+                                BorderBrush="White" BorderThickness="2"
                                 RelativePanel.RightOf="AthleteProfilePicture"
-                                Width="20" Height="20">
-                            <Path Data="{x:Bind TypeImage}" Fill="{StaticResource KlivaDarkBrush}" />
-                        </Canvas>
+                                RelativePanel.AlignBottomWith="AthleteProfilePicture">
+                            <TextBlock x:Name="ActivityImageIcon" Style="{StaticResource PaneIconMaterialTextBlock}"
+                                       Text="{x:Bind TypeImage}"/>
+                        </Border>
 
                         <RelativePanel x:Name="ActivityHighlightsPanel"
                                        Margin="15,0,0,0"
@@ -177,7 +183,7 @@
                                FontSize="14"
                                RelativePanel.RightOf="AthleteProfilePicture"
                                RelativePanel.AlignVerticalCenterWithPanel="True"/>
-                </RelativePanel>                
+                </RelativePanel>
             </Grid>
         </UserControl>
     </DataTemplate>
