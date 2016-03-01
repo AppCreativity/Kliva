@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:klivacontrols="using:Kliva.Controls"
+    xmlns:compositioncontrols="using:App1"
     mc:Ignorable="d"
     DataContext="{Binding ActivityDetail, Source={StaticResource Locator}}">
 
@@ -50,5 +51,6 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>        
         <klivacontrols:ActivityDetailControl />
+        <compositioncontrols:BlurPanelProto HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></compositioncontrols:BlurPanelProto>
     </Grid>
 </Page>
