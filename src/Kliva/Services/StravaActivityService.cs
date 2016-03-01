@@ -194,7 +194,7 @@ namespace Kliva.Services
             {
                 var accessToken = await _settingsService.GetStoredStravaAccessToken();
 
-                string getUrl = $"{Endpoints.Activity}/{activityId}/photos?access_token={accessToken}";
+                string getUrl = $"{Endpoints.Activity}/{activityId}/photos?photo_sources=true&size=600&access_token={accessToken}";
                 string json = await WebRequest.SendGetAsync(new Uri(getUrl));
 
                 return Unmarshaller<List<Photo>>.Unmarshal(json);

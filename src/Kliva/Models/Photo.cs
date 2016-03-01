@@ -13,7 +13,10 @@ namespace Kliva.Models
         /// The photo's id.
         /// </summary>
         [JsonProperty("id")]
-        public long Id { get; set; }
+        public long? Id { get; set; }
+
+        [JsonProperty("unique_id")]
+        public string UniqueId { get; set; }
 
         /// <summary>
         /// The id of the activity to which the photo is connected to.
@@ -75,8 +78,19 @@ namespace Kliva.Models
     /// </summary>
     public partial class Photo
     {
-        public string ImageThumbnail => !string.IsNullOrEmpty(ImageUrl) ? $"{ImageUrl}media?size=t" : null;
+        [JsonProperty("urls")]
+        public Urls ImageUrls { get; set; }
 
-        public string ImageLarge => !string.IsNullOrEmpty(ImageUrl) ? $"{ImageUrl}media?size=l" : null;
+        public string ImageThumbnail => !string.IsNullOrEmpty(ImageUrl) ? $"{ImageUrl}media?size=t" : (ImageUrls != null ? ImageUrls.Size600 : string.Empty);
+
+        public string ImageLarge => !string.IsNullOrEmpty(ImageUrl) ? $"{ImageUrl}media?size=l" : (ImageUrls != null ? ImageUrls.Size600 : string.Empty);
+    }
+
+    public class Urls
+    {
+        [JsonProperty("100")]
+        public string Size100 { get; set; }
+        [JsonProperty("600")]
+        public string Size600 { get; set; }
     }
 }
