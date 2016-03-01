@@ -7,7 +7,12 @@
     xmlns:controls="using:Kliva.Controls"
     xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
-    xmlns:core="using:Microsoft.Xaml.Interactions.Core">
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:converters="using:Kliva.Converters">
+
+    <converters:DistanceUnitToStringConverter x:Key="DistanceUnitToStringConverter" />
+    <converters:SpeedUnitToStringConverter x:Key="SpeedUnitToStringConverter" />
+    <converters:RelativeTimeConverter x:Key="RelativeTimeConverter" />
 
     <DataTemplate x:Key="ActivityListItemDataTemplate"
                   x:DataType="models:ActivitySummary">
@@ -35,8 +40,7 @@
                     </VisualStateGroup>
                 </VisualStateManager.VisualStateGroups>
                 <RelativePanel x:Name="ActivityListItemPanel"
-                               Margin="0,0,0,10">
-
+                               Margin="0,0,10,10">
                     <interactivity:Interaction.Behaviors>
                         <core:DataTriggerBehavior Binding="{x:Bind AthleteCount, Mode=OneWay}" ComparisonCondition="GreaterThan" Value="1">
                             <core:ChangePropertyAction TargetObject="{Binding ElementName=BottomPanel}" PropertyName="Visibility" Value="Visible"/>
@@ -47,7 +51,8 @@
                     </interactivity:Interaction.Behaviors>
 
                     <RelativePanel x:Name="TopPanel"
-                                   RelativePanel.AlignTopWithPanel="True">
+                                   RelativePanel.AlignTopWithPanel="True"
+                                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
                         <Ellipse x:Name="AthleteProfilePicture"
                                  RelativePanel.AlignVerticalCenterWithPanel="True">
                             <Ellipse.Fill>
@@ -63,50 +68,54 @@
                             <Path Data="{x:Bind TypeImage}" Fill="{StaticResource KlivaDarkBrush}" />
                         </Canvas>
 
-                        <StackPanel x:Name="ActivityHighlightsPanel"
-                                    Margin="15,0,0,0"
-                                    RelativePanel.AlignVerticalCenterWithPanel="True"
-                                    RelativePanel.RightOf="ActivityImage">
+                        <RelativePanel x:Name="ActivityHighlightsPanel"
+                                       Margin="15,0,0,0"
+                                       RelativePanel.AlignVerticalCenterWithPanel="True"
+                                       RelativePanel.RightOf="ActivityImage"
+                                       RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
                             <TextBlock x:Name="ActivityName"
+                                       Margin="0,0,0,2.5"
                                        Text="{x:Bind Name, Mode=OneWay}"
                                        Style="{StaticResource BaseTextBlock}"
-                                       FontFamily="{StaticResource OpenSansFontSemibold}" />
+                                       FontFamily="{StaticResource OpenSansFontSemibold}"
+                                       RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" />
 
                             <TextBlock x:Name="ActivityAthleteName"
+                                       Margin="0,0,0,2.5"
                                        Text="{x:Bind Athlete.FullName, Mode=OneWay}"
                                        Style="{StaticResource BaseTextBlock}"
-                                       FontSize="14" />
+                                       FontSize="14"
+                                       RelativePanel.Below="ActivityName" RelativePanel.AlignLeftWithPanel="True" />
+                            
+                            <TextBlock x:Name="ActivityStart"
+                                       Margin="0,0,0,2.5"
+                                       Text="{x:Bind StartDate, Mode=OneWay, Converter={StaticResource RelativeTimeConverter}}"
+                                       Style="{StaticResource BaseTextBlock}"
+                                       FontSize="14"
+                                       HorizontalAlignment="Right"
+                                       RelativePanel.Below="ActivityName" RelativePanel.RightOf="ActivityAthleteName" RelativePanel.AlignRightWithPanel="True" />
 
-                            <Grid x:Name="ActivityHighlightsGrid">
+                            <Grid x:Name="ActivityHighlightsGrid"
+                                  RelativePanel.Below="ActivityAthleteName"
+                                  RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="45" />
-                                    <ColumnDefinition Width="45" />
-                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock x:Name="ActivityDistance"
-                                           Grid.Column="0"
-                                           Text="{x:Bind DistanceFormatted, Mode=OneWay}"
                                            Style="{StaticResource BaseTextBlock}"
-                                           FontSize="12" />
-
-                                <TextBlock x:Name="ActivityElevation"
-                                           Grid.Column="1"
-                                           Text="{x:Bind ElevationGainFormatted, Mode=OneWay}"
-                                           Style="{StaticResource BaseTextBlock}"
-                                           FontSize="12" />
-
-                                <TextBlock x:Name="AchievementCount"
-                                           Grid.Column="2"
-                                           Text="{x:Bind AchievementCount, Mode=OneWay}"
-                                           Style="{StaticResource BaseTextBlock}"
-                                           FontSize="12" />
+                                           FontSize="12"
+                                           Grid.Column="0">
+                                    <Run Text="{x:Bind DistanceFormatted, Mode=OneWay}" />
+                                    <Run Text="{x:Bind DistanceUnit, Mode=OneWay, Converter={StaticResource DistanceUnitToStringConverter}}"/>
+                                </TextBlock>
                             </Grid>
-                        </StackPanel>
+                        </RelativePanel>
                     </RelativePanel>
 
                     <RelativePanel x:Name="BottomPanel"
                                    RelativePanel.AlignBottomWithPanel="True"
+                                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
                                    RelativePanel.Below="TopPanel">
                         <Canvas x:Name="AthleteCountImage"
                                 Width="18" Height="18">

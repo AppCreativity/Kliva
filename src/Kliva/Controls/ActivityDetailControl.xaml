@@ -14,8 +14,6 @@
     Loaded="OnActivityDetailControlLoaded">
 
     <UserControl.Resources>
-        <converters:DistanceUnitToStringConverter x:Key="DistanceUnitToStringConverter" />
-        <converters:SpeedUnitToStringConverter x:Key="SpeedUnitToStringConverter" />
         <converters:SecondsToTimeStringConverter x:Key="SecondsToTimeStringConverter" />
         <converters:AddAmountToStringConverter x:Key="AddAmountToStringConverter" />
     </UserControl.Resources>

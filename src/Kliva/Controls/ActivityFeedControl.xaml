@@ -56,7 +56,8 @@
                     SelectedItem="{x:Bind ViewModel.SelectedActivity, Mode=TwoWay, Converter={StaticResource XBindItemCastingConverter}}"
                     ItemTemplate="{StaticResource ActivityListItemDataTemplate}"
                     Loaded="OnActivityListLoaded"                  
-                    HorizontalContentAlignment="Stretch"/>
+                    HorizontalContentAlignment="Stretch">
+        </ListView>
 
         <Button x:Name="GoToTopButton"
                 HorizontalAlignment="Right" VerticalAlignment="Bottom"

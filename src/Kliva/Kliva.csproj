@@ -121,10 +121,12 @@
     </Compile>
     <Compile Include="Converters\AddAmountToStringConverter.cs" />
     <Compile Include="Converters\DistanceUnitToStringConverter.cs" />
+    <Compile Include="Converters\RelativeTimeConverter.cs" />
     <Compile Include="Converters\SecondsToTimeStringConverter.cs" />
     <Compile Include="Converters\SpeedUnitToStringConverter.cs" />
     <Compile Include="Converters\XBindItemCastingConverter.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Helpers\DateTimeFormatHelper.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\PolylineConverter.cs" />
     <Compile Include="Helpers\ScrollViewerExtensions.cs" />
