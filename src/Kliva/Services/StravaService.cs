@@ -137,11 +137,17 @@ namespace Kliva.Services
         public async Task<Activity> GetActivityAsync(string id, bool includeEfforts)
         {
             //TODO: Glenn - kick of tasks in Task.Run List<Task>
-
             Activity activity = await StravaActivityService.GetActivityAsync(id, includeEfforts);
+
             if (activity != null)
             {
                 await GetActivitySummaryRelationsAsync(new List<ActivitySummary> { activity });
+
+                if (activity.OtherAthleteCount > 0)
+                {
+                    activity.RelatedActivities = await StravaActivityService.GetRelatedActivitiesAsync(id);
+                    await GetActivitySummaryRelationsAsync(activity.RelatedActivities);
+                }
 
                 if (activity.KudosCount > 0)
                     activity.Kudos = await StravaActivityService.GetKudosAsync(id);

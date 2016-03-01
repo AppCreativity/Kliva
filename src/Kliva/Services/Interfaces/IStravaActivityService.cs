@@ -9,6 +9,7 @@ namespace Kliva.Services.Interfaces
         Task<Activity> GetActivityAsync(string id, bool includeEfforts);
         Task<IList<ActivitySummary>> GetActivitiesAsync(int page, int perPage);
         Task<IList<ActivitySummary>> GetFollowersActivitiesAsync(int page, int perPage);
+        Task<IList<ActivitySummary>> GetRelatedActivitiesAsync(string activityId);
 
         Task<List<Athlete>> GetKudosAsync(string activityId);
         Task GiveKudosAsync(string activityId);

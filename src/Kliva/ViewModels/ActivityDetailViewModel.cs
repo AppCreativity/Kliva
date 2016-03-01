@@ -42,6 +42,13 @@ namespace Kliva.ViewModels
             set { Set(() => Comments, ref _comments, value); }
         }
 
+        private ObservableCollection<AthleteSummary> _relatedAthletes = new ObservableCollection<AthleteSummary>();
+        public ObservableCollection<AthleteSummary> RelatedAthletes
+        {
+            get { return _relatedAthletes; }
+            set { Set(() => RelatedAthletes, ref _relatedAthletes, value); }
+        } 
+
         private bool _hasSegments;
         public bool HasSegments
         {
@@ -90,6 +97,13 @@ namespace Kliva.ViewModels
                 {
                     foreach(Comment comment in activity.Comments)
                         Comments.Add(comment);
+                }
+
+                RelatedAthletes.Clear();
+                if (activity.OtherAthleteCount > 0 && activity.RelatedActivities != null && activity.RelatedActivities.Any())
+                {
+                    foreach (ActivitySummary relatedActivity in activity.RelatedActivities)
+                        RelatedAthletes.Add(relatedActivity.Athlete);
                 }
 
                 //Currently the Public API of Strava will not give us Segments info for 'other' athletes then the one logged in

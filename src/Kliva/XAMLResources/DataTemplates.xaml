@@ -48,16 +48,16 @@
                                Margin="0,0,10,0"
                                Padding="0,5,0,5">
                     <interactivity:Interaction.Behaviors>
-                        <core:DataTriggerBehavior Binding="{x:Bind AthleteCount, Mode=OneWay}" ComparisonCondition="GreaterThan" Value="1">
+                        <core:DataTriggerBehavior Binding="{x:Bind OtherAthleteCount, Mode=OneWay}" ComparisonCondition="GreaterThan" Value="0">
                             <core:ChangePropertyAction TargetObject="{Binding ElementName=BottomPanel}" PropertyName="Visibility" Value="Visible"/>
                         </core:DataTriggerBehavior>
-                        <core:DataTriggerBehavior Binding="{x:Bind AthleteCount, Mode=OneWay}" ComparisonCondition="LessThanOrEqual" Value="1">
+                        <core:DataTriggerBehavior Binding="{x:Bind OtherAthleteCount, Mode=OneWay}" ComparisonCondition="LessThanOrEqual" Value="0">
                             <core:ChangePropertyAction TargetObject="{Binding ElementName=BottomPanel}" PropertyName="Visibility" Value="Collapsed"/>
                         </core:DataTriggerBehavior>
                     </interactivity:Interaction.Behaviors>
 
                     <RelativePanel x:Name="TopPanel"
-                                   RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True"
+                                   RelativePanel.AlignTopWithPanel="True"
                                    RelativePanel.AlignLeftWithPanel="True"
                                    RelativePanel.AlignRightWithPanel="True">
                         <Ellipse x:Name="AthleteProfilePicture"

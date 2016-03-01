@@ -360,6 +360,13 @@ namespace Kliva.Models
             set { Set(() => Athlete, ref _athlete, value); }
         }
 
+        private IList<ActivitySummary> _relatedActivities;
+        public IList<ActivitySummary> RelatedActivities
+        {
+            get { return _relatedActivities; }
+            set { Set(() => RelatedActivities, ref _relatedActivities, value); }
+        }
+
         private List<Photo> _allPhotos;
         public List<Photo> AllPhotos
         {

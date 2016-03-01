@@ -20,6 +20,24 @@ namespace Kliva.Services
             _settingsService = settingsService;
         }
 
+        private async Task<Club> GetClubFromServiceAsync(string clubId)
+        {
+            try
+            {
+                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                string getUrl = $"{Endpoints.Club}/{clubId}?access_token={accessToken}";
+                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
+
+                return Unmarshaller<Club>.Unmarshal(json);
+            }
+            catch (Exception ex)
+            {
+                //TODO: Glenn - Use logger to log errors ( Google )
+            }
+
+            return null;
+        }
+
         /// <summary>
         /// Gets a list of clubs in which the currently authenticated athlete is a member of.
         /// </summary>
@@ -73,24 +91,6 @@ namespace Kliva.Services
             }
 
             return null;
-        }
-
-        public async Task<Club> GetClubFromServiceAsync(string clubId)
-        {
-            try
-            {
-                var accessToken = await _settingsService.GetStoredStravaAccessToken();
-                string getUrl = $"{Endpoints.Club}/{clubId}?access_token={accessToken}";
-                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
-
-                return Unmarshaller<Club>.Unmarshal(json);
-            }
-            catch (Exception ex)
-            {
-                //TODO: Glenn - Use logger to log errors ( Google )
-            }
-
-            return null;
-        }
+        }        
     }
 }

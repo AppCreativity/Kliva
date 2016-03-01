@@ -21,6 +21,25 @@ namespace Kliva.Services
             _settingsService = settingsService;
         }
 
+        private async Task<AthleteSummary> GetAthleteFromServiceAsync(string athleteId)
+        {
+            try
+            {
+                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+
+                string getUrl = string.Format("{0}/{1}?access_token={2}", Endpoints.Athletes, athleteId, accessToken);
+                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
+
+                return Unmarshaller<AthleteSummary>.Unmarshal(json);
+            }
+            catch (Exception ex)
+            {
+                //TODO: Glenn - Use logger to log errors ( Google )
+            }
+
+            return null;
+        }
+
         /// <summary>
         /// Asynchronously receives the currently authenticated athlete.
         /// </summary>
@@ -55,25 +74,6 @@ namespace Kliva.Services
         public Task<AthleteSummary> GetAthleteAsync(string athleteId)
         {
             return _cachedAthleteTasks.GetOrAdd(athleteId, GetAthleteFromServiceAsync);
-        }
-
-        private async Task<AthleteSummary> GetAthleteFromServiceAsync(string athleteId)
-        {
-            try
-            {
-                var accessToken = await _settingsService.GetStoredStravaAccessToken();
-
-                string getUrl = string.Format("{0}/{1}?access_token={2}", Endpoints.Athletes, athleteId, accessToken);
-                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
-
-                return Unmarshaller<AthleteSummary>.Unmarshal(json);
-            }
-            catch (Exception ex)
-            {
-                //TODO: Glenn - Use logger to log errors ( Google )
-            }
-
-            return null;
-        }
+        }        
     }
 }

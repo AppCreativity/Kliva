@@ -16,6 +16,9 @@ namespace Kliva.Services
         //TODO: Glenn - When to Invalidate cache?
         private readonly ConcurrentDictionary<string, Task<List<Photo>>> _cachedPhotosTasks = new ConcurrentDictionary<string, Task<List<Photo>>>();
 
+        //TODO: Glenn - When to Invalidate cache?
+        private readonly ConcurrentDictionary<string, Task<IList<ActivitySummary>>>_cachedRelatedActivitiesTasks = new ConcurrentDictionary<string, Task<IList<ActivitySummary>>>();
+
         public StravaActivityService(ISettingsService settingsService)
         {
             _settingsService = settingsService;
@@ -26,6 +29,50 @@ namespace Kliva.Services
             activity.DistanceUnit = distanceUnitType;
             activity.SpeedUnit = activity.DistanceUnit == DistanceUnitType.Kilometres ? SpeedUnit.KilometresPerHour : SpeedUnit.MilesPerHour;
             activity.ElevationUnit = activity.DistanceUnit == DistanceUnitType.Kilometres ? DistanceUnitType.Metres : DistanceUnitType.Feet;
+        }
+
+        private async Task<List<Photo>> GetPhotosFromServiceAsync(string activityId)
+        {
+            try
+            {
+                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+
+                string getUrl = $"{Endpoints.Activity}/{activityId}/photos?photo_sources=true&size=600&access_token={accessToken}";
+                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
+
+                return Unmarshaller<List<Photo>>.Unmarshal(json);
+            }
+            catch (Exception ex)
+            {
+                //TODO: Glenn - Use logger to log errors ( Google )
+            }
+
+            return null;
+        }
+
+        private async Task<IList<ActivitySummary>> GetRelatedActivitiesFromServiceAsync(string activityId)
+        {
+            try
+            {
+                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitType();
+
+                string getUrl = $"{Endpoints.Activity}/{activityId}/related?access_token={accessToken}";
+                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
+
+                //TODO: Glenn - Google maps?
+                return Unmarshaller<List<ActivitySummary>>.Unmarshal(json).Select(activity =>
+                {
+                    SetMetricUnits(activity, defaultDistanceUnitType);
+                    return activity;
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                //TODO: Glenn - Use logger to log errors ( Google )
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -120,6 +167,11 @@ namespace Kliva.Services
             return null;
         }
 
+        public Task<IList<ActivitySummary>> GetRelatedActivitiesAsync(string activityId)
+        {
+            return _cachedRelatedActivitiesTasks.GetOrAdd(activityId, GetRelatedActivitiesFromServiceAsync);
+        }
+
         /// <summary>
         /// Gets a list of athletes that kudoed the specified activity asynchronously.
         /// </summary>
@@ -195,25 +247,6 @@ namespace Kliva.Services
         public Task<List<Photo>> GetPhotosAsync(string activityId)
         {
             return _cachedPhotosTasks.GetOrAdd(activityId, GetPhotosFromServiceAsync);
-        }
-
-        private async Task<List<Photo>> GetPhotosFromServiceAsync(string activityId)
-        {
-            try
-            {
-                var accessToken = await _settingsService.GetStoredStravaAccessToken();
-
-                string getUrl = $"{Endpoints.Activity}/{activityId}/photos?photo_sources=true&size=600&access_token={accessToken}";
-                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
-
-                return Unmarshaller<List<Photo>>.Unmarshal(json);
-            }
-            catch (Exception ex)
-            {
-                //TODO: Glenn - Use logger to log errors ( Google )
-            }
-
-            return null;
         }
     }
 }
