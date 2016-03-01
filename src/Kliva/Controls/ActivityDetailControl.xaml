@@ -27,6 +27,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="ActivityDetailCommandBar.Visibility" Value="Collapsed" />
+                        <Setter Target="ActivityMap.Height" Value="200" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="Desktop">
@@ -35,6 +36,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="ActivityDetailCommandBar.Visibility" Value="Visible" />
+                        <Setter Target="ActivityMap.Height" Value="300" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -49,7 +51,7 @@
             <maps:MapControl x:Name="ActivityMap"
                              Margin="0,10,0,0"
                              RelativePanel.Below="ActivityName"
-                             Height="225"
+                             
                              RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
 
             <CommandBar x:Name="ActivityDetailCommandBar"
