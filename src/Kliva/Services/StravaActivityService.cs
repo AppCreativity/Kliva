@@ -2,6 +2,7 @@
 using Kliva.Models;
 using Kliva.Services.Interfaces;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,6 +12,9 @@ namespace Kliva.Services
     public class StravaActivityService : IStravaActivityService
     {
         private readonly ISettingsService _settingsService;
+
+        //TODO: Glenn - When to Invalidate cache?
+        private readonly ConcurrentDictionary<string, Task<List<Photo>>> _cachedPhotosTasks = new ConcurrentDictionary<string, Task<List<Photo>>>();
 
         public StravaActivityService(ISettingsService settingsService)
         {
@@ -188,7 +192,12 @@ namespace Kliva.Services
         /// </summary>
         /// <param name="activityId">The activity</param>
         /// <returns>A list of photos.</returns>
-        public async Task<List<Photo>> GetPhotosAsync(string activityId)
+        public Task<List<Photo>> GetPhotosAsync(string activityId)
+        {
+            return _cachedPhotosTasks.GetOrAdd(activityId, GetPhotosFromServiceAsync);
+        }
+
+        private async Task<List<Photo>> GetPhotosFromServiceAsync(string activityId)
         {
             try
             {
@@ -199,7 +208,7 @@ namespace Kliva.Services
 
                 return Unmarshaller<List<Photo>>.Unmarshal(json);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 //TODO: Glenn - Use logger to log errors ( Google )
             }
