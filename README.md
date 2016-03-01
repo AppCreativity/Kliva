@@ -15,7 +15,7 @@ Follow up on what your friends achieved and take a look at the location where it
 ### Wiki
 
 Do read our wiki! It contains information on what the app is all about and also what we are currently unable to do because of the use of the public Strava API
-[[Kliva wiki|wiki]]
+[Kliva wiki](https://github.com/AppCreativity/Kliva/wiki)
 
 ### Application
 You can find the Windows Phone 8.1 app on the [Windows store](http://www.windowsphone.com/s?appid=ffc42ff1-52ec-4219-899b-1ee4e5fe585b) or scan the QR code:
