@@ -930,20 +930,16 @@
     </Style>
 
     <Style x:Name="HorizontalListViewStyle" TargetType="ListView">
-        <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Enabled" />
+        <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Auto" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden" />
         <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled" />
         <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
-                    <!-- TODO: Glenn - No horizontal scrolling :( -->
                     <ItemsStackPanel Orientation="Horizontal"
                                      ScrollViewer.HorizontalScrollMode="Enabled"
                                      ScrollViewer.VerticalScrollMode="Disabled"/>
-                    <!-- TODO: Glenn - No top vertical alignment :( -->
-                    <!--<VirtualizingStackPanel Orientation="Horizontal"
-                                     ScrollViewer.HorizontalScrollMode="Enabled"
-                                     ScrollViewer.VerticalScrollMode="Disabled"/>-->
                 </ItemsPanelTemplate>
             </Setter.Value>
         </Setter>

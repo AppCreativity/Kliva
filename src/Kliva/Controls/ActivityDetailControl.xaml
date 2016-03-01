@@ -226,8 +226,7 @@
                       ItemsSource="{x:Bind ViewModel.RelatedAthletes}"
                       Style="{StaticResource HorizontalListViewStyle}"
                       RelativePanel.Below="ActivityName"
-                      RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
-                      ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.VerticalScrollMode="Disabled">
+                      RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Ellipse Style="{StaticResource ProfileEllipseMobile}"
