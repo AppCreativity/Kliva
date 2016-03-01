@@ -43,8 +43,10 @@
                         </VisualState>
                     </VisualStateGroup>
                 </VisualStateManager.VisualStateGroups>
+                
                 <RelativePanel x:Name="ActivityListItemPanel"
-                               Margin="0,0,10,10">
+                               Margin="0,0,10,0"
+                               Padding="0,5,0,5">
                     <interactivity:Interaction.Behaviors>
                         <core:DataTriggerBehavior Binding="{x:Bind AthleteCount, Mode=OneWay}" ComparisonCondition="GreaterThan" Value="1">
                             <core:ChangePropertyAction TargetObject="{Binding ElementName=BottomPanel}" PropertyName="Visibility" Value="Visible"/>
@@ -55,10 +57,11 @@
                     </interactivity:Interaction.Behaviors>
 
                     <RelativePanel x:Name="TopPanel"
-                                   RelativePanel.AlignTopWithPanel="True"
-                                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+                                   RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True"
+                                   RelativePanel.AlignLeftWithPanel="True"
+                                   RelativePanel.AlignRightWithPanel="True">
                         <Ellipse x:Name="AthleteProfilePicture"
-                                 RelativePanel.AlignVerticalCenterWithPanel="True">
+                                 RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
                             <Ellipse.Fill>
                                 <ImageBrush Stretch="UniformToFill" ImageSource="{x:Bind Athlete.ProfileMediumFormatted, Mode=OneWay}" />
                             </Ellipse.Fill>
@@ -69,16 +72,16 @@
                                 Background="{StaticResource KlivaDarkBrush}"
                                 BorderBrush="White" BorderThickness="2"
                                 RelativePanel.RightOf="AthleteProfilePicture"
-                                RelativePanel.AlignBottomWith="AthleteProfilePicture">
+                                RelativePanel.AlignBottomWithPanel="True">
                             <TextBlock x:Name="ActivityImageIcon" Style="{StaticResource PaneIconMaterialTextBlock}"
                                        Text="{x:Bind TypeImage}"/>
                         </Border>
 
                         <RelativePanel x:Name="ActivityHighlightsPanel"
-                                       Margin="15,0,0,0"
-                                       RelativePanel.AlignVerticalCenterWithPanel="True"
+                                       Margin="15,0,0,0"                                       
                                        RelativePanel.RightOf="ActivityImage"
-                                       RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
+                                       RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True"
+                                       RelativePanel.AlignRightWithPanel="True">
                             <TextBlock x:Name="ActivityName"
                                        Margin="0,0,0,2.5"
                                        Text="{x:Bind Name, Mode=OneWay}"
