@@ -69,7 +69,6 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="BottomAppBar.Visibility" Value="Visible" />
-                        <Setter Target="TitlePanel.Visibility" Value="Visible" />
                         <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockMobile}" />
                         <Setter Target="ListColumn.Width" Value="*" />
                         <Setter Target="ListItemColumn.Width" Value="0" />
@@ -81,8 +80,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="BottomAppBar.Visibility" Value="Collapsed" />
-                        <Setter Target="TitlePanel.Visibility" Value="Collapsed" />
-                        <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockDesktop}" />
+                        <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockDesktopWithSideBar}" />
                         <Setter Target="ListColumn.Width" Value="*" />
                         <Setter Target="ListItemColumn.Width" Value="1.8*" />
                     </VisualState.Setters>
@@ -94,7 +92,7 @@
                     Grid.Row="0"
                     Background="{StaticResource KlivaMainBrush}">
             <TextBlock x:Name="TitleTextBlock"
-                       Text="Kliva"/>
+                       Text="activities"/>
         </StackPanel>
 
         <Grid Grid.Row="1">
