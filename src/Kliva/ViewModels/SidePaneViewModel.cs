@@ -63,6 +63,10 @@ namespace Kliva.ViewModels
 
                         switch (value.MenuItemType)
                         {
+                            case MenuItemType.Home:
+                                HomeCommand.Execute(null);
+                                break;
+
                             case MenuItemType.Statistics:
                                 StatisticsCommand.Execute(null);
                                 break;
@@ -107,6 +111,9 @@ namespace Kliva.ViewModels
                 }                
             }
         }
+
+        private RelayCommand _homeCommand;
+        public RelayCommand HomeCommand => _homeCommand ?? (_homeCommand = new RelayCommand(() => _navigationService.Navigate<MainPage>()));
 
         //TODO: Glenn - We hooked this up twice, once in SidePaneViewModel and once in MainViewModel because of difference in UI on desktop ( sidebar ) and mobile ( bottom appbar )
         private RelayCommand _statisticsCommand;
