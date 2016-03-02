@@ -44,11 +44,23 @@ namespace Kliva.Controls
             }
 
             if (!ReferenceEquals(message, null) && message.Visible)
-            {
-                Tuple<int, PivotItem> pivotItem = _pivotDictionary[message.Pivot];
+            {               
+                //Handle Defer Loaded pivots
+                if (!_pivotDictionary.ContainsKey(message.Pivot))
+                {
+                    //Realize UI element
+                    FindName($"{message.Pivot.ToString()}Pivot");
+                    //Reindex collection
+                    _pivotDictionary.Clear();
+                    IndexPivotCollection();
+                }
+                else
+                {
+                    Tuple<int, PivotItem> pivotItem = _pivotDictionary[message.Pivot];
 
-                if (!ActivityPivot.Items.Contains(pivotItem.Item2))
-                    ActivityPivot.Items.Insert(pivotItem.Item1, pivotItem.Item2);
+                    if (!ActivityPivot.Items.Contains(pivotItem.Item2))
+                        ActivityPivot.Items.Insert(pivotItem.Item1, pivotItem.Item2);
+                }
             }
 
             if (message.Show.HasValue && message.Show.Value)
@@ -85,13 +97,16 @@ namespace Kliva.Controls
         private void OnActivityDetailControlLoaded(object sender, RoutedEventArgs e)
         {
             if (_pivotDictionary.Count == 0)
+                IndexPivotCollection();
+        }
+
+        private void IndexPivotCollection()
+        {
+            int pivotIndex = 0;
+            foreach (PivotItem item in ActivityPivot.Items.ToList())
             {
-                int pivotIndex = 0;
-                foreach (PivotItem item in ActivityPivot.Items.ToList())
-                {
-                    _pivotDictionary.Add(Enum<Pivots>.Parse((string)item.Tag), Tuple.Create(pivotIndex, item));
-                    ++pivotIndex;
-                }
+                _pivotDictionary.Add(Enum<Pivots>.Parse((string) item.Tag), Tuple.Create(pivotIndex, item));
+                ++pivotIndex;
             }
         }
     }

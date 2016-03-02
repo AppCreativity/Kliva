@@ -198,6 +198,7 @@
                     </ScrollViewer>
                 </PivotItem>
                 <PivotItem x:Name="SegmentsPivot" Header="segments" Tag="Segments"
+                           x:DeferLoadStrategy="Lazy"
                            Visibility="{x:Bind ViewModel.HasSegments, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
                 </PivotItem>
                 <PivotItem x:Name="KudosPivot" Tag="Kudos"
@@ -213,6 +214,7 @@
                               ItemTemplate="{StaticResource CommentsListItemTemplate}"/>
                 </PivotItem>
                 <PivotItem x:Name="PhotosPivot" Tag="Photos"
+                           x:DeferLoadStrategy="Lazy"
                            Header="{x:Bind ViewModel.PhotoCount, Converter={StaticResource AddAmountToStringConverter}, ConverterParameter=photos, Mode=OneWay}"
                            Visibility="{x:Bind ViewModel.HasPhotos, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <GridView x:Name="ActivityPhotosGrid"
