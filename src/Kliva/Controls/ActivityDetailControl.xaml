@@ -51,8 +51,15 @@
             <maps:MapControl x:Name="ActivityMap"
                              Margin="0,10,0,0"
                              RelativePanel.Below="ActivityName"
-                             
                              RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
+
+            <Button Margin="0,10,0,0"
+                    RelativePanel.AlignTopWith="ActivityMap"
+                    RelativePanel.AlignRightWithPanel="True">
+                <TextBlock Text=""
+                           Style="{StaticResource PaneIconMaterialTextBlock}"
+                           Foreground="Black"/>
+            </Button>
 
             <CommandBar x:Name="ActivityDetailCommandBar"
                         Style="{StaticResource CommandBarWithoutMoreStyle}"
