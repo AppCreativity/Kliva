@@ -147,7 +147,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="KudosListItemTemplate"
-                  x:DataType="models:Athlete">
+                  x:DataType="models:AthleteSummary">
         <UserControl>
             <Grid>
                 <VisualStateManager.VisualStateGroups>
