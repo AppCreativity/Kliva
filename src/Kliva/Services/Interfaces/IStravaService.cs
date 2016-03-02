@@ -13,7 +13,23 @@ namespace Kliva.Services.Interfaces
 
         Task GetAuthorizationCode();
 
+        /// <summary>
+        /// Get authenticated athlete
+        /// </summary>
+        /// <returns></returns>
         Task<Athlete> GetAthleteAsync();
+
+        /// <summary>
+        /// Get non-authenticated athlete
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<Athlete> GetAthleteAsync(string id);
+
+        Task<IEnumerable<AthleteSummary>> GetFollowersAsync(string athleteId, bool authenticatedUser = true);
+        Task<IEnumerable<AthleteSummary>> GetFriendsAsync(string athleteId, bool authenticatedUser = true);
+        Task<IEnumerable<AthleteSummary>> GetMutualFriendsAsync(string athleteId);
+        Task<IEnumerable<SegmentEffort>> GetKomsAsync(string athleteId);
 
         Task<Activity> GetActivityAsync(string id, bool includeEfforts);
         Task<IEnumerable<ActivitySummary>> GetActivitiesWithAthletesAsync(int page, int perPage, ActivityFeedFilter filter);

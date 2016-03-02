@@ -132,9 +132,43 @@ namespace Kliva.Services
             }
         }
 
+        /// <summary>
+        /// Get authenticated athlete
+        /// </summary>
+        /// <returns></returns>
         public Task<Athlete> GetAthleteAsync()
         {
             return StravaAthleteService.GetAthleteAsync();
+        }
+
+        /// <summary>
+        /// Get a non-authenticated athlete
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Task<Athlete> GetAthleteAsync(string id)
+        {
+            return StravaAthleteService.GetAthleteAsync(id);
+        }
+
+        public Task<IEnumerable<AthleteSummary>> GetFollowersAsync(string athleteId, bool authenticatedUser = true)
+        {
+            return StravaAthleteService.GetFollowersAsync(athleteId, authenticatedUser);
+        }
+
+        public Task<IEnumerable<AthleteSummary>> GetFriendsAsync(string athleteId, bool authenticatedUser = true)
+        {
+            return StravaAthleteService.GetFriendsAsync(athleteId, authenticatedUser);
+        }
+
+        public Task<IEnumerable<AthleteSummary>> GetMutualFriendsAsync(string athleteId)
+        {
+            return StravaAthleteService.GetMutualFriendsAsync(athleteId);
+        }
+
+        public Task<IEnumerable<SegmentEffort>> GetKomsAsync(string athleteId)
+        {
+            return StravaAthleteService.GetKomsAsync(athleteId);
         }
 
         public async Task<Activity> GetActivityAsync(string id, bool includeEfforts)

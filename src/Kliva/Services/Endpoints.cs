@@ -38,15 +38,27 @@ namespace Kliva.Services
         /// <summary>
         /// Url to the endpoint used for receiving the friends of the currentlx authenticated user.
         /// </summary>
-        public const string Friends = "https://www.strava.com/api/v3/athlete/friends";
+        public const string OwnFriends = "https://www.strava.com/api/v3/athlete/friends";
         /// <summary>
         /// Url to the endpoint used for receiving the followers of the currently authenticated athlete.
         /// </summary>
-        public const string Follower = "https://www.strava.com/api/v3/athlete/followers";
+        public const string OwnFollowers = "https://www.strava.com/api/v3/athlete/followers";
         /// <summary>
         /// Url to the endpoint used for receiving the followers of athletes other than the currently authenticated one.
         /// </summary>
-        public const string Followers = "https://www.strava.com/api/v3/athletes";
+        public const string OtherFriends = "https://www.strava.com/api/v3/athletes/{0}/friends";
+        /// <summary>
+        /// Url to the endpoint used for receiving the followers of athletes other than the currently authenticated one.
+        /// </summary>
+        public const string OtherFollowers = "https://www.strava.com/api/v3/athletes/{0}/followers";
+        /// <summary>
+        /// Url to the endpoint used for receiving the followers of athletes other than the currently authenticated one.
+        /// </summary>
+        public const string MutualFriends = "https://www.strava.com/api/v3/athletes/{0}/both-following";
+        /// <summary>
+        /// Url to the endpoint used for receiving the K/QOMs/CRs of athletes.
+        /// </summary>
+        public const string Koms = "https://www.strava.com/api/v3/athletes/{0}/koms";
         /// <summary>
         /// Url to the endpoint used for receiving gear.
         /// </summary>

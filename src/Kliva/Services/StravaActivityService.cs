@@ -55,7 +55,7 @@ namespace Kliva.Services
             try
             {
                 var accessToken = await _settingsService.GetStoredStravaAccessToken();
-                var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitType();
+                var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitTypeAsync();
 
                 string getUrl = $"{Endpoints.Activity}/{activityId}/related?access_token={accessToken}";
                 string json = await WebRequest.SendGetAsync(new Uri(getUrl));
@@ -86,7 +86,7 @@ namespace Kliva.Services
             try
             {
                 var accessToken = await _settingsService.GetStoredStravaAccessToken();
-                var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitType();
+                var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitTypeAsync();
 
                 string getUrl = $"{Endpoints.Activity}/{id}?include_all_efforts={includeEfforts}&access_token={accessToken}";
                 string json = await WebRequest.SendGetAsync(new Uri(getUrl));
@@ -115,7 +115,7 @@ namespace Kliva.Services
             try
             {
                 var accessToken = await _settingsService.GetStoredStravaAccessToken();
-                var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitType();
+                var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitTypeAsync();
 
                 //TODO: Glenn - Optional parameters should be treated as such!
                 string getUrl = $"{Endpoints.Activities}?page={page}&per_page={perPage}&access_token={accessToken}";
@@ -147,7 +147,7 @@ namespace Kliva.Services
             try
             {
                 var accessToken = await _settingsService.GetStoredStravaAccessToken();
-                var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitType();
+                var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitTypeAsync();
 
                 //TODO: Glenn - Optional parameters should be treated as such!
                 string getUrl = $"{Endpoints.ActivitiesFollowers}?page={page}&per_page={perPage}&access_token={accessToken}";
