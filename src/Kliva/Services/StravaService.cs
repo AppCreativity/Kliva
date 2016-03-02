@@ -31,6 +31,9 @@ namespace Kliva.Services
         }
     }
 
+    /// <summary>
+    /// Service layer on top of the basic Strava services to be able to combine calls on different API endpoints
+    /// </summary>
     public class StravaService : IStravaService
     {
         public IStravaActivityService StravaActivityService => ServiceLocator.Current.GetInstance<IStravaActivityService>();

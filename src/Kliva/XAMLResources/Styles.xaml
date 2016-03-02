@@ -20,6 +20,9 @@
     <Color x:Key="SeperatorColor">LightGray</Color>
     <SolidColorBrush x:Key="SeperatorBrush" Color="{StaticResource SeperatorColor}" />
 
+    <Color x:Key="SubTextColor">DarkGray</Color>
+    <SolidColorBrush x:Key="SubTextBrush" Color="{StaticResource SubTextColor}" />
+
     <FontFamily x:Key="OpenSansFontLight">/Assets/Fonts/OpenSans-Light.ttf#Open Sans</FontFamily>
     <FontFamily x:Key="OpenSansFontBold">/Assets/Fonts/OpenSans-Bold.ttf#Open Sans</FontFamily>
     <FontFamily x:Key="OpenSansFontSemibold">/Assets/Fonts/OpenSans-Semibold.ttf#Open Sans</FontFamily>
@@ -103,6 +106,25 @@
         <Setter Property="Height" Value="50" />
         <Setter Property="Width" Value="50" />
         <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
+    </Style>
+
+    <Style x:Name="ProfileEllipseLarge" TargetType="Ellipse">
+        <Setter Property="Height" Value="124" />
+        <Setter Property="Width" Value="124" />
+        <Setter Property="Margin" Value="10" />
+        <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
+    </Style>
+
+    <Style x:Name="ProfileNameStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="32" />
+        <Setter Property="FontFamily" Value="{StaticResource OpenSansFontSemibold}" />
+        <Setter Property="Foreground" Value="{StaticResource KlivaMainBrush}" />
+    </Style>
+
+    <Style x:Name="ProfileLocationStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontFamily" Value="{StaticResource OpenSansFontSemibold}" />
+        <Setter Property="Foreground" Value="{StaticResource SubTextBrush}" />
     </Style>
 
     <Style x:Name="ActivityImageBorderMobile" TargetType="Border">
