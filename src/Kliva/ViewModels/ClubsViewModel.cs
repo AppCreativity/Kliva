@@ -41,7 +41,7 @@ namespace Kliva.ViewModels
                         switch (Enum<AppTarget>.Parse(CurrentState.Name))
                         {
                             case AppTarget.Mobile:
-                                _navigationService.Navigate<ClubDetailPage>();
+                                NavigationService.Navigate<ClubDetailPage>();
                                 break;
                         }
 

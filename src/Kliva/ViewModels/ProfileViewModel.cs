@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Controls;
 using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Threading;
@@ -19,7 +20,7 @@ namespace Kliva.ViewModels
         {
             _stravaService = stravaService;
             _settingsService = settingsService;
-            _navigationService = navigationService;
+            NavigationService = navigationService;
         }
 
         private Athlete _athlete;
@@ -60,12 +61,15 @@ namespace Kliva.ViewModels
         private RelayCommand _viewLoadedCommand;
         public RelayCommand ViewLoadedCommand => _viewLoadedCommand ?? (_viewLoadedCommand = new RelayCommand(ViewLoaded));
 
+        private RelayCommand<ItemClickEventArgs> _athleteTappedCommand;
+        public RelayCommand<ItemClickEventArgs> AthleteTappedCommand => _athleteTappedCommand ?? (_athleteTappedCommand = new RelayCommand<ItemClickEventArgs>(OnAthleteTapped));
+
         private async void ViewLoaded()
         {
             // clear old value // TODO configure ioc to give a new VM per call
             ClearProperties();
             
-            string currentParameter = (string)_navigationService.CurrentParameter;
+            string currentParameter = (string)NavigationService.CurrentParameter;
             bool authenticatedUser = string.IsNullOrEmpty(currentParameter);
             if (authenticatedUser)
             {
@@ -80,10 +84,8 @@ namespace Kliva.ViewModels
             {
                 List<Task> tasks = new List<Task>();
 
-                if (Athlete.FollowerCount > 0)
-                    tasks.Add(GetFollowersAsync(Athlete.Id.ToString(), authenticatedUser));
-                if (Athlete.FriendCount > 0)
-                    tasks.Add(GetFriendsAsync(Athlete.Id.ToString(), authenticatedUser));
+                tasks.Add(GetFollowersAsync(Athlete.Id.ToString(), authenticatedUser));
+                tasks.Add(GetFriendsAsync(Athlete.Id.ToString(), authenticatedUser));
                 if(!string.IsNullOrEmpty(currentParameter))
                     tasks.Add(GetMutualFriendsAsync(Athlete.Id.ToString()));
                 tasks.Add(GetKomsAsync(Athlete.Id.ToString()));

@@ -57,7 +57,7 @@ namespace Kliva.ViewModels
                     switch (Enum<AppTarget>.Parse(CurrentState.Name))
                     {
                         case AppTarget.Mobile:
-                            _navigationService.Navigate<ActivityDetailPage>();                            
+                            NavigationService.Navigate<ActivityDetailPage>();                            
                             break;
                     }
 
@@ -98,17 +98,17 @@ namespace Kliva.ViewModels
 
         //TODO: Glenn - We hooked this up twice, once in SidePaneViewModel and once in MainViewModel because of difference in UI on desktop ( sidebar ) and mobile ( bottom appbar )
         private RelayCommand _statisticsCommand;
-        public RelayCommand StatisticsCommand => _statisticsCommand ?? (_statisticsCommand = new RelayCommand(() => _navigationService.Navigate<StatsPage>()));
+        public RelayCommand StatisticsCommand => _statisticsCommand ?? (_statisticsCommand = new RelayCommand(() => NavigationService.Navigate<StatsPage>()));
 
         private RelayCommand _profileCommand;
-        public RelayCommand ProfileCommand => _profileCommand ?? (_profileCommand = new RelayCommand(() => _navigationService.Navigate<ProfilePage>()));
+        public RelayCommand ProfileCommand => _profileCommand ?? (_profileCommand = new RelayCommand(() => NavigationService.Navigate<ProfilePage>()));
 
         private RelayCommand _clubsCommand;
-        public RelayCommand ClubsCommand => _clubsCommand ?? (_clubsCommand = new RelayCommand(() => _navigationService.Navigate<ClubsPage>()));
+        public RelayCommand ClubsCommand => _clubsCommand ?? (_clubsCommand = new RelayCommand(() => NavigationService.Navigate<ClubsPage>()));
 
         //TODO: Glenn - We hooked this up twice, once in SidePaneViewModel and once in MainViewModel because of difference in UI on desktop ( sidebar ) and mobile ( bottom appbar )
         private RelayCommand _settingsCommand;
-        public RelayCommand SettingsCommand => _settingsCommand ?? (_settingsCommand = new RelayCommand(() => _navigationService.Navigate<SettingsPage>()));
+        public RelayCommand SettingsCommand => _settingsCommand ?? (_settingsCommand = new RelayCommand(() => NavigationService.Navigate<SettingsPage>()));
 
         public MainViewModel(INavigationService navigationService, ISettingsService settingsService, IStravaService stravaService) : base(navigationService)
         {
@@ -126,8 +126,8 @@ namespace Kliva.ViewModels
             await _settingsService.RemoveStravaAccessToken();
 
             //Remove the current 'main page' back entry and navigate to the login page
-            _navigationService.Navigate<LoginPage>();
-            _navigationService.RemoveBackEntry();
+            NavigationService.Navigate<LoginPage>();
+            NavigationService.RemoveBackEntry();
 
             //this.IsBusy = false;
         }

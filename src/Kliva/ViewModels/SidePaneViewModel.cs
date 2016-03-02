@@ -113,24 +113,24 @@ namespace Kliva.ViewModels
         }
 
         private RelayCommand _homeCommand;
-        public RelayCommand HomeCommand => _homeCommand ?? (_homeCommand = new RelayCommand(() => _navigationService.Navigate<MainPage>()));
+        public RelayCommand HomeCommand => _homeCommand ?? (_homeCommand = new RelayCommand(() => NavigationService.Navigate<MainPage>()));
 
         //TODO: Glenn - We hooked this up twice, once in SidePaneViewModel and once in MainViewModel because of difference in UI on desktop ( sidebar ) and mobile ( bottom appbar )
         private RelayCommand _statisticsCommand;
-        public RelayCommand StatisticsCommand => _statisticsCommand ?? (_statisticsCommand = new RelayCommand(() => _navigationService.Navigate<StatsPage>()));
+        public RelayCommand StatisticsCommand => _statisticsCommand ?? (_statisticsCommand = new RelayCommand(() => NavigationService.Navigate<StatsPage>()));
 
         private RelayCommand _profileCommand;
-        public RelayCommand ProfileCommand => _profileCommand ?? (_profileCommand = new RelayCommand(() => _navigationService.Navigate<ProfilePage>()));
+        public RelayCommand ProfileCommand => _profileCommand ?? (_profileCommand = new RelayCommand(() => NavigationService.Navigate<ProfilePage>()));
 
         private RelayCommand _clubsCommand;
-        public RelayCommand ClubsCommand => _clubsCommand ?? (_clubsCommand = new RelayCommand(() => _navigationService.Navigate<ClubsPage>()));
+        public RelayCommand ClubsCommand => _clubsCommand ?? (_clubsCommand = new RelayCommand(() => NavigationService.Navigate<ClubsPage>()));
 
         private RelayCommand _hamburgerCommand;
         public RelayCommand HamburgerCommand => _hamburgerCommand ?? (_hamburgerCommand = new RelayCommand(() => this.IsPaneOpen = !this.IsPaneOpen));
 
         //TODO: Glenn - We hooked this up twice, once in SidePaneViewModel and once in MainViewModel because of difference in UI on desktop ( sidebar ) and mobile ( bottom appbar )
         private RelayCommand _settingsCommand;
-        public RelayCommand SettingsCommand => _settingsCommand ?? (_settingsCommand = new RelayCommand(() => _navigationService.Navigate<SettingsPage>()));
+        public RelayCommand SettingsCommand => _settingsCommand ?? (_settingsCommand = new RelayCommand(() => NavigationService.Navigate<SettingsPage>()));
 
         public SidePaneViewModel(INavigationService navigationService) : base(navigationService)
         {
