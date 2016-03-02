@@ -98,7 +98,8 @@ namespace Kliva.Controls
                     zoomed = await ActivityMap.TrySetViewBoundsAsync(GeoboundingBox.TryCompute(geopositions), null, MapAnimationKind.None);
             }
             else
-                ExpandMapButton.Visibility = Visibility.Collapsed;
+                if (ExpandMapButton != null)
+                    ExpandMapButton.Visibility = Visibility.Collapsed;
         }
 
         private void OnActivityDetailControlLoaded(object sender, RoutedEventArgs e)
