@@ -73,6 +73,11 @@ namespace Kliva.Controls
 
             if (geopositions.Any())
             {
+                if (ExpandMapButton == null)
+                    FindName("ExpandMapButton");
+                else
+                    ExpandMapButton.Visibility = Visibility.Visible;
+
                 var polyLine = new MapPolyline { Path = new Geopath(geopositions), StrokeThickness = 4, StrokeColor = (Color)App.Current.Resources["StravaRedColor"] };
                 ActivityMap.MapElements.Add(polyLine);
 
@@ -92,6 +97,8 @@ namespace Kliva.Controls
                 while (!zoomed)
                     zoomed = await ActivityMap.TrySetViewBoundsAsync(GeoboundingBox.TryCompute(geopositions), null, MapAnimationKind.None);
             }
+            else
+                ExpandMapButton.Visibility = Visibility.Collapsed;
         }
 
         private void OnActivityDetailControlLoaded(object sender, RoutedEventArgs e)

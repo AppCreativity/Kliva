@@ -7,6 +7,7 @@ using GalaSoft.MvvmLight.Messaging;
 using Kliva.Messages;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
+using Kliva.Views;
 using Microsoft.Practices.ServiceLocation;
 
 namespace Kliva.ViewModels
@@ -69,6 +70,9 @@ namespace Kliva.ViewModels
 
         private RelayCommand _kudosCommand;
         public RelayCommand KudosCommand => _kudosCommand ?? (_kudosCommand = new RelayCommand(async () => await OnKudos()));
+
+        private RelayCommand _mapCommand;
+        public RelayCommand MapCommand => _mapCommand ?? (_mapCommand = new RelayCommand(() => _navigationService.Navigate<MapPage>(SelectedActivity?.Map)));
 
         public ActivityDetailViewModel(INavigationService navigationService, IStravaService stravaService) : base(navigationService)
         {
