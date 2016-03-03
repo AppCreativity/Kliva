@@ -20,7 +20,6 @@ namespace Kliva.ViewModels
         {
             _stravaService = stravaService;
             _settingsService = settingsService;
-            NavigationService = navigationService;
         }
 
         private Athlete _athlete;
