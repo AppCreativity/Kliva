@@ -14,9 +14,7 @@ namespace Kliva.ViewModels
     {
         private readonly List<Type> _noSidePane = new List<Type>
         {
-            typeof(LoginPage),
-            typeof(ClubsPage),
-            typeof(SettingsPage)
+            typeof(LoginPage)
         };
 
         private Type _pageType;

@@ -12,6 +12,8 @@ using Windows.Devices.Geolocation;
 using Windows.UI.Xaml;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Practices.ServiceLocation;
+using System.Diagnostics;
+using System;
 
 namespace Kliva.ViewModels
 {
@@ -22,7 +24,20 @@ namespace Kliva.ViewModels
 
         private bool _viewModelLoaded = false;
 
-        public VisualState CurrentState { get; set; }
+        private VisualState _currentState;
+        public VisualState CurrentState
+        {
+            get { return _currentState; }
+            set
+            {
+                if (!Equals(_currentState, value))
+                {
+                    _currentState = value;
+                    // If we just switched to the mobile state we should collapse to the detail view
+                    TryNavigateToDetail();
+                }
+            }
+        }
 
         private ObservableCollection<ActivitySummary> _activities = new ObservableCollection<ActivitySummary>();
         public ObservableCollection<ActivitySummary> Activities
@@ -46,14 +61,6 @@ namespace Kliva.ViewModels
             {
                 if (Set(() => SelectedActivity, ref _selectedActivity, value) && value != null)
                 {
-                    //TODO: Change the strings to enums or constants for the visual states
-                    switch (CurrentState.Name)
-                    {
-                        case "Mobile":
-                            _navigationService.Navigate<ActivityDetailPage>();                            
-                            break;
-                    }
-
                     MessengerInstance.Send<ActivitySummaryMessage>(new ActivitySummaryMessage(_selectedActivity));
 
                     if (!string.IsNullOrEmpty(SelectedActivity?.Map.SummaryPolyline))
@@ -104,6 +111,24 @@ namespace Kliva.ViewModels
                 ActivityIncrementalCollection = new ActivityIncrementalCollection(_stravaService);
                 _viewModelLoaded = true;
             }
+        }
+
+        private bool TryNavigateToDetail()
+        {
+            //TODO: Change the strings to enums or constants for the visual states
+            if (CurrentState.Name == "Mobile" && SelectedActivity != null)
+            {
+                _navigationService.Navigate<ActivityDetailPage>();
+                return true;
+            }
+
+            return false;
+        }
+
+        public void ActivityInvoked(ActivitySummary selectedActivity)
+        {
+            SelectedActivity = selectedActivity;
+            TryNavigateToDetail();
         }
     }
 }

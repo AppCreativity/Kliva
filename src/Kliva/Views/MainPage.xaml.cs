@@ -25,7 +25,6 @@ namespace Kliva.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            UpdateVisualState(VisualStateGroup.CurrentState);
             _activityList.SelectedIndex = -1;
         }
 
@@ -37,6 +36,12 @@ namespace Kliva.Views
         private void OnCurrentStateChanged(object sender, VisualStateChangedEventArgs e)
         {
             UpdateVisualState(e.NewState);
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            // We are only guarunteed to have the updated VisualState in Loaded
+            UpdateVisualState(VisualStateGroup.CurrentState);
         }
     }
 }
