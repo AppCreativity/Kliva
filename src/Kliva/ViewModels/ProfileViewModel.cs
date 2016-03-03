@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
@@ -16,7 +15,6 @@ namespace Kliva.ViewModels
         private readonly IStravaService _stravaService;
         private readonly ISettingsService _settingsService;
 
-        private bool _isPageLoaded;
         private string _currentAthleteId;
 
         public ProfileViewModel(INavigationService navigationService, IStravaService stravaService, ISettingsService settingsService)
@@ -24,9 +22,6 @@ namespace Kliva.ViewModels
         {
             _stravaService = stravaService;
             _settingsService = settingsService;
-
-            // TODO Bart/Glenn: check if we can find a cleaner fix to page refreshes in MVVM Light (similar to Prism?)
-            NavigationService.Navigated += NavigationServiceOnNavigated;
         }
 
         private Athlete _athlete;
@@ -73,8 +68,9 @@ namespace Kliva.ViewModels
 
         private Task ViewLoaded()
         {
-            _isPageLoaded = true;
-            return LoadAsync();
+            if(!string.Equals(_currentAthleteId, NavigationService.CurrentParameter?.ToString()))
+                return LoadAsync();
+            return Task.CompletedTask;
         }
 
         private async Task LoadAsync()
@@ -160,14 +156,6 @@ namespace Kliva.ViewModels
                     Koms.Add(kom);
                 }
             });
-        }
-
-        // Hack to reload the page as the VM LoadAsync is bound to the Page Loaded event
-        // which does not get triggered correctly.
-        private void NavigationServiceOnNavigated(object sender, EventArgs eventArgs)
-        {
-            if(_isPageLoaded && !string.Equals(_currentAthleteId, NavigationService.CurrentParameter?.ToString()))
-                LoadAsync();
         }
     }
 }
