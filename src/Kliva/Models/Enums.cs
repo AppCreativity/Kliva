@@ -32,6 +32,7 @@
 
     public enum MenuItemType
     {
+        Feed,
         Statistics,
         Profile,
         Clubs,

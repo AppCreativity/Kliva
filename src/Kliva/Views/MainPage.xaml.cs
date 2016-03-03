@@ -40,7 +40,7 @@ namespace Kliva.Views
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            // We are only guarunteed to have the updated VisualState in Loaded
+            // We are only guaranteed to have the updated VisualState in Loaded
             UpdateVisualState(VisualStateGroup.CurrentState);
         }
     }

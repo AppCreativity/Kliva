@@ -24,20 +24,7 @@ namespace Kliva.ViewModels
 
         private bool _viewModelLoaded = false;
 
-        private VisualState _currentState;
-        public VisualState CurrentState
-        {
-            get { return _currentState; }
-            set
-            {
-                if (!Equals(_currentState, value))
-                {
-                    _currentState = value;
-                    // If we just switched to the mobile state we should collapse to the detail view
-                    TryNavigateToDetail();
-                }
-            }
-        }
+        public VisualState CurrentState { get; set; }
 
         private ObservableCollection<ActivitySummary> _activities = new ObservableCollection<ActivitySummary>();
         public ObservableCollection<ActivitySummary> Activities

@@ -62,6 +62,10 @@ namespace Kliva.ViewModels
 
                         switch (value.MenuItemType)
                         {
+                            case MenuItemType.Feed:
+                                FeedCommand.Execute(null);
+                                break;
+
                             case MenuItemType.Clubs:
                                 ClubsCommand.Execute(null);
                                 break;
@@ -99,22 +103,26 @@ namespace Kliva.ViewModels
             }
         }
 
+        private RelayCommand _feedCommand;
+        public RelayCommand FeedCommand => _feedCommand ?? (_feedCommand = new RelayCommand(() => ChangePage<MainPage>()));
+
         //TODO: Glenn - We hooked this up twice, once in SidePaneViewModel and once in MainViewModel because of difference in UI on desktop ( sidebar ) and mobile ( bottom appbar )
         private RelayCommand _clubsCommand;
-        public RelayCommand ClubsCommand => _clubsCommand ?? (_clubsCommand = new RelayCommand(() => _navigationService.Navigate<ClubsPage>()));
+        public RelayCommand ClubsCommand => _clubsCommand ?? (_clubsCommand = new RelayCommand(() => ChangePage<ClubsPage>()));
 
         private RelayCommand _hamburgerCommand;
         public RelayCommand HamburgerCommand => _hamburgerCommand ?? (_hamburgerCommand = new RelayCommand(() => this.IsPaneOpen = !this.IsPaneOpen));
 
         //TODO: Glenn - We hooked this up twice, once in SidePaneViewModel and once in MainViewModel because of difference in UI on desktop ( sidebar ) and mobile ( bottom appbar )
         private RelayCommand _settingsCommand;
-        public RelayCommand SettingsCommand => _settingsCommand ?? (_settingsCommand = new RelayCommand(() => _navigationService.Navigate<SettingsPage>()));
+        public RelayCommand SettingsCommand => _settingsCommand ?? (_settingsCommand = new RelayCommand(() => ChangePage<SettingsPage>()));
 
         public SidePaneViewModel(INavigationService navigationService) : base(navigationService)
         {
             var view = ApplicationView.GetForCurrentView();
             view.VisibleBoundsChanged += OnVisibleBoundsChanged;
 
+            TopMenuItems.Add(new MenuItem() { Icon = "\xE8FD", Title = "feed", MenuItemType = MenuItemType.Feed, MenuItemFontType = MenuItemFontType.MDL2 });
             TopMenuItems.Add(new MenuItem() { Icon = "", Title = "statistics", MenuItemType = MenuItemType.Statistics, MenuItemFontType = MenuItemFontType.MDL2 });
             TopMenuItems.Add(new MenuItem() { Icon = "", Title = "profile", MenuItemType = MenuItemType.Profile, MenuItemFontType = MenuItemFontType.MDL2 });
             TopMenuItems.Add(new MenuItem() { Icon = "", Title = "club", MenuItemType = MenuItemType.Clubs, MenuItemFontType = MenuItemFontType.Material });
@@ -149,6 +157,14 @@ namespace Kliva.ViewModels
             {
                 this.DisplayMode = SplitViewDisplayMode.Inline;
                 this.IsPaneOpen = false;
+            }
+        }
+
+        private void ChangePage<DestinationPageType>()
+        {
+            if (typeof(DestinationPageType) != _pageType)
+            {
+                _navigationService.Navigate<DestinationPageType>();
             }
         }
     }
