@@ -19,7 +19,7 @@ namespace Kliva.ViewModels
 
         public KlivaBaseViewModel(INavigationService navigationService)
         {
-            NavigationService = navigationService;            
+            NavigationService = navigationService;
         }
 
         protected void OnAthleteTapped(ItemClickEventArgs args)

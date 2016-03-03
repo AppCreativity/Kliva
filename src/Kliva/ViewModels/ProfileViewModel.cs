@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
@@ -15,11 +16,17 @@ namespace Kliva.ViewModels
         private readonly IStravaService _stravaService;
         private readonly ISettingsService _settingsService;
 
+        private bool _isPageLoaded;
+        private string _currentAthleteId;
+
         public ProfileViewModel(INavigationService navigationService, IStravaService stravaService, ISettingsService settingsService)
             : base(navigationService)
         {
             _stravaService = stravaService;
             _settingsService = settingsService;
+
+            // TODO Bart/Glenn: check if we can find a cleaner fix to page refreshes in MVVM Light (similar to Prism?)
+            NavigationService.Navigated += NavigationServiceOnNavigated;
         }
 
         private Athlete _athlete;
@@ -58,12 +65,19 @@ namespace Kliva.ViewModels
         }
 
         private RelayCommand _viewLoadedCommand;
-        public RelayCommand ViewLoadedCommand => _viewLoadedCommand ?? (_viewLoadedCommand = new RelayCommand(ViewLoaded));
+        public RelayCommand ViewLoadedCommand => _viewLoadedCommand ?? (_viewLoadedCommand = new RelayCommand(
+            () => ViewLoaded()));
 
         private RelayCommand<ItemClickEventArgs> _athleteTappedCommand;
         public RelayCommand<ItemClickEventArgs> AthleteTappedCommand => _athleteTappedCommand ?? (_athleteTappedCommand = new RelayCommand<ItemClickEventArgs>(OnAthleteTapped));
 
-        private async void ViewLoaded()
+        private Task ViewLoaded()
+        {
+            _isPageLoaded = true;
+            return LoadAsync();
+        }
+
+        private async Task LoadAsync()
         {
             // clear old value // TODO configure ioc to give a new VM per call
             ClearProperties();
@@ -83,11 +97,13 @@ namespace Kliva.ViewModels
             {
                 List<Task> tasks = new List<Task>();
 
-                tasks.Add(GetFollowersAsync(Athlete.Id.ToString(), authenticatedUser));
-                tasks.Add(GetFriendsAsync(Athlete.Id.ToString(), authenticatedUser));
+                _currentAthleteId = Athlete.Id.ToString();
+
+                tasks.Add(GetFollowersAsync(_currentAthleteId, authenticatedUser));
+                tasks.Add(GetFriendsAsync(_currentAthleteId, authenticatedUser));
                 if(!string.IsNullOrEmpty(currentParameter))
-                    tasks.Add(GetMutualFriendsAsync(Athlete.Id.ToString()));
-                tasks.Add(GetKomsAsync(Athlete.Id.ToString()));
+                    tasks.Add(GetMutualFriendsAsync(_currentAthleteId));
+                tasks.Add(GetKomsAsync(_currentAthleteId));
 
                 await Task.WhenAll(tasks);
             }
@@ -144,6 +160,14 @@ namespace Kliva.ViewModels
                     Koms.Add(kom);
                 }
             });
+        }
+
+        // Hack to reload the page as the VM LoadAsync is bound to the Page Loaded event
+        // which does not get triggered correctly.
+        private void NavigationServiceOnNavigated(object sender, EventArgs eventArgs)
+        {
+            if(_isPageLoaded && !string.Equals(_currentAthleteId, NavigationService.CurrentParameter?.ToString()))
+                LoadAsync();
         }
     }
 }
