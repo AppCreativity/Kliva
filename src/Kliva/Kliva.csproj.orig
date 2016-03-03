@@ -11,7 +11,7 @@
     <AssemblyName>Kliva</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.14278.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.14271.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <EnableDotNetNativeCompatibleProfile>true</EnableDotNetNativeCompatibleProfile>
@@ -128,8 +128,8 @@
     <Compile Include="Converters\SecondsToTimeStringConverter.cs" />
     <Compile Include="Converters\SpeedUnitToStringConverter.cs" />
     <Compile Include="Converters\XBindItemCastingConverter.cs" />
-    <Compile Include="Helpers\Beautiful\BlurPanelProto.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Helpers\Beautiful\BlurPanelProto.cs" />
     <Compile Include="Helpers\DateTimeFormatHelper.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\PolylineConverter.cs" />
