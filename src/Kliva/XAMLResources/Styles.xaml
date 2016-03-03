@@ -47,6 +47,11 @@
         <Setter Property="Margin" Value="60,0,0,10" />
     </Style>
 
+    <Style x:Name="TitleTextBlockDesktopWithSideBar" BasedOn="{StaticResource BaseWhiteTextBlock}"
+           TargetType="TextBlock">
+        <Setter Property="Margin" Value="10,0,0,10" />
+    </Style>
+    
     <Style x:Name="PaneIcon" TargetType="FontIcon">
         <Setter Property="Width" Value="40" />
         <Setter Property="Height" Value="40" />
@@ -74,16 +79,14 @@
         <Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}" />
     </Style>
 
-    <Style x:Name="KlivaButtonMobile"
-           TargetType="Button">
+    <Style x:Name="KlivaButtonMobile" TargetType="Button">
         <Setter Property="Background" Value="{StaticResource KlivaDarkBrush}" />
         <Setter Property="Foreground" Value="White" />
         <Setter Property="FontFamily" Value="{StaticResource OpenSansFontLight}" />
         <Setter Property="FontSize" Value="18" />
     </Style>
 
-    <Style x:Name="KlivaButtonDesktop"
-           TargetType="Button">
+    <Style x:Name="KlivaButtonDesktop" TargetType="Button">
         <Setter Property="Background" Value="{StaticResource KlivaDarkBrush}" />
         <Setter Property="Foreground" Value="White" />
         <Setter Property="FontFamily" Value="{StaticResource OpenSansFontLight}" />
@@ -91,19 +94,25 @@
     </Style>
 
     <Style x:Name="ProfileEllipseDesktop" TargetType="Ellipse">
-        <Setter Property="Height" Value="55" />
-        <Setter Property="Width" Value="55" />
-        <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Height" Value="65" />
+        <Setter Property="Width" Value="65" />
         <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
     </Style>
 
     <Style x:Name="ProfileEllipseMobile" TargetType="Ellipse">
-        <Setter Property="Height" Value="42" />
-        <Setter Property="Width" Value="42" />
-        <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Height" Value="50" />
+        <Setter Property="Width" Value="50" />
         <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
+    </Style>
+
+    <Style x:Name="ActivityImageBorderMobile" TargetType="Border">
+        <Setter Property="Height" Value="20" />
+        <Setter Property="Width" Value="20" />
+    </Style>
+
+    <Style x:Name="ActivityImageBorderDesktop" TargetType="Border">
+        <Setter Property="Height" Value="30" />
+        <Setter Property="Width" Value="30" />
     </Style>
 
     <Style x:Name="MenuItemContainerStyle" TargetType="ListViewItem">
@@ -857,6 +866,85 @@
         </Setter>
     </Style>
 
+    <Style x:Key="EmptyButtonStyle" TargetType="ButtonBase">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="MinWidth" Value="0" />
+        <Setter Property="MinHeight" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ButtonBase">
+                    <Border Background="{TemplateBinding Background}"
+                            Padding="{TemplateBinding Padding}">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition From="Pressed"
+                                                      To="PointerOver">
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="Container" />
+                                        </Storyboard>
+                                    </VisualTransition>
+                                    <VisualTransition From="PointerOver"
+                                                      To="Normal">
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="Container" />
+                                        </Storyboard>
+                                    </VisualTransition>
+                                    <VisualTransition From="Pressed"
+                                                      To="Normal">
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="Container" />
+                                        </Storyboard>
+                                    </VisualTransition>
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="PointerOver" />
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <PointerDownThemeAnimation Storyboard.TargetName="Container" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <PointerUpThemeAnimation Storyboard.TargetName="Container" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Content="{TemplateBinding Content}"
+                                          x:Name="Container"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style x:Key="EmptyButtonStyleStretched" BasedOn="{StaticResource EmptyButtonStyle}" TargetType="ButtonBase">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+    </Style>
+
+    <Style x:Name="HorizontalListViewStyle" TargetType="ListView">
+        <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Auto" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden" />
+        <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <ItemsStackPanel Orientation="Horizontal"
+                                     ScrollViewer.HorizontalScrollMode="Enabled"
+                                     ScrollViewer.VerticalScrollMode="Disabled"/>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!-- GENERAL TYPES -->
 
     <Style TargetType="PivotHeaderItem">
@@ -975,6 +1063,10 @@
         </Setter>
     </Style>
 
+    <Style TargetType="PivotItem">
+        <Setter Property="Margin" Value="0,0,0,0" />
+    </Style>
+
     <Style TargetType="controls:KlivaApplicationFrame">
         <Setter Property="HorizontalContentAlignment"
                 Value="Stretch" />
@@ -1018,6 +1110,50 @@
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                 </Style>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ListViewItem">
+        <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+        <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}" />
+        <Setter Property="TabNavigation" Value="Local"/>
+        <Setter Property="IsHoldingEnabled" Value="True"/>
+        <Setter Property="Padding" Value="0,0,0,0"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="MinWidth" Value="0"/>
+        <Setter Property="MinHeight" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListViewItem">
+                    <ListViewItemPresenter
+          ContentTransitions="{TemplateBinding ContentTransitions}"
+          SelectionCheckMarkVisualEnabled="True"
+          CheckBrush="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
+          CheckBoxBrush="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
+          DragBackground="{ThemeResource ListViewItemDragBackgroundThemeBrush}"
+          DragForeground="{ThemeResource ListViewItemDragForegroundThemeBrush}"
+          FocusBorderBrush="{ThemeResource SystemControlForegroundAltHighBrush}"
+          FocusSecondaryBorderBrush="{ThemeResource SystemControlForegroundBaseHighBrush}"
+          PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}"
+          PointerOverBackground="{ThemeResource SystemControlHighlightListLowBrush}"
+          PointerOverForeground="{ThemeResource SystemControlHighlightAltBaseHighBrush}"
+          SelectedBackground="{ThemeResource SystemControlHighlightListAccentLowBrush}"
+          SelectedForeground="{ThemeResource SystemControlHighlightAltBaseHighBrush}"
+          SelectedPointerOverBackground="{ThemeResource SystemControlHighlightListAccentMediumBrush}"
+          PressedBackground="{ThemeResource SystemControlHighlightListMediumBrush}"
+          SelectedPressedBackground="{ThemeResource SystemControlHighlightListAccentHighBrush}"
+          DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
+          DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
+          ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
+          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+          ContentMargin="{TemplateBinding Padding}"
+          CheckMode="Inline"/>
+                </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>

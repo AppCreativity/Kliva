@@ -1,14 +1,15 @@
-﻿using GalaSoft.MvvmLight.Threading;
-using Kliva.Models;
-using Kliva.Services.Interfaces;
-using Microsoft.Practices.ServiceLocation;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.Security.Authentication.Web;
+using GalaSoft.MvvmLight.Threading;
+using Kliva.Models;
+using Kliva.Services.Interfaces;
+using Microsoft.Practices.ServiceLocation;
+using Newtonsoft.Json;
 
 namespace Kliva.Services
 {
@@ -25,28 +26,18 @@ namespace Kliva.Services
 
         public StravaServiceEventArgs(StravaServiceStatus status, Exception ex = null)
         {
-            this.Status = status;
-            this.Exception = ex;
+            Status = status;
+            Exception = ex;
         }
     }
 
     public class StravaService : IStravaService
     {
-        public IStravaActivityService StravaActivityService
-        {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<IStravaActivityService>();
-            }
-        }
+        public IStravaActivityService StravaActivityService => ServiceLocator.Current.GetInstance<IStravaActivityService>();
 
-        public IStravaAthleteService StravaAthleteService
-        {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<IStravaAthleteService>();
-            }
-        }
+        public IStravaAthleteService StravaAthleteService => ServiceLocator.Current.GetInstance<IStravaAthleteService>();
+
+        public IStravaClubService StravaClubService => ServiceLocator.Current.GetInstance<IStravaClubService>();
 
         private string ParseAuthorizationResponse(string responseData)
         {
@@ -81,14 +72,14 @@ namespace Kliva.Services
             }
         }
 
-        private async Task GetActivitySummaryRelations(IEnumerable<ActivitySummary> activities)
+        private async Task GetActivitySummaryRelationsAsync(IEnumerable<ActivitySummary> activities)
         {
             var results = (from activity in activities
                            select new
                            {
                                Activity = activity,
                                AthleteTask = StravaAthleteService.GetAthleteAsync(activity.AthleteMeta.Id.ToString()),
-                               PhotoTask = (activity.TotalPhotoCount > 0) ? StravaActivityService.GetPhotosAsync(activity.Id.ToString()) : Task.FromResult<List<Photo>>(null)
+                               PhotoTask = (activity.AthleteMeta.Id == StravaAthleteService.Athlete.Id && activity.TotalPhotoCount > 0) ? StravaActivityService.GetPhotosAsync(activity.Id.ToString()) : Task.FromResult<List<Photo>>(null)
                            }).ToList();
 
             List<Task> tasks = new List<Task>();
@@ -127,7 +118,7 @@ namespace Kliva.Services
                 WebAuthenticationResult webAuthenticationResult = await WebAuthenticationBroker.AuthenticateAsync(WebAuthenticationOptions.None, new Uri(authenticationURL), new Uri(Constants.STRAVA_AUTHORITY_REDIRECT_URL));
                 if (webAuthenticationResult.ResponseStatus == WebAuthenticationStatus.Success)
                 {
-                    var responseData = webAuthenticationResult.ResponseData.ToString();
+                    var responseData = webAuthenticationResult.ResponseData;
                     var tempAuthorizationCode = ParseAuthorizationResponse(responseData);
                     await GetAccessToken(tempAuthorizationCode);
                 }
@@ -146,34 +137,75 @@ namespace Kliva.Services
         public async Task<Activity> GetActivityAsync(string id, bool includeEfforts)
         {
             //TODO: Glenn - kick of tasks in Task.Run List<Task>
-
             Activity activity = await StravaActivityService.GetActivityAsync(id, includeEfforts);
+
             if (activity != null)
-                await GetActivitySummaryRelations(new List<ActivitySummary>() { activity });
+            {
+                await GetActivitySummaryRelationsAsync(new List<ActivitySummary> { activity });
 
-            if (activity.KudosCount > 0)
-                activity.Kudos = await StravaActivityService.GetKudosAsync(id);
+                if (activity.OtherAthleteCount > 0)
+                {
+                    activity.RelatedActivities = await StravaActivityService.GetRelatedActivitiesAsync(id);
+                    await GetActivitySummaryRelationsAsync(activity.RelatedActivities);
+                }
 
-            if (activity.CommentCount > 0)
-                activity.Comments = await StravaActivityService.GetCommentsAsync(id);
+                if (activity.KudosCount > 0)
+                    activity.Kudos = await StravaActivityService.GetKudosAsync(id);
+
+                if (activity.CommentCount > 0)
+                    activity.Comments = await StravaActivityService.GetCommentsAsync(id);
+                }
 
             return activity;
         }
 
-        public async Task<IEnumerable<ActivitySummary>> GetActivitiesWithAthletesAsync(int page, int perPage)
+        public async Task<IEnumerable<ActivitySummary>> GetActivitiesWithAthletesAsync(int page, int perPage, ActivityFeedFilter filter)
         {
-            IEnumerable<ActivitySummary> activities = await StravaActivityService.GetFollowersActivitiesAsync(page, perPage);
-            //IEnumerable<ActivitySummary> activities = await this.StravaActivityService.GetActivitiesAsync(page, perPage);
+            IList<ActivitySummary> activities = null;
+            switch (filter)
+            {
+                case ActivityFeedFilter.All:
+                case ActivityFeedFilter.Followers:
+                    activities = await StravaActivityService.GetFollowersActivitiesAsync(page, perPage);
+                    break;
+                case ActivityFeedFilter.My:
+                    activities = await StravaActivityService.GetActivitiesAsync(page, perPage);
+                    break;
+            }
 
             if (activities != null && activities.Any())
-                GetActivitySummaryRelations(activities);
+            {
+                await GetActivitySummaryRelationsAsync(activities);
+
+                if (filter == ActivityFeedFilter.Followers)
+                    activities = activities.Where(activity => activity.Athlete.Id != StravaAthleteService.Athlete.Id).ToList();
+            }
 
             return activities;
         }
 
-        public Task GiveKudos(string activityId)
+        public Task GiveKudosAsync(string activityId)
         {
-            return StravaActivityService.GiveKudos(activityId);
+            return StravaActivityService.GiveKudosAsync(activityId);
+        }
+
+        public Task<List<ClubSummary>> GetClubsAsync()
+        {
+            return StravaClubService.GetClubsAsync();
+        }
+
+        public async Task<Club> GetClubAsync(string id)
+        {
+            //TODO: Glenn - kick of tasks in Task.Run List<Task>
+
+            Club club = await StravaClubService.GetClubAsync(id);
+            if (club != null)
+            {
+                if (club.MemberCount > 0)
+                    club.Members = await StravaClubService.GetClubMembersAsync(id);
+            }
+
+            return club;
         }
     }
 }

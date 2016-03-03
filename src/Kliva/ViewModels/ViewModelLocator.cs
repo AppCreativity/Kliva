@@ -31,12 +31,17 @@ namespace Kliva.ViewModels
             SimpleIoc.Default.Register<IStravaService, StravaService>();
             SimpleIoc.Default.Register<IStravaActivityService, StravaActivityService>();
             SimpleIoc.Default.Register<IStravaAthleteService, StravaAthleteService>();
+            SimpleIoc.Default.Register<IStravaClubService, StravaClubService>();
 
             Register<MainViewModel>();
             Register<ActivityDetailViewModel>();
             Register<LoginViewModel>();
             Register<SettingsViewModel>();
             Register<SidePaneViewModel>();
+            Register<ClubsViewModel>();
+            Register<ClubDetailViewModel>();
+            Register<ProfileViewModel>();
+            Register<StatsViewModel>();
         }
 
         public MainViewModel Main => Get<MainViewModel>();
@@ -44,5 +49,9 @@ namespace Kliva.ViewModels
         public LoginViewModel Login => Get<LoginViewModel>();
         public SettingsViewModel Settings => Get<SettingsViewModel>();
         public SidePaneViewModel SidePane => Get<SidePaneViewModel>();
+        public ClubsViewModel Clubs => Get<ClubsViewModel>();
+        public ClubDetailViewModel ClubDetail => Get<ClubDetailViewModel>();
+        public ProfileViewModel Profile => Get<ProfileViewModel>();
+        public StatsViewModel Stats => Get<StatsViewModel>();
     }
 }

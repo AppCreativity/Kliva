@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
@@ -9,45 +10,18 @@ namespace Kliva.Services
     public class StravaAthleteService : IStravaAthleteService
     {
         private readonly ISettingsService _settingsService;
-        private Athlete _athlete;
+
+        //TODO: Glenn - When to Invalidate cache?
+        private readonly ConcurrentDictionary<string, Task<AthleteSummary>> _cachedAthleteTasks = new ConcurrentDictionary<string, Task<AthleteSummary>>();
+
+        public Athlete Athlete { get; set; }
 
         public StravaAthleteService(ISettingsService settingsService)
         {
             _settingsService = settingsService;
         }
 
-        /// <summary>
-        /// Asynchronously receives the currently authenticated athlete.
-        /// </summary>
-        /// <returns>The currently authenticated athlete.</returns>
-        public async Task<Athlete> GetAthleteAsync()
-        {
-            if (_athlete != null)
-                return _athlete;
-
-            try
-            {
-                var accessToken = await _settingsService.GetStoredStravaAccessToken();
-
-                string getUrl = $"{Endpoints.Athlete}?access_token={accessToken}";
-                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
-
-                return _athlete = Unmarshaller<Athlete>.Unmarshal(json);
-            }
-            catch (Exception)
-            {
-                //TODO: Glenn - Use logger to log errors ( Google )
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Asynchronously receives the currently authenticated athlete.
-        /// </summary>
-        /// <param name="athleteId">The Strava Id of the athlete.</param>
-        /// <returns>The AthleteSummary object of the athlete.</returns>
-        public async Task<AthleteSummary> GetAthleteAsync(string athleteId)
+        private async Task<AthleteSummary> GetAthleteFromServiceAsync(string athleteId)
         {
             try
             {
@@ -65,5 +39,41 @@ namespace Kliva.Services
 
             return null;
         }
+
+        /// <summary>
+        /// Asynchronously receives the currently authenticated athlete.
+        /// </summary>
+        /// <returns>The currently authenticated athlete.</returns>
+        public async Task<Athlete> GetAthleteAsync()
+        {
+            if (Athlete != null)
+                return Athlete;
+
+            try
+            {
+                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+
+                string getUrl = $"{Endpoints.Athlete}?access_token={accessToken}";
+                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
+
+                return Athlete = Unmarshaller<Athlete>.Unmarshal(json);
+            }
+            catch (Exception)
+            {
+                //TODO: Glenn - Use logger to log errors ( Google )
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Asynchronously receives the currently authenticated athlete.
+        /// </summary>
+        /// <param name="athleteId">The Strava Id of the athlete.</param>
+        /// <returns>The AthleteSummary object of the athlete.</returns>
+        public Task<AthleteSummary> GetAthleteAsync(string athleteId)
+        {
+            return _cachedAthleteTasks.GetOrAdd(athleteId, GetAthleteFromServiceAsync);
+        }        
     }
 }

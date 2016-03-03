@@ -16,11 +16,11 @@ namespace Kliva.Controls
             if (listType == null)
                 return base.SelectTemplateCore(item);
 
-            switch (listType.MenuItemType)
+            switch (listType.MenuItemFontType)
             {
-                case MenuItemType.MDL2:
+                case MenuItemFontType.MDL2:
                     return MDL2DataTemplate;
-                case MenuItemType.Material:
+                case MenuItemFontType.Material:
                     return MaterialDataTemplate;
             }
 

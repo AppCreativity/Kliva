@@ -61,6 +61,25 @@ namespace Kliva.ViewModels
                         if (this.IsPaneOpen)
                             this.IsPaneOpen = !this.IsPaneOpen;
 
+                        switch (value.MenuItemType)
+                        {
+                            case MenuItemType.Home:
+                                HomeCommand.Execute(null);
+                                break;
+
+                            case MenuItemType.Statistics:
+                                StatisticsCommand.Execute(null);
+                                break;
+
+                            case MenuItemType.Profile:
+                                ProfileCommand.Execute(null);
+                                break;
+
+                            case MenuItemType.Clubs:
+                                ClubsCommand.Execute(null);
+                                break;
+                        }
+
                         SelectedTopMenuItem = null;
                     }
                 }
@@ -77,11 +96,15 @@ namespace Kliva.ViewModels
                 {
                     if (value != null)
                     {
-                        if (string.IsNullOrEmpty(SelectedBottomMenuItem.Title))
-                            HamburgerCommand.Execute(null);
-
-                        if (SelectedBottomMenuItem.Title.Equals("settings", StringComparison.OrdinalIgnoreCase))
-                            SettingsCommand.Execute(null);
+                        switch (value.MenuItemType)
+                        {
+                            case MenuItemType.Settings:
+                                SettingsCommand.Execute(null);
+                                break;
+                            case MenuItemType.Empty:
+                                HamburgerCommand.Execute(null);
+                                break;
+                        }
 
                         SelectedBottomMenuItem = null;
                     }
@@ -89,9 +112,23 @@ namespace Kliva.ViewModels
             }
         }
 
+        private RelayCommand _homeCommand;
+        public RelayCommand HomeCommand => _homeCommand ?? (_homeCommand = new RelayCommand(() => _navigationService.Navigate<MainPage>()));
+
+        //TODO: Glenn - We hooked this up twice, once in SidePaneViewModel and once in MainViewModel because of difference in UI on desktop ( sidebar ) and mobile ( bottom appbar )
+        private RelayCommand _statisticsCommand;
+        public RelayCommand StatisticsCommand => _statisticsCommand ?? (_statisticsCommand = new RelayCommand(() => _navigationService.Navigate<StatsPage>()));
+
+        private RelayCommand _profileCommand;
+        public RelayCommand ProfileCommand => _profileCommand ?? (_profileCommand = new RelayCommand(() => _navigationService.Navigate<ProfilePage>()));
+
+        private RelayCommand _clubsCommand;
+        public RelayCommand ClubsCommand => _clubsCommand ?? (_clubsCommand = new RelayCommand(() => _navigationService.Navigate<ClubsPage>()));
+
         private RelayCommand _hamburgerCommand;
         public RelayCommand HamburgerCommand => _hamburgerCommand ?? (_hamburgerCommand = new RelayCommand(() => this.IsPaneOpen = !this.IsPaneOpen));
 
+        //TODO: Glenn - We hooked this up twice, once in SidePaneViewModel and once in MainViewModel because of difference in UI on desktop ( sidebar ) and mobile ( bottom appbar )
         private RelayCommand _settingsCommand;
         public RelayCommand SettingsCommand => _settingsCommand ?? (_settingsCommand = new RelayCommand(() => _navigationService.Navigate<SettingsPage>()));
 
@@ -100,12 +137,13 @@ namespace Kliva.ViewModels
             var view = ApplicationView.GetForCurrentView();
             view.VisibleBoundsChanged += OnVisibleBoundsChanged;
 
-            TopMenuItems.Add(new MenuItem() { Icon = "", Title = "statistics", MenuItemType = MenuItemType.MDL2 });
-            TopMenuItems.Add(new MenuItem() { Icon = "", Title = "profile", MenuItemType = MenuItemType.MDL2 });
-            TopMenuItems.Add(new MenuItem() { Icon = "", Title = "club", MenuItemType = MenuItemType.Material });
+            TopMenuItems.Add(new MenuItem() { Icon = "", Title = "home", MenuItemType = MenuItemType.Home, MenuItemFontType = MenuItemFontType.MDL2 });
+            TopMenuItems.Add(new MenuItem() { Icon = "", Title = "statistics", MenuItemType = MenuItemType.Statistics, MenuItemFontType = MenuItemFontType.MDL2 });
+            TopMenuItems.Add(new MenuItem() { Icon = "", Title = "profile", MenuItemType = MenuItemType.Profile, MenuItemFontType = MenuItemFontType.MDL2 });
+            TopMenuItems.Add(new MenuItem() { Icon = "", Title = "club", MenuItemType = MenuItemType.Clubs, MenuItemFontType = MenuItemFontType.Material });
 
-            BottomMenuItems.Add(new MenuItem() { Icon = "", Title = "settings", MenuItemType = MenuItemType.MDL2 });
-            BottomMenuItems.Add(new MenuItem() { Icon = "", Title = "", MenuItemType = MenuItemType.MDL2 });
+            BottomMenuItems.Add(new MenuItem() { Icon = "", Title = "settings", MenuItemType = MenuItemType.Settings, MenuItemFontType = MenuItemFontType.MDL2 });
+            BottomMenuItems.Add(new MenuItem() { Icon = "", Title = "", MenuItemType = MenuItemType.Empty, MenuItemFontType = MenuItemFontType.MDL2 });
         }
 
         private void OnVisibleBoundsChanged(ApplicationView sender, object args)

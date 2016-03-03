@@ -8,6 +8,7 @@ using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
+using Windows.Graphics.Display;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -26,7 +27,6 @@ namespace Kliva
         /// </summary>
         public App()
         {
-            Microsoft.ApplicationInsights.WindowsAppInitializer.InitializeAsync();
             this.InitializeComponent();
             this.Suspending += OnSuspending;
         }
@@ -97,6 +97,9 @@ namespace Kliva
                 statusBar.BackgroundOpacity = 100;
                 statusBar.BackgroundColor = (Color)App.Current.Resources["KlivaMainColor"];
                 statusBar.ForegroundColor = Windows.UI.Colors.White;
+
+                DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait |
+                                                             DisplayOrientations.PortraitFlipped;
             }
 
             // Ensure the current window is active

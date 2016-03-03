@@ -13,16 +13,18 @@ namespace Kliva.Models
         private IEnumerable<ActivitySummary> _activities;
         private bool _hasLoaded = false;
         private int _page = 1;
+        private ActivityFeedFilter _filter;
 
-        public ActivityIncrementalCollection(IStravaService stravaService)
+        public ActivityIncrementalCollection(IStravaService stravaService, ActivityFeedFilter filter = ActivityFeedFilter.All)
         {
             _stravaService = stravaService;
+            _filter = filter;
         }
 
         protected override async Task<IList<object>> LoadMoreItemsOverrideAsync(CancellationToken c, uint count)
         {
             _hasLoaded = true;
-            _activities = await _stravaService.GetActivitiesWithAthletesAsync(_page, 30);
+            _activities = await _stravaService.GetActivitiesWithAthletesAsync(_page, 30, _filter);
 
             if (_activities != null && _activities.Any())
             {

@@ -16,11 +16,16 @@ namespace Kliva.Helpers
         /// <returns>The converted object of type T.</returns>
         public static T Unmarshal(string json)
         {
-            if (string.IsNullOrEmpty(json))
-                throw new ArgumentException("The json string is null or empty.");
+            if (!string.IsNullOrEmpty(json))
+            {
+                T deserializedObject = JsonConvert.DeserializeObject<T>(json);
+                return deserializedObject;
+            }
 
-            T deserializedObject = JsonConvert.DeserializeObject<T>(json);
-            return deserializedObject;
+            //TODO: Glenn - do we need to throw Exception?
+            // throw new ArgumentException("The json string is null or empty.");
+
+            return default(T);
         }
     }
 }

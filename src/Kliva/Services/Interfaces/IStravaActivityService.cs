@@ -7,11 +7,12 @@ namespace Kliva.Services.Interfaces
     public interface IStravaActivityService
     {
         Task<Activity> GetActivityAsync(string id, bool includeEfforts);
-        Task<IEnumerable<ActivitySummary>> GetActivitiesAsync(int page, int perPage);
-        Task<IEnumerable<ActivitySummary>> GetFollowersActivitiesAsync(int page, int perPage);
+        Task<IList<ActivitySummary>> GetActivitiesAsync(int page, int perPage);
+        Task<IList<ActivitySummary>> GetFollowersActivitiesAsync(int page, int perPage);
+        Task<IList<ActivitySummary>> GetRelatedActivitiesAsync(string activityId);
 
         Task<List<Athlete>> GetKudosAsync(string activityId);
-        Task GiveKudos(string activityId);
+        Task GiveKudosAsync(string activityId);
 
         Task<List<Comment>> GetCommentsAsync(string activityId);
 

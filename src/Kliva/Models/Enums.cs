@@ -1,5 +1,18 @@
 ﻿namespace Kliva.Models
 {
+    public enum ActivityFeedFilter
+    {
+        All,
+        My,
+        Followers
+    }
+
+    public enum AppTarget
+    {
+        Desktop,
+        Mobile
+    }
+
     public enum Pivots
     {
         Statistics,
@@ -32,8 +45,168 @@
 
     public enum MenuItemType
     {
+        Home,
+        Statistics,
+        Profile,
+        Clubs,
+        Settings,
+        Empty
+    }
+
+    public enum MenuItemFontType
+    {
         MDL2,
         Material
+    }
+
+    /// <summary>
+    /// The type of an activity.
+    /// </summary>
+    public enum ActivityType
+    {
+        /// <summary>
+        /// Ride
+        /// </summary>
+        Ride,
+        /// <summary>
+        /// Run
+        /// </summary>
+        Run,
+        /// <summary>
+        /// Swim
+        /// </summary>
+        Swim,
+        /// <summary>
+        /// Hike
+        /// </summary>
+        Hike,
+        /// <summary>
+        /// Walk
+        /// </summary>
+        Walk,
+        /// <summary>
+        /// AlpineSki
+        /// </summary>
+        AlpineSki,
+        /// <summary>
+        /// BackcountrySki
+        /// </summary>
+        BackcountrySki,
+        /// <summary>
+        /// Canoeing
+        /// </summary>
+        Canoeing,
+        /// <summary>
+        /// CrossCountrySkiing
+        /// </summary>
+        CrossCountrySkiing,
+        /// <summary>
+        /// Crossfit
+        /// </summary>
+        Crossfit,
+        /// <summary>
+        /// EBikeRide
+        /// </summary>
+        EBikeRide,
+        /// <summary>
+        /// Elliptical
+        /// </summary>
+        Elliptical,
+        /// <summary>
+        /// IceSkate
+        /// </summary>
+        IceSkate,
+        /// <summary>
+        /// InlineSkate
+        /// </summary>
+        InlineSkate,
+        /// <summary>
+        /// Kayaking
+        /// </summary>
+        Kayaking,
+        /// <summary>
+        /// Kitesurf
+        /// </summary>
+        Kitesurf,
+        /// <summary>
+        /// NordicSki
+        /// </summary>
+        NordicSki,
+        /// <summary>
+        /// RockClimbing
+        /// </summary>
+        RockClimbing,
+        /// <summary>
+        /// RollerSki
+        /// </summary>
+        RollerSki,
+        /// <summary>
+        /// Rowing
+        /// </summary>
+        Rowing,
+        /// <summary>
+        /// Snowboard
+        /// </summary>
+        Snowboard,
+        /// <summary>
+        /// Snowshoe
+        /// </summary>
+        Snowshoe,
+        /// <summary>
+        /// StairStepper
+        /// </summary>
+        StairStepper,
+        /// <summary>
+        /// StandUpPaddling
+        /// </summary>
+        StandUpPaddling,
+        /// <summary>
+        /// Surfing
+        /// </summary>
+        Surfing,
+        /// <summary>
+        /// VirtualRide
+        /// </summary>
+        VirtualRide,
+        /// <summary>
+        /// WeightTraining
+        /// </summary>
+        WeightTraining,
+        /// <summary>
+        /// Windsurf
+        /// </summary>
+        Windsurf,
+        /// <summary>
+        /// Workout
+        /// </summary>
+        Workout,
+        /// <summary>
+        /// Yoga
+        /// </summary>
+        Yoga
+    }
+
+    /// <summary>
+    /// Used by the Club class.
+    /// </summary>
+    public enum SportType
+    {
+        /// <summary>
+        /// The club is for cyclists.
+        /// </summary>
+        Cycling,
+        /// <summary>
+        /// The club is for runners.
+        /// </summary>
+        Running,
+        /// <summary>
+        /// The club is for triathletes.
+        /// </summary>
+        Triathlon,
+        /// <summary>
+        /// Other club.
+        /// </summary>
+        Other
     }
 
     /// <summary>
@@ -65,5 +238,32 @@
         /// The segment is not categorized (usually a very flat segment).
         /// </summary>
         CategoryNc
+    }
+
+    /// <summary>
+    /// This enum is used by the Club class and represents the type of a club.
+    /// </summary>
+    public enum ClubType
+    {
+        /// <summary>
+        /// The club is a casual club.
+        /// </summary>
+        Casual,
+        /// <summary>
+        /// The club is a racing team.
+        /// </summary>
+        RacingTeam,
+        /// <summary>
+        /// The club is owned by a shop.
+        /// </summary>
+        Shop,
+        /// <summary>
+        /// The club's members are all riding for a company.
+        /// </summary>
+        Company,
+        /// <summary>
+        /// Other club.
+        /// </summary>
+        Other
     }
 }

@@ -2,6 +2,7 @@
 using Kliva.Models;
 using Kliva.Services.Interfaces;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,7 +11,13 @@ namespace Kliva.Services
 {
     public class StravaActivityService : IStravaActivityService
     {
-        private ISettingsService _settingsService;
+        private readonly ISettingsService _settingsService;
+
+        //TODO: Glenn - When to Invalidate cache?
+        private readonly ConcurrentDictionary<string, Task<List<Photo>>> _cachedPhotosTasks = new ConcurrentDictionary<string, Task<List<Photo>>>();
+
+        //TODO: Glenn - When to Invalidate cache?
+        private readonly ConcurrentDictionary<string, Task<IList<ActivitySummary>>>_cachedRelatedActivitiesTasks = new ConcurrentDictionary<string, Task<IList<ActivitySummary>>>();
 
         public StravaActivityService(ISettingsService settingsService)
         {
@@ -22,6 +29,50 @@ namespace Kliva.Services
             activity.DistanceUnit = distanceUnitType;
             activity.SpeedUnit = activity.DistanceUnit == DistanceUnitType.Kilometres ? SpeedUnit.KilometresPerHour : SpeedUnit.MilesPerHour;
             activity.ElevationUnit = activity.DistanceUnit == DistanceUnitType.Kilometres ? DistanceUnitType.Metres : DistanceUnitType.Feet;
+        }
+
+        private async Task<List<Photo>> GetPhotosFromServiceAsync(string activityId)
+        {
+            try
+            {
+                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+
+                string getUrl = $"{Endpoints.Activity}/{activityId}/photos?photo_sources=true&size=600&access_token={accessToken}";
+                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
+
+                return Unmarshaller<List<Photo>>.Unmarshal(json);
+            }
+            catch (Exception ex)
+            {
+                //TODO: Glenn - Use logger to log errors ( Google )
+            }
+
+            return null;
+        }
+
+        private async Task<IList<ActivitySummary>> GetRelatedActivitiesFromServiceAsync(string activityId)
+        {
+            try
+            {
+                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitType();
+
+                string getUrl = $"{Endpoints.Activity}/{activityId}/related?access_token={accessToken}";
+                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
+
+                //TODO: Glenn - Google maps?
+                return Unmarshaller<List<ActivitySummary>>.Unmarshal(json).Select(activity =>
+                {
+                    SetMetricUnits(activity, defaultDistanceUnitType);
+                    return activity;
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                //TODO: Glenn - Use logger to log errors ( Google )
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -59,7 +110,7 @@ namespace Kliva.Services
         /// <param name="page">The page of activities.</param>
         /// <param name="perPage">The amount of activities that are loaded per page.</param>
         /// <returns>A list of activities.</returns>
-        public async Task<IEnumerable<ActivitySummary>> GetActivitiesAsync(int page, int perPage)
+        public async Task<IList<ActivitySummary>> GetActivitiesAsync(int page, int perPage)
         {
             try
             {
@@ -67,8 +118,7 @@ namespace Kliva.Services
                 var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitType();
 
                 //TODO: Glenn - Optional parameters should be treated as such!
-                //string getUrl = String.Format("{0}?page={1}&per_page={2}&access_token={3}", Endpoints.Activities, page, perPage, accessToken);
-                string getUrl = $"{Endpoints.Activities}?access_token={accessToken}";
+                string getUrl = $"{Endpoints.Activities}?page={page}&per_page={perPage}&access_token={accessToken}";
                 string json = await WebRequest.SendGetAsync(new Uri(getUrl));
 
                 //TODO: Glenn - Google maps?
@@ -76,7 +126,7 @@ namespace Kliva.Services
                 {
                     SetMetricUnits(activity, defaultDistanceUnitType);
                     return activity;
-                });
+                }).ToList();
             }
             catch (Exception ex)
             {
@@ -92,7 +142,7 @@ namespace Kliva.Services
         /// <param name="page">The page of activities.</param>
         /// <param name="perPage">The amount of activities per page.</param>
         /// <returns>A list of activities from your followers.</returns>
-        public async Task<IEnumerable<ActivitySummary>> GetFollowersActivitiesAsync(int page, int perPage)
+        public async Task<IList<ActivitySummary>> GetFollowersActivitiesAsync(int page, int perPage)
         {
             try
             {
@@ -107,7 +157,7 @@ namespace Kliva.Services
                 {
                     SetMetricUnits(activity, defaultDistanceUnitType);
                     return activity;
-                });
+                }).ToList();
             }
             catch (Exception ex)
             {
@@ -115,6 +165,11 @@ namespace Kliva.Services
             }
 
             return null;
+        }
+
+        public Task<IList<ActivitySummary>> GetRelatedActivitiesAsync(string activityId)
+        {
+            return _cachedRelatedActivitiesTasks.GetOrAdd(activityId, GetRelatedActivitiesFromServiceAsync);
         }
 
         /// <summary>
@@ -145,7 +200,7 @@ namespace Kliva.Services
         /// Give kudos for the specified activity.
         /// </summary>
         /// <param name="activityId">The activity you want to give kudos for.</param>
-        public async Task GiveKudos(string activityId)
+        public async Task GiveKudosAsync(string activityId)
         {
             try
             {
@@ -189,23 +244,9 @@ namespace Kliva.Services
         /// </summary>
         /// <param name="activityId">The activity</param>
         /// <returns>A list of photos.</returns>
-        public async Task<List<Photo>> GetPhotosAsync(string activityId)
+        public Task<List<Photo>> GetPhotosAsync(string activityId)
         {
-            try
-            {
-                var accessToken = await _settingsService.GetStoredStravaAccessToken();
-
-                string getUrl = $"{Endpoints.Activity}/{activityId}/photos?access_token={accessToken}";
-                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
-
-                return Unmarshaller<List<Photo>>.Unmarshal(json);
-            }
-            catch(Exception ex)
-            {
-                //TODO: Glenn - Use logger to log errors ( Google )
-            }
-
-            return null;
+            return _cachedPhotosTasks.GetOrAdd(activityId, GetPhotosFromServiceAsync);
         }
     }
 }
