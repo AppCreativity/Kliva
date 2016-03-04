@@ -42,6 +42,8 @@ namespace Kliva.ViewModels
             Register<ClubDetailViewModel>();
             Register<ProfileViewModel>();
             Register<StatsViewModel>();
+
+            Register<StravaWebClient>(); // singleton (default in SimpleIoC)
         }
 
         public MainViewModel Main => Get<MainViewModel>();

@@ -11,13 +11,15 @@ namespace Kliva.Services
     public class StravaClubService : IStravaClubService
     {
         private readonly ISettingsService _settingsService;
+        private readonly StravaWebClient _stravaWebClient;
 
         //TODO: Glenn - When to Invalidate cache?
         private readonly ConcurrentDictionary<string, Task<Club>> _cachedClubTasks = new ConcurrentDictionary<string, Task<Club>>();
 
-        public StravaClubService(ISettingsService settingsService)
+        public StravaClubService(ISettingsService settingsService, StravaWebClient stravaWebClient)
         {
             _settingsService = settingsService;
+            _stravaWebClient = stravaWebClient;
         }
 
         private async Task<Club> GetClubFromServiceAsync(string clubId)
@@ -26,7 +28,7 @@ namespace Kliva.Services
             {
                 var accessToken = await _settingsService.GetStoredStravaAccessToken();
                 string getUrl = $"{Endpoints.Club}/{clubId}?access_token={accessToken}";
-                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
+                string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
 
                 return Unmarshaller<Club>.Unmarshal(json);
             }
@@ -48,7 +50,7 @@ namespace Kliva.Services
             {
                 var accessToken = await _settingsService.GetStoredStravaAccessToken();
                 string getUrl = $"{Endpoints.Clubs}?access_token={accessToken}";
-                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
+                string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
 
                 return Unmarshaller<List<ClubSummary>>.Unmarshal(json);
             }
@@ -81,7 +83,7 @@ namespace Kliva.Services
             {
                 var accessToken = await _settingsService.GetStoredStravaAccessToken();
                 string getUrl = $"{Endpoints.Club}/{clubId}/members?access_token={accessToken}";
-                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
+                string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
 
                 return Unmarshaller<List<AthleteSummary>>.Unmarshal(json);
             }

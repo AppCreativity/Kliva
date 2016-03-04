@@ -11,15 +11,17 @@ namespace Kliva.Services
     public class StravaAthleteService : IStravaAthleteService
     {
         private readonly ISettingsService _settingsService;
+        private readonly StravaWebClient _stravaWebClient;
 
         //TODO: Glenn - When to Invalidate cache?
         private readonly ConcurrentDictionary<string, Task<Athlete>> _cachedAthleteTasks = new ConcurrentDictionary<string, Task<Athlete>>();
 
         public Athlete Athlete { get; set; }
 
-        public StravaAthleteService(ISettingsService settingsService)
+        public StravaAthleteService(ISettingsService settingsService, StravaWebClient stravaWebClient)
         {
             _settingsService = settingsService;
+            _stravaWebClient = stravaWebClient;
         }
 
         public async Task<Athlete> GetAthleteFromServiceAsync(string athleteId)
@@ -29,7 +31,7 @@ namespace Kliva.Services
                 var accessToken = await _settingsService.GetStoredStravaAccessToken();
 
                 string getUrl = string.Format("{0}/{1}?access_token={2}", Endpoints.Athletes, athleteId, accessToken);
-                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
+                string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
 
                 return Unmarshaller<Athlete>.Unmarshal(json);
             }
@@ -55,7 +57,7 @@ namespace Kliva.Services
                 var accessToken = await _settingsService.GetStoredStravaAccessToken();
 
                 string getUrl = $"{Endpoints.Athlete}?access_token={accessToken}";
-                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
+                string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
 
                 return Athlete = Unmarshaller<Athlete>.Unmarshal(json);
             }
@@ -89,7 +91,7 @@ namespace Kliva.Services
                 else
                     getUrl = $"{string.Format(Endpoints.OtherFollowers, athleteId)}?access_token={accessToken}";
 
-                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
+                string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
 
                 return Unmarshaller<IEnumerable<AthleteSummary>>.Unmarshal(json);
             }
@@ -113,7 +115,7 @@ namespace Kliva.Services
                 else
                     getUrl = $"{string.Format(Endpoints.OtherFriends, athleteId)}?access_token={accessToken}";
 
-                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
+                string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
 
                 return Unmarshaller<IEnumerable<AthleteSummary>>.Unmarshal(json);
             }
@@ -133,7 +135,7 @@ namespace Kliva.Services
                 var accessToken = await _settingsService.GetStoredStravaAccessToken();
                 string getUrl = $"{string.Format(Endpoints.MutualFriends, athleteId)}?access_token={accessToken}";
 
-                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
+                string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
 
                 return Unmarshaller<IEnumerable<AthleteSummary>>.Unmarshal(json);
             }
@@ -153,7 +155,7 @@ namespace Kliva.Services
                 var accessToken = await _settingsService.GetStoredStravaAccessToken();
                 string getUrl = $"{string.Format(Endpoints.Koms, athleteId)}?access_token={accessToken}";
 
-                string json = await WebRequest.SendGetAsync(new Uri(getUrl));
+                string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
 
                 return Unmarshaller<IEnumerable<SegmentEffort>>.Unmarshal(json);
             }

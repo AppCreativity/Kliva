@@ -166,6 +166,7 @@
     <Compile Include="Models\Usage.cs" />
     <Compile Include="Services\ApplicationInfoService.cs" />
     <Compile Include="Services\Endpoints.cs" />
+    <Compile Include="Services\Framework\AsyncResponseReceivedEventArgs.cs" />
     <Compile Include="Services\Interfaces\IApplicationInfoService.cs" />
     <Compile Include="Services\Interfaces\ISettingsService.cs" />
     <Compile Include="Services\Interfaces\IStravaActivityService.cs" />
@@ -177,7 +178,7 @@
     <Compile Include="Services\StravaAthleteService.cs" />
     <Compile Include="Services\StravaClubService.cs" />
     <Compile Include="Services\StravaService.cs" />
-    <Compile Include="Helpers\WebRequest.cs" />
+    <Compile Include="Services\Framework\StravaWebClient.cs" />
     <Compile Include="ViewModels\ActivityDetailViewModel.cs" />
     <Compile Include="ViewModels\ClubDetailViewModel.cs" />
     <Compile Include="ViewModels\ClubsViewModel.cs" />
