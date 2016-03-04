@@ -142,7 +142,7 @@ namespace Kliva.ViewModels
             //TODO: Change the strings to enums or constants for the visual states
             if (CurrentState.Name == "Mobile" && SelectedActivity != null)
             {
-                _navigationService.Navigate<ActivityDetailPage>();
+                NavigationService.Navigate<ActivityDetailPage>();
                 return true;
             }
 
