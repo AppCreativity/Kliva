@@ -246,6 +246,7 @@
             <ListView x:Name="RelatedAthletesList"
                       ItemsSource="{x:Bind ViewModel.RelatedAthletes}"
                       Style="{StaticResource HorizontalListViewStyle}"
+                      SelectionMode="None"
                       RelativePanel.Below="ActivityName"
                       RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
                 <ListView.ItemTemplate>
