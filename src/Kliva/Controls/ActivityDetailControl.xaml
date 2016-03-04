@@ -57,8 +57,8 @@
 
             <Button x:Name="ExpandMapButton"
                     x:DeferLoadStrategy="Lazy"
-                    Margin="0,10,0,0"
-                    RelativePanel.AlignTopWith="ActivityMap"
+                    Margin="0,0,0,0"
+                    RelativePanel.AlignBottomWith="ActivityMap"
                     RelativePanel.AlignRightWithPanel="True"
                     Command="{x:Bind ViewModel.MapCommand}">
                 <TextBlock Text=""
