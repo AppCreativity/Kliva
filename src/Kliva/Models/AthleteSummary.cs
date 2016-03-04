@@ -111,6 +111,19 @@ namespace Kliva.Models
             }
         }
 
-        public string FullName => string.Concat(this.FirstName, " ", this.LastName);
+        public string ProfileLargeFormatted
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(Profile) && Profile.Contains("http"))
+                    return Profile;
+                else
+                    return Constants.STRAVA_DEFAULT_AVATAR;
+            }
+        }
+
+        public string FullName => string.Concat(FirstName, " ", LastName);
+
+        public string CityFormatted => City + ", " + State + ", " + Country;
     }
 }

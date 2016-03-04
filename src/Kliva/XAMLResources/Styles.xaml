@@ -20,6 +20,9 @@
     <Color x:Key="SeperatorColor">LightGray</Color>
     <SolidColorBrush x:Key="SeperatorBrush" Color="{StaticResource SeperatorColor}" />
 
+    <Color x:Key="SubTextColor">DarkGray</Color>
+    <SolidColorBrush x:Key="SubTextBrush" Color="{StaticResource SubTextColor}" />
+
     <FontFamily x:Key="OpenSansFontLight">/Assets/Fonts/OpenSans-Light.ttf#Open Sans</FontFamily>
     <FontFamily x:Key="OpenSansFontBold">/Assets/Fonts/OpenSans-Bold.ttf#Open Sans</FontFamily>
     <FontFamily x:Key="OpenSansFontSemibold">/Assets/Fonts/OpenSans-Semibold.ttf#Open Sans</FontFamily>
@@ -47,6 +50,11 @@
         <Setter Property="Margin" Value="60,0,0,10" />
     </Style>
 
+    <Style x:Name="TitleTextBlockDesktopWithSideBar" BasedOn="{StaticResource BaseWhiteTextBlock}"
+           TargetType="TextBlock">
+        <Setter Property="Margin" Value="10,0,0,10" />
+    </Style>
+    
     <Style x:Name="PaneIcon" TargetType="FontIcon">
         <Setter Property="Width" Value="40" />
         <Setter Property="Height" Value="40" />
@@ -91,17 +99,42 @@
     <Style x:Name="ProfileEllipseDesktop" TargetType="Ellipse">
         <Setter Property="Height" Value="65" />
         <Setter Property="Width" Value="65" />
-        <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
     </Style>
 
     <Style x:Name="ProfileEllipseMobile" TargetType="Ellipse">
         <Setter Property="Height" Value="50" />
         <Setter Property="Width" Value="50" />
-        <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
+    </Style>
+
+    <Style x:Name="ProfileEllipseLarge" TargetType="Ellipse">
+        <Setter Property="Height" Value="124" />
+        <Setter Property="Width" Value="124" />
+        <Setter Property="Margin" Value="10" />
+        <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
+    </Style>
+
+    <Style x:Name="ProfileNameStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="32" />
+        <Setter Property="FontFamily" Value="{StaticResource OpenSansFontSemibold}" />
+        <Setter Property="Foreground" Value="{StaticResource KlivaMainBrush}" />
+    </Style>
+
+    <Style x:Name="ProfileLocationStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontFamily" Value="{StaticResource OpenSansFontSemibold}" />
+        <Setter Property="Foreground" Value="{StaticResource SubTextBrush}" />
+    </Style>
+
+    <Style x:Name="ActivityImageBorderMobile" TargetType="Border">
+        <Setter Property="Height" Value="20" />
+        <Setter Property="Width" Value="20" />
+    </Style>
+
+    <Style x:Name="ActivityImageBorderDesktop" TargetType="Border">
+        <Setter Property="Height" Value="30" />
+        <Setter Property="Width" Value="30" />
     </Style>
 
     <Style x:Name="MenuItemContainerStyle" TargetType="ListViewItem">
@@ -855,22 +888,12 @@
         </Setter>
     </Style>
 
-    <Style x:Key="EmptyButtonStyle"
-           TargetType="ButtonBase">
-        <Setter Property="Background"
-                Value="Transparent" />
-        <Setter Property="BorderThickness"
-                Value="0" />
-        <Setter Property="Padding"
-                Value="0" />
-        <Setter Property="HorizontalContentAlignment"
-                Value="Stretch" />
-        <Setter Property="HorizontalAlignment"
-                Value="Stretch" />
-        <Setter Property="MinWidth"
-                Value="0" />
-        <Setter Property="MinHeight"
-                Value="0" />
+    <Style x:Key="EmptyButtonStyle" TargetType="ButtonBase">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="MinWidth" Value="0" />
+        <Setter Property="MinHeight" Value="0" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ButtonBase">
@@ -919,6 +942,27 @@
                                           ContentTemplate="{TemplateBinding ContentTemplate}" />
                     </Border>
                 </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style x:Key="EmptyButtonStyleStretched" BasedOn="{StaticResource EmptyButtonStyle}" TargetType="ButtonBase">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+    </Style>
+
+    <Style x:Name="HorizontalListViewStyle" TargetType="ListView">
+        <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Auto" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden" />
+        <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <ItemsStackPanel Orientation="Horizontal"
+                                     ScrollViewer.HorizontalScrollMode="Enabled"
+                                     ScrollViewer.VerticalScrollMode="Disabled"/>
+                </ItemsPanelTemplate>
             </Setter.Value>
         </Setter>
     </Style>
@@ -1088,6 +1132,50 @@
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                 </Style>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ListViewItem">
+        <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+        <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}" />
+        <Setter Property="TabNavigation" Value="Local"/>
+        <Setter Property="IsHoldingEnabled" Value="True"/>
+        <Setter Property="Padding" Value="0,0,0,0"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="MinWidth" Value="0"/>
+        <Setter Property="MinHeight" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListViewItem">
+                    <ListViewItemPresenter
+          ContentTransitions="{TemplateBinding ContentTransitions}"
+          SelectionCheckMarkVisualEnabled="True"
+          CheckBrush="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
+          CheckBoxBrush="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
+          DragBackground="{ThemeResource ListViewItemDragBackgroundThemeBrush}"
+          DragForeground="{ThemeResource ListViewItemDragForegroundThemeBrush}"
+          FocusBorderBrush="{ThemeResource SystemControlForegroundAltHighBrush}"
+          FocusSecondaryBorderBrush="{ThemeResource SystemControlForegroundBaseHighBrush}"
+          PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}"
+          PointerOverBackground="{ThemeResource SystemControlHighlightListLowBrush}"
+          PointerOverForeground="{ThemeResource SystemControlHighlightAltBaseHighBrush}"
+          SelectedBackground="{ThemeResource SystemControlHighlightListAccentLowBrush}"
+          SelectedForeground="{ThemeResource SystemControlHighlightAltBaseHighBrush}"
+          SelectedPointerOverBackground="{ThemeResource SystemControlHighlightListAccentMediumBrush}"
+          PressedBackground="{ThemeResource SystemControlHighlightListMediumBrush}"
+          SelectedPressedBackground="{ThemeResource SystemControlHighlightListAccentHighBrush}"
+          DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
+          DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
+          ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
+          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+          ContentMargin="{TemplateBinding Padding}"
+          CheckMode="Inline"/>
+                </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>

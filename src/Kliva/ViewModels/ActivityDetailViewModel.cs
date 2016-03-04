@@ -1,13 +1,14 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Kliva.Messages;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
+using Kliva.Views;
 using Microsoft.Practices.ServiceLocation;
 
 namespace Kliva.ViewModels
@@ -20,7 +21,13 @@ namespace Kliva.ViewModels
         public Activity SelectedActivity
         {
             get { return _selectedActivity; }
-            set { Set(() => SelectedActivity, ref _selectedActivity, value); }
+            set
+            {
+                Set(() => SelectedActivity, ref _selectedActivity, value);
+                RaisePropertyChanged(() => KudosCount);
+                RaisePropertyChanged(() => CommentCount);
+                RaisePropertyChanged(() => PhotoCount);
+            }
         }
 
         private ObservableCollection<Athlete> _kudos = new ObservableCollection<Athlete>();
@@ -37,6 +44,13 @@ namespace Kliva.ViewModels
             set { Set(() => Comments, ref _comments, value); }
         }
 
+        private ObservableCollection<AthleteSummary> _relatedAthletes = new ObservableCollection<AthleteSummary>();
+        public ObservableCollection<AthleteSummary> RelatedAthletes
+        {
+            get { return _relatedAthletes; }
+            set { Set(() => RelatedAthletes, ref _relatedAthletes, value); }
+        } 
+
         private bool _hasSegments;
         public bool HasSegments
         {
@@ -51,8 +65,19 @@ namespace Kliva.ViewModels
             set { Set(() => HasPhotos, ref _hasPhotos, value); }
         }
 
+        public int KudosCount => SelectedActivity?.KudosCount ?? 0;
+        public int CommentCount => SelectedActivity?.CommentCount ?? 0;
+        public int PhotoCount => SelectedActivity?.TotalPhotoCount ?? 0;
+
         private RelayCommand _kudosCommand;
         public RelayCommand KudosCommand => _kudosCommand ?? (_kudosCommand = new RelayCommand(async () => await OnKudos()));
+
+        private RelayCommand _mapCommand;
+        public RelayCommand MapCommand => _mapCommand ?? (_mapCommand = new RelayCommand(() => NavigationService.Navigate<MapPage>(SelectedActivity?.Map)));
+
+        private RelayCommand<ItemClickEventArgs> _athleteTappedCommand;
+        public RelayCommand<ItemClickEventArgs> AthleteTappedCommand => _athleteTappedCommand ?? (_athleteTappedCommand = new RelayCommand<ItemClickEventArgs>(OnAthleteTapped));
+
 
         public ActivityDetailViewModel(INavigationService navigationService, IStravaService stravaService) : base(navigationService)
         {
@@ -62,6 +87,10 @@ namespace Kliva.ViewModels
 
         private async Task LoadActivityDetails(string activityId)
         {
+            Kudos.Clear();
+            Comments.Clear();
+            RelatedAthletes.Clear();
+
             var activity = await _stravaService.GetActivityAsync(activityId, true);
             var athlete = await _stravaService.GetAthleteAsync();
 
@@ -69,18 +98,22 @@ namespace Kliva.ViewModels
             {
                 SelectedActivity = activity;
 
-                Kudos.Clear();
                 if (activity.KudosCount > 0 && activity.Kudos != null && activity.Kudos.Any())
                 {                    
                     foreach (Athlete kudo in activity.Kudos)
                         Kudos.Add(kudo);
                 }
-
-                Comments.Clear();
+                
                 if (activity.CommentCount > 0 && activity.Comments != null && activity.Comments.Any())
                 {
                     foreach(Comment comment in activity.Comments)
                         Comments.Add(comment);
+                }
+                
+                if (activity.OtherAthleteCount > 0 && activity.RelatedActivities != null && activity.RelatedActivities.Any())
+                {
+                    foreach (ActivitySummary relatedActivity in activity.RelatedActivities)
+                        RelatedAthletes.Add(relatedActivity.Athlete);
                 }
 
                 //Currently the Public API of Strava will not give us Segments info for 'other' athletes then the one logged in

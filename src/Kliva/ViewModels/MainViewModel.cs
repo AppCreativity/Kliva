@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
 using Windows.UI.Xaml;
 using GalaSoft.MvvmLight.Messaging;
+using Kliva.Helpers;
 using Microsoft.Practices.ServiceLocation;
 using System.Diagnostics;
 using System;
@@ -25,6 +26,13 @@ namespace Kliva.ViewModels
         private bool _viewModelLoaded = false;
 
         public VisualState CurrentState { get; set; }
+
+        private string _filterText;
+        public string FilterText
+        {
+            get { return _filterText; }
+            set { Set(() => FilterText, ref _filterText, value); }
+        }
 
         private ObservableCollection<ActivitySummary> _activities = new ObservableCollection<ActivitySummary>();
         public ObservableCollection<ActivitySummary> Activities
@@ -58,6 +66,25 @@ namespace Kliva.ViewModels
             }
         }
 
+        private RelayCommand<string> _filterCommand;
+        public RelayCommand<string> FilterCommand => _filterCommand ?? (_filterCommand = new RelayCommand<string>((item) =>
+        {
+            ActivityFeedFilter filter = Enum<ActivityFeedFilter>.Parse(item);
+            switch (filter)
+            {
+                case ActivityFeedFilter.All:
+                    FilterText = "Showing all activities";
+                    break;
+                case ActivityFeedFilter.Followers:
+                    FilterText = "Showing friends' activities";
+                    break;
+                case ActivityFeedFilter.My:
+                    FilterText = "Showing my activities";
+                    break;
+            }
+            ActivityIncrementalCollection = new ActivityIncrementalCollection(_stravaService, filter);
+        }));
+
         private RelayCommand _logoutCommand;
         public RelayCommand LogoutCommand => _logoutCommand ?? (_logoutCommand = new RelayCommand(async () => await this.Logout()));
 
@@ -65,17 +92,26 @@ namespace Kliva.ViewModels
         public RelayCommand ViewLoadedCommand => _viewLoadedCommand ?? (_viewLoadedCommand = new RelayCommand(ViewLoaded));
 
         //TODO: Glenn - We hooked this up twice, once in SidePaneViewModel and once in MainViewModel because of difference in UI on desktop ( sidebar ) and mobile ( bottom appbar )
+        private RelayCommand _statisticsCommand;
+        public RelayCommand StatisticsCommand => _statisticsCommand ?? (_statisticsCommand = new RelayCommand(() => NavigationService.Navigate<StatsPage>()));
+
+        private RelayCommand _profileCommand;
+        public RelayCommand ProfileCommand => _profileCommand ?? (_profileCommand = new RelayCommand(() => NavigationService.Navigate<ProfilePage>()));
+
         private RelayCommand _clubsCommand;
-        public RelayCommand ClubsCommand => _clubsCommand ?? (_clubsCommand = new RelayCommand(() => _navigationService.Navigate<ClubsPage>()));
+        public RelayCommand ClubsCommand => _clubsCommand ?? (_clubsCommand = new RelayCommand(() => NavigationService.Navigate<ClubsPage>()));
 
         //TODO: Glenn - We hooked this up twice, once in SidePaneViewModel and once in MainViewModel because of difference in UI on desktop ( sidebar ) and mobile ( bottom appbar )
         private RelayCommand _settingsCommand;
-        public RelayCommand SettingsCommand => _settingsCommand ?? (_settingsCommand = new RelayCommand(() => _navigationService.Navigate<SettingsPage>()));
+        public RelayCommand SettingsCommand => _settingsCommand ?? (_settingsCommand = new RelayCommand(() => NavigationService.Navigate<SettingsPage>()));
 
         public MainViewModel(INavigationService navigationService, ISettingsService settingsService, IStravaService stravaService) : base(navigationService)
         {
             _settingsService = settingsService;
-            _stravaService = stravaService;            
+            _stravaService = stravaService;
+
+            //TODO: Glenn - store selected filter in settings!            
+            FilterText = "Showing all activities";
         }
 
         private async Task Logout()
@@ -85,16 +121,17 @@ namespace Kliva.ViewModels
             await _settingsService.RemoveStravaAccessToken();
 
             //Remove the current 'main page' back entry and navigate to the login page
-            _navigationService.Navigate<LoginPage>();
-            _navigationService.RemoveBackEntry();
+            NavigationService.Navigate<LoginPage>();
+            NavigationService.RemoveBackEntry();
 
             //this.IsBusy = false;
         }
 
-        private void ViewLoaded()
+        private async void ViewLoaded()
         {
             if (!_viewModelLoaded)
             {
+                var athlete = await _stravaService.GetAthleteAsync();
                 ActivityIncrementalCollection = new ActivityIncrementalCollection(_stravaService);
                 _viewModelLoaded = true;
             }

@@ -85,9 +85,9 @@
                 Padding="0,0,25,20"
                 Visibility="Collapsed">
             <Image x:Name="image"
-                   HorizontalAlignment="Left" VerticalAlignment="Top"
-                   Height="42" Width="42"
-                   Source="ms-appx:///Assets/ToTop.png"/>
+                    HorizontalAlignment="Left" VerticalAlignment="Top"
+                    Height="42" Width="42"
+                    Source="ms-appx:///Assets/ToTop.png"/>
         </Button>
     </Grid>
 </UserControl>

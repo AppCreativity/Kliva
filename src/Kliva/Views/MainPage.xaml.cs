@@ -11,14 +11,13 @@ namespace Kliva.Views
 {
     public sealed partial class MainPage : Page
     {
-        private ListView _activityList;
+        private readonly ListView _activityList;
 
         private IStravaViewModel ViewModel => DataContext as IStravaViewModel;
 
         public MainPage()
         {
             this.InitializeComponent();
-
             _activityList = this.GetVisualDescendents<ListView>().FirstOrDefault(item => item.Name.Equals("ActivityList", StringComparison.OrdinalIgnoreCase));
         }
 

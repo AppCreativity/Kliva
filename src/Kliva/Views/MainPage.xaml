@@ -27,12 +27,12 @@
                           Label="statistics"
                           Icon="FourBars"
                           Foreground="White"
-                          />
+                          Command="{Binding StatisticsCommand}"/>
             <AppBarButton x:Name="AppBarProfile"
                           Label="profile"
                           Icon="Contact"
                           Foreground="White"
-                          />
+                          Command="{Binding ProfileCommand}"/>
             <AppBarButton x:Name="AppBarClub"
                           Label="clubs"
                           Foreground="White"
@@ -56,7 +56,7 @@
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>
-
+    
     <Grid x:Name="LayoutRoot" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -70,7 +70,6 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="BottomAppBar.Visibility" Value="Visible" />
-                        <Setter Target="TitlePanel.Visibility" Value="Visible" />
                         <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockMobile}" />
                         <Setter Target="ListColumn.Width" Value="*" />
                         <Setter Target="ListItemColumn.Width" Value="0" />
@@ -82,8 +81,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="BottomAppBar.Visibility" Value="Collapsed" />
-                        <Setter Target="TitlePanel.Visibility" Value="Collapsed" />
-                        <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockDesktop}" />
+                        <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockDesktopWithSideBar}" />
                         <Setter Target="ListColumn.Width" Value="*" />
                         <Setter Target="ListItemColumn.Width" Value="1.8*" />
                     </VisualState.Setters>
@@ -95,7 +93,7 @@
                     Grid.Row="0"
                     Background="{StaticResource KlivaMainBrush}">
             <TextBlock x:Name="TitleTextBlock"
-                       Text="Kliva"/>
+                       Text="activities"/>
         </StackPanel>
 
         <Grid Grid.Row="1">
@@ -103,11 +101,34 @@
                 <ColumnDefinition x:Name="ListColumn" />
                 <ColumnDefinition x:Name="ListItemColumn" />
             </Grid.ColumnDefinitions>
-            
-            <klivacontrols:ActivityFeedControl Margin="0,0,0,0"
-                                               Grid.Column="0"/>
-            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Button x:Name="FilterButton"
+                    Style="{StaticResource EmptyButtonStyle}"
+                    Foreground="{StaticResource KlivaMainBrush}"
+                    Content="{Binding FilterText}"
+                    Margin="10,10,0,10"
+                    Grid.Row="0"
+                    Grid.Column="0">
+                <Button.Flyout>
+                    <MenuFlyout x:Name="FilterFlyout">
+                        <MenuFlyoutItem Text="all activities" Command="{Binding FilterCommand}" CommandParameter="all" />
+                        <MenuFlyoutItem Text="my activities" Command="{Binding FilterCommand}" CommandParameter="my" />
+                        <MenuFlyoutItem Text="friends' activities" Command="{Binding FilterCommand}" CommandParameter="followers" />
+                    </MenuFlyout>
+                </Button.Flyout>
+            </Button>
+
+            <klivacontrols:ActivityFeedControl x:Name="ActivityFeed"
+                                               Margin="0,0,0,0"
+                                               Grid.Row="1"
+                                               Grid.Column="0" />
+
             <klivacontrols:ActivityDetailControl Margin="10,0,0,0"
+                                                 Grid.Row="0" Grid.RowSpan="2"
                                                  Grid.Column="1" />
         </Grid>
     </Grid>

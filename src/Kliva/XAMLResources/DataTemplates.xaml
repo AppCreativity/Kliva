@@ -7,7 +7,12 @@
     xmlns:controls="using:Kliva.Controls"
     xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
-    xmlns:core="using:Microsoft.Xaml.Interactions.Core">
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:converters="using:Kliva.Converters">
+
+    <converters:DistanceUnitToStringConverter x:Key="DistanceUnitToStringConverter" />
+    <converters:SpeedUnitToStringConverter x:Key="SpeedUnitToStringConverter" />
+    <converters:RelativeTimeConverter x:Key="RelativeTimeConverter" />
 
     <DataTemplate x:Key="ActivityListItemDataTemplate"
                   x:DataType="models:ActivitySummary">
@@ -22,6 +27,8 @@
                             </VisualState.StateTriggers>
                             <VisualState.Setters>
                                 <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseMobile}" />
+                                <Setter Target="ActivityImage.Style" Value="{StaticResource ActivityImageBorderMobile}"/>
+                                <Setter Target="ActivityImageIcon.FontSize" Value="12" />
                             </VisualState.Setters>
                         </VisualState>
                         <VisualState x:Name="Desktop">
@@ -30,83 +37,94 @@
                             </VisualState.StateTriggers>
                             <VisualState.Setters>
                                 <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseDesktop}" />
+                                <Setter Target="ActivityImage.Style" Value="{StaticResource ActivityImageBorderDesktop}"/>
+                                <Setter Target="ActivityImageIcon.FontSize" Value="14" />
                             </VisualState.Setters>
                         </VisualState>
                     </VisualStateGroup>
                 </VisualStateManager.VisualStateGroups>
+                
                 <RelativePanel x:Name="ActivityListItemPanel"
-                               Margin="0,0,0,10">
-
+                               Margin="0,0,10,0"
+                               Padding="0,5,0,5">
                     <interactivity:Interaction.Behaviors>
-                        <core:DataTriggerBehavior Binding="{x:Bind AthleteCount, Mode=OneWay}" ComparisonCondition="GreaterThan" Value="1">
+                        <core:DataTriggerBehavior Binding="{x:Bind OtherAthleteCount, Mode=OneWay}" ComparisonCondition="GreaterThan" Value="0">
                             <core:ChangePropertyAction TargetObject="{Binding ElementName=BottomPanel}" PropertyName="Visibility" Value="Visible"/>
                         </core:DataTriggerBehavior>
-                        <core:DataTriggerBehavior Binding="{x:Bind AthleteCount, Mode=OneWay}" ComparisonCondition="LessThanOrEqual" Value="1">
+                        <core:DataTriggerBehavior Binding="{x:Bind OtherAthleteCount, Mode=OneWay}" ComparisonCondition="LessThanOrEqual" Value="0">
                             <core:ChangePropertyAction TargetObject="{Binding ElementName=BottomPanel}" PropertyName="Visibility" Value="Collapsed"/>
                         </core:DataTriggerBehavior>
                     </interactivity:Interaction.Behaviors>
 
                     <RelativePanel x:Name="TopPanel"
-                                   RelativePanel.AlignTopWithPanel="True">
+                                   RelativePanel.AlignTopWithPanel="True"
+                                   RelativePanel.AlignLeftWithPanel="True"
+                                   RelativePanel.AlignRightWithPanel="True">
                         <Ellipse x:Name="AthleteProfilePicture"
-                                 RelativePanel.AlignVerticalCenterWithPanel="True">
+                                 RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
                             <Ellipse.Fill>
                                 <ImageBrush Stretch="UniformToFill" ImageSource="{x:Bind Athlete.ProfileMediumFormatted, Mode=OneWay}" />
                             </Ellipse.Fill>
                         </Ellipse>
 
-                        <Canvas x:Name="ActivityImage"
-                                Margin="10,0,0,0"
-                                RelativePanel.AlignVerticalCenterWithPanel="True"
+                        <Border x:Name="ActivityImage" CornerRadius="50"
+                                Margin="-18,0,0,5"
+                                Background="{StaticResource KlivaDarkBrush}"
+                                BorderBrush="White" BorderThickness="2"
                                 RelativePanel.RightOf="AthleteProfilePicture"
-                                Width="20" Height="20">
-                            <Path Data="{x:Bind TypeImage}" Fill="{StaticResource KlivaDarkBrush}" />
-                        </Canvas>
+                                RelativePanel.AlignBottomWithPanel="True">
+                            <TextBlock x:Name="ActivityImageIcon" Style="{StaticResource PaneIconMaterialTextBlock}"
+                                       Text="{x:Bind TypeImage}"/>
+                        </Border>
 
-                        <StackPanel x:Name="ActivityHighlightsPanel"
-                                    Margin="15,0,0,0"
-                                    RelativePanel.AlignVerticalCenterWithPanel="True"
-                                    RelativePanel.RightOf="ActivityImage">
+                        <RelativePanel x:Name="ActivityHighlightsPanel"
+                                       Margin="15,0,0,0"                                       
+                                       RelativePanel.RightOf="ActivityImage"
+                                       RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True"
+                                       RelativePanel.AlignRightWithPanel="True">
                             <TextBlock x:Name="ActivityName"
+                                       Margin="0,0,0,2.5"
                                        Text="{x:Bind Name, Mode=OneWay}"
                                        Style="{StaticResource BaseTextBlock}"
-                                       FontFamily="{StaticResource OpenSansFontSemibold}" />
+                                       FontFamily="{StaticResource OpenSansFontSemibold}"
+                                       RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" />
 
                             <TextBlock x:Name="ActivityAthleteName"
+                                       Margin="0,0,0,2.5"
                                        Text="{x:Bind Athlete.FullName, Mode=OneWay}"
                                        Style="{StaticResource BaseTextBlock}"
-                                       FontSize="14" />
+                                       FontSize="14"
+                                       RelativePanel.Below="ActivityName" RelativePanel.AlignLeftWithPanel="True" />
+                            
+                            <TextBlock x:Name="ActivityStart"
+                                       Margin="0,0,0,2.5"
+                                       Text="{x:Bind StartDate, Mode=OneWay, Converter={StaticResource RelativeTimeConverter}}"
+                                       Style="{StaticResource BaseTextBlock}"
+                                       FontSize="14"
+                                       HorizontalAlignment="Right"
+                                       RelativePanel.Below="ActivityName" RelativePanel.RightOf="ActivityAthleteName" RelativePanel.AlignRightWithPanel="True" />
 
-                            <Grid x:Name="ActivityHighlightsGrid">
+                            <Grid x:Name="ActivityHighlightsGrid"
+                                  RelativePanel.Below="ActivityAthleteName"
+                                  RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="45" />
-                                    <ColumnDefinition Width="45" />
-                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock x:Name="ActivityDistance"
-                                           Grid.Column="0"
-                                           Text="{x:Bind DistanceFormatted, Mode=OneWay}"
                                            Style="{StaticResource BaseTextBlock}"
-                                           FontSize="12" />
-
-                                <TextBlock x:Name="ActivityElevation"
-                                           Grid.Column="1"
-                                           Text="{x:Bind ElevationGainFormatted, Mode=OneWay}"
-                                           Style="{StaticResource BaseTextBlock}"
-                                           FontSize="12" />
-
-                                <TextBlock x:Name="AchievementCount"
-                                           Grid.Column="2"
-                                           Text="{x:Bind AchievementCount, Mode=OneWay}"
-                                           Style="{StaticResource BaseTextBlock}"
-                                           FontSize="12" />
+                                           FontSize="12"
+                                           Grid.Column="0">
+                                    <Run Text="{x:Bind DistanceFormatted, Mode=OneWay}" />
+                                    <Run Text="{x:Bind DistanceUnit, Mode=OneWay, Converter={StaticResource DistanceUnitToStringConverter}}"/>
+                                </TextBlock>
                             </Grid>
-                        </StackPanel>
+                        </RelativePanel>
                     </RelativePanel>
 
                     <RelativePanel x:Name="BottomPanel"
                                    RelativePanel.AlignBottomWithPanel="True"
+                                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
                                    RelativePanel.Below="TopPanel">
                         <Canvas x:Name="AthleteCountImage"
                                 Width="18" Height="18">
@@ -117,7 +135,7 @@
                         <TextBlock x:Name="AthleteCount"
                                    Margin="10,0,0,0"
                                    RelativePanel.RightOf="AthleteCountImage"
-                                   Text="{x:Bind AthleteCount, Mode=OneWay}"
+                                   Text="{x:Bind OtherAthleteCount, Mode=OneWay}"
                                    FontFamily="{StaticResource OpenSansFontSemibold}"
                                    Foreground="{StaticResource KlivaDarkBrush}"
                                    FontSize="14"
@@ -129,7 +147,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="KudosListItemTemplate"
-                  x:DataType="models:Athlete">
+                  x:DataType="models:AthleteSummary">
         <UserControl>
             <Grid>
                 <VisualStateManager.VisualStateGroups>
@@ -152,7 +170,7 @@
                         </VisualState>
                     </VisualStateGroup>
                 </VisualStateManager.VisualStateGroups>
-                <RelativePanel x:Name="KudosListItemPanel">
+                <RelativePanel>
                     <Ellipse x:Name="AthleteProfilePicture"
                              Margin="0,5,0,5"
                              RelativePanel.AlignLeftWithPanel="True">
@@ -168,7 +186,7 @@
                                FontSize="14"
                                RelativePanel.RightOf="AthleteProfilePicture"
                                RelativePanel.AlignVerticalCenterWithPanel="True"/>
-                </RelativePanel>                
+                </RelativePanel>
             </Grid>
         </UserControl>
     </DataTemplate>
@@ -197,7 +215,7 @@
                         </VisualState>
                     </VisualStateGroup>
                 </VisualStateManager.VisualStateGroups>
-                <RelativePanel x:Name="KudosListItemPanel">
+                <RelativePanel>
                     <Ellipse x:Name="AthleteProfilePicture"
                              Margin="0,5,0,5"
                              RelativePanel.AlignLeftWithPanel="True">
@@ -211,6 +229,104 @@
                                Style="{StaticResource BaseTextBlock}"
                                TextWrapping="WrapWholeWords"
                                Margin="10,0,10,0"
+                               FontSize="14"
+                               RelativePanel.RightOf="AthleteProfilePicture"
+                               RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                </RelativePanel>
+            </Grid>
+        </UserControl>
+    </DataTemplate>
+
+    <DataTemplate x:Key="PhotosGridItemTemplate"
+                  x:DataType="models:Photo">
+        <UserControl>
+            <Image Source="{x:Bind ImageThumbnail, Mode=OneWay}"
+                   Width="150" Height="150" />
+        </UserControl>
+    </DataTemplate>
+
+    <DataTemplate x:Key="ClubListItemDataTemplate"
+                  x:DataType="models:ClubSummary">
+        <UserControl>
+            <Grid>
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="VisualStateGroup">
+                        <VisualState x:Name="Mobile">
+                            <VisualState.StateTriggers>
+                                <AdaptiveTrigger MinWindowWidth="320" />
+                            </VisualState.StateTriggers>
+                            <VisualState.Setters>
+                                <Setter Target="ClubProfilePicture.Style" Value="{StaticResource ProfileEllipseMobile}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Desktop">
+                            <VisualState.StateTriggers>
+                                <AdaptiveTrigger MinWindowWidth="720" />
+                            </VisualState.StateTriggers>
+                            <VisualState.Setters>
+                                <Setter Target="ClubProfilePicture.Style" Value="{StaticResource ProfileEllipseDesktop}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+                <RelativePanel Margin="0,0,0,10">
+                    <Ellipse x:Name="ClubProfilePicture"
+                             Margin="0,5,0,5"
+                             RelativePanel.AlignLeftWithPanel="True">
+                        <Ellipse.Fill>
+                            <ImageBrush Stretch="UniformToFill" ImageSource="{x:Bind Profile, Mode=OneWay}" />
+                        </Ellipse.Fill>
+                    </Ellipse>
+
+                    <TextBlock x:Name="ClubName"
+                           Text="{x:Bind Name, Mode=OneWay}"
+                           Style="{StaticResource BaseTextBlock}"
+                           Margin="10,0,0,0"
+                           FontSize="14"                           
+                           RelativePanel.RightOf="ClubProfilePicture"
+                           RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                </RelativePanel>
+            </Grid>
+        </UserControl>
+    </DataTemplate>
+
+    <DataTemplate x:Key="ClubMembersListItemTemplate"
+                  x:DataType="models:AthleteSummary">
+        <UserControl>
+            <Grid>
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="VisualStateGroup">
+                        <VisualState x:Name="Mobile">
+                            <VisualState.StateTriggers>
+                                <AdaptiveTrigger MinWindowWidth="320" />
+                            </VisualState.StateTriggers>
+                            <VisualState.Setters>
+                                <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseMobile}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Desktop">
+                            <VisualState.StateTriggers>
+                                <AdaptiveTrigger MinWindowWidth="720" />
+                            </VisualState.StateTriggers>
+                            <VisualState.Setters>
+                                <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseDesktop}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+                <RelativePanel>
+                    <Ellipse x:Name="AthleteProfilePicture"
+                             Margin="0,5,0,5"
+                             RelativePanel.AlignLeftWithPanel="True">
+                        <Ellipse.Fill>
+                            <ImageBrush Stretch="UniformToFill" ImageSource="{x:Bind ProfileMediumFormatted, Mode=OneWay}" />
+                        </Ellipse.Fill>
+                    </Ellipse>
+
+                    <TextBlock x:Name="ActivityAthleteName"
+                               Text="{x:Bind FullName, Mode=OneWay}"
+                               Style="{StaticResource BaseTextBlock}"
+                               Margin="10,0,0,0"
                                FontSize="14"
                                RelativePanel.RightOf="AthleteProfilePicture"
                                RelativePanel.AlignVerticalCenterWithPanel="True"/>

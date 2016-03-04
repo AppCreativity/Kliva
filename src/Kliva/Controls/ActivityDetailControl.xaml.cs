@@ -23,27 +23,16 @@ namespace Kliva.Controls
         //public IStravaViewModel ViewModel => DataContext as IStravaViewModel;
         public ActivityDetailViewModel ViewModel => DataContext as ActivityDetailViewModel;
 
-        private Dictionary<Pivots, Tuple<int, PivotItem>> _pivotDictionary = new Dictionary<Pivots, Tuple<int, PivotItem>>();
+        private readonly Dictionary<Pivots, Tuple<int, PivotItem>> _pivotDictionary = new Dictionary<Pivots, Tuple<int, PivotItem>>();
 
         public ActivityDetailControl()
         {
             this.InitializeComponent();
-            InitializePivots();
 
             //DataContextChanged += (sender, arg) => this.Bindings.Update();
 
             ServiceLocator.Current.GetInstance<IMessenger>().Register<ActivityPolylineMessage>(this, async message => await DrawPolyline(message.Geopositions));
             ServiceLocator.Current.GetInstance<IMessenger>().Register<PivotMessage>(this, AdjustPivots);
-        }
-
-        private void InitializePivots()
-        {
-            int pivotIndex = 0;
-            foreach (PivotItem item in ActivityPivot.Items.ToList())
-            {
-                _pivotDictionary.Add(Enum<Pivots>.Parse((string)item.Header), Tuple.Create(pivotIndex, item));
-                ++pivotIndex;
-            }
         }
 
         private void AdjustPivots(PivotMessage message)
@@ -55,11 +44,23 @@ namespace Kliva.Controls
             }
 
             if (!ReferenceEquals(message, null) && message.Visible)
-            {
-                Tuple<int, PivotItem> pivotItem = _pivotDictionary[message.Pivot];
+            {               
+                //Handle Defer Loaded pivots
+                if (!_pivotDictionary.ContainsKey(message.Pivot))
+                {
+                    //Realize UI element
+                    FindName($"{message.Pivot.ToString()}Pivot");
+                    //Reindex collection
+                    _pivotDictionary.Clear();
+                    IndexPivotCollection();
+                }
+                else
+                {
+                    Tuple<int, PivotItem> pivotItem = _pivotDictionary[message.Pivot];
 
-                if (!ActivityPivot.Items.Contains(pivotItem.Item2))
-                    ActivityPivot.Items.Insert(pivotItem.Item1, pivotItem.Item2);
+                    if (!ActivityPivot.Items.Contains(pivotItem.Item2))
+                        ActivityPivot.Items.Insert(pivotItem.Item1, pivotItem.Item2);
+                }
             }
 
             if (message.Show.HasValue && message.Show.Value)
@@ -72,6 +73,11 @@ namespace Kliva.Controls
 
             if (geopositions.Any())
             {
+                if (ExpandMapButton == null)
+                    FindName("ExpandMapButton");
+                else
+                    ExpandMapButton.Visibility = Visibility.Visible;
+
                 var polyLine = new MapPolyline { Path = new Geopath(geopositions), StrokeThickness = 4, StrokeColor = (Color)App.Current.Resources["StravaRedColor"] };
                 ActivityMap.MapElements.Add(polyLine);
 
@@ -90,6 +96,25 @@ namespace Kliva.Controls
                 var zoomed = false;
                 while (!zoomed)
                     zoomed = await ActivityMap.TrySetViewBoundsAsync(GeoboundingBox.TryCompute(geopositions), null, MapAnimationKind.None);
+            }
+            else
+                if (ExpandMapButton != null)
+                    ExpandMapButton.Visibility = Visibility.Collapsed;
+        }
+
+        private void OnActivityDetailControlLoaded(object sender, RoutedEventArgs e)
+        {
+            if (_pivotDictionary.Count == 0)
+                IndexPivotCollection();
+        }
+
+        private void IndexPivotCollection()
+        {
+            int pivotIndex = 0;
+            foreach (PivotItem item in ActivityPivot.Items.ToList())
+            {
+                _pivotDictionary.Add(Enum<Pivots>.Parse((string) item.Tag), Tuple.Create(pivotIndex, item));
+                ++pivotIndex;
             }
         }
     }

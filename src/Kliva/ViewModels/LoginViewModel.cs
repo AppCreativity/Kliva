@@ -30,8 +30,8 @@ namespace Kliva.ViewModels
                     _stravaService.StatusEvent -= OnStravaStatusEvent;
 
                     //Remove the current 'login page' back entry and navigate to the main page
-                    _navigationService.Navigate<MainPage>();
-                    _navigationService.RemoveBackEntry();
+                    NavigationService.Navigate<MainPage>();
+                    NavigationService.RemoveBackEntry();
 
                     this.IsBusy = false;
                     break;

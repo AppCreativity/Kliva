@@ -1,5 +1,18 @@
 ﻿namespace Kliva.Models
 {
+    public enum ActivityFeedFilter
+    {
+        All,
+        My,
+        Followers
+    }
+
+    public enum AppTarget
+    {
+        Desktop,
+        Mobile
+    }
+
     public enum Pivots
     {
         Statistics,
@@ -32,7 +45,7 @@
 
     public enum MenuItemType
     {
-        Feed,
+        Home,
         Statistics,
         Profile,
         Clubs,

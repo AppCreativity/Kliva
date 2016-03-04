@@ -1,11 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Kliva.Models
 {
     /// <summary>
     /// A summary of a Strava Club. The ClubSummary contains less information than a Club.
     /// </summary>
-    public class ClubSummary
+    public partial class ClubSummary : BaseClass
     {
         /// <summary>
         /// The id of the club. The id is provided by Strava and can't be changed.
@@ -36,5 +37,18 @@ namespace Kliva.Models
         /// </summary>
         [JsonProperty("profile")]
         public string Profile { get; set; }
+    }
+
+    /// <summary>
+    /// Separated added fields from original response class!
+    /// </summary>
+    public partial class ClubSummary
+    {
+        private List<AthleteSummary> _members;
+        public List<AthleteSummary> Members
+        {
+            get { return _members; }
+            set { Set(() => Members, ref _members, value); }
+        }
     }
 }
