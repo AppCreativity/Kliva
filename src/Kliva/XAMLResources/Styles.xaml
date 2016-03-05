@@ -3,10 +3,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:Kliva.Controls"
     xmlns:cimbalinoconverters="using:Cimbalino.Toolkit.Converters"
-    xmlns:local="using:Kliva.XAMLResources">
+    xmlns:local="using:Kliva.XAMLResources"
+    xmlns:converters="using:Kliva.Converters">
 
     <cimbalinoconverters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <cimbalinoconverters:BooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" InvertValue="True" />
+
+    <converters:VisibilityConverter x:Key="VisibilityConverter" />
+    <converters:VisibilityConverter x:Key="InverseVisibilityConverter" Inverse="True" />
 
     <Color x:Key="StravaRedColor">#fc4c02</Color>
     <SolidColorBrush x:Key="StravaRedBrush" Color="{StaticResource StravaRedColor}" />

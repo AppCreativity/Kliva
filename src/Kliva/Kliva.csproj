@@ -120,6 +120,7 @@
       <DependentUpon>SidePaneControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\AddAmountToStringConverter.cs" />
+    <Compile Include="Converters\VisibilityConverter.cs" />
     <Compile Include="Converters\DistanceUnitToStringConverter.cs" />
     <Compile Include="Converters\RelativeTimeConverter.cs" />
     <Compile Include="Converters\SecondsToTimeStringConverter.cs" />
