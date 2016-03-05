@@ -78,9 +78,8 @@
                               ItemTemplate="{StaticResource KudosListItemTemplate}" />
                 </PivotItem>
                 <PivotItem Tag="Koms" Header="koms">
-                    <!-- TODO itemtemplate -->
-                    <!--<ListView ItemsSource="{x:Bind ViewModel.Koms, Mode=OneWay}"
-                              ItemTemplate="{StaticResource CommentsListItemTemplate}"/>-->
+                    <ListView ItemsSource="{x:Bind ViewModel.Koms, Mode=OneWay}"
+                              ItemTemplate="{StaticResource SegmentsListItemTemplate}"/>
                 </PivotItem>
             </Pivot>
         </Grid>

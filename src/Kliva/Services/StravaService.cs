@@ -102,6 +102,18 @@ namespace Kliva.Services
             }
         }
 
+        public static void SetMetricUnits(ActivitySummary activity, DistanceUnitType distanceUnitType)
+        {
+            activity.DistanceUnit = distanceUnitType;
+            activity.SpeedUnit = activity.DistanceUnit == DistanceUnitType.Kilometres ? SpeedUnit.KilometresPerHour : SpeedUnit.MilesPerHour;
+            activity.ElevationUnit = activity.DistanceUnit == DistanceUnitType.Kilometres ? DistanceUnitType.Metres : DistanceUnitType.Feet;
+        }
+
+        public static void SetMetricUnits(SegmentEffort segment, DistanceUnitType distanceUnitType)
+        {
+            segment.DistanceUnit = distanceUnitType;
+        }
+
         #region Event handlers
         public event EventHandler<StravaServiceEventArgs> StatusEvent;
 

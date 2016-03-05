@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
@@ -153,11 +154,17 @@ namespace Kliva.Services
             try
             {
                 var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitTypeAsync();
+
                 string getUrl = $"{string.Format(Endpoints.Koms, athleteId)}?access_token={accessToken}";
 
                 string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
 
-                return Unmarshaller<IEnumerable<SegmentEffort>>.Unmarshal(json);
+                return Unmarshaller<IEnumerable<SegmentEffort>>.Unmarshal(json).Select(segment =>
+                {
+                    StravaService.SetMetricUnits(segment, defaultDistanceUnitType);
+                    return segment;
+                }).ToList();
             }
             catch (Exception)
             {

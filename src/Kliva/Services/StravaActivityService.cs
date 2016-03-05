@@ -26,13 +26,6 @@ namespace Kliva.Services
             _stravaWebClient = stravaWebClient;
         }
 
-        private void SetMetricUnits(ActivitySummary activity, DistanceUnitType distanceUnitType)
-        {            
-            activity.DistanceUnit = distanceUnitType;
-            activity.SpeedUnit = activity.DistanceUnit == DistanceUnitType.Kilometres ? SpeedUnit.KilometresPerHour : SpeedUnit.MilesPerHour;
-            activity.ElevationUnit = activity.DistanceUnit == DistanceUnitType.Kilometres ? DistanceUnitType.Metres : DistanceUnitType.Feet;
-        }
-
         private async Task<List<Photo>> GetPhotosFromServiceAsync(string activityId)
         {
             try
@@ -65,7 +58,7 @@ namespace Kliva.Services
                 //TODO: Glenn - Google maps?
                 return Unmarshaller<List<ActivitySummary>>.Unmarshal(json).Select(activity =>
                 {
-                    SetMetricUnits(activity, defaultDistanceUnitType);
+                    StravaService.SetMetricUnits(activity, defaultDistanceUnitType);
                     return activity;
                 }).ToList();
             }
@@ -94,7 +87,9 @@ namespace Kliva.Services
                 string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
 
                 var activity = Unmarshaller<Activity>.Unmarshal(json);
-                SetMetricUnits(activity, defaultDistanceUnitType);
+                StravaService.SetMetricUnits(activity, defaultDistanceUnitType);
+                foreach (SegmentEffort segment in activity.SegmentEfforts)
+                    StravaService.SetMetricUnits(segment, defaultDistanceUnitType);
 
                 return activity;
             }
@@ -126,7 +121,7 @@ namespace Kliva.Services
                 //TODO: Glenn - Google maps?
                 return Unmarshaller<List<ActivitySummary>>.Unmarshal(json).Select(activity =>
                 {
-                    SetMetricUnits(activity, defaultDistanceUnitType);
+                    StravaService.SetMetricUnits(activity, defaultDistanceUnitType);
                     return activity;
                 }).ToList();
             }
@@ -157,7 +152,7 @@ namespace Kliva.Services
 
                 return Unmarshaller<List<ActivitySummary>>.Unmarshal(json).Select(activity =>
                 {
-                    SetMetricUnits(activity, defaultDistanceUnitType);
+                    StravaService.SetMetricUnits(activity, defaultDistanceUnitType);
                     return activity;
                 }).ToList();
             }
