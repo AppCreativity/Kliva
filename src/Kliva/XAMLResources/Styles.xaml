@@ -11,7 +11,7 @@
     <Color x:Key="StravaRedColor">#fc4c02</Color>
     <SolidColorBrush x:Key="StravaRedBrush" Color="{StaticResource StravaRedColor}" />
 
-    <Color x:Key="KlivaMainColor">#df8942</Color>
+    <Color x:Key="KlivaMainColor">#f7630c</Color>
     <SolidColorBrush x:Key="KlivaMainBrush" Color="{StaticResource KlivaMainColor}" />
 
     <Color x:Key="KlivaDarkColor">#b65033</Color>

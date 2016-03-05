@@ -7,9 +7,11 @@ using Microsoft.Practices.ServiceLocation;
 using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Graphics.Display;
 using Windows.UI;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -87,7 +89,18 @@ namespace Kliva
                 view.SetPreferredMinSize(new Size(width: 800, height: 600));
                 var titleBar = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar;
                 titleBar.BackgroundColor = titleBar.ButtonBackgroundColor = (Color)App.Current.Resources["KlivaMainColor"];                
-                titleBar.ForegroundColor = titleBar.ButtonForegroundColor = Windows.UI.Colors.White;                
+                titleBar.ForegroundColor = titleBar.ButtonForegroundColor = Windows.UI.Colors.White;
+
+                CoreApplicationViewTitleBar tb = CoreApplication.GetCurrentView().TitleBar;
+                tb.ExtendViewIntoTitleBar = true;
+
+                var tbprops = ApplicationView.GetForCurrentView().TitleBar;
+                tbprops.BackgroundColor = Windows.UI.Colors.Transparent;
+                tbprops.ButtonBackgroundColor = Windows.UI.Colors.Transparent;
+                tbprops.ButtonForegroundColor = Windows.UI.Colors.Black;
+                tbprops.InactiveBackgroundColor= Windows.UI.Colors.Transparent;
+
+
             }
 
             //TODO: Glenn - Windows.Foundation.Metadata.ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar")){ .. }
