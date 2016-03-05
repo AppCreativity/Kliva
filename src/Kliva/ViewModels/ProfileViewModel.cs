@@ -68,7 +68,7 @@ namespace Kliva.ViewModels
 
         private Task ViewLoaded()
         {
-            if(!string.Equals(_currentAthleteId, NavigationService.CurrentParameter?.ToString()))
+            if(string.IsNullOrEmpty(_currentAthleteId) || !string.Equals(_currentAthleteId, NavigationService.CurrentParameter?.ToString()))
                 return LoadAsync();
             return Task.CompletedTask;
         }
