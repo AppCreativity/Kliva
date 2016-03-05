@@ -88,8 +88,11 @@ namespace Kliva.Services
 
                 var activity = Unmarshaller<Activity>.Unmarshal(json);
                 StravaService.SetMetricUnits(activity, defaultDistanceUnitType);
-                foreach (SegmentEffort segment in activity.SegmentEfforts)
-                    StravaService.SetMetricUnits(segment, defaultDistanceUnitType);
+                if (activity.SegmentEfforts != null)
+                {
+                    foreach (SegmentEffort segment in activity.SegmentEfforts)
+                        StravaService.SetMetricUnits(segment, defaultDistanceUnitType);
+                }
 
                 return activity;
             }
