@@ -11,7 +11,8 @@
     d:DesignHeight="300"
     d:DesignWidth="400"
     DataContext="{Binding ActivityDetail, Source={StaticResource Locator}}"
-    Loaded="OnActivityDetailControlLoaded">
+    Loaded="OnActivityDetailControlLoaded"
+    xmlns:compositioncontrols="using:App1">
 
     <UserControl.Resources>
         <converters:SecondsToTimeStringConverter x:Key="SecondsToTimeStringConverter" />
@@ -27,7 +28,8 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="ActivityDetailCommandBar.Visibility" Value="Collapsed" />
-                        <Setter Target="ActivityMap.Height" Value="200" />
+                        
+                        <Setter Target="ActivityMap.Height" Value="400" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="Desktop">
@@ -36,21 +38,23 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="ActivityDetailCommandBar.Visibility" Value="Visible" />
-                        <Setter Target="ActivityMap.Height" Value="300" />
+                        
+                        <Setter Target="ActivityMap.Height" Value="600" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <RelativePanel>
-            <TextBlock x:Name="ActivityName"
+            <!--<TextBlock x:Name="ActivityName"
                        Text="{x:Bind ViewModel.SelectedActivity.Name, Mode=OneWay}"
                        TextWrapping="WrapWholeWords" MaxLines="2"
                        Margin="10,0,10,0"
-                       RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
-
+                       RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />-->
+            
+            
             <maps:MapControl x:Name="ActivityMap"
-                             Margin="0,10,0,0"
-                             RelativePanel.Below="ActivityName"
+                             Margin="0,0,0,0"
+                             
                              RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
 
             <Button x:Name="ExpandMapButton"
@@ -237,8 +241,10 @@
             <ListView x:Name="RelatedAthletesList"
                       ItemsSource="{x:Bind ViewModel.RelatedAthletes}"
                       Style="{StaticResource HorizontalListViewStyle}"
-                      RelativePanel.Below="ActivityName"
-                      RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+                      
+                      RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                      RelativePanel.AlignBottomWith="ActivityMap"
+                      >
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Ellipse Style="{StaticResource ProfileEllipseMobile}"
@@ -252,5 +258,29 @@
             </ListView>
 
         </RelativePanel>
+        <compositioncontrols:BlurPanelProto 
+            x:Name="BlurPanel"
+            HorizontalAlignment="Stretch" 
+            VerticalAlignment="Top" 
+            Height="130px"
+            Margin="0,0,0,0"
+            Grid.Row="0" Grid.RowSpan="2">
+
+        </compositioncontrols:BlurPanelProto>
+        <TextBlock Margin="0,15,0,15" Foreground="White"
+                   HorizontalAlignment="Center"
+                   FontFamily="{StaticResource OpenSansFontLight}" 
+                       FontSize="20"
+                Text="{x:Bind ViewModel.SelectedActivity.Name, Mode=OneWay}">
+        </TextBlock>
+        <Ellipse 
+            VerticalAlignment="Top"
+            HorizontalAlignment="Center"
+            Style="{StaticResource ProfileEllipseDesktop}"
+                                 Margin="0,55,0,0">
+            <Ellipse.Fill>
+                <ImageBrush Stretch="Uniform" ImageSource="{x:Bind ViewModel.SelectedAthlete.ProfileMediumFormatted}" />
+            </Ellipse.Fill>
+        </Ellipse>
     </Grid>
 </UserControl>
