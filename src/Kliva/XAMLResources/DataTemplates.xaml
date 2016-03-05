@@ -13,6 +13,7 @@
     <converters:DistanceUnitToStringConverter x:Key="DistanceUnitToStringConverter" />
     <converters:SpeedUnitToStringConverter x:Key="SpeedUnitToStringConverter" />
     <converters:RelativeTimeConverter x:Key="RelativeTimeConverter" />
+    <converters:SecondsToTimeStringConverter x:Key="SecondsToTimeStringConverter" />
 
     <DataTemplate x:Key="ActivityListItemDataTemplate"
                   x:DataType="models:ActivitySummary">
@@ -85,7 +86,7 @@
                             <TextBlock x:Name="ActivityName"
                                        Margin="0,0,0,2.5"
                                        Text="{x:Bind Name, Mode=OneWay}"
-                                       Style="{StaticResource BaseTextBlock}"
+                                       Style="{StaticResource TrimmingTextBlock}"
                                        FontFamily="{StaticResource OpenSansFontSemibold}"
                                        RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" />
 
@@ -144,6 +145,52 @@
                 </RelativePanel>
             </Grid>
         </UserControl>
+    </DataTemplate>
+
+    <DataTemplate x:Key="SegmentsListItemTemplate"
+                  x:DataType="models:SegmentEffort">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <RelativePanel x:Name="SegmentHighlights"
+                           Grid.Column="0">
+                <TextBlock x:Name="SegmentName"
+                           Text="{x:Bind Name}"
+                           Style="{StaticResource TrimmingTextBlock}"
+                           FontSize="14"
+                           RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" />
+                <TextBlock x:Name="SegmentDistance"
+                       Style="{StaticResource BaseTextBlock}"
+                       FontSize="12"
+                       RelativePanel.Below="SegmentName" RelativePanel.AlignLeftWithPanel="True">
+                <Run Text="{x:Bind DistanceFormatted, Mode=OneWay}" />
+                <Run Text="{x:Bind DistanceUnit, Mode=OneWay, Converter={StaticResource DistanceUnitToStringConverter}}"/>
+                </TextBlock>
+
+                <TextBlock x:Name="SegmentMovingTime"
+                       Text="{x:Bind MovingTime, Mode=OneWay, Converter={StaticResource SecondsToTimeStringConverter}}"
+                       Style="{StaticResource BaseTextBlock}"
+                       FontSize="12"
+                       Margin="10,0"
+                       RelativePanel.Below="SegmentName" RelativePanel.RightOf="SegmentDistance" />
+            </RelativePanel>
+
+            <TextBlock x:Name="SegmentPersonalRankShield"
+                       Text=""
+                       VerticalAlignment="Center"
+                       Margin="0,0,10,0"
+                       FontFamily="Segoe MDL2 Assets"
+                       FontSize="22"
+                       Grid.Column="1"/>
+            <TextBlock Text="{x:Bind PersonalRecordRank}"
+                       Style="{StaticResource BaseTextBlock}"
+                       VerticalAlignment="Center" HorizontalAlignment="Center"
+                       Margin="0,0,10,0"
+                       FontSize="14"
+                       Grid.Column="1"/>            
+        </Grid>
     </DataTemplate>
 
     <DataTemplate x:Key="KudosListItemTemplate"

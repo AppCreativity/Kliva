@@ -16,7 +16,6 @@
     Loaded="OnActivityDetailControlLoaded">
 
     <UserControl.Resources>
-        <converters:SecondsToTimeStringConverter x:Key="SecondsToTimeStringConverter" />
         <converters:AddAmountToStringConverter x:Key="AddAmountToStringConverter" />
     </UserControl.Resources>
     
@@ -212,6 +211,9 @@
                 <PivotItem x:Name="SegmentsPivot" Header="segments" Tag="Segments"
                            x:DeferLoadStrategy="Lazy"
                            Visibility="{x:Bind ViewModel.HasSegments, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <ListView x:Name="AcitivtySegmentsList"
+                              ItemsSource="{x:Bind ViewModel.SelectedActivity.SegmentEfforts, Mode=OneWay}"
+                              ItemTemplate="{StaticResource SegmentsListItemTemplate}"/>
                 </PivotItem>
                 <PivotItem x:Name="KudosPivot" Tag="Kudos"
                            Header="{x:Bind ViewModel.KudosCount, Converter={StaticResource AddAmountToStringConverter}, ConverterParameter=kudos, Mode=OneWay}">
