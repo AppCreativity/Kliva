@@ -14,6 +14,7 @@
     <converters:SpeedUnitToStringConverter x:Key="SpeedUnitToStringConverter" />
     <converters:RelativeTimeConverter x:Key="RelativeTimeConverter" />
     <converters:SecondsToTimeStringConverter x:Key="SecondsToTimeStringConverter" />
+    <converters:VisibilityConverter x:Key="VisibilityConverter" />
 
     <DataTemplate x:Key="ActivityListItemDataTemplate"
                   x:DataType="models:ActivitySummary">
@@ -178,6 +179,7 @@
             </RelativePanel>
 
             <TextBlock x:Name="SegmentPersonalRankShield"
+                       Visibility="{x:Bind PersonalRecordRank, Converter={StaticResource VisibilityConverter}}"
                        Text=""
                        VerticalAlignment="Center"
                        Margin="0,0,10,0"
@@ -185,6 +187,7 @@
                        FontSize="22"
                        Grid.Column="1"/>
             <TextBlock Text="{x:Bind PersonalRecordRank}"
+                       Visibility="{x:Bind PersonalRecordRank, Converter={StaticResource VisibilityConverter}}"
                        Style="{StaticResource BaseTextBlock}"
                        VerticalAlignment="Center" HorizontalAlignment="Center"
                        Margin="0,0,10,0"
