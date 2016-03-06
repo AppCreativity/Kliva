@@ -173,11 +173,13 @@
     <Compile Include="Services\Interfaces\IStravaActivityService.cs" />
     <Compile Include="Services\Interfaces\IStravaAthleteService.cs" />
     <Compile Include="Services\Interfaces\IStravaClubService.cs" />
+    <Compile Include="Services\Interfaces\IStravaSegmentService.cs" />
     <Compile Include="Services\Interfaces\IStravaService.cs" />
     <Compile Include="Services\StravaActivityService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\StravaAthleteService.cs" />
     <Compile Include="Services\StravaClubService.cs" />
+    <Compile Include="Services\StravaSegmentService.cs" />
     <Compile Include="Services\StravaService.cs" />
     <Compile Include="Services\Framework\StravaWebClient.cs" />
     <Compile Include="ViewModels\ActivityDetailViewModel.cs" />

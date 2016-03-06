@@ -42,6 +42,8 @@ namespace Kliva.Services
 
         public IStravaClubService StravaClubService => ServiceLocator.Current.GetInstance<IStravaClubService>();
 
+        public IStravaSegmentService StravaSegmentService => ServiceLocator.Current.GetInstance<IStravaSegmentService>();
+
         private string ParseAuthorizationResponse(string responseData)
         {
             var authorizationCodeIndex = responseData.IndexOf("&code=", StringComparison.Ordinal) + 6;
@@ -109,7 +111,14 @@ namespace Kliva.Services
             activity.ElevationUnit = activity.DistanceUnit == DistanceUnitType.Kilometres ? DistanceUnitType.Metres : DistanceUnitType.Feet;
         }
 
+        //TODO: Glenn - Should we set these at some SegmentBaseClass?
         public static void SetMetricUnits(SegmentEffort segment, DistanceUnitType distanceUnitType)
+        {
+            segment.DistanceUnit = distanceUnitType;
+        }
+
+        //TODO: Glenn - Should we set these at some SegmentBaseClass?
+        public static void SetMetricUnits(SegmentSummary segment, DistanceUnitType distanceUnitType)
         {
             segment.DistanceUnit = distanceUnitType;
         }
@@ -255,6 +264,11 @@ namespace Kliva.Services
             }
 
             return club;
+        }
+
+        public Task<List<SegmentSummary>> GetStarredSegmentsAsync()
+        {
+            return StravaSegmentService.GetStarredSegmentsAsync();
         }
     }
 }

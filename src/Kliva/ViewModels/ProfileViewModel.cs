@@ -59,6 +59,13 @@ namespace Kliva.ViewModels
             set { Set(() => Koms, ref _koms, value); }
         }
 
+        private ObservableCollection<SegmentSummary> _starredSegments = new ObservableCollection<SegmentSummary>();
+        public ObservableCollection<SegmentSummary> StarredSegments
+        {
+            get { return _starredSegments; }
+            set { Set(() => StarredSegments, ref _starredSegments, value); }
+        }  
+
         private RelayCommand _viewLoadedCommand;
         public RelayCommand ViewLoadedCommand => _viewLoadedCommand ?? (_viewLoadedCommand = new RelayCommand(
             () => ViewLoaded()));
@@ -83,6 +90,7 @@ namespace Kliva.ViewModels
             if (authenticatedUser)
             {
                 Athlete = await _stravaService.GetAthleteAsync();
+                await GetStarredSegmentsAsync();
             }
             else
             {
@@ -108,6 +116,7 @@ namespace Kliva.ViewModels
         private void ClearProperties()
         {
             Athlete = null;
+            StarredSegments.Clear();
             Followers.Clear();
             Friends.Clear();
             BothFollowing.Clear();
@@ -147,14 +156,20 @@ namespace Kliva.ViewModels
         private async Task GetKomsAsync(string athleteId)
         {
             var koms = await _stravaService.GetKomsAsync(athleteId);
-            var defaultUnit = await _settingsService.GetStoredDistanceUnitTypeAsync();
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
             {
                 foreach (SegmentEffort kom in koms)
-                {
-                    // TODO kom.FormatFields(defaultUnit);
                     Koms.Add(kom);
-                }
+            });
+        }
+
+        private async Task GetStarredSegmentsAsync()
+        {
+            var segments = await _stravaService.GetStarredSegmentsAsync();
+            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+            {
+                foreach(SegmentSummary segment in segments)
+                    StarredSegments.Add(segment);
             });
         }
     }

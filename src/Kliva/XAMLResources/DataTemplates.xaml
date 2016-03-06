@@ -148,7 +148,7 @@
         </UserControl>
     </DataTemplate>
 
-    <DataTemplate x:Key="SegmentsListItemTemplate"
+    <DataTemplate x:Key="SegmentEffortListItemTemplate"
                   x:DataType="models:SegmentEffort">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -194,6 +194,24 @@
                        FontSize="14"
                        Grid.Column="1"/>            
         </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="SegmentSummaryListItemTemplate"
+                  x:DataType="models:SegmentSummary">
+        <RelativePanel x:Name="SegmentHighlights">
+            <TextBlock x:Name="SegmentName"
+                           Text="{x:Bind Name}"
+                           Style="{StaticResource TrimmingTextBlock}"
+                           FontSize="14"
+                           RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" />
+            <TextBlock x:Name="SegmentDistance"
+                       Style="{StaticResource BaseTextBlock}"
+                       FontSize="12"
+                       RelativePanel.Below="SegmentName" RelativePanel.AlignLeftWithPanel="True">
+                <Run Text="{x:Bind DistanceFormatted, Mode=OneWay}" />
+                <Run Text="{x:Bind DistanceUnit, Mode=OneWay, Converter={StaticResource DistanceUnitToStringConverter}}"/>
+            </TextBlock>
+        </RelativePanel>
     </DataTemplate>
 
     <DataTemplate x:Key="KudosListItemTemplate"

@@ -32,6 +32,7 @@ namespace Kliva.ViewModels
             SimpleIoc.Default.Register<IStravaActivityService, StravaActivityService>();
             SimpleIoc.Default.Register<IStravaAthleteService, StravaAthleteService>();
             SimpleIoc.Default.Register<IStravaClubService, StravaClubService>();
+            SimpleIoc.Default.Register<IStravaSegmentService, StravaSegmentService>();
 
             Register<MainViewModel>();
             Register<ActivityDetailViewModel>();

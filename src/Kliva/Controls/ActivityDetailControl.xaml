@@ -213,7 +213,7 @@
                            Visibility="{x:Bind ViewModel.HasSegments, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <ListView x:Name="AcitivtySegmentsList"
                               ItemsSource="{x:Bind ViewModel.SelectedActivity.SegmentEfforts, Mode=OneWay}"
-                              ItemTemplate="{StaticResource SegmentsListItemTemplate}"/>
+                              ItemTemplate="{StaticResource SegmentEffortListItemTemplate}"/>
                 </PivotItem>
                 <PivotItem x:Name="KudosPivot" Tag="Kudos"
                            Header="{x:Bind ViewModel.KudosCount, Converter={StaticResource AddAmountToStringConverter}, ConverterParameter=kudos, Mode=OneWay}">
