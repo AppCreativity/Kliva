@@ -270,5 +270,10 @@ namespace Kliva.Services
         {
             return StravaSegmentService.GetStarredSegmentsAsync();
         }
+
+        public Task<List<SegmentSummary>> GetStarredSegmentsAsync(string athleteId)
+        {
+            return StravaSegmentService.GetStarredSegmentsAsync(athleteId);
+        }
     }
 }

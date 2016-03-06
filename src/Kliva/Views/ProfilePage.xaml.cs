@@ -16,24 +16,5 @@ namespace Kliva.Views
         {
             this.InitializeComponent();
         }
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            if (e.Parameter == null)
-            {
-                if (StarredSegmentsPivot == null)
-                    FindName("StarredSegmentsPivot");
-                else
-                    ProfilePivot.Items.Add(StarredSegmentsPivot);
-            }
-            else
-            {
-                if (StarredSegmentsPivot != null)
-                    ProfilePivot.Items.Remove(StarredSegmentsPivot);
-
-            }
-
-            base.OnNavigatedTo(e);
-        }
     }
 }

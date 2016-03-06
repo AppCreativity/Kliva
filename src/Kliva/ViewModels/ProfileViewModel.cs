@@ -95,6 +95,7 @@ namespace Kliva.ViewModels
             else
             {
                 Athlete = await _stravaService.GetAthleteAsync(currentParameter);
+                await GetStarredSegmentsAsync(Athlete.Id.ToString());
             }
 
             if (Athlete != null)
@@ -163,9 +164,14 @@ namespace Kliva.ViewModels
             });
         }
 
-        private async Task GetStarredSegmentsAsync()
+        private async Task GetStarredSegmentsAsync(string athleteId = null)
         {
-            var segments = await _stravaService.GetStarredSegmentsAsync();
+            List<SegmentSummary> segments = new List<SegmentSummary>();
+            if (string.IsNullOrEmpty(athleteId))
+                segments = await _stravaService.GetStarredSegmentsAsync();
+            else
+                segments = await _stravaService.GetStarredSegmentsAsync(athleteId);
+
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
             {
                 foreach(SegmentSummary segment in segments)

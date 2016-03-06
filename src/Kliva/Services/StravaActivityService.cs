@@ -18,7 +18,7 @@ namespace Kliva.Services
         private readonly ConcurrentDictionary<string, Task<List<Photo>>> _cachedPhotosTasks = new ConcurrentDictionary<string, Task<List<Photo>>>();
 
         //TODO: Glenn - When to Invalidate cache?
-        private readonly ConcurrentDictionary<string, Task<IList<ActivitySummary>>>_cachedRelatedActivitiesTasks = new ConcurrentDictionary<string, Task<IList<ActivitySummary>>>();
+        private readonly ConcurrentDictionary<string, Task<IList<ActivitySummary>>> _cachedRelatedActivitiesTasks = new ConcurrentDictionary<string, Task<IList<ActivitySummary>>>();
 
         public StravaActivityService(ISettingsService settingsService, StravaWebClient stravaWebClient)
         {

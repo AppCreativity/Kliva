@@ -81,9 +81,7 @@
                     <ListView ItemsSource="{x:Bind ViewModel.Koms, Mode=OneWay}"
                               ItemTemplate="{StaticResource SegmentEffortListItemTemplate}"/>
                 </PivotItem>
-                <PivotItem x:Name="StarredSegmentsPivot"
-                           Tag="StarredSegments" Header="starred segments"
-                           x:DeferLoadStrategy="Lazy">
+                <PivotItem Tag="StarredSegments" Header="starred segments">
                     <ListView ItemsSource="{x:Bind ViewModel.StarredSegments, Mode=OneWay}"
                               ItemTemplate="{StaticResource SegmentSummaryListItemTemplate}" />
                 </PivotItem>
