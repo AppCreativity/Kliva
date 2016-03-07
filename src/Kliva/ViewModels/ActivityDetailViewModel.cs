@@ -30,8 +30,8 @@ namespace Kliva.ViewModels
             }
         }
 
-        private ObservableCollection<Athlete> _kudos = new ObservableCollection<Athlete>();
-        public ObservableCollection<Athlete> Kudos
+        private ObservableCollection<AthleteSummary> _kudos = new ObservableCollection<AthleteSummary>();
+        public ObservableCollection<AthleteSummary> Kudos
         {
             get { return _kudos; }
             set { Set(() => Kudos, ref _kudos, value); }
@@ -100,7 +100,7 @@ namespace Kliva.ViewModels
 
                 if (activity.KudosCount > 0 && activity.Kudos != null && activity.Kudos.Any())
                 {                    
-                    foreach (Athlete kudo in activity.Kudos)
+                    foreach (AthleteSummary kudo in activity.Kudos)
                         Kudos.Add(kudo);
                 }
                 

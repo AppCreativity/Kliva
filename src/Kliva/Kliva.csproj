@@ -139,7 +139,8 @@
     <Compile Include="Messages\PivotMessage.cs" />
     <Compile Include="Models\AccessToken.cs" />
     <Compile Include="Models\Activity.cs" />
-    <Compile Include="Models\ActivityIncrementalCollection.cs" />
+    <Compile Include="Models\Converters\AthleteJsonConverter.cs" />
+    <Compile Include="Models\Incremental\ActivityIncrementalCollection.cs" />
     <Compile Include="Models\ActivityMeta.cs" />
     <Compile Include="Models\ActivitySummary.cs" />
     <Compile Include="Models\AppVersion.cs" />
@@ -154,6 +155,10 @@
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\IncrementalLoadingBase.cs" />
+    <Compile Include="Models\Incremental\CachedKeyedIncrementalLoadingBase.cs" />
+    <Compile Include="Models\Incremental\FriendActivityIncrementalCollection.cs" />
+    <Compile Include="Models\Incremental\IKey.cs" />
+    <Compile Include="Models\Incremental\MyActivityIncrementalCollection.cs" />
     <Compile Include="Models\Limit.cs" />
     <Compile Include="Models\Limits.cs" />
     <Compile Include="Models\Map.cs" />
@@ -166,6 +171,7 @@
     <Compile Include="Models\StravaIdentityConstants.cs" />
     <Compile Include="Models\Usage.cs" />
     <Compile Include="Services\ApplicationInfoService.cs" />
+    <Compile Include="Services\LocalCacheService.cs" />
     <Compile Include="Services\Endpoints.cs" />
     <Compile Include="Services\Framework\AsyncResponseReceivedEventArgs.cs" />
     <Compile Include="Services\Interfaces\IApplicationInfoService.cs" />
@@ -175,6 +181,7 @@
     <Compile Include="Services\Interfaces\IStravaClubService.cs" />
     <Compile Include="Services\Interfaces\IStravaSegmentService.cs" />
     <Compile Include="Services\Interfaces\IStravaService.cs" />
+    <Compile Include="Services\Performance\ETWLogging.cs" />
     <Compile Include="Services\StravaActivityService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\StravaAthleteService.cs" />

@@ -77,31 +77,33 @@ namespace Kliva.Services
             }
         }
 
-        private async Task GetActivitySummaryRelationsAsync(IEnumerable<ActivitySummary> activities)
+        private Task GetActivitySummaryRelationsAsync(IEnumerable<ActivitySummary> activities)
         {
-            var results = (from activity in activities
-                           select new
-                           {
-                               Activity = activity,
-                               AthleteTask = StravaAthleteService.GetAthleteAsync(activity.AthleteMeta.Id.ToString()),
-                               PhotoTask = (activity.AthleteMeta.Id == StravaAthleteService.Athlete.Id && activity.TotalPhotoCount > 0) ? StravaActivityService.GetPhotosAsync(activity.Id.ToString()) : Task.FromResult<List<Photo>>(null)
-                           }).ToList();
-
-            List<Task> tasks = new List<Task>();
-            tasks.AddRange(results.Select(t => t.AthleteTask));
-            tasks.AddRange(results.Select(t => t.PhotoTask));
-
-            await Task.WhenAll(tasks);
-
-            foreach (var pair in results)
+            foreach (var activity in activities)
             {
-                var actualPair = pair;
-                DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                var athleteTask = StravaAthleteService.GetAthleteAsync(activity.AthleteMeta.Id.ToString());
+                var t = athleteTask.ContinueWith(c =>
+                    {
+                        DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                        {
+                            activity.Athlete = c.Result;
+                        });
+                    });
+
+                if (activity.AthleteMeta.Id == StravaAthleteService.Athlete.Id && activity.TotalPhotoCount > 0)
                 {
-                    actualPair.Activity.Athlete = actualPair.AthleteTask.Result;
-                    actualPair.Activity.AllPhotos = actualPair.PhotoTask.Result;
-                });
+                    var phototask = StravaActivityService.GetPhotosAsync(activity.Id.ToString());
+                    t = phototask.ContinueWith(c =>
+                        {
+                            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                            {
+                                activity.AllPhotos = c.Result;
+                            });
+                        });
+                }
             }
+
+            return Task.CompletedTask;
         }
 
         public static void SetMetricUnits(ActivitySummary activity, DistanceUnitType distanceUnitType)
@@ -167,7 +169,7 @@ namespace Kliva.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Task<Athlete> GetAthleteAsync(string id)
+        public Task<AthleteSummary> GetAthleteAsync(string id)
         {
             return StravaAthleteService.GetAthleteAsync(id);
         }
@@ -217,30 +219,45 @@ namespace Kliva.Services
             return activity;
         }
 
-        public async Task<IEnumerable<ActivitySummary>> GetActivitiesWithAthletesAsync(int page, int perPage, ActivityFeedFilter filter)
+        public Task<string> GetFriendActivityDataAsync(int page, int pageSize)
         {
-            IList<ActivitySummary> activities = null;
-            switch (filter)
-            {
-                case ActivityFeedFilter.All:
-                case ActivityFeedFilter.Followers:
-                    activities = await StravaActivityService.GetFollowersActivitiesAsync(page, perPage);
-                    break;
-                case ActivityFeedFilter.My:
-                    activities = await StravaActivityService.GetActivitiesAsync(page, perPage);
-                    break;
-            }
-
-            if (activities != null && activities.Any())
-            {
-                await GetActivitySummaryRelationsAsync(activities);
-
-                if (filter == ActivityFeedFilter.Followers)
-                    activities = activities.Where(activity => activity.Athlete.Id != StravaAthleteService.Athlete.Id).ToList();
-            }
-
-            return activities;
+            return StravaActivityService.GetFriendActivityDataAsync(page, pageSize);
         }
+
+        public Task<string> GetMyActivityDataAsync(int page, int pageSize)
+        {
+            return StravaActivityService.GetMyActivityDataAsync(page, pageSize);
+        }
+
+        public Task<List<ActivitySummary>> HydrateActivityData(string data)
+        {
+            return StravaActivityService.HydrateActivityData(data);
+        }
+
+        //public async Task<IEnumerable<ActivitySummary>> GetActivitiesWithAthletesAsync(int page, int perPage, ActivityFeedFilter filter)
+        //{
+        //    IList<ActivitySummary> activities = null;
+        //    switch (filter)
+        //    {
+        //        case ActivityFeedFilter.All:
+        //        case ActivityFeedFilter.Followers:
+        //            activities = await StravaActivityService.GetFollowersActivitiesAsync(page, perPage);
+        //            break;
+        //        case ActivityFeedFilter.My:
+        //            activities = await StravaActivityService.GetActivitiesAsync(page, perPage);
+        //            break;
+        //    }
+
+        //    if (activities != null && activities.Any())
+        //    {
+        //        await GetActivitySummaryRelationsAsync(activities);
+
+        //        if (filter == ActivityFeedFilter.Followers)
+        //            activities = activities.Where(activity => activity.Athlete.Id != StravaAthleteService.Athlete.Id).ToList();
+        //    }
+
+        //    return activities;
+        //}
 
         public Task GiveKudosAsync(string activityId)
         {
@@ -274,6 +291,11 @@ namespace Kliva.Services
         public Task<List<SegmentSummary>> GetStarredSegmentsAsync(string athleteId)
         {
             return StravaSegmentService.GetStarredSegmentsAsync(athleteId);
+        }
+
+        public AthleteSummary ConsolidateWithCache(AthleteMeta athlete)
+        {
+            return StravaAthleteService.ConsolidateWithCache(athlete);
         }
     }
 }

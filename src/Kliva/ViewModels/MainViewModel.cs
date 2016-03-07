@@ -79,15 +79,17 @@ namespace Kliva.ViewModels
             {
                 case ActivityFeedFilter.All:
                     FilterText = "Showing all activities";
+                    ActivityIncrementalCollection = new FriendActivityIncrementalCollection(_stravaService);
                     break;
                 case ActivityFeedFilter.Followers:
                     FilterText = "Showing friends' activities";
+                    ActivityIncrementalCollection = new FriendActivityIncrementalCollection(_stravaService);
                     break;
                 case ActivityFeedFilter.My:
                     FilterText = "Showing my activities";
+                    ActivityIncrementalCollection = new MyActivityIncrementalCollection(_stravaService);
                     break;
             }
-            ActivityIncrementalCollection = new ActivityIncrementalCollection(_stravaService, filter);
         }));
 
         private RelayCommand _logoutCommand;
@@ -137,7 +139,7 @@ namespace Kliva.ViewModels
             if (!_viewModelLoaded)
             {
                 var athlete = await _stravaService.GetAthleteAsync();
-                ActivityIncrementalCollection = new ActivityIncrementalCollection(_stravaService);
+                ActivityIncrementalCollection = new FriendActivityIncrementalCollection(_stravaService); // TODO store filter in settings for next app run
                 _viewModelLoaded = true;
             }
         }
