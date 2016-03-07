@@ -28,6 +28,18 @@ namespace Kliva.ViewModels
             }
         }
 
+        private ActivitySummary _activitySummary;
+
+        public ActivitySummary SelectedActivitySummary
+        {
+            get { return _activitySummary; }
+            set
+            {
+                Set(() => SelectedActivitySummary, ref _activitySummary, value);
+                RaisePropertyChanged(() => SelectedActivitySummary);
+            }
+        }
+
         private Activity _selectedActivity;
         public Activity SelectedActivity
         {
@@ -96,6 +108,7 @@ namespace Kliva.ViewModels
                 
                 (item) => {
                     this.SelectedAthlete = item.ActivitySummary.Athlete;
+                    this.SelectedActivitySummary = item.ActivitySummary;
                     await LoadActivityDetails(item.ActivitySummary.Id.ToString());
                   
                 }

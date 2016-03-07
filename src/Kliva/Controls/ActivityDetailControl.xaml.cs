@@ -14,6 +14,7 @@ using Kliva.Helpers;
 using Kliva.Messages;
 using Kliva.Models;
 using Kliva.ViewModels;
+using ImplicitAnimations;
 using Microsoft.Practices.ServiceLocation;
 
 namespace Kliva.Controls
@@ -28,6 +29,10 @@ namespace Kliva.Controls
         public ActivityDetailControl()
         {
             this.InitializeComponent();
+
+            ActivityMap.EnableLayoutImplicitAnimations();
+
+            
 
             //DataContextChanged += (sender, arg) => this.Bindings.Update();
 
@@ -94,8 +99,12 @@ namespace Kliva.Controls
                 ActivityMap.MapElements.Add(endMapIcon);
 
                 var zoomed = false;
+                Thickness padding = new Thickness(0, 190, 0, 0);
                 while (!zoomed)
-                    zoomed = await ActivityMap.TrySetViewBoundsAsync(GeoboundingBox.TryCompute(geopositions), null, MapAnimationKind.None);
+                {
+
+                    zoomed = await ActivityMap.TrySetViewBoundsAsync(GeoboundingBox.TryCompute(geopositions), padding, MapAnimationKind.None);
+                }
             }
             else
                 if (ExpandMapButton != null)
@@ -104,6 +113,8 @@ namespace Kliva.Controls
 
         private void OnActivityDetailControlLoaded(object sender, RoutedEventArgs e)
         {
+            //ActivityMap.Opacity = 1.0f;
+
             if (_pivotDictionary.Count == 0)
                 IndexPivotCollection();
         }

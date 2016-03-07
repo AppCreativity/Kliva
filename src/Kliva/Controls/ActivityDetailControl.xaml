@@ -28,7 +28,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="ActivityDetailCommandBar.Visibility" Value="Collapsed" />
-
+                        <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseDetail}" />
                         <Setter Target="ActivityMap.Height" Value="450" />
                     </VisualState.Setters>
                 </VisualState>
@@ -38,7 +38,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="ActivityDetailCommandBar.Visibility" Value="Visible" />
-
+                        
                         <Setter Target="ActivityMap.Height" Value="650" />
                     </VisualState.Setters>
                 </VisualState>
@@ -56,6 +56,7 @@
                              Margin="0,0,0,0"
                              RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
                              MapServiceToken=" djEP5YkO2YftwiWR9MLF~kufsPJjSomRgYFl0Khn7xA~AvER_Qbb0ldEVri_AgBt6XQd9-rVmRfttbYkU5Ij1Why3LcgT-5zaJSSeEDhJy-R"
+                             
                              />
 
             <Button x:Name="ExpandMapButton"
@@ -116,7 +117,7 @@
                                    RelativePanel.AlignLeftWithPanel="True"
                                        FontSize="50"
                                        FontFamily="{StaticResource OpenSansFontLight}" 
-                                       Foreground="#FF151515"
+                                       Foreground="#FF252525"
                                        >
                             <Run Text="{x:Bind ViewModel.SelectedActivity.AverageSpeedFormatted, Mode=OneWay}" />
                             <Run Text="{x:Bind ViewModel.SelectedActivity.SpeedUnit, Mode=OneWay, Converter={StaticResource SpeedUnitToStringConverter}}" />
@@ -135,7 +136,7 @@
                                    RelativePanel.Below="SpeedAverageFormattedLabelTextBlock"
                                    RelativePanel.AlignLeftWith="SpeedAverageFormattedTextBlock"
                                        FontSize="50"
-                                       Foreground="#FF151515"
+                                       Foreground="#FF252525"
                                        >
                             <Run Text="{x:Bind ViewModel.SelectedActivity.MaxSpeedFormatted, Mode=OneWay}" />
                             <Run Text="{x:Bind ViewModel.SelectedActivity.SpeedUnit, Mode=OneWay, Converter={StaticResource SpeedUnitToStringConverter}}" />
@@ -283,10 +284,10 @@
                    HorizontalAlignment="Center" VerticalAlignment="Top"
                    FontFamily="{StaticResource OpenSansFontLight}" 
                        FontSize="18"
-                Text="{x:Bind ViewModel.SelectedActivity.Name, Mode=OneWay}">
+                Text="{x:Bind ViewModel.SelectedActivitySummary.Name, Mode=OneWay}">
         </TextBlock>
         <TextBlock x:Name="TimeMovingFormattedTextBlockHeader"
-                                   Text="{x:Bind ViewModel.SelectedActivity.MovingTime, Mode=OneWay, Converter={StaticResource SecondsToTimeStringConverter}}"
+                                   Text="{x:Bind ViewModel.SelectedActivitySummary.MovingTime, Mode=OneWay, Converter={StaticResource SecondsToTimeStringConverter}}"
                                    Margin="0,110,60,0"
                                    MinWidth="125"
                    FontFamily="{StaticResource OpenSansFontLight}" 
@@ -305,14 +306,31 @@
                    FontFamily="{StaticResource OpenSansFontLight}" 
                        FontSize="25"
                    >
-                            <Run Text="{x:Bind ViewModel.SelectedActivity.DistanceFormatted, Mode=OneWay}" />
-                            <Run Text="{x:Bind ViewModel.SelectedActivity.DistanceUnit, Mode=OneWay, Converter={StaticResource DistanceUnitToStringConverter}}"/>
+                            <Run Text="{x:Bind ViewModel.SelectedActivitySummary.DistanceFormatted, Mode=OneWay}" />
+                            <Run Text="{x:Bind ViewModel.SelectedActivitySummary.DistanceUnit, Mode=OneWay, Converter={StaticResource DistanceUnitToStringConverter}}"/>
         </TextBlock>
+        <Image Source="ms-appx:///Assets/Bike.png"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Margin="30,115,0,0"
+               Stretch="UniformToFill"
+               Width="25"
+               Height="25"
+               ></Image>
+        <Image Source="ms-appx:///Assets/clock.png"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Top"
+               Margin="0,115,30,0"
+               Stretch="UniformToFill"
+               Width="25"
+               Height="25"
+               ></Image>
         <Ellipse 
+            x:Name="AthleteProfilePicture"
             VerticalAlignment="Top"
             HorizontalAlignment="Center"
             Style="{StaticResource ProfileEllipseDesktop}"
-                                 Margin="0,85,0,0">
+                                 Margin="0,75,0,0">
             <Ellipse.Fill>
                 <ImageBrush Stretch="Uniform" ImageSource="{x:Bind ViewModel.SelectedAthlete.ProfileMediumFormatted}" />
             </Ellipse.Fill>

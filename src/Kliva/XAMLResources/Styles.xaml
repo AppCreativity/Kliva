@@ -99,6 +99,12 @@
         <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
     </Style>
 
+    <Style x:Name="ProfileEllipseDetail" TargetType="Ellipse">
+        <Setter Property="Height" Value="100" />
+        <Setter Property="Width" Value="100" />
+        <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
+    </Style>
+
     <Style x:Name="ProfileEllipseMobile" TargetType="Ellipse">
         <Setter Property="Height" Value="50" />
         <Setter Property="Width" Value="50" />
