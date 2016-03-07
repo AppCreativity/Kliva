@@ -282,6 +282,7 @@ namespace Kliva.Services
 
             try
             {
+                _perflog.GetFriendActivityDataAsync(false, page, perPage);
                 var accessToken = await _settingsService.GetStoredStravaAccessToken();
 
                 //TODO: Glenn - Optional parameters should be treated as such!
@@ -292,6 +293,8 @@ namespace Kliva.Services
             {
                 //TODO: Glenn - Use logger to log errors ( Google )
             }
+
+            _perflog.GetFriendActivityDataAsync(true, page, perPage);
             return data;
         }
 

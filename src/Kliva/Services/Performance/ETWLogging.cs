@@ -15,5 +15,6 @@ namespace Kliva.Services.Performance
 
         public void GetAthleteFromServiceAsync(bool finished, string id) { WriteEvent(7, finished, id); }
         public void GetAthleteAsync(bool finished) { WriteEvent(8, finished); }
+        public void GetFriendActivityDataAsync(bool finished, int page, int perPage) { WriteEvent(9, finished, page, perPage); }
     }
 }

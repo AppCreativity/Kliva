@@ -15,7 +15,7 @@ namespace Kliva.Services
         private readonly ISettingsService _settingsService;
         private readonly StravaWebClient _stravaWebClient;
 
-        private ETWLogging perflog;
+        private readonly ETWLogging _perflog;
 
         //TODO: Glenn - When to Invalidate cache?
         //
@@ -28,21 +28,21 @@ namespace Kliva.Services
             _settingsService = settingsService;
             _stravaWebClient = stravaWebClient;
 
-            perflog = ETWLogging.Log;
+            _perflog = ETWLogging.Log;
         }
 
         private async Task<AthleteSummary> GetAthleteFromServiceAsync(string athleteId)
         {
             try
             {
-                perflog.GetAthleteFromServiceAsync(false, athleteId);
+                _perflog.GetAthleteFromServiceAsync(false, athleteId);
                 var accessToken = await _settingsService.GetStoredStravaAccessToken();
 
                 string getUrl = string.Format("{0}/{1}?access_token={2}", Endpoints.Athletes, athleteId, accessToken);
                 string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
 
                 var result = Unmarshaller<Athlete>.Unmarshal(json);
-                perflog.GetAthleteFromServiceAsync(true, athleteId);
+                _perflog.GetAthleteFromServiceAsync(true, athleteId);
                 return result;
             }
             catch (Exception ex)
@@ -59,7 +59,7 @@ namespace Kliva.Services
         /// <returns>The currently authenticated athlete.</returns>
         public async Task<Athlete> GetAthleteAsync()
         {
-            perflog.GetAthleteAsync(false);
+            _perflog.GetAthleteAsync(false);
             if (Athlete == null)
             {
                 try
@@ -79,7 +79,7 @@ namespace Kliva.Services
                     //TODO: Glenn - Use logger to log errors ( Google )
                 }
             }
-            perflog.GetAthleteAsync(true);
+            _perflog.GetAthleteAsync(true);
             return Athlete;
         }
 
@@ -206,12 +206,19 @@ namespace Kliva.Services
 
         public AthleteSummary ConsolidateWithCache(AthleteMeta athlete)
         {
-
             object entry;
             if (_cachedAthleteTasks.TryGetValue(athlete.Id.ToString(), out entry))
             {
-                AthleteSummary summary = entry as AthleteSummary;
-                return summary;
+                //The cache has an entry, so lets see which is newer and has more data
+                AthleteSummary c_summary = entry as AthleteSummary;
+                AthleteSummary n_summary = athlete as AthleteSummary;
+
+                if (n_summary != null && n_summary.UpdatedAt > c_summary.UpdatedAt && n_summary.ResourceState >= c_summary.ResourceState)
+                {
+                    _cachedAthleteTasks[athlete.Id.ToString()] = n_summary;
+                    return n_summary;
+                }
+                return c_summary;
             }
             else
             {

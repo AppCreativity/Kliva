@@ -548,7 +548,7 @@ namespace Kliva.Models
         /// </summary>
         public int OtherAthleteCount => AthleteCount -1;
 
-        string IKey.Key => Id.ToString();
+        long IKey.Key => Id;
 
         private void ConsolidateWithCache(AthleteMeta meta)
         {

@@ -33,8 +33,8 @@ namespace Kliva.Models
         protected bool HasData = false;
 
         // state
-        private Dictionary<string, object> _storageLookup = new Dictionary<string, object>();
-        private List<object> _storage = new List<object>();
+        private readonly Dictionary<long, object> _storageLookup = new Dictionary<long, object>();
+        private readonly List<object> _storage = new List<object>();
         private bool _busy = false;
         private readonly string _name;
 
@@ -83,6 +83,8 @@ namespace Kliva.Models
             {
                 var baseIndex = _storage.Count;
                 int index;
+                long firstkey = (_storage.Count > 0) ? ((IKey)(_storage[0])).Key : 0;
+                int firstpos = 0;
 
                 if (items != null)
                 {
@@ -92,7 +94,7 @@ namespace Kliva.Models
                         if (keyedItem != null)
                         {
                             object olditem = null;
-                            string key = keyedItem.Key;
+                            long key = keyedItem.Key;
                             if (_storageLookup.TryGetValue(key, out olditem))
                             {
                                 index = _storage.IndexOf(olditem);
@@ -102,9 +104,19 @@ namespace Kliva.Models
                             }
                             else
                             {
-                                _storage.Add(newitem);
-                                _storageLookup.Add(key, newitem);
-                                NotifyInsert(newitem, _storage.Count - 1);
+                                if (key > firstkey)
+                                {
+                                    _storage.Insert(firstpos, newitem);
+                                    _storageLookup.Add(key, newitem);
+                                    NotifyInsert(newitem, firstpos);
+                                    firstpos++;
+                                }
+                                else
+                                {
+                                    _storage.Add(newitem);
+                                    _storageLookup.Add(key, newitem);
+                                    NotifyInsert(newitem, _storage.Count - 1);
+                                }
                             }
                         }
                     }
@@ -218,13 +230,7 @@ namespace Kliva.Models
 
         #region ISupportIncrementalLoading
 
-        public bool HasMoreItems
-        {
-            get
-            {
-                return HasMoreItemsOverride();
-            }
-        }
+        public bool HasMoreItems => HasMoreItemsOverride();
 
         public Windows.Foundation.IAsyncOperation<LoadMoreItemsResult> LoadMoreItemsAsync(uint count)
         {

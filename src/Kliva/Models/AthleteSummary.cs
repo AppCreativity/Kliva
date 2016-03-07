@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace Kliva.Models
 {
@@ -80,13 +81,13 @@ namespace Kliva.Models
         /// The date when this athlete was created. ISO 8601 time string.
         /// </summary>
         [JsonProperty("created_at")]
-        public string CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         /// <summary>
         /// The date when this athlete was updated. ISO 8601 time string.
         /// </summary>
         [JsonProperty("updated_at")]
-        public string UpdatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
         /// <summary>
         /// True, if enhanced privacy is enabled.
