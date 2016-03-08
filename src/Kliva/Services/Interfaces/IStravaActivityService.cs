@@ -11,11 +11,15 @@ namespace Kliva.Services.Interfaces
         Task<IList<ActivitySummary>> GetFollowersActivitiesAsync(int page, int perPage);
         Task<IList<ActivitySummary>> GetRelatedActivitiesAsync(string activityId);
 
-        Task<List<Athlete>> GetKudosAsync(string activityId);
+        Task<List<AthleteSummary>> GetKudosAsync(string activityId);
         Task GiveKudosAsync(string activityId);
 
         Task<List<Comment>> GetCommentsAsync(string activityId);
 
         Task<List<Photo>> GetPhotosAsync(string activityId);
+
+        Task<string> GetFriendActivityDataAsync(int page, int pageSize);
+        Task<string> GetMyActivityDataAsync(int page, int pageSize);
+        Task<List<ActivitySummary>> HydrateActivityData(string data);
     }
 }

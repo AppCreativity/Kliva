@@ -24,8 +24,8 @@ namespace Kliva.ViewModels
             _settingsService = settingsService;
         }
 
-        private Athlete _athlete;
-        public Athlete Athlete
+        private AthleteSummary _athlete;
+        public AthleteSummary Athlete
         {
             get { return _athlete; }
             set { Set(() => Athlete, ref _athlete, value); }
