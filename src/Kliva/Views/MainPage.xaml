@@ -9,6 +9,7 @@
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"       
     xmlns:klivacontrols="using:Kliva.Controls"
     NavigationCacheMode="Required"
+    Loaded="Page_Loaded"
     mc:Ignorable="d"
     DataContext="{Binding Main, Source={StaticResource Locator}}">
 

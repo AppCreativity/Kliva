@@ -210,6 +210,7 @@
     <Compile Include="Views\ClubsPage.xaml.cs">
       <DependentUpon>ClubsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\DetailPageBase.cs" />
     <Compile Include="Views\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>

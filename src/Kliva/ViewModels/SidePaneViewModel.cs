@@ -14,8 +14,7 @@ namespace Kliva.ViewModels
     {
         private readonly List<Type> _noSidePane = new List<Type>
         {
-            typeof(LoginPage),
-            typeof(SettingsPage)
+            typeof(LoginPage)
         };
 
         private Type _pageType;
@@ -113,7 +112,7 @@ namespace Kliva.ViewModels
         }
 
         private RelayCommand _homeCommand;
-        public RelayCommand HomeCommand => _homeCommand ?? (_homeCommand = new RelayCommand(() => NavigationService.Navigate<MainPage>()));
+        public RelayCommand HomeCommand => _homeCommand ?? (_homeCommand = new RelayCommand(() => ChangePage<MainPage>()));
 
         //TODO: Glenn - We hooked this up twice, once in SidePaneViewModel and once in MainViewModel because of difference in UI on desktop ( sidebar ) and mobile ( bottom appbar )
         private RelayCommand _statisticsCommand;
@@ -123,14 +122,14 @@ namespace Kliva.ViewModels
         public RelayCommand ProfileCommand => _profileCommand ?? (_profileCommand = new RelayCommand(() => NavigationService.Navigate<ProfilePage>()));
 
         private RelayCommand _clubsCommand;
-        public RelayCommand ClubsCommand => _clubsCommand ?? (_clubsCommand = new RelayCommand(() => NavigationService.Navigate<ClubsPage>()));
+        public RelayCommand ClubsCommand => _clubsCommand ?? (_clubsCommand = new RelayCommand(() => ChangePage<ClubsPage>()));
 
         private RelayCommand _hamburgerCommand;
         public RelayCommand HamburgerCommand => _hamburgerCommand ?? (_hamburgerCommand = new RelayCommand(() => this.IsPaneOpen = !this.IsPaneOpen));
 
         //TODO: Glenn - We hooked this up twice, once in SidePaneViewModel and once in MainViewModel because of difference in UI on desktop ( sidebar ) and mobile ( bottom appbar )
         private RelayCommand _settingsCommand;
-        public RelayCommand SettingsCommand => _settingsCommand ?? (_settingsCommand = new RelayCommand(() => NavigationService.Navigate<SettingsPage>()));
+        public RelayCommand SettingsCommand => _settingsCommand ?? (_settingsCommand = new RelayCommand(() => ChangePage<SettingsPage>()));
 
         public SidePaneViewModel(INavigationService navigationService) : base(navigationService)
         {
@@ -172,6 +171,16 @@ namespace Kliva.ViewModels
             {
                 this.DisplayMode = SplitViewDisplayMode.Inline;
                 this.IsPaneOpen = false;
+            }
+        }
+
+        private void ChangePage<DestinationPageType>()
+        {
+            // The side pane does not pass a navigation parameter, we can use this to distinguish
+            // between a top-level page versus some other page in the hierarchy
+            if (typeof(DestinationPageType) != _pageType && NavigationService.CurrentParameter == null)
+            {
+                NavigationService.Navigate<DestinationPageType>();
             }
         }
     }

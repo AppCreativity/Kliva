@@ -409,7 +409,7 @@
 
     <DataTemplate x:Key="MenuItemDataTemplate"
                   x:DataType="models:MenuItem">
-        <StackPanel Orientation="Horizontal" Height="48">
+        <StackPanel Orientation="Horizontal" Height="48" ToolTipService.ToolTip="{x:Bind Title, Mode=OneWay}">
             <TextBlock Style="{StaticResource PaneIconTextBlock}" Text="{x:Bind Icon, Mode=OneWay}"/>
             <TextBlock Text="{x:Bind Title, Mode=OneWay}"
                        VerticalAlignment="Center"
@@ -419,7 +419,7 @@
 
     <DataTemplate x:Key="MenuItemMaterialDataTemplate"
                   x:DataType="models:MenuItem">
-        <StackPanel Orientation="Horizontal" Height="48">
+        <StackPanel Orientation="Horizontal" Height="48" ToolTipService.ToolTip="{x:Bind Title, Mode=OneWay}">
             <TextBlock Style="{StaticResource PaneIconMaterialTextBlock}" Text="{x:Bind Icon, Mode=OneWay}"/>
             <TextBlock Text="{x:Bind Title, Mode=OneWay}"
                        VerticalAlignment="Center"

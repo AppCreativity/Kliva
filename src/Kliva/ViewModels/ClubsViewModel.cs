@@ -20,7 +20,23 @@ namespace Kliva.ViewModels
 
         private bool _viewModelLoaded = false;
 
-        public VisualState CurrentState { get; set; }
+        private VisualState _currentState;
+        public VisualState CurrentState
+        {
+            get { return _currentState; }
+            set
+            {
+                if (!Equals(_currentState, value))
+                {
+                    _currentState = value;
+
+                    if (_currentState.Name == "Mobile")
+                    {
+                        TryNavigateToDetail();
+                    }
+                }
+            }
+        }
 
         private ObservableCollection<ClubSummary> _clubs = new ObservableCollection<ClubSummary>();
         public ObservableCollection<ClubSummary> Clubs
@@ -71,6 +87,23 @@ namespace Kliva.ViewModels
 
                 _viewModelLoaded = true;
             }
+        }
+
+        private bool TryNavigateToDetail()
+        {
+            if (CurrentState.Name == "Mobile" && SelectedClub != null)
+            {
+                NavigationService.Navigate<ClubDetailPage>();
+                return true;
+            }
+
+            return false;
+        }
+
+        internal void ClubInvoked(ClubSummary clickedItem)
+        {
+            SelectedClub = clickedItem;
+            TryNavigateToDetail();
         }
     }
 }
