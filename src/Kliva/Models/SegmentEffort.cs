@@ -1,4 +1,5 @@
 ﻿using System;
+using Kliva.Helpers;
 using Newtonsoft.Json;
 
 namespace Kliva.Models
@@ -8,7 +9,7 @@ namespace Kliva.Models
     /// thought of as a portion of a ride that covers a segment. The object is returned in 
     /// summary or detailed representations. They are currently the same.
     /// </summary>
-    public class SegmentEffort
+    public partial class SegmentEffort
     {
         /// <summary>
         /// The segment effort's id.
@@ -141,5 +142,40 @@ namespace Kliva.Models
         /// </summary>
         [JsonProperty("end_index")]
         public int EndIndex { get; set; }
+    }
+
+    /// <summary>
+    /// Separated added fields from original response class!
+    /// </summary>
+    public partial class SegmentEffort : BaseClass
+    {
+        private DistanceUnitType _distanceUnit;
+        public DistanceUnitType DistanceUnit
+        {
+            get { return _distanceUnit; }
+            set
+            {
+                Set(() => DistanceUnit, ref _distanceUnit, value);
+                RaisePropertyChanged(() => DistanceFormatted);
+
+                //TODO: Glenn - do we need to 'recalculate' other values?
+            }
+        }
+
+        public string DistanceFormatted
+        {
+            get
+            {
+                switch (DistanceUnit)
+                {
+                    case DistanceUnitType.Kilometres:
+                        return UnitConverter.ConvertDistance(Distance, DistanceUnitType.Metres, DistanceUnitType.Kilometres).ToString("F2");
+                    case DistanceUnitType.Miles:
+                        return UnitConverter.ConvertDistance(Distance, DistanceUnitType.Metres, DistanceUnitType.Miles).ToString("F2");
+                }
+
+                return null;
+            }
+        }
     }
 }

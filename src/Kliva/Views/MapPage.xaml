@@ -9,30 +9,18 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <!--<maps:MapControl x:Name="ActivityMap"
-                             Margin="0,10,0,0"
-                             RelativePanel.Below="ActivityName"
-                             RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />-->
+        <RelativePanel>
+            <maps:MapControl x:Name="ActivityMap"
+                             RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                             RelativePanel.AlignTopWithPanel="True"
+                             RelativePanel.Above="ActivityMapCommandBar" />
 
-        <!--<RelativePanel x:Name="MapControlsPanel"
-                               Grid.Column="0"
-                               Margin="0,0,20,0"
-                               HorizontalAlignment="Right" VerticalAlignment="Center">
-            <AppBarButton x:Name="CurrentLocationAppBarButton"
-                                  Icon="Target"
-                                  Click="OnCurrentLocationAppBarButtonClick"
-                                  Style="{StaticResource MapAppBarButton}"/>
-            <AppBarButton x:Name="ZoomInAppBarButton"
-                                  Icon="Add"
-                                  Style="{StaticResource MapAppBarButton}"
-                                  Click="OnZoomInAppBarButtonClick"
-                                  RelativePanel.Below="CurrentLocationAppBarButton" />
-            <AppBarButton x:Name="ZoomOutAppBarButton"
-                                  Icon="Remove"                                  
-                                  Style="{StaticResource MapAppBarButton}"
-                                  Click="OnZoomOutAppBarButtonClick"
-                                  RelativePanel.Below="ZoomInAppBarButton" />
-        </RelativePanel>-->
-        
+            <CommandBar x:Name="ActivityMapCommandBar"
+                        Style="{StaticResource CommandBarWithoutMoreStyle}"
+                        RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                        RelativePanel.AlignBottomWithPanel="True">
+                <AppBarToggleButton Icon="Street" Checked="OnToggleButtonChecked" Unchecked="OnToggleButtonUnchecked" />
+            </CommandBar>
+        </RelativePanel>
     </Grid>
 </Page>

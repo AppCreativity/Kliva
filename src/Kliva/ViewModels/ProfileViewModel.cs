@@ -59,6 +59,13 @@ namespace Kliva.ViewModels
             set { Set(() => Koms, ref _koms, value); }
         }
 
+        private ObservableCollection<SegmentSummary> _starredSegments = new ObservableCollection<SegmentSummary>();
+        public ObservableCollection<SegmentSummary> StarredSegments
+        {
+            get { return _starredSegments; }
+            set { Set(() => StarredSegments, ref _starredSegments, value); }
+        }  
+
         private RelayCommand _viewLoadedCommand;
         public RelayCommand ViewLoadedCommand => _viewLoadedCommand ?? (_viewLoadedCommand = new RelayCommand(
             () => ViewLoaded()));
@@ -68,7 +75,7 @@ namespace Kliva.ViewModels
 
         private Task ViewLoaded()
         {
-            if(!string.Equals(_currentAthleteId, NavigationService.CurrentParameter?.ToString()))
+            if(string.IsNullOrEmpty(_currentAthleteId) || !string.Equals(_currentAthleteId, NavigationService.CurrentParameter?.ToString()))
                 return LoadAsync();
             return Task.CompletedTask;
         }
@@ -83,10 +90,12 @@ namespace Kliva.ViewModels
             if (authenticatedUser)
             {
                 Athlete = await _stravaService.GetAthleteAsync();
+                await GetStarredSegmentsAsync();
             }
             else
             {
                 Athlete = await _stravaService.GetAthleteAsync(currentParameter);
+                await GetStarredSegmentsAsync(Athlete.Id.ToString());
             }
 
             if (Athlete != null)
@@ -108,6 +117,7 @@ namespace Kliva.ViewModels
         private void ClearProperties()
         {
             Athlete = null;
+            StarredSegments.Clear();
             Followers.Clear();
             Friends.Clear();
             BothFollowing.Clear();
@@ -147,14 +157,25 @@ namespace Kliva.ViewModels
         private async Task GetKomsAsync(string athleteId)
         {
             var koms = await _stravaService.GetKomsAsync(athleteId);
-            var defaultUnit = await _settingsService.GetStoredDistanceUnitTypeAsync();
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
             {
                 foreach (SegmentEffort kom in koms)
-                {
-                    // TODO kom.FormatFields(defaultUnit);
                     Koms.Add(kom);
-                }
+            });
+        }
+
+        private async Task GetStarredSegmentsAsync(string athleteId = null)
+        {
+            List<SegmentSummary> segments = new List<SegmentSummary>();
+            if (string.IsNullOrEmpty(athleteId))
+                segments = await _stravaService.GetStarredSegmentsAsync();
+            else
+                segments = await _stravaService.GetStarredSegmentsAsync(athleteId);
+
+            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+            {
+                foreach(SegmentSummary segment in segments)
+                    StarredSegments.Add(segment);
             });
         }
     }

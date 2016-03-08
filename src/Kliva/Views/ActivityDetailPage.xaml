@@ -8,6 +8,7 @@
     xmlns:klivacontrols="using:Kliva.Controls"
     mc:Ignorable="d"
     Loaded="Page_Loaded"
+    NavigationCacheMode="Required"
     DataContext="{Binding ActivityDetail, Source={StaticResource Locator}}">
 
     <Page.BottomAppBar>
