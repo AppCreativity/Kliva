@@ -176,7 +176,9 @@ namespace Kliva.ViewModels
 
         private void ChangePage<DestinationPageType>()
         {
-            if (typeof(DestinationPageType) != _pageType)
+            // The side pane does not pass a navigation parameter, we can use this to distinguish
+            // between a top-level page versus some other page in the hierarchy
+            if (typeof(DestinationPageType) != _pageType && NavigationService.CurrentParameter == null)
             {
                 NavigationService.Navigate<DestinationPageType>();
             }

@@ -11,20 +11,11 @@ namespace Kliva.Views
 {
     public sealed partial class MainPage : Page
     {
-        private readonly ListView _activityList;
-
         private IStravaViewModel ViewModel => DataContext as IStravaViewModel;
 
         public MainPage()
         {
             this.InitializeComponent();
-            _activityList = this.GetVisualDescendents<ListView>().FirstOrDefault(item => item.Name.Equals("ActivityList", StringComparison.OrdinalIgnoreCase));
-        }
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-            _activityList.SelectedIndex = -1;
         }
 
         private void UpdateVisualState(VisualState currentState)

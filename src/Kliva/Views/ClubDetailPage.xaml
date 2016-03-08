@@ -1,4 +1,4 @@
-﻿<Page
+﻿<local:DetailPageBase
     x:Class="Kliva.Views.ClubDetailPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -7,29 +7,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Kliva.Controls"
     mc:Ignorable="d"
+    Loaded="Page_Loaded"
     DataContext="{Binding ClubDetail, Source={StaticResource Locator}}">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="VisualStateGroup">
-                <VisualState x:Name="Mobile">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="320" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="BottomAppBar.Visibility" Value="Visible" />
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState x:Name="Desktop">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="720" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="BottomAppBar.Visibility" Value="Collapsed" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
+    <Grid
+        x:Name="PageRoot"
+        x:DeferLoadStrategy="Lazy"
+        Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <controls:ClubDetailControl />
     </Grid>
-</Page>
+</local:DetailPageBase>

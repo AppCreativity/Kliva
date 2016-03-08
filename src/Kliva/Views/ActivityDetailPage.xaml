@@ -1,4 +1,4 @@
-﻿<Page
+﻿<local:DetailPageBase
     x:Class="Kliva.Views.ActivityDetailPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -34,4 +34,4 @@
         Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <klivacontrols:ActivityDetailControl />
     </Grid>
-</Page>
+</local:DetailPageBase>

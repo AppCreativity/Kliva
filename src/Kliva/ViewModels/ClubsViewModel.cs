@@ -72,5 +72,22 @@ namespace Kliva.ViewModels
                 _viewModelLoaded = true;
             }
         }
+
+        private bool TryNavigateToDetail()
+        {
+            if (CurrentState.Name == "Mobile" && SelectedClub != null)
+            {
+                NavigationService.Navigate<ClubDetailPage>();
+                return true;
+            }
+
+            return false;
+        }
+
+        internal void ClubInvoked(ClubSummary clickedItem)
+        {
+            SelectedClub = clickedItem;
+            TryNavigateToDetail();
+        }
     }
 }
