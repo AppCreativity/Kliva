@@ -90,6 +90,7 @@
         </VisualStateManager.VisualStateGroups>
 
         <StackPanel x:Name="TitlePanel"
+                    Visibility="Collapsed"
                     Grid.Row="0"
                     Background="{StaticResource KlivaMainBrush}">
             <TextBlock x:Name="TitleTextBlock"

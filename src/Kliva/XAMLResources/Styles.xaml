@@ -51,6 +51,15 @@
            TargetType="TextBlock">
         <Setter Property="Margin" Value="10,0,0,10" />
     </Style>
+
+    <Style x:Name="DetailStatTextBlock" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}">
+        <Setter Property="FontSize" Value="50"></Setter>
+        <Setter Property="Foreground" Value="#FF252525"></Setter>
+    </Style>
+
+    <Style x:Name="DetailStatTextBlockLabel" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource KlivaMainBrush}"></Setter>
+    </Style>
     
     <Style x:Name="PaneIcon" TargetType="FontIcon">
         <Setter Property="Width" Value="40" />

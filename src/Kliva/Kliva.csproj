@@ -94,6 +94,8 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Content Include="Assets\Bike.png" />
+    <Content Include="Assets\clock.png" />
     <Content Include="Assets\End.png" />
     <Content Include="Assets\Fonts\OpenSans-Bold.ttf" />
     <Content Include="Assets\Fonts\OpenSans-Light.ttf" />
@@ -130,6 +132,7 @@
     <Compile Include="Converters\XBindItemCastingConverter.cs" />
     <Compile Include="Helpers\Beautiful\BlurPanelProto.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Helpers\Beautiful\UIElementExtensionMethods.cs" />
     <Compile Include="Helpers\DateTimeFormatHelper.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\PolylineConverter.cs" />
@@ -234,6 +237,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Brooks.jpg" />
+    <Content Include="Assets\hyperlapse.mp4" />
     <Content Include="Assets\Merckx_1920.jpg" />
     <Content Include="Assets\Start.png" />
     <Content Include="Assets\ToTop.scale-240.png" />

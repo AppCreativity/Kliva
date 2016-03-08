@@ -96,17 +96,17 @@ namespace App1
 
         private CompositionEffectBrush BuildColoredBlurBrush()
         {
-            var blurEffect = new ArithmeticCompositeEffect
+            var blurEffect = new BlendEffect
             {
-                Source1Amount=0.5f,
-                Source2Amount=0.5f,
-                MultiplyAmount=0,
-                Source2 = new ColorSourceEffect
+                Mode=BlendEffectMode.Multiply,
+                
+                
+                Foreground = new ColorSourceEffect
                 {
                     Name = "ColorSource",
                     Color = (Color)App.Current.Resources["KlivaMainColor"]
         },
-                Source1 = new GaussianBlurEffect /* newly supported by Composition */
+                Background = new GaussianBlurEffect /* newly supported by Composition */
                 {
                     Name = "GB",
                     Source = new CompositionEffectSourceParameter("dest"),
@@ -115,6 +115,26 @@ namespace App1
                     Optimization = EffectOptimization.Balanced
                 }
             };
+
+            //var blurEffect = new ArithmeticCompositeEffect
+            //{
+            //    Source1Amount = 0.5f,
+            //    Source2Amount = 0.5f,
+            //    MultiplyAmount = 0,
+            //    Source2 = new ColorSourceEffect
+            //    {
+            //        Name = "ColorSource",
+            //        Color = (Color)App.Current.Resources["KlivaMainColor"]
+            //    },
+            //    Source1 = new GaussianBlurEffect /* newly supported by Composition */
+            //    {
+            //        Name = "GB",
+            //        Source = new CompositionEffectSourceParameter("dest"),
+            //        BlurAmount = 30.0f,
+            //        BorderMode = EffectBorderMode.Hard,
+            //        Optimization = EffectOptimization.Balanced
+            //    }
+            //};
 
 
             //GaussianBlurEffect se = new GaussianBlurEffect() { BlurAmount = 15.0f, Name = "Blur", BorderMode = EffectBorderMode.Hard, Optimization = EffectOptimization.Balanced };

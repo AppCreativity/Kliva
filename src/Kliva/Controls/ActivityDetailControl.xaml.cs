@@ -16,6 +16,8 @@ using Kliva.Models;
 using Kliva.ViewModels;
 using ImplicitAnimations;
 using Microsoft.Practices.ServiceLocation;
+using Windows.UI.Xaml.Hosting;
+using Windows.UI.Composition;
 
 namespace Kliva.Controls
 {
@@ -32,7 +34,7 @@ namespace Kliva.Controls
 
             ActivityMap.EnableLayoutImplicitAnimations();
 
-            
+
 
             //DataContextChanged += (sender, arg) => this.Bindings.Update();
 
@@ -49,7 +51,7 @@ namespace Kliva.Controls
             }
 
             if (!ReferenceEquals(message, null) && message.Visible)
-            {               
+            {
                 //Handle Defer Loaded pivots
                 if (!_pivotDictionary.ContainsKey(message.Pivot))
                 {
@@ -99,21 +101,50 @@ namespace Kliva.Controls
                 ActivityMap.MapElements.Add(endMapIcon);
 
                 var zoomed = false;
-                Thickness padding = new Thickness(0, 190, 0, 0);
+
+                //Make room for the glass
+
+                Thickness padding; 
+                if (VisualStateGroup.CurrentState.Name=="Mobile") {
+                     padding = new Thickness(0, 190, 0, 0);
+                }
+                
                 while (!zoomed)
                 {
-
                     zoomed = await ActivityMap.TrySetViewBoundsAsync(GeoboundingBox.TryCompute(geopositions), padding, MapAnimationKind.None);
                 }
             }
             else
                 if (ExpandMapButton != null)
-                    ExpandMapButton.Visibility = Visibility.Collapsed;
+                ExpandMapButton.Visibility = Visibility.Collapsed;
         }
 
         private void OnActivityDetailControlLoaded(object sender, RoutedEventArgs e)
         {
             //ActivityMap.Opacity = 1.0f;
+
+            var scrollerManipProps = ElementCompositionPreview.GetScrollViewerManipulationPropertySet(scroller);
+
+            Compositor compositor = scrollerManipProps.Compositor;
+
+            if (VisualStateGroup.CurrentState.Name == "Mobile")
+            {
+                //// Experimental custom scrolling
+
+                //// Create the expression 
+                //ExpressionAnimation expression = compositor.CreateExpressionAnimation("scroller.Translation.Y");
+
+                //// set "dynamic" reference parameter that will be used to evaluate the current position of the scrollbar every frame 
+                //expression.SetReferenceParameter("scroller", scrollerManipProps);
+
+                //// Get the background image and start animating it's offset using the expression 
+                //Visual backgroundVisual = ElementCompositionPreview.GetElementVisual(BlurPanel);
+                //Visual mapVisual = ElementCompositionPreview.GetElementVisual(ActivityMap);
+                //Visual pivotVisual = ElementCompositionPreview.GetElementVisual(ActivityPivot);
+                //backgroundVisual.StartAnimation("Offset.Y", expression);
+                //mapVisual.StartAnimation("Offset.Y", expression);
+                //pivotVisual.StartAnimation("Offset.Y", expression);
+            }
 
             if (_pivotDictionary.Count == 0)
                 IndexPivotCollection();
@@ -124,7 +155,7 @@ namespace Kliva.Controls
             int pivotIndex = 0;
             foreach (PivotItem item in ActivityPivot.Items.ToList())
             {
-                _pivotDictionary.Add(Enum<Pivots>.Parse((string) item.Tag), Tuple.Create(pivotIndex, item));
+                _pivotDictionary.Add(Enum<Pivots>.Parse((string)item.Tag), Tuple.Create(pivotIndex, item));
                 ++pivotIndex;
             }
         }
