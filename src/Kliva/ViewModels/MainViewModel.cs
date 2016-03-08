@@ -90,11 +90,11 @@ namespace Kliva.ViewModels
             {
                 case ActivityFeedFilter.All:
                     FilterText = "Showing all activities";
-                    ActivityIncrementalCollection = new FriendActivityIncrementalCollection(_stravaService);
+                    ActivityIncrementalCollection = new FriendActivityIncrementalCollection(_stravaService, ActivityFeedFilter.All);
                     break;
                 case ActivityFeedFilter.Followers:
                     FilterText = "Showing friends' activities";
-                    ActivityIncrementalCollection = new FriendActivityIncrementalCollection(_stravaService);
+                    ActivityIncrementalCollection = new FriendActivityIncrementalCollection(_stravaService, ActivityFeedFilter.Friends);
                     break;
                 case ActivityFeedFilter.My:
                     FilterText = "Showing my activities";
@@ -150,7 +150,7 @@ namespace Kliva.ViewModels
             if (!_viewModelLoaded)
             {
                 var athlete = await _stravaService.GetAthleteAsync();
-                ActivityIncrementalCollection = new FriendActivityIncrementalCollection(_stravaService); // TODO store filter in settings for next app run
+                ActivityIncrementalCollection = new FriendActivityIncrementalCollection(_stravaService, ActivityFeedFilter.All); // TODO store filter in settings for next app run
                 _viewModelLoaded = true;
             }
         }

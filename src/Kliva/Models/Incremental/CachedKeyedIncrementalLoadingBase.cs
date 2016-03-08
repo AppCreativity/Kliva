@@ -11,6 +11,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
@@ -37,9 +38,11 @@ namespace Kliva.Models
         private readonly List<object> _storage = new List<object>();
         private bool _busy = false;
         private readonly string _name;
+        protected ActivityFeedFilter _filter;
 
         protected CachedKeyedIncrementalLoadingBase(ActivityFeedFilter name)
         {
+            _filter = name;
             _name = name.ToString(); // TODO review string > ActivityFeedFilter
             LoadNewData();
         }

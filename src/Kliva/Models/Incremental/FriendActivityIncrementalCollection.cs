@@ -7,8 +7,8 @@ namespace Kliva.Models
     {
         private readonly IStravaService _stravaService;
 
-        public FriendActivityIncrementalCollection(IStravaService stravaService)
-            : base(stravaService, ActivityFeedFilter.Friends)
+        public FriendActivityIncrementalCollection(IStravaService stravaService, ActivityFeedFilter filter)
+            : base(stravaService, filter)
         {
             _stravaService = stravaService;
         }
