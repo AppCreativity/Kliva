@@ -25,7 +25,23 @@ namespace Kliva.ViewModels
 
         private bool _viewModelLoaded = false;
 
-        public VisualState CurrentState { get; set; }
+        private VisualState _currentState;
+        public VisualState CurrentState
+        {
+            get { return _currentState; }
+            set
+            {
+                if (!Equals(_currentState, value))
+                {
+                    _currentState = value;
+
+                    if (_currentState.Name == "Mobile")
+                    {
+                        TryNavigateToDetail();
+                    }
+                }
+            }
+        }
 
         private string _filterText;
         public string FilterText
