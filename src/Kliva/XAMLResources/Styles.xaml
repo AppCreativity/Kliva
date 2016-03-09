@@ -62,6 +62,15 @@
            TargetType="TextBlock">
         <Setter Property="Margin" Value="10,0,0,10" />
     </Style>
+
+    <Style x:Name="DetailStatTextBlock" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}">
+        <Setter Property="FontSize" Value="50"></Setter>
+        <Setter Property="Foreground" Value="#FF252525"></Setter>
+    </Style>
+
+    <Style x:Name="DetailStatTextBlockLabel" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource KlivaMainBrush}"></Setter>
+    </Style>
     
     <Style x:Name="PaneIcon" TargetType="FontIcon">
         <Setter Property="Width" Value="40" />
@@ -107,6 +116,12 @@
     <Style x:Name="ProfileEllipseDesktop" TargetType="Ellipse">
         <Setter Property="Height" Value="65" />
         <Setter Property="Width" Value="65" />
+        <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
+    </Style>
+
+    <Style x:Name="ProfileEllipseDetail" TargetType="Ellipse">
+        <Setter Property="Height" Value="100" />
+        <Setter Property="Width" Value="100" />
         <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
     </Style>
 
