@@ -10,6 +10,7 @@
     xmlns:klivacontrols="using:Kliva.Controls"
     NavigationCacheMode="Required"
     mc:Ignorable="d"
+    Loaded="Page_Loaded"
     DataContext="{Binding Clubs, Source={StaticResource Locator}}">
 
     <interactivity:Interaction.Behaviors>

@@ -35,7 +35,7 @@ namespace Kliva.Models
         /// The athlete who wrote the comment.
         /// </summary>
         [JsonProperty("athlete")]
-        public Athlete Athlete { get; set; }
+        public AthleteSummary Athlete { get; set; }
 
         /// <summary>
         /// The time when the comment was crated.

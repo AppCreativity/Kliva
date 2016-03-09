@@ -4,7 +4,8 @@
     {
         All,
         My,
-        Followers
+        Followers,
+        Friends // Following
     }
 
     public enum AppTarget

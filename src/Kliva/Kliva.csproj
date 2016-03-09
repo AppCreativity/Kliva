@@ -125,6 +125,7 @@
       <DependentUpon>SidePaneControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\AddAmountToStringConverter.cs" />
+    <Compile Include="Converters\VisibilityConverter.cs" />
     <Compile Include="Converters\DistanceUnitToStringConverter.cs" />
     <Compile Include="Converters\RelativeTimeConverter.cs" />
     <Compile Include="Converters\SecondsToTimeStringConverter.cs" />
@@ -145,7 +146,8 @@
     <Compile Include="Messages\PivotMessage.cs" />
     <Compile Include="Models\AccessToken.cs" />
     <Compile Include="Models\Activity.cs" />
-    <Compile Include="Models\ActivityIncrementalCollection.cs" />
+    <Compile Include="Models\Converters\AthleteJsonConverter.cs" />
+    <Compile Include="Models\Incremental\ActivityIncrementalCollection.cs" />
     <Compile Include="Models\ActivityMeta.cs" />
     <Compile Include="Models\ActivitySummary.cs" />
     <Compile Include="Models\AppVersion.cs" />
@@ -160,6 +162,10 @@
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\IncrementalLoadingBase.cs" />
+    <Compile Include="Models\Incremental\CachedKeyedIncrementalLoadingBase.cs" />
+    <Compile Include="Models\Incremental\FriendActivityIncrementalCollection.cs" />
+    <Compile Include="Models\Incremental\IKey.cs" />
+    <Compile Include="Models\Incremental\MyActivityIncrementalCollection.cs" />
     <Compile Include="Models\Limit.cs" />
     <Compile Include="Models\Limits.cs" />
     <Compile Include="Models\Map.cs" />
@@ -172,19 +178,24 @@
     <Compile Include="Models\StravaIdentityConstants.cs" />
     <Compile Include="Models\Usage.cs" />
     <Compile Include="Services\ApplicationInfoService.cs" />
+    <Compile Include="Services\LocalCacheService.cs" />
     <Compile Include="Services\Endpoints.cs" />
+    <Compile Include="Services\Framework\AsyncResponseReceivedEventArgs.cs" />
     <Compile Include="Services\Interfaces\IApplicationInfoService.cs" />
     <Compile Include="Services\Interfaces\ISettingsService.cs" />
     <Compile Include="Services\Interfaces\IStravaActivityService.cs" />
     <Compile Include="Services\Interfaces\IStravaAthleteService.cs" />
     <Compile Include="Services\Interfaces\IStravaClubService.cs" />
+    <Compile Include="Services\Interfaces\IStravaSegmentService.cs" />
     <Compile Include="Services\Interfaces\IStravaService.cs" />
+    <Compile Include="Services\Performance\ETWLogging.cs" />
     <Compile Include="Services\StravaActivityService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\StravaAthleteService.cs" />
     <Compile Include="Services\StravaClubService.cs" />
+    <Compile Include="Services\StravaSegmentService.cs" />
     <Compile Include="Services\StravaService.cs" />
-    <Compile Include="Helpers\WebRequest.cs" />
+    <Compile Include="Services\Framework\StravaWebClient.cs" />
     <Compile Include="ViewModels\ActivityDetailViewModel.cs" />
     <Compile Include="ViewModels\ClubDetailViewModel.cs" />
     <Compile Include="ViewModels\ClubsViewModel.cs" />
@@ -206,6 +217,7 @@
     <Compile Include="Views\ClubsPage.xaml.cs">
       <DependentUpon>ClubsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\DetailPageBase.cs" />
     <Compile Include="Views\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
@@ -239,13 +251,16 @@
     <Content Include="Assets\Brooks.jpg" />
     <Content Include="Assets\hyperlapse.mp4" />
     <Content Include="Assets\Merckx_1920.jpg" />
+    <Content Include="Assets\Square44x44Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-16_altform-unplated.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-48_altform-unplated.png" />
+    <Content Include="Assets\Square71x71Logo.scale-200.png" />
     <Content Include="Assets\Start.png" />
     <Content Include="Assets\ToTop.scale-240.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
     <Content Include="Assets\Square150x150Logo.scale-200.png" />
-    <Content Include="Assets\Square44x44Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />

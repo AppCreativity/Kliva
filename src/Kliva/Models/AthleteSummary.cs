@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace Kliva.Models
 {
@@ -80,13 +81,13 @@ namespace Kliva.Models
         /// The date when this athlete was created. ISO 8601 time string.
         /// </summary>
         [JsonProperty("created_at")]
-        public string CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         /// <summary>
         /// The date when this athlete was updated. ISO 8601 time string.
         /// </summary>
         [JsonProperty("updated_at")]
-        public string UpdatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
         /// <summary>
         /// True, if enhanced privacy is enabled.
@@ -111,6 +112,19 @@ namespace Kliva.Models
             }
         }
 
-        public string FullName => string.Concat(this.FirstName, " ", this.LastName);
+        public string ProfileLargeFormatted
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(Profile) && Profile.Contains("http"))
+                    return Profile;
+                else
+                    return Constants.STRAVA_DEFAULT_AVATAR;
+            }
+        }
+
+        public string FullName => string.Concat(FirstName, " ", LastName);
+
+        public string CityFormatted => City + ", " + State + ", " + Country;
     }
 }

@@ -15,10 +15,32 @@
     </UserControl.Resources>
 
     <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="AdaptiveStates" CurrentStateChanged="AdaptiveStates_CurrentStateChanged">
+                <VisualState x:Name="Desktop">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="720" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="Mobile">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+
+                    <VisualState.Setters>
+                        <Setter Target="ClubList.SelectionMode" Value="None" />
+                        <Setter Target="ClubList.IsItemClickEnabled" Value="True" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
         <ListView x:Name="ClubList"
                   ItemsSource="{x:Bind ViewModel.Clubs, Mode=OneWay}"
-                  SelectedItem="{x:Bind ViewModel.SelectedClub, Mode=TwoWay, Converter={StaticResource XBindItemCastingConverter}}"
+                  SelectedItem="{x:Bind ViewModel.SelectedClub, Mode=OneWay, Converter={StaticResource XBindItemCastingConverter}}"
+                  SelectionChanged="ClubList_SelectionChanged"
                   ItemTemplate="{StaticResource ClubListItemDataTemplate}"
+                  ItemClick="ClubList_ItemClick"
                   HorizontalContentAlignment="Stretch" />
     </Grid>
 </UserControl>

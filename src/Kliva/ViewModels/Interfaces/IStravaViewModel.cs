@@ -16,5 +16,12 @@ namespace Kliva.ViewModels.Interfaces
         /// Depending on the actual visual state we are in
         /// </summary>
         VisualState CurrentState { get; set; }
+
+        /// <summary>
+        /// This method will be called by the view when an activity is clicked in a list with
+        /// selection mode disabled.
+        /// </summary>
+        /// <param name="selectedActivity"></param>
+        void ActivityInvoked(ActivitySummary selectedActivity);
     }
 }

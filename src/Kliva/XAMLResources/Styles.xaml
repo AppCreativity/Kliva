@@ -3,10 +3,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:Kliva.Controls"
     xmlns:cimbalinoconverters="using:Cimbalino.Toolkit.Converters"
-    xmlns:local="using:Kliva.XAMLResources">
+    xmlns:local="using:Kliva.XAMLResources"
+    xmlns:converters="using:Kliva.Converters">
 
     <cimbalinoconverters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <cimbalinoconverters:BooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" InvertValue="True" />
+
+    <converters:VisibilityConverter x:Key="VisibilityConverter" />
+    <converters:VisibilityConverter x:Key="InverseVisibilityConverter" Inverse="True" />
 
     <Color x:Key="StravaRedColor">#fc4c02</Color>
     <SolidColorBrush x:Key="StravaRedBrush" Color="{StaticResource StravaRedColor}" />
@@ -20,6 +24,9 @@
     <Color x:Key="SeperatorColor">LightGray</Color>
     <SolidColorBrush x:Key="SeperatorBrush" Color="{StaticResource SeperatorColor}" />
 
+    <Color x:Key="SubTextColor">DarkGray</Color>
+    <SolidColorBrush x:Key="SubTextBrush" Color="{StaticResource SubTextColor}" />
+
     <FontFamily x:Key="OpenSansFontLight">/Assets/Fonts/OpenSans-Light.ttf#Open Sans</FontFamily>
     <FontFamily x:Key="OpenSansFontBold">/Assets/Fonts/OpenSans-Bold.ttf#Open Sans</FontFamily>
     <FontFamily x:Key="OpenSansFontSemibold">/Assets/Fonts/OpenSans-Semibold.ttf#Open Sans</FontFamily>
@@ -29,6 +36,10 @@
 
     <Style x:Name="BaseTextBlock" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource OpenSansFontLight}" />
+    </Style>
+
+    <Style x:Name="TrimmingTextBlock" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}">
+        <Setter Property="TextTrimming" Value="WordEllipsis" />
     </Style>
 
     <Style x:Name="BaseWhiteTextBlock" BasedOn="{StaticResource BaseTextBlock}"
@@ -118,6 +129,25 @@
         <Setter Property="Height" Value="50" />
         <Setter Property="Width" Value="50" />
         <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
+    </Style>
+
+    <Style x:Name="ProfileEllipseLarge" TargetType="Ellipse">
+        <Setter Property="Height" Value="124" />
+        <Setter Property="Width" Value="124" />
+        <Setter Property="Margin" Value="10" />
+        <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
+    </Style>
+
+    <Style x:Name="ProfileNameStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="32" />
+        <Setter Property="FontFamily" Value="{StaticResource OpenSansFontSemibold}" />
+        <Setter Property="Foreground" Value="{StaticResource KlivaMainBrush}" />
+    </Style>
+
+    <Style x:Name="ProfileLocationStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontFamily" Value="{StaticResource OpenSansFontSemibold}" />
+        <Setter Property="Foreground" Value="{StaticResource SubTextBrush}" />
     </Style>
 
     <Style x:Name="ActivityImageBorderMobile" TargetType="Border">

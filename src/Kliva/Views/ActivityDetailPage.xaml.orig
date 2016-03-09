@@ -1,0 +1,73 @@
+﻿<local:DetailPageBase
+    x:Class="Kliva.Views.ActivityDetailPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Kliva.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:klivacontrols="using:Kliva.Controls"
+    xmlns:compositioncontrols="using:App1"
+    mc:Ignorable="d"
+<<<<<<< HEAD
+    DataContext="{Binding ActivityDetail, Source={StaticResource Locator}}"
+    >
+    <Page.Transitions>
+        <TransitionCollection>
+            <ContentThemeTransition />
+        </TransitionCollection>
+    </Page.Transitions>
+=======
+    Loaded="Page_Loaded"
+    NavigationCacheMode="Required"
+    DataContext="{Binding ActivityDetail, Source={StaticResource Locator}}">
+>>>>>>> master
+
+    <Page.BottomAppBar>
+        <CommandBar x:Name="BottomAppBar" Background="{StaticResource KlivaMainBrush}"
+                    Foreground="White">
+            <AppBarButton x:Name="AppBarKudos"
+                          Label="kudos"
+                          Icon="Like"
+                          Foreground="White"
+                          Visibility="{x:Bind ViewModel.SelectedActivity.HasKudoed, Mode=OneWay, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
+                          Command="{x:Bind ViewModel.KudosCommand}"
+                          />
+            <AppBarButton x:Name="AppBarComment"
+                          Label="comment"
+                          Icon="Message"
+                          Foreground="White"
+                          />
+        </CommandBar>
+    </Page.BottomAppBar>
+
+<<<<<<< HEAD
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState x:Name="Mobile">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="320" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="BottomAppBar.Visibility" Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Desktop">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="720" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="BottomAppBar.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+=======
+    <Grid
+        x:Name="PageRoot"
+        x:DeferLoadStrategy="Lazy"
+        Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+>>>>>>> master
+        <klivacontrols:ActivityDetailControl />
+    </Grid>
+</local:DetailPageBase>

@@ -1,10 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using Kliva.Models.Converters;
+using Newtonsoft.Json;
 
 namespace Kliva.Models
 {
     /// <summary>
     /// This class represents an athlete.
     /// </summary>
+    [JsonConverter(typeof(AthleteJsonConverter))]
     public class AthleteMeta : BaseClass
     {
         /// <summary>

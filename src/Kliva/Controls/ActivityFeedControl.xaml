@@ -17,6 +17,24 @@
 
     <Grid>
         <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="AdaptiveStates" CurrentStateChanged="AdaptiveStates_CurrentStateChanged">
+                <VisualState x:Name="Desktop">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="720" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="Mobile">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+
+                    <VisualState.Setters>
+                        <Setter Target="ActivityList.SelectionMode" Value="None" />
+                        <Setter Target="ActivityList.IsItemClickEnabled" Value="True" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+            
             <VisualStateGroup x:Name="VisualStateGroupGoToButton">
                 <VisualState x:Name="HideGoToButton">
                     <Storyboard>
@@ -52,12 +70,13 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <ListView x:Name="ActivityList"
-                    ItemsSource="{x:Bind ViewModel.ActivityIncrementalCollection, Mode=OneWay}"
-                    SelectedItem="{x:Bind ViewModel.SelectedActivity, Mode=TwoWay, Converter={StaticResource XBindItemCastingConverter}}"
-                    ItemTemplate="{StaticResource ActivityListItemDataTemplate}"
-                    Loaded="OnActivityListLoaded"                  
-                    HorizontalContentAlignment="Stretch">
-        </ListView>
+                  ItemsSource="{x:Bind ViewModel.ActivityIncrementalCollection, Mode=OneWay}"
+                  SelectedItem="{x:Bind ViewModel.SelectedActivity, Mode=OneWay, Converter={StaticResource XBindItemCastingConverter}}"
+                  SelectionChanged="ActivityList_SelectionChanged"
+                  ItemClick="ActivityList_ItemClick"
+                  ItemTemplate="{StaticResource ActivityListItemDataTemplate}"
+                  Loaded="OnActivityListLoaded"                  
+                  HorizontalContentAlignment="Stretch" />
 
         <Button x:Name="GoToTopButton"
                 HorizontalAlignment="Right" VerticalAlignment="Bottom"

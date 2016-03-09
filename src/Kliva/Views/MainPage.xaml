@@ -10,6 +10,7 @@
     xmlns:klivacontrols="using:Kliva.Controls"
     xmlns:compositioncontrols="using:App1"
     NavigationCacheMode="Required"
+    Loaded="Page_Loaded"
     mc:Ignorable="d"
     DataContext="{Binding Main, Source={StaticResource Locator}}">
 

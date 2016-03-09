@@ -1,13 +1,14 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Kliva.Models
 {
     /// <summary>
     /// Activities are the base object for Strava runs, rides, swims etc.
     /// </summary>
-    public class Activity : ActivitySummary
+    public partial class Activity : ActivitySummary
     {
         /// <summary>
         /// A list of segment effort objects.
@@ -32,5 +33,13 @@ namespace Kliva.Models
         /// </summary>
         [JsonProperty("description")]
         public string Description { get; set; }
+    }
+
+    /// <summary>
+    /// Separated added fields from original response class!
+    /// </summary>
+    public partial class Activity
+    {
+        public int SegmentEffortsCount => SegmentEfforts?.Count ?? 0;
     }
 }

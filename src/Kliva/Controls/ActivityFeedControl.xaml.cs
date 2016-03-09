@@ -5,6 +5,7 @@ using Kliva.ViewModels.Interfaces;
 using Windows.UI.Xaml.Controls;
 using Cimbalino.Toolkit.Extensions;
 using Kliva.Helpers;
+using Kliva.Models;
 
 namespace Kliva.Controls
 {
@@ -67,6 +68,36 @@ namespace Kliva.Controls
         private void ScrollToTop()
         {
             _scrollViewer?.ScrollToVerticalOffsetWithAnimation(0);
+        }
+
+        private void ActivityList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (IsDesktopState())
+            {
+                // Only update the ViewModel if we are in the wide state where the list supports
+                // selection
+                ViewModel.SelectedActivity = (ActivitySummary)e.AddedItems.FirstOrDefault();
+            }
+        }
+
+        private void AdaptiveStates_CurrentStateChanged(object sender, VisualStateChangedEventArgs e)
+        {
+            if (IsDesktopState())
+            {
+                // Make sure the selected item is properly restored if we switch to the wide state
+                ActivityList.SelectionMode = ListViewSelectionMode.Single;
+                ActivityList.SelectedItem = ViewModel.SelectedActivity;
+            }
+        }
+
+        private bool IsDesktopState()
+        {
+            return AdaptiveStates.CurrentState.Name == Desktop.Name;
+        }
+
+        private void ActivityList_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            ViewModel.ActivityInvoked((ActivitySummary)e.ClickedItem);
         }
     }
 }

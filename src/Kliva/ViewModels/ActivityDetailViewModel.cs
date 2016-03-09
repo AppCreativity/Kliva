@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Controls;
 using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -53,8 +54,8 @@ namespace Kliva.ViewModels
             }
         }
 
-        private ObservableCollection<Athlete> _kudos = new ObservableCollection<Athlete>();
-        public ObservableCollection<Athlete> Kudos
+        private ObservableCollection<AthleteSummary> _kudos = new ObservableCollection<AthleteSummary>();
+        public ObservableCollection<AthleteSummary> Kudos
         {
             get { return _kudos; }
             set { Set(() => Kudos, ref _kudos, value); }
@@ -96,7 +97,11 @@ namespace Kliva.ViewModels
         public RelayCommand KudosCommand => _kudosCommand ?? (_kudosCommand = new RelayCommand(async () => await OnKudos()));
 
         private RelayCommand _mapCommand;
-        public RelayCommand MapCommand => _mapCommand ?? (_mapCommand = new RelayCommand(() => _navigationService.Navigate<MapPage>(SelectedActivity?.Map)));
+        public RelayCommand MapCommand => _mapCommand ?? (_mapCommand = new RelayCommand(() => NavigationService.Navigate<MapPage>(SelectedActivity?.Map)));
+
+        private RelayCommand<ItemClickEventArgs> _athleteTappedCommand;
+        public RelayCommand<ItemClickEventArgs> AthleteTappedCommand => _athleteTappedCommand ?? (_athleteTappedCommand = new RelayCommand<ItemClickEventArgs>(OnAthleteTapped));
+
 
         public ActivityDetailViewModel(INavigationService navigationService, IStravaService stravaService) : base(navigationService)
         {
@@ -133,7 +138,7 @@ namespace Kliva.ViewModels
 
                 if (activity.KudosCount > 0 && activity.Kudos != null && activity.Kudos.Any())
                 {                    
-                    foreach (Athlete kudo in activity.Kudos)
+                    foreach (AthleteSummary kudo in activity.Kudos)
                         Kudos.Add(kudo);
                 }
                 

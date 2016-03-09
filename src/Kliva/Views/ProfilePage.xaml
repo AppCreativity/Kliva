@@ -5,15 +5,89 @@
     xmlns:local="using:Kliva.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    NavigationCacheMode="Required"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    NavigationCacheMode="Disabled"
     mc:Ignorable="d"
     DataContext="{Binding Profile, Source={StaticResource Locator}}">
+
+    <interactivity:Interaction.Behaviors>
+        <core:EventTriggerBehavior EventName="Loaded">
+            <core:InvokeCommandAction Command="{Binding ViewLoadedCommand}" />
+        </core:EventTriggerBehavior>
+    </interactivity:Interaction.Behaviors>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+
+        <StackPanel x:Name="TitlePanel"
+                    Grid.Row="0"
+                    Background="{StaticResource KlivaMainBrush}">
+            <TextBlock x:Name="TitleTextBlock"
+                       Text="profile" />
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <RelativePanel x:Name="TopPanel" 
+                           Grid.Row="0"
+                           RelativePanel.AlignTopWithPanel="True" 
+                           RelativePanel.AlignLeftWithPanel="True"
+                           RelativePanel.AlignRightWithPanel="True">
+                <Ellipse x:Name="AthleteProfilePicture" 
+                         Style="{StaticResource ProfileEllipseLarge}"
+                         RelativePanel.AlignTopWithPanel="True" 
+                         RelativePanel.AlignLeftWithPanel="True">
+                    <Ellipse.Fill>
+                        <ImageBrush Stretch="UniformToFill" ImageSource="{x:Bind ViewModel.Athlete.ProfileLargeFormatted, Mode=OneWay}" />
+                    </Ellipse.Fill>
+                </Ellipse>
+
+                <StackPanel Margin="19,0"
+                            RelativePanel.RightOf="AthleteProfilePicture"
+                            RelativePanel.AlignVerticalCenterWith="AthleteProfilePicture">
+                    <TextBlock Text="{x:Bind ViewModel.Athlete.FullName, Mode=OneWay}"
+                               Style="{ThemeResource ProfileNameStyle}" />
+                    <TextBlock Text="{x:Bind ViewModel.Athlete.CityFormatted, Mode=OneWay}"
+                               Style="{ThemeResource ProfileLocationStyle}" />
+                </StackPanel>
+                
+            </RelativePanel>
+
+            <Pivot x:Name="ProfilePivot"
+                   Grid.Row="1"
+                   HorizontalAlignment="Stretch">
+                <PivotItem Header="following" Tag="Friends">
+                    <ListView ItemsSource="{x:Bind ViewModel.Friends, Mode=OneWay}"
+                              ItemTemplate="{StaticResource KudosListItemTemplate}" />
+                </PivotItem>
+                <PivotItem Header="followers" Tag="Followers">
+                    <ListView ItemsSource="{x:Bind ViewModel.Followers, Mode=OneWay}"
+                              ItemTemplate="{StaticResource KudosListItemTemplate}" />
+                </PivotItem>
+                <PivotItem Tag="MutualFriends"
+                           Header="both following">
+                    <ListView ItemsSource="{x:Bind ViewModel.BothFollowing, Mode=OneWay}"
+                              ItemTemplate="{StaticResource KudosListItemTemplate}" />
+                </PivotItem>
+                <PivotItem Tag="Koms" Header="koms">
+                    <ListView ItemsSource="{x:Bind ViewModel.Koms, Mode=OneWay}"
+                              ItemTemplate="{StaticResource SegmentEffortListItemTemplate}"/>
+                </PivotItem>
+                <PivotItem Tag="StarredSegments" Header="starred segments">
+                    <ListView ItemsSource="{x:Bind ViewModel.StarredSegments, Mode=OneWay}"
+                              ItemTemplate="{StaticResource SegmentSummaryListItemTemplate}" />
+                </PivotItem>
+            </Pivot>
+        </Grid>
+
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup">
                 <VisualState x:Name="Mobile">
@@ -34,16 +108,5 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-
-        <StackPanel x:Name="TitlePanel"
-                    Grid.Row="0"
-                    Background="{StaticResource KlivaMainBrush}">
-            <TextBlock x:Name="TitleTextBlock"
-                       Text="profile" />
-        </StackPanel>
-
-        <Grid Grid.Row="1">
-            <!-- TODO Add content -->
-        </Grid>
     </Grid>
 </Page>

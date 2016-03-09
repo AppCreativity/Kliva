@@ -5,9 +5,22 @@
     xmlns:local="using:Kliva.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <RelativePanel>
+            <maps:MapControl x:Name="ActivityMap"
+                             RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                             RelativePanel.AlignTopWithPanel="True"
+                             RelativePanel.Above="ActivityMapCommandBar" />
 
+            <CommandBar x:Name="ActivityMapCommandBar"
+                        Style="{StaticResource CommandBarWithoutMoreStyle}"
+                        RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                        RelativePanel.AlignBottomWithPanel="True">
+                <AppBarToggleButton Icon="Street" Checked="OnToggleButtonChecked" Unchecked="OnToggleButtonUnchecked" />
+            </CommandBar>
+        </RelativePanel>
     </Grid>
 </Page>

@@ -36,7 +36,7 @@ namespace Kliva.Services
             return SetStravaAccessTokenAsync(string.Empty);
         }
 
-        public async Task<DistanceUnitType> GetStoredDistanceUnitType()
+        public async Task<DistanceUnitType> GetStoredDistanceUnitTypeAsync()
         {
             await LoadSettings();
             return _settings?.DistanceUnitType ?? DistanceUnitType.Kilometres;

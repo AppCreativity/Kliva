@@ -1,11 +1,14 @@
-﻿using Cimbalino.Toolkit.Services;
+﻿using Windows.UI.Xaml.Controls;
+using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight;
+using Kliva.Models;
+using Kliva.Views;
 
 namespace Kliva.ViewModels
 {
     public class KlivaBaseViewModel : ViewModelBase
     {
-        protected INavigationService _navigationService;
+        protected INavigationService NavigationService;
 
         private bool _isBusy = false;
         public bool IsBusy
@@ -16,7 +19,14 @@ namespace Kliva.ViewModels
 
         public KlivaBaseViewModel(INavigationService navigationService)
         {
-            _navigationService = navigationService;            
+            NavigationService = navigationService;
+        }
+
+        protected void OnAthleteTapped(ItemClickEventArgs args)
+        {
+            AthleteSummary athlete = args.ClickedItem as AthleteSummary;
+            if(athlete != null)
+                NavigationService.Navigate<ProfilePage>(athlete.Id.ToString());
         }
     }
 }
