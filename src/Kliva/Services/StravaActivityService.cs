@@ -298,7 +298,6 @@ namespace Kliva.Services
             return data;
         }
 
-
         public async Task<string> GetMyActivityDataAsync(int page, int perPage)
         {
             string data = null;
