@@ -65,7 +65,11 @@
                         <Ellipse x:Name="AthleteProfilePicture"
                                  RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
                             <Ellipse.Fill>
-                                <ImageBrush Stretch="UniformToFill" ImageSource="{x:Bind Athlete.ProfileMediumFormatted, Mode=OneWay}" />
+                                <ImageBrush Stretch="UniformToFill">
+                                    <ImageBrush.ImageSource>
+                                        <BitmapImage DecodePixelHeight="65" DecodePixelWidth="65" UriSource="{x:Bind Athlete.ProfileMediumFormatted, Mode=OneWay}" />
+                                    </ImageBrush.ImageSource>
+                                </ImageBrush>
                             </Ellipse.Fill>
                         </Ellipse>
 
