@@ -65,16 +65,18 @@ namespace Kliva.Models
 
             Task t = new Task(async () =>
             {
+                timestamp = await LocalCacheService.GetCacheTimestamp(_name);
+
                 if (!_hasLoaded)
                 {
                     string data = await LocalCacheService.ReadCacheData(this._name);
                     if (data != null && data.Length > 5)
                     {
                         var items = await HydrateItems(data);
-                        MergeInItems(items);
-                        timestamp = await LocalCacheService.GetCacheTimestamp(_name);
+                        MergeInItems(items);                        
                     }
                 }
+
                 if (DateTime.Now - timestamp > new TimeSpan(0, 5, 0))
                 {
                     string data = await FetchData(page, _pageSize);
