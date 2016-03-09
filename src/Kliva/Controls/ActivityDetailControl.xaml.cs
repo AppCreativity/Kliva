@@ -129,21 +129,21 @@ namespace Kliva.Controls
 
             if (VisualStateGroup.CurrentState.Name == "Mobile")
             {
-                //// Experimental custom scrolling
+                // Experimental custom scrolling
 
-                //// Create the expression 
-                //ExpressionAnimation expression = compositor.CreateExpressionAnimation("scroller.Translation.Y");
+                // Create the expression 
+                ExpressionAnimation expression = compositor.CreateExpressionAnimation("scroller.Translation.Y");
 
-                //// set "dynamic" reference parameter that will be used to evaluate the current position of the scrollbar every frame 
-                //expression.SetReferenceParameter("scroller", scrollerManipProps);
+                // set "dynamic" reference parameter that will be used to evaluate the current position of the scrollbar every frame 
+                expression.SetReferenceParameter("scroller", scrollerManipProps);
 
-                //// Get the background image and start animating it's offset using the expression 
-                //Visual backgroundVisual = ElementCompositionPreview.GetElementVisual(BlurPanel);
-                //Visual mapVisual = ElementCompositionPreview.GetElementVisual(ActivityMap);
-                //Visual pivotVisual = ElementCompositionPreview.GetElementVisual(ActivityPivot);
-                //backgroundVisual.StartAnimation("Offset.Y", expression);
-                //mapVisual.StartAnimation("Offset.Y", expression);
-                //pivotVisual.StartAnimation("Offset.Y", expression);
+                // Get the background image and start animating it's offset using the expression 
+                Visual backgroundVisual = ElementCompositionPreview.GetElementVisual(BlurPanel);
+                Visual mapVisual = ElementCompositionPreview.GetElementVisual(ActivityMap);
+                Visual pivotVisual = ElementCompositionPreview.GetElementVisual(ActivityPivot);
+                backgroundVisual.StartAnimation("Offset.Y", expression);
+                mapVisual.StartAnimation("Offset.Y", expression);
+                pivotVisual.StartAnimation("Offset.Y", expression);
             }
 
             if (_pivotDictionary.Count == 0)

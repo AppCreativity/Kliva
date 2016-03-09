@@ -12,7 +12,8 @@
     d:DesignWidth="400"
     DataContext="{Binding ActivityDetail, Source={StaticResource Locator}}"
     Loaded="OnActivityDetailControlLoaded"
-    xmlns:compositioncontrols="using:App1">
+    xmlns:compositioncontrols="using:App1"
+    >
 
     <UserControl.Resources>
         <converters:SecondsToTimeStringConverter x:Key="SecondsToTimeStringConverter" />
@@ -90,6 +91,7 @@
                    RelativePanel.Below="ActivityDetailCommandBar"
                    RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" 
                    Background="#FFDDDDDD"
+                   Margin="0,0,0,-200"
                    >
 
                 <PivotItem x:Name="StatisticsPivot" Header="statistics" Tag="Statistics"
