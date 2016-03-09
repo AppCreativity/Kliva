@@ -26,11 +26,6 @@ namespace Kliva.Models
             if(_filter == ActivityFeedFilter.Friends)
                 results = results.Where(activity => activity.Athlete.Id != _athleteService.Athlete.Id).ToList();
 
-            //foreach( var item in from r in results where r.PhotoCount > 0 select r) // TODO review
-            //  {
-
-            //  }
-
             return results.Cast<object>().ToList();
         }
     }

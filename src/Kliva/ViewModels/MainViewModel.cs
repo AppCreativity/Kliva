@@ -50,13 +50,6 @@ namespace Kliva.ViewModels
             set { Set(() => FilterText, ref _filterText, value); }
         }
 
-        private ObservableCollection<ActivitySummary> _activities = new ObservableCollection<ActivitySummary>();
-        public ObservableCollection<ActivitySummary> Activities
-        {
-            get { return _activities; }
-            set { Set(() => Activities, ref _activities, value); }
-        }
-
         private ActivityIncrementalCollection _activityIncrementalCollection;
         public ActivityIncrementalCollection ActivityIncrementalCollection
         {
