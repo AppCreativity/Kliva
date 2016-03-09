@@ -26,7 +26,7 @@ namespace Kliva.Services
         {
             try
             {
-                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                var accessToken = await _settingsService.GetStoredStravaAccessTokenAsync();
                 string getUrl = $"{Endpoints.Club}/{clubId}?access_token={accessToken}";
                 string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
 
@@ -48,7 +48,7 @@ namespace Kliva.Services
         {
             try
             {
-                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                var accessToken = await _settingsService.GetStoredStravaAccessTokenAsync();
                 string getUrl = $"{Endpoints.Clubs}?access_token={accessToken}";
                 string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
 
@@ -81,7 +81,7 @@ namespace Kliva.Services
         {
             try
             {
-                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                var accessToken = await _settingsService.GetStoredStravaAccessTokenAsync();
                 string getUrl = $"{Endpoints.Club}/{clubId}/members?access_token={accessToken}";
                 string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
 

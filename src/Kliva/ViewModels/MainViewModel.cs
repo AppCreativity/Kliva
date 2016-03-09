@@ -129,7 +129,7 @@ namespace Kliva.ViewModels
         {
             //this.IsBusy = true;
 
-            await _settingsService.RemoveStravaAccessToken();
+            await _settingsService.RemoveStravaAccessTokenAsync();
 
             //Remove the current 'main page' back entry and navigate to the login page
             NavigationService.Navigate<LoginPage>();

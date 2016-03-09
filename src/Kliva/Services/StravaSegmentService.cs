@@ -31,7 +31,7 @@ namespace Kliva.Services
         {
             try
             {
-                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                var accessToken = await _settingsService.GetStoredStravaAccessTokenAsync();
                 var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitTypeAsync();
 
                 string getUrl = $"{Endpoints.Athletes}/{athleteId}/segments/starred?access_token={accessToken}";
@@ -56,7 +56,7 @@ namespace Kliva.Services
             //TODO: Glenn - Caching?
             try
             {
-                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                var accessToken = await _settingsService.GetStoredStravaAccessTokenAsync();
                 var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitTypeAsync();
 
                 string getUrl = $"{Endpoints.Starred}?access_token={accessToken}";

@@ -74,7 +74,7 @@ namespace Kliva
                 // configuring the new page by passing required information as a navigation
                 // parameter
 
-                bool stravaTokenAvailabe = !string.IsNullOrEmpty(await ServiceLocator.Current.GetInstance<ISettingsService>().GetStoredStravaAccessToken());
+                bool stravaTokenAvailabe = !string.IsNullOrEmpty(await ServiceLocator.Current.GetInstance<ISettingsService>().GetStoredStravaAccessTokenAsync());
 
                 rootFrame.Navigate(stravaTokenAvailabe ? typeof(MainPage) : typeof(LoginPage), e.Arguments);
             }
