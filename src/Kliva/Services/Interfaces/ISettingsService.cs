@@ -5,12 +5,18 @@ namespace Kliva.Services.Interfaces
 {
     public interface ISettingsService : IApplicationInfoService
     {
-        Task<string> GetStoredStravaAccessToken();
+        Task<string> GetStoredStravaAccessTokenAsync();
         Task SetStravaAccessTokenAsync(string stravaAccessToken);
-        Task RemoveStravaAccessToken();
+        Task RemoveStravaAccessTokenAsync();
 
         Task<DistanceUnitType> GetStoredDistanceUnitTypeAsync();
-        Task SetDistanceUnitType(DistanceUnitType distanceUnitType);
+        Task SetDistanceUnitTypeAsync(DistanceUnitType distanceUnitType);
+
+        Task<ActivityFeedFilter> GetStoredActivityFeedFilterAsync();
+        Task SetActivityFeedFilterAsync(ActivityFeedFilter filter);
+
+        Task<ActivitySort> GetActivitySortAsync();
+        Task SetActivitySortAsync(ActivitySort sort);
 
         //Task<AppVersion> GetStoredAppVersion();
     }

@@ -267,4 +267,18 @@
         /// </summary>
         Other
     }
+
+    public enum ActivitySort
+    {
+        /// <summary>
+        /// Order the activity according to the activity's start time
+        /// Looks best on the UI as "xx hours ago"
+        /// </summary>
+        StartTime,
+
+        /// <summary>
+        /// Order the activity according to the activity's end time
+        /// </summary>
+        EndTime
+    }
 }

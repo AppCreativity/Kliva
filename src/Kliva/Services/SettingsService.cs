@@ -18,40 +18,70 @@ namespace Kliva.Services
 
         public async Task SetStravaAccessTokenAsync(string stravaAccessToken)
         {
-            await LoadSettings(createIfNotExisting: true);
+            await LoadSettingsAsync(createIfNotExisting: true);
 
             _settings.StravaAccessToken = stravaAccessToken;
 
             await SaveSettingsToStorage();
         }
 
-        public async Task<string> GetStoredStravaAccessToken()
+        public async Task<string> GetStoredStravaAccessTokenAsync()
         {
-            await LoadSettings();
+            await LoadSettingsAsync();
             return _settings?.StravaAccessToken;
         }
 
-        public Task RemoveStravaAccessToken()
+        public Task RemoveStravaAccessTokenAsync()
         {
             return SetStravaAccessTokenAsync(string.Empty);
         }
 
         public async Task<DistanceUnitType> GetStoredDistanceUnitTypeAsync()
         {
-            await LoadSettings();
+            await LoadSettingsAsync();
             return _settings?.DistanceUnitType ?? DistanceUnitType.Kilometres;
         }
 
-        public async Task SetDistanceUnitType(DistanceUnitType distanceUnitType)
+        public async Task SetDistanceUnitTypeAsync(DistanceUnitType distanceUnitType)
         {
-            await LoadSettings(createIfNotExisting: true);
+            await LoadSettingsAsync(createIfNotExisting: true);
 
             _settings.DistanceUnitType = distanceUnitType;
 
             await SaveSettingsToStorage();
         }
 
-        private async Task LoadSettings(bool createIfNotExisting = false)
+        public async Task<ActivityFeedFilter> GetStoredActivityFeedFilterAsync()
+        {
+            await LoadSettingsAsync();
+            return _settings?.ActivityFeedFilter ?? ActivityFeedFilter.All;
+        }
+
+        public async Task SetActivityFeedFilterAsync(ActivityFeedFilter filter)
+        {
+            await LoadSettingsAsync(createIfNotExisting: true);
+
+            _settings.ActivityFeedFilter = filter;
+
+            await SaveSettingsToStorage();
+        }
+
+        public async Task<ActivitySort> GetActivitySortAsync()
+        {
+            await LoadSettingsAsync();
+            return _settings?.ActivitySort ?? ActivitySort.StartTime;
+        }
+
+        public async Task SetActivitySortAsync(ActivitySort sort)
+        {
+            await LoadSettingsAsync(createIfNotExisting: true);
+
+            _settings.ActivitySort = sort;
+
+            await SaveSettingsToStorage();
+        }
+
+        private async Task LoadSettingsAsync(bool createIfNotExisting = false)
         {
             if (_settings == null)
             {
