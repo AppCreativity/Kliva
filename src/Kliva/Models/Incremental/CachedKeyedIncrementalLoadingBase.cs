@@ -40,6 +40,17 @@ namespace Kliva.Models
         private readonly string _name;
         protected ActivityFeedFilter _filter;
 
+
+        #region Event handlers
+        public event EventHandler DataLoaded;
+
+        protected virtual void OnDataLoaded()
+        {
+            EventHandler handler = DataLoaded;
+            handler?.Invoke(this, null);
+        }
+        #endregion
+
         protected CachedKeyedIncrementalLoadingBase(ActivityFeedFilter name)
         {
             _filter = name;
@@ -87,8 +98,11 @@ namespace Kliva.Models
                     }
                     MergeInItems(items);
                 }
+
                 _hasLoaded = true;
                 HasData = true;
+
+                OnDataLoaded();
             });
             t.Start();
         }
