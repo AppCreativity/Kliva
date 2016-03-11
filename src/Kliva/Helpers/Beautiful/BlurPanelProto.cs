@@ -78,6 +78,7 @@ namespace App1
                 var sharedSize = new System.Numerics.Vector2((float)this.ActualWidth, (float)this.ActualHeight);
                 m_blurVisual.Size = sharedSize;
                 m_shadowVisual.Size = new Vector2((float)this.ActualWidth, 4.0f);
+                m_shadowVisual.Offset = new Vector3(0.0f, ((float)this.ActualHeight - 1), 0.0f);
                 m_container.Size = sharedSize;
                 //TODO: other sizes
             }
