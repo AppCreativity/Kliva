@@ -5,7 +5,7 @@ namespace Kliva.ViewModels
 {
     public class SettingsViewModel : KlivaBaseViewModel
     {
-        private ISettingsService _settingsService;
+        private readonly ISettingsService _settingsService;
 
         public string AppVersion => _settingsService.AppVersion.ToString();
 
