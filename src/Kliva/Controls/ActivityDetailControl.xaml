@@ -273,7 +273,10 @@
                     <GridView x:Name="ActivityPhotosGrid"
                               Margin="10,0,0,0"
                               ItemsSource="{x:Bind ViewModel.SelectedActivity.AllPhotos, Mode=OneWay}"
-                              ItemTemplate="{StaticResource PhotosGridItemTemplate}"/>
+                              ItemTemplate="{StaticResource PhotosGridItemTemplate}"
+                              IsItemClickEnabled="True"
+                              ItemClick="ActivityPhotosGrid_ItemClick"
+                              />
                 </PivotItem>
             </Pivot>
 

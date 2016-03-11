@@ -18,6 +18,8 @@ using ImplicitAnimations;
 using Microsoft.Practices.ServiceLocation;
 using Windows.UI.Xaml.Hosting;
 using Windows.UI.Composition;
+using System.Diagnostics;
+using CompositionSampleGallery;
 
 namespace Kliva.Controls
 {
@@ -158,6 +160,14 @@ namespace Kliva.Controls
                 _pivotDictionary.Add(Enum<Pivots>.Parse((string)item.Tag), Tuple.Create(pivotIndex, item));
                 ++pivotIndex;
             }
+        }
+
+        private void ActivityPhotosGrid_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            Func<object, Uri> getImageForPhoto = (o) => { return new Uri(((Photo)o).ImageLarge); };
+
+            //Display the imageViewer as an app modal experience.  Margin determines how much of the app is visible around the edges of the dialog
+            ImagePopupViewer.Show(ActivityPhotosGrid.ItemsSource, getImageForPhoto, new Thickness(100, 50, 50, 50));
         }
     }
 }
