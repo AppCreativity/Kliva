@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Kliva.Services.Performance;
+using System.Diagnostics;
 
 namespace Kliva.Services
 {
@@ -112,6 +113,7 @@ namespace Kliva.Services
                 }
 
                 _perflog.GetActivityAsync(true, id, includeEfforts);
+
                 return activity;
             }
             catch (Exception ex)
@@ -325,6 +327,17 @@ namespace Kliva.Services
                 results = Unmarshaller<List<ActivitySummary>>.Unmarshal(data).Select(activity =>
                 {
                     StravaService.SetMetricUnits(activity, defaultDistanceUnitType);
+
+                    // TODO: Get reliable way of determining if we should ask for a map here.
+                    Debug.WriteLine(string.Format("{0}:{1}", activity.Id, activity.Map.SummaryPolyline));
+                    if (!string.IsNullOrEmpty(activity.Map.SummaryPolyline))
+                    {
+                        activity.Map.GoogleImageApiUrl = string.Format("http://maps.googleapis.com/maps/api/staticmap?sensor=false&maptype={0}&size={1}x{2}&scale=2&path=weight:4|color:0xff0000ff|enc:{3}&key={4}",
+                                "roadmap",
+                                480, 220,
+                                activity.Map.SummaryPolyline,
+                                StravaIdentityConstants.GOOGLE_MAP_API);
+                    }
                     return activity;
                 }).ToList();
             }

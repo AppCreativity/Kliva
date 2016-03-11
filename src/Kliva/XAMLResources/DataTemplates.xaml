@@ -28,9 +28,18 @@
                                 <AdaptiveTrigger MinWindowWidth="320" />
                             </VisualState.StateTriggers>
                             <VisualState.Setters>
-                                <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseMobile}" />
+                                <!--<Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseMobile}" />-->
                                 <Setter Target="ActivityImage.Style" Value="{StaticResource ActivityImageBorderMobile}"/>
                                 <Setter Target="ActivityImageIcon.FontSize" Value="12" />
+                                <Setter Target="ActivityStart.Visibility" Value="Visible" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Medium">
+                            <VisualState.StateTriggers>
+                                <AdaptiveTrigger MinWindowWidth="700" />
+                            </VisualState.StateTriggers>
+                            <VisualState.Setters>
+                                <Setter Target="ActivityStart.Visibility" Value="Collapsed" />
                             </VisualState.Setters>
                         </VisualState>
                         <VisualState x:Name="Desktop">
@@ -38,36 +47,41 @@
                                 <AdaptiveTrigger MinWindowWidth="720" />
                             </VisualState.StateTriggers>
                             <VisualState.Setters>
-                                <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseDesktop}" />
+                                <!--<Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseDesktop}" />-->
                                 <Setter Target="ActivityImage.Style" Value="{StaticResource ActivityImageBorderDesktop}"/>
                                 <Setter Target="ActivityImageIcon.FontSize" Value="14" />
+                                <Setter Target="ActivityStart.Visibility" Value="Visible" />
                             </VisualState.Setters>
                         </VisualState>
                     </VisualStateGroup>
                 </VisualStateManager.VisualStateGroups>
                 
                 <RelativePanel x:Name="ActivityListItemPanel"
-                               Margin="0,0,10,0"
-                               Padding="0,5,0,5">
+                               Margin="0"
+                               Padding="0,15,0,15">
                     <interactivity:Interaction.Behaviors>
                         <core:DataTriggerBehavior Binding="{x:Bind OtherAthleteCount, Mode=OneWay}" ComparisonCondition="GreaterThan" Value="0">
                             <core:ChangePropertyAction TargetObject="{Binding ElementName=BottomPanel}" PropertyName="Visibility" Value="Visible"/>
                         </core:DataTriggerBehavior>
-                        <core:DataTriggerBehavior Binding="{x:Bind OtherAthleteCount, Mode=OneWay}" ComparisonCondition="LessThanOrEqual" Value="0">
+                        <!--<core:DataTriggerBehavior Binding="{x:Bind OtherAthleteCount, Mode=OneWay}" ComparisonCondition="LessThanOrEqual" Value="0">
                             <core:ChangePropertyAction TargetObject="{Binding ElementName=BottomPanel}" PropertyName="Visibility" Value="Collapsed"/>
-                        </core:DataTriggerBehavior>
+                        </core:DataTriggerBehavior>-->
                     </interactivity:Interaction.Behaviors>
 
-                    <RelativePanel x:Name="TopPanel"
+                    <RelativePanel.Background>
+                        <ImageBrush ImageSource="{x:Bind Map.GoogleMapImage, Mode=OneWay}" Stretch="UniformToFill" Opacity="0.2" />
+                    </RelativePanel.Background>
+
+                    <RelativePanel x:Name="TopPanel" Margin="10,0,0,0"
                                    RelativePanel.AlignTopWithPanel="True"
                                    RelativePanel.AlignLeftWithPanel="True"
                                    RelativePanel.AlignRightWithPanel="True">
                         <Ellipse x:Name="AthleteProfilePicture"
-                                 RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
+                                 RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" Style="{StaticResource ProfileEllipseMobile}">
                             <Ellipse.Fill>
                                 <ImageBrush Stretch="UniformToFill">
                                     <ImageBrush.ImageSource>
-                                        <BitmapImage DecodePixelHeight="65" DecodePixelWidth="65" UriSource="{x:Bind Athlete.ProfileMediumFormatted, Mode=OneWay}" />
+                                        <BitmapImage DecodePixelHeight="50" DecodePixelWidth="50" UriSource="{x:Bind Athlete.ProfileLargeFormatted, Mode=OneWay}" />
                                     </ImageBrush.ImageSource>
                                 </ImageBrush>
                             </Ellipse.Fill>
@@ -98,15 +112,15 @@
                             <TextBlock x:Name="ActivityAthleteName"
                                        Margin="0,0,0,2.5"
                                        Text="{x:Bind Athlete.FullName, Mode=OneWay}"
-                                       Style="{StaticResource BaseTextBlock}"
+                                       Style="{StaticResource SubheadingBaseTextBlock}"
                                        FontSize="14"
                                        RelativePanel.Below="ActivityName" RelativePanel.AlignLeftWithPanel="True" />
                             
                             <TextBlock x:Name="ActivityStart"
                                        Margin="0,0,0,2.5"
                                        Text="{x:Bind StartDate, Mode=OneWay, Converter={StaticResource RelativeTimeConverter}}"
-                                       Style="{StaticResource BaseTextBlock}"
-                                       FontSize="14"
+                                       Style="{StaticResource SubheadingBaseTextBlock}"
+                                       FontSize="12"
                                        HorizontalAlignment="Right"
                                        RelativePanel.Below="ActivityName" RelativePanel.RightOf="ActivityAthleteName" RelativePanel.AlignRightWithPanel="True" />
 
@@ -118,7 +132,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock x:Name="ActivityDistance"
-                                           Style="{StaticResource BaseTextBlock}"
+                                           Style="{StaticResource ActivityMetaTextBlock}"
                                            FontSize="12"
                                            Grid.Column="0">
                                     <Run Text="{x:Bind DistanceFormatted, Mode=OneWay}" />
@@ -128,10 +142,11 @@
                         </RelativePanel>
                     </RelativePanel>
 
-                    <RelativePanel x:Name="BottomPanel"
+                    <RelativePanel x:Name="BottomPanel" x:DeferLoadStrategy="Lazy"
                                    RelativePanel.AlignBottomWithPanel="True"
                                    RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
-                                   RelativePanel.Below="TopPanel">
+                                   RelativePanel.Below="TopPanel"
+                                   Margin="10,0,0,0">
                         <Canvas x:Name="AthleteCountImage"
                                 Width="18" Height="18">
                             <Path Data="M13,13C11,13 7,14 7,16V18H19V16C19,14 15,13 13,13M19.62,13.16C20.45,13.88 21,14.82 21,16V18H24V16C24,14.46 21.63,13.5 19.62,13.16M13,11A3,3 0 0,0 16,8A3,3 0 0,0 13,5A3,3 0 0,0 10,8A3,3 0 0,0 13,11M18,11A3,3 0 0,0 21,8A3,3 0 0,0 18,5C17.68,5 17.37,5.05 17.08,5.14C17.65,5.95 18,6.94 18,8C18,9.06 17.65,10.04 17.08,10.85C17.37,10.95 17.68,11 18,11M8,10H5V7H3V10H0V12H3V15H5V12H8V10Z"

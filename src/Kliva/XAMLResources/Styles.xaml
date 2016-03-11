@@ -17,6 +17,7 @@
 
     <Color x:Key="KlivaMainColor">#f7630c</Color>
     <SolidColorBrush x:Key="KlivaMainBrush" Color="{StaticResource KlivaMainColor}" />
+    <SolidColorBrush x:Key="KlivaListSelectionBrush" Color="{StaticResource KlivaMainColor}" Opacity="0.7" />
 
     <Color x:Key="KlivaDarkColor">#b65033</Color>
     <SolidColorBrush x:Key="KlivaDarkBrush" Color="{StaticResource KlivaDarkColor}" />
@@ -36,6 +37,15 @@
 
     <Style x:Name="BaseTextBlock" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource OpenSansFontLight}" />
+    </Style>
+
+    <Style x:Name="SubheadingBaseTextBlock" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}">
+        <Setter Property="Foreground" Value="#FF777777"/>
+    </Style>
+
+    <Style x:Name="ActivityMetaTextBlock" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}">
+        <Setter Property="Foreground" Value="#FF9E28" />
+        <Setter Property="FontSize" Value="12" />
     </Style>
 
     <Style x:Name="TrimmingTextBlock" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}">
@@ -1149,17 +1159,51 @@
         </Setter>
     </Style>
 
-    <Style TargetType="ListView">
-        <Setter Property="ItemContainerStyle">
+    <Style TargetType="ListViewItem">
+        <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+        <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}" />
+        <Setter Property="TabNavigation" Value="Local"/>
+        <Setter Property="IsHoldingEnabled" Value="True"/>
+        <Setter Property="Padding" Value="0,5,0,5"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="MinWidth" Value="0"/>
+        <Setter Property="MinHeight" Value="0"/>
+        <Setter Property="Template">
             <Setter.Value>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                </Style>
+                <ControlTemplate TargetType="ListViewItem">
+                    <ListViewItemPresenter
+          ContentTransitions="{TemplateBinding ContentTransitions}"
+          SelectionCheckMarkVisualEnabled="True"
+          CheckBrush="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
+          CheckBoxBrush="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
+          DragBackground="{ThemeResource ListViewItemDragBackgroundThemeBrush}"
+          DragForeground="{ThemeResource ListViewItemDragForegroundThemeBrush}"
+          FocusBorderBrush="{ThemeResource SystemControlForegroundAltHighBrush}"
+          FocusSecondaryBorderBrush="{ThemeResource SystemControlForegroundBaseHighBrush}"
+          PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}"
+          PointerOverBackground="{ThemeResource SystemControlHighlightListLowBrush}"
+          PointerOverForeground="{ThemeResource SystemControlHighlightAltBaseHighBrush}"
+          SelectedBackground="{StaticResource KlivaMainBrush}"
+          SelectedForeground="{ThemeResource SystemControlHighlightAltBaseHighBrush}"
+          SelectedPointerOverBackground="{StaticResource KlivaListSelectionBrush}"
+          PressedBackground="{ThemeResource SystemControlHighlightListMediumBrush}"
+          SelectedPressedBackground="{ThemeResource SystemControlHighlightListAccentHighBrush}"
+          DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
+          DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
+          ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
+          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+          ContentMargin="{TemplateBinding Padding}"
+          CheckMode="Inline"/>
+                </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
-    <Style TargetType="ListViewItem">
+    <Style TargetType="ListViewItem" x:Key="TimTest">
         <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
         <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
         <Setter Property="Background" Value="Transparent"/>
@@ -1186,9 +1230,9 @@
           PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}"
           PointerOverBackground="{ThemeResource SystemControlHighlightListLowBrush}"
           PointerOverForeground="{ThemeResource SystemControlHighlightAltBaseHighBrush}"
-          SelectedBackground="{ThemeResource SystemControlHighlightListAccentLowBrush}"
+          SelectedBackground="{StaticResource KlivaMainBrush}"
           SelectedForeground="{ThemeResource SystemControlHighlightAltBaseHighBrush}"
-          SelectedPointerOverBackground="{ThemeResource SystemControlHighlightListAccentMediumBrush}"
+          SelectedPointerOverBackground="{StaticResource KlivaListSelectionBrush}"
           PressedBackground="{ThemeResource SystemControlHighlightListMediumBrush}"
           SelectedPressedBackground="{ThemeResource SystemControlHighlightListAccentHighBrush}"
           DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"

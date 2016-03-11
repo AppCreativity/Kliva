@@ -1,5 +1,4 @@
-﻿using Windows.UI.Xaml.Controls;
-using Kliva.ViewModels;
+﻿using Kliva.Controls;
 
 namespace Kliva.Views
 {
