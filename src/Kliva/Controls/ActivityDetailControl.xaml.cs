@@ -173,8 +173,7 @@ namespace Kliva.Controls
             Func<object, Uri> getImageForPhoto = (o) => { return new Uri(((Photo)o).ImageLarge); };
 
             //Display the imageViewer as an app modal experience.  Margin determines how much of the app is visible around the edges of the dialog
-            //ImagePopupViewer.Show(ActivityPhotosGrid.ItemsSource, getImageForPhoto, new Thickness(100, 50, 50, 50));
-            AppPopupWithBlur.Show(null, new Thickness(100, 50, 50, 50));
+            ImagePopupViewer.Show(ActivityPhotosGrid.ItemsSource, getImageForPhoto, new Thickness(100, 50, 50, 50));
         }
     }
 }
