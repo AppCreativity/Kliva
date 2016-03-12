@@ -134,18 +134,24 @@ namespace Kliva.Controls
                 // Experimental custom scrolling
 
                 // Create the expression 
-                ExpressionAnimation expression = compositor.CreateExpressionAnimation("scroller.Translation.Y");
+                ExpressionAnimation expression = compositor.CreateExpressionAnimation();
 
                 // set "dynamic" reference parameter that will be used to evaluate the current position of the scrollbar every frame 
                 expression.SetReferenceParameter("scroller", scrollerManipProps);
+                expression.Expression = "Clamp(scroller.Translation.Y,-200,0)";
 
-                // Get the background image and start animating it's offset using the expression 
-                Visual backgroundVisual = ElementCompositionPreview.GetElementVisual(BlurPanel);
-                Visual mapVisual = ElementCompositionPreview.GetElementVisual(ActivityMap);
                 Visual pivotVisual = ElementCompositionPreview.GetElementVisual(ActivityPivot);
-                backgroundVisual.StartAnimation("Offset.Y", expression);
-                mapVisual.StartAnimation("Offset.Y", expression);
                 pivotVisual.StartAnimation("Offset.Y", expression);
+
+                Visual mapVisual = ElementCompositionPreview.GetElementVisual(ActivityMap);
+                mapVisual.StartAnimation("Offset.Y", expression);
+
+                ExpressionAnimation mapMoveExpression = compositor.CreateExpressionAnimation();
+                mapMoveExpression.SetReferenceParameter("scroller", scrollerManipProps);
+                mapMoveExpression.Expression = "Clamp(scroller.Translation.Y,-150,0)";
+                
+                Visual backgroundVisual = ElementCompositionPreview.GetElementVisual(BlurPanel);
+                backgroundVisual.StartAnimation("Offset.Y", mapMoveExpression);
             }
 
             if (_pivotDictionary.Count == 0)
@@ -167,7 +173,8 @@ namespace Kliva.Controls
             Func<object, Uri> getImageForPhoto = (o) => { return new Uri(((Photo)o).ImageLarge); };
 
             //Display the imageViewer as an app modal experience.  Margin determines how much of the app is visible around the edges of the dialog
-            ImagePopupViewer.Show(ActivityPhotosGrid.ItemsSource, getImageForPhoto, new Thickness(100, 50, 50, 50));
+            //ImagePopupViewer.Show(ActivityPhotosGrid.ItemsSource, getImageForPhoto, new Thickness(100, 50, 50, 50));
+            AppPopupWithBlur.Show(null, new Thickness(100, 50, 50, 50));
         }
     }
 }
