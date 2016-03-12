@@ -338,7 +338,9 @@
                             <Run Text="{x:Bind ViewModel.SelectedActivitySummary.DistanceFormatted, Mode=OneWay}" />
                             <Run Text="{x:Bind ViewModel.SelectedActivitySummary.DistanceUnit, Mode=OneWay, Converter={StaticResource DistanceUnitToStringConverter}}"/>
         </TextBlock>
-        <Image Source="ms-appx:///Assets/Bike.png"
+        <Image 
+               x:Name="BikeIcon"
+               Source="ms-appx:///Assets/Bike.png"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
                Margin="30,115,0,0"
@@ -346,7 +348,9 @@
                Width="25"
                Height="25"
                ></Image>
-        <Image Source="ms-appx:///Assets/clock.png"
+        <Image 
+               x:Name="ClockIcon"
+               Source="ms-appx:///Assets/clock.png"
                HorizontalAlignment="Right"
                VerticalAlignment="Top"
                Margin="0,115,30,0"

@@ -146,12 +146,32 @@ namespace Kliva.Controls
                 Visual mapVisual = ElementCompositionPreview.GetElementVisual(ActivityMap);
                 mapVisual.StartAnimation("Offset.Y", expression);
 
-                ExpressionAnimation mapMoveExpression = compositor.CreateExpressionAnimation();
-                mapMoveExpression.SetReferenceParameter("scroller", scrollerManipProps);
-                mapMoveExpression.Expression = "Clamp(scroller.Translation.Y,-150,0)";
+                ExpressionAnimation headerColapseExpression = compositor.CreateExpressionAnimation();
+                headerColapseExpression.SetReferenceParameter("scroller", scrollerManipProps);
+                headerColapseExpression.SetScalarParameter("minClamp", (float)BlurPanel.ActualHeight - 50); //50 is the desired height of the header when collapsed
+                //mapMoveExpression.Expression = "Clamp(scroller.Translation.Y, minClamp, 0)";
+
+                headerColapseExpression.Expression = "Clamp(scroller.Translation.Y,-130,0)";
                 
                 Visual backgroundVisual = ElementCompositionPreview.GetElementVisual(BlurPanel);
-                backgroundVisual.StartAnimation("Offset.Y", mapMoveExpression);
+                backgroundVisual.StartAnimation("Offset.Y", headerColapseExpression);
+
+                ExpressionAnimation fadeDetails = compositor.CreateExpressionAnimation();
+                fadeDetails.SetReferenceParameter("scroller", scrollerManipProps);
+                fadeDetails.Expression = "1-(Clamp(scroller.Translation.Y, -80, 0)/-80)";  //100 is number of pixels scrolled by which the element will be at 0 opacity 
+                Visual profilePictureVideo = ElementCompositionPreview.GetElementVisual(AthleteProfilePicture);
+                profilePictureVideo.StartAnimation("Opacity", fadeDetails);
+
+                ElementCompositionPreview.GetElementVisual(BikeIcon).StartAnimation("Opacity", fadeDetails);
+                
+                ElementCompositionPreview.GetElementVisual(ClockIcon).StartAnimation("Opacity", fadeDetails);
+
+                ElementCompositionPreview.GetElementVisual(TimeMovingFormattedTextBlockHeader).StartAnimation("Opacity", fadeDetails);
+
+                ElementCompositionPreview.GetElementVisual(DistanceFormattedTextBlockHeader).StartAnimation("Opacity", fadeDetails);
+
+                
+                    
             }
 
             if (_pivotDictionary.Count == 0)
