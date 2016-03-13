@@ -6,8 +6,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:triggers="using:WindowsStateTriggers"
-    mc:Ignorable="d">
-    <!--DataContext="{Binding Settings, Source={StaticResource Locator}}">-->
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    mc:Ignorable="d"
+    DataContext="{Binding Settings, Source={StaticResource Locator}}">
+
+    <interactivity:Interaction.Behaviors>
+        <core:EventTriggerBehavior EventName="Loaded">
+            <core:InvokeCommandAction Command="{Binding ViewLoadedCommand}" />
+        </core:EventTriggerBehavior>
+    </interactivity:Interaction.Behaviors>
 
     <Grid x:Name="LayoutRoot" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
@@ -47,8 +55,21 @@
 
             </PivotItem>
             <PivotItem Header="general">
+                <RelativePanel Margin="10,0">
+                    <TextBlock x:Name="MeasurementUnitTextBlock" Text="measurement unit"
+                               RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True"/>
+                    <ComboBox x:Name="MeasurementUnitsCombobox"
+                              ItemsSource="{x:Bind ViewModel.MeasurementUnits, Mode=OneWay}"
+                              SelectedItem="{x:Bind ViewModel.SelectedMeasurementUnit, Mode=TwoWay}"
+                              Margin="0,10,0,0"
+                              RelativePanel.Below="MeasurementUnitTextBlock"
+                              RelativePanel.AlignLeftWithPanel="True" />
+                </RelativePanel>
 
             </PivotItem>
+            <PivotItem Header="data cache">
+
+            </PivotItem>            
             <PivotItem Header="about">
 
             </PivotItem>
