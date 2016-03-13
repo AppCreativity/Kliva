@@ -80,9 +80,45 @@
                     <LineBreak />
                     <Run Text="But using such a cache will will take up size on your device, if needed you can clear it here..." />
                 </TextBlock>
-            </PivotItem>            
+            </PivotItem>
+            
             <PivotItem Header="about">
-
+                <RichTextBlock VerticalAlignment="Top" Margin="10,0,10,0" FontFamily="{StaticResource OpenSansFontLight}">
+                    <Paragraph>
+                        <Bold>
+                            <Run FontSize="18" Text="{x:Bind ViewModel.AppVersion}" Foreground="{StaticResource KlivaDarkBrush}"/>
+                        </Bold>
+                        <LineBreak />
+                        <Run Text="version" FontSize="12" Foreground="{StaticResource SubTextBrush}"/>
+                    </Paragraph>
+                    <Paragraph FontSize="15">
+                        <LineBreak />
+                        <Run Text="Kliva ( Swedish for to climb / to strive )" />
+                        <LineBreak />
+                        <LineBreak />
+                        <Run Text="Tracking your own progress is something any sports performer likes to do!" />
+                        <LineBreak />
+                        <Run Text="But comparing them against friends and foes is even more fun..." />
+                        <LineBreak />
+                        <LineBreak />
+                        <Run Text="Thanks to Kliva, you'll now be able to get a detailed overview of all your sport endeavours and the data that goes with it." />
+                        <LineBreak />
+                        <Run Text="Follow up on what your friends achieved and take a look at the location where it happened, maybe you can best their effort next time?" />
+                    </Paragraph>
+                    <Paragraph Foreground="{StaticResource KlivaMainBrush}" FontSize="12">
+                        <LineBreak />
+                        <Bold>
+                            <Run Text="powered by STRAVA | developed by AppCreativity" />
+                            <LineBreak />
+                            <Run Text="special thanks to:" />
+                            <LineBreak />
+                            <Run Text="  - Kurt Alpaerts and Deani Hansen for their help on the Windows Phone 8 app" />
+                            <LineBreak />
+                            <LineBreak />
+                            <Run Text="translation thanks to Mark Tepper, Filip Skakun, Scott Lovegrove, Basile Cornet, Javier Suárez Ruiz" />
+                        </Bold>
+                    </Paragraph>
+                </RichTextBlock>
             </PivotItem>
         </Pivot>
     </Grid>
