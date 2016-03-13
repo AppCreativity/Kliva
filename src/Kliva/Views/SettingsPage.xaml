@@ -68,7 +68,15 @@
 
             </PivotItem>
             <PivotItem Header="data cache">
-
+                <TextBlock Margin="10,0,10,0"
+                           TextWrapping="WrapWholeWords">
+                    <Run Text="The app will cache the downloaded activity maps to minimize mobile data traffic." />
+                    <LineBreak />
+                    <Run Text="So once a map is downloaded and available in the cache, we will no longer request it from the internet." />
+                    <LineBreak />
+                    <LineBreak />
+                    <Run Text="But using such a cache will will take up size on your device, if needed you can clear it here..." />
+                </TextBlock>
             </PivotItem>            
             <PivotItem Header="about">
 
