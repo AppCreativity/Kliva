@@ -28,7 +28,7 @@ namespace Kliva.Models
             if(_filter == ActivityFeedFilter.Friends)
                 results = results.Where(activity => activity.Athlete.Id != _athleteService.Athlete.Id);
 
-            ActivitySort sort = await _settingsService.GetActivitySortAsync();
+            ActivitySort sort = await _settingsService.GetStoredActivitySortAsync();
             if (sort == ActivitySort.EndTime)
                 results = results.OrderBy(activity => activity.EndDate);
 

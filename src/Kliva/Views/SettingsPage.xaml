@@ -64,10 +64,24 @@
                               HorizontalContentAlignment="Stretch"
                               ItemsSource="{x:Bind ViewModel.MeasurementUnits, Mode=OneWay}"
                               SelectedItem="{x:Bind ViewModel.SelectedMeasurementUnit, Mode=TwoWay}"
-                              Margin="0,10,0,0"
+                              Margin="0,10"
                               MinWidth="150"
                               RelativePanel.Below="MeasurementUnitTextBlock"
                               RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
+
+                    <TextBlock x:Name="SortTypeTextBlock" Text="activity sort *" Margin="0,10,0,0"
+                               RelativePanel.Below="MeasurementUnitsCombobox" RelativePanel.AlignLeftWithPanel="True"/>
+                    <ComboBox x:Name="SortTypeCombobox"
+                              HorizontalContentAlignment="Stretch"
+                              ItemsSource="{x:Bind ViewModel.SortTypes, Mode=OneWay}"
+                              SelectedItem="{x:Bind ViewModel.SelectedSortType, Mode=TwoWay}"
+                              Margin="0,10"
+                              MinWidth="150"
+                              RelativePanel.Below="SortTypeTextBlock"
+                              RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
+                    <TextBlock FontSize="12" Foreground="{StaticResource SubTextBrush}"
+                               RelativePanel.Below="SortTypeCombobox"
+                               Text="* We usually sort the activities on the time they started, but the Strava website shows them sorted by end time. This difference is mostly visible in longer running activities." />
                 </RelativePanel>
             </PivotItem>
             <PivotItem Header="data cache">

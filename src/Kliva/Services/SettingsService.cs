@@ -22,7 +22,7 @@ namespace Kliva.Services
 
             _settings.StravaAccessToken = stravaAccessToken;
 
-            await SaveSettingsToStorage();
+            await SaveSettingsToStorageAsync();
         }
 
         public async Task<string> GetStoredStravaAccessTokenAsync()
@@ -48,7 +48,7 @@ namespace Kliva.Services
 
             _settings.DistanceUnitType = distanceUnitType;
 
-            await SaveSettingsToStorage();
+            await SaveSettingsToStorageAsync();
         }
 
         public async Task<ActivityFeedFilter> GetStoredActivityFeedFilterAsync()
@@ -63,10 +63,10 @@ namespace Kliva.Services
 
             _settings.ActivityFeedFilter = filter;
 
-            await SaveSettingsToStorage();
+            await SaveSettingsToStorageAsync();
         }
 
-        public async Task<ActivitySort> GetActivitySortAsync()
+        public async Task<ActivitySort> GetStoredActivitySortAsync()
         {
             await LoadSettingsAsync();
             return _settings?.ActivitySort ?? ActivitySort.StartTime;
@@ -78,14 +78,14 @@ namespace Kliva.Services
 
             _settings.ActivitySort = sort;
 
-            await SaveSettingsToStorage();
+            await SaveSettingsToStorageAsync();
         }
 
         private async Task LoadSettingsAsync(bool createIfNotExisting = false)
         {
             if (_settings == null)
             {
-                bool settingsExists = await DoesSettingsServiceExist();
+                bool settingsExists = await DoesSettingsServiceExistAsync();
                 if (settingsExists)
                 {
                     string settingsAsString = await _storageService.Local.ReadAllTextAsync(Constants.SETTINGSSTORE);
@@ -98,13 +98,13 @@ namespace Kliva.Services
             }
         }
 
-        private Task SaveSettingsToStorage()
+        private Task SaveSettingsToStorageAsync()
         {
             string serializedSettings = JsonConvert.SerializeObject(_settings);
             return _storageService.Local.WriteAllTextAsync(Constants.SETTINGSSTORE, serializedSettings);
         }
 
-        private Task<bool> DoesSettingsServiceExist()
+        private Task<bool> DoesSettingsServiceExistAsync()
         {
             return _storageService.Local.FileExistsAsync(Constants.SETTINGSSTORE);
         }
