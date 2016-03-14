@@ -133,8 +133,11 @@ namespace Kliva.ViewModels
 
         public SidePaneViewModel(INavigationService navigationService) : base(navigationService)
         {
-            var view = ApplicationView.GetForCurrentView();
-            view.VisibleBoundsChanged += OnVisibleBoundsChanged;
+            if (!IsInDesignMode)
+            {
+                var view = ApplicationView.GetForCurrentView();
+                view.VisibleBoundsChanged += OnVisibleBoundsChanged;
+            }
 
             TopMenuItems.Add(new MenuItem() { Icon = "", Title = "home", MenuItemType = MenuItemType.Home, MenuItemFontType = MenuItemFontType.MDL2 });
             TopMenuItems.Add(new MenuItem() { Icon = "", Title = "statistics", MenuItemType = MenuItemType.Statistics, MenuItemFontType = MenuItemFontType.MDL2 });
