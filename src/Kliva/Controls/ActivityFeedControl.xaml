@@ -73,10 +73,19 @@
                   ItemsSource="{x:Bind ViewModel.ActivityIncrementalCollection, Mode=OneWay}"
                   SelectedItem="{x:Bind ViewModel.SelectedActivity, Mode=OneWay, Converter={StaticResource XBindItemCastingConverter}}"
                   SelectionChanged="ActivityList_SelectionChanged"
+                  ContainerContentChanging="ActivityList_ContainerContentChanging"
                   ItemClick="ActivityList_ItemClick"
                   ItemTemplate="{StaticResource ActivityListItemDataTemplate}"
                   Loaded="OnActivityListLoaded"                  
-                  HorizontalContentAlignment="Stretch" />
+                  HorizontalContentAlignment="Stretch"
+                  ShowsScrollingPlaceholders="False" 
+                  ItemContainerTransitions="{x:Null}">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsStackPanel CacheLength="2" />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
 
         <Button x:Name="GoToTopButton"
                 HorizontalAlignment="Right" VerticalAlignment="Bottom"

@@ -55,19 +55,10 @@
                         </VisualState>
                     </VisualStateGroup>
                 </VisualStateManager.VisualStateGroups>
-                
+
                 <RelativePanel x:Name="ActivityListItemPanel"
                                Margin="0"
                                Padding="0,15,0,15">
-                    <interactivity:Interaction.Behaviors>
-                        <core:DataTriggerBehavior Binding="{x:Bind OtherAthleteCount, Mode=OneWay}" ComparisonCondition="GreaterThan" Value="0">
-                            <core:ChangePropertyAction TargetObject="{Binding ElementName=BottomPanel}" PropertyName="Visibility" Value="Visible"/>
-                        </core:DataTriggerBehavior>
-                        <!--<core:DataTriggerBehavior Binding="{x:Bind OtherAthleteCount, Mode=OneWay}" ComparisonCondition="LessThanOrEqual" Value="0">
-                            <core:ChangePropertyAction TargetObject="{Binding ElementName=BottomPanel}" PropertyName="Visibility" Value="Collapsed"/>
-                        </core:DataTriggerBehavior>-->
-                    </interactivity:Interaction.Behaviors>
-
                     <RelativePanel.Background>
                         <ImageBrush ImageSource="{x:Bind Map.GoogleMapImage, Mode=OneWay}" Stretch="UniformToFill" Opacity="0.2" />
                     </RelativePanel.Background>
@@ -145,7 +136,7 @@
                     <RelativePanel x:Name="BottomPanel" x:DeferLoadStrategy="Lazy"
                                    RelativePanel.AlignBottomWithPanel="True"
                                    RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
-                                   RelativePanel.Below="TopPanel"
+                                   RelativePanel.Below="TopPanel" Visibility="Collapsed"
                                    Margin="10,0,0,0">
                         <Canvas x:Name="AthleteCountImage"
                                 Width="18" Height="18">
