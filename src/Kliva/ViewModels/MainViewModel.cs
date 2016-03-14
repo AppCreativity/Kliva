@@ -6,15 +6,12 @@ using Kliva.Models;
 using Kliva.Services.Interfaces;
 using Kliva.ViewModels.Interfaces;
 using Kliva.Views;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
 using Windows.UI.Xaml;
 using GalaSoft.MvvmLight.Messaging;
 using Kliva.Helpers;
 using Microsoft.Practices.ServiceLocation;
-using System.Diagnostics;
-using System;
 
 namespace Kliva.ViewModels
 {
@@ -79,6 +76,8 @@ namespace Kliva.ViewModels
         public RelayCommand<string> FilterCommand => _filterCommand ?? (_filterCommand = new RelayCommand<string>((item) =>
         {
             ActivityFeedFilter filter = Enum<ActivityFeedFilter>.Parse(item);
+            _settingsService.SetActivityFeedFilterAsync(filter);
+
             switch (filter)
             {
                 case ActivityFeedFilter.All:
@@ -142,8 +141,10 @@ namespace Kliva.ViewModels
         {
             if (!_viewModelLoaded)
             {
+                ActivityFeedFilter filter = await _settingsService.GetStoredActivityFeedFilterAsync();
+
                 var athlete = await _stravaService.GetAthleteAsync();
-                ActivityIncrementalCollection = new FriendActivityIncrementalCollection(_stravaService, ActivityFeedFilter.All); // TODO store filter in settings for next app run
+                ActivityIncrementalCollection = new FriendActivityIncrementalCollection(_stravaService, filter);
                 _viewModelLoaded = true;
             }
         }

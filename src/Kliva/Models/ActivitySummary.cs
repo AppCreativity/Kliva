@@ -543,6 +543,23 @@ namespace Kliva.Models
             }
         }
 
+        private DateTime _endDate;
+        /// <summary>
+        /// For sorting purposes only
+        /// </summary>
+        public DateTime EndDate
+        {
+            get
+            {
+                if (_endDate == new DateTime() && !string.IsNullOrEmpty(StartDate))
+                {
+                    DateTime start = DateTime.Parse(StartDate);
+                    _endDate = start.AddSeconds(ElapsedTime);
+                }
+                return _endDate;
+            }
+        }
+
         /// <summary>
         /// AthleteCount = Athlete + other
         /// </summary>

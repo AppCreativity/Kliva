@@ -15,7 +15,7 @@ namespace Kliva.Services.Interfaces
         Task<ActivityFeedFilter> GetStoredActivityFeedFilterAsync();
         Task SetActivityFeedFilterAsync(ActivityFeedFilter filter);
 
-        Task<ActivitySort> GetActivitySortAsync();
+        Task<ActivitySort> GetStoredActivitySortAsync();
         Task SetActivitySortAsync(ActivitySort sort);
 
         //Task<AppVersion> GetStoredAppVersion();
