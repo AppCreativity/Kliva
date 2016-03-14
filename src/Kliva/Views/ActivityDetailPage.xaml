@@ -19,6 +19,7 @@
 
     <Page.BottomAppBar>
         <CommandBar x:Name="BottomAppBar" Background="{StaticResource KlivaMainBrush}" 
+                    Visibility="Collapsed"
                      Foreground="White">
           
           <AppBarButton x:Name="AppBarKudos" 
@@ -42,6 +43,22 @@
          x:DeferLoadStrategy="Lazy" 
          Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         
+                        <AdaptiveTrigger MinWindowWidth="320" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="BottomAppBar.Visibility" Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Desktop">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="720" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="BottomAppBar.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>        
         <klivacontrols:ActivityDetailControl />
         
     </Grid>

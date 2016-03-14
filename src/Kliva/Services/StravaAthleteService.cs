@@ -36,7 +36,7 @@ namespace Kliva.Services
             try
             {
                 _perflog.GetAthleteFromServiceAsync(false, athleteId);
-                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                var accessToken = await _settingsService.GetStoredStravaAccessTokenAsync();
 
                 string getUrl = string.Format("{0}/{1}?access_token={2}", Endpoints.Athletes, athleteId, accessToken);
                 string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
@@ -67,7 +67,7 @@ namespace Kliva.Services
                     string json = await LocalCacheService.ReadCacheData("Athlete");
                     if (json == null || json.Length < 10)
                     {
-                        var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                        var accessToken = await _settingsService.GetStoredStravaAccessTokenAsync();
                         string getUrl = $"{Endpoints.Athlete}?access_token={accessToken}";
                         json = await _stravaWebClient.GetAsync(new Uri(getUrl));
                         LocalCacheService.PersistCacheData(json, "Athlete");
@@ -113,7 +113,7 @@ namespace Kliva.Services
         {
             try
             {
-                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                var accessToken = await _settingsService.GetStoredStravaAccessTokenAsync();
                 string getUrl;
 
                 if(authenticatedUser)
@@ -137,7 +137,7 @@ namespace Kliva.Services
         {
             try
             {
-                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                var accessToken = await _settingsService.GetStoredStravaAccessTokenAsync();
                 string getUrl;
 
                 if (authenticatedUser)
@@ -162,7 +162,7 @@ namespace Kliva.Services
         {
             try
             {
-                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                var accessToken = await _settingsService.GetStoredStravaAccessTokenAsync();
                 string getUrl = $"{string.Format(Endpoints.MutualFriends, athleteId)}?access_token={accessToken}";
 
                 string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
@@ -182,7 +182,7 @@ namespace Kliva.Services
         {
             try
             {
-                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                var accessToken = await _settingsService.GetStoredStravaAccessTokenAsync();
                 var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitTypeAsync();
 
                 string getUrl = $"{string.Format(Endpoints.Koms, athleteId)}?access_token={accessToken}";

@@ -6,8 +6,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:triggers="using:WindowsStateTriggers"
-    mc:Ignorable="d">
-    <!--DataContext="{Binding Settings, Source={StaticResource Locator}}">-->
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    mc:Ignorable="d"
+    DataContext="{Binding Settings, Source={StaticResource Locator}}">
+
+    <interactivity:Interaction.Behaviors>
+        <core:EventTriggerBehavior EventName="Loaded">
+            <core:InvokeCommandAction Command="{Binding ViewLoadedCommand}" />
+        </core:EventTriggerBehavior>
+    </interactivity:Interaction.Behaviors>
 
     <Grid x:Name="LayoutRoot" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
@@ -22,6 +30,8 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockMobile}" />
+                        <Setter Target="MeasurementUnitsCombobox.HorizontalAlignment" Value="Stretch" />
+                        <Setter Target="SortTypeCombobox.HorizontalAlignment" Value="Stretch" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="Desktop">
@@ -30,6 +40,8 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockDesktopWithSideBar}" />
+                        <Setter Target="MeasurementUnitsCombobox.HorizontalAlignment" Value="Left" />
+                        <Setter Target="SortTypeCombobox.HorizontalAlignment" Value="Left" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -47,10 +59,83 @@
 
             </PivotItem>
             <PivotItem Header="general">
+                <RelativePanel Margin="10,0">
+                    <TextBlock x:Name="MeasurementUnitTextBlock" Text="measurement unit"
+                               RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True"/>
+                    <ComboBox x:Name="MeasurementUnitsCombobox"
+                              HorizontalContentAlignment="Stretch"
+                              ItemsSource="{x:Bind ViewModel.MeasurementUnits, Mode=OneWay}"
+                              SelectedItem="{x:Bind ViewModel.SelectedMeasurementUnit, Mode=TwoWay}"
+                              Margin="0,10"
+                              MinWidth="150"
+                              RelativePanel.Below="MeasurementUnitTextBlock"
+                              RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
 
+                    <TextBlock x:Name="SortTypeTextBlock" Text="activity sort *" Margin="0,10,0,0"
+                               RelativePanel.Below="MeasurementUnitsCombobox" RelativePanel.AlignLeftWithPanel="True"/>
+                    <ComboBox x:Name="SortTypeCombobox"
+                              HorizontalContentAlignment="Stretch"
+                              ItemsSource="{x:Bind ViewModel.SortTypes, Mode=OneWay}"
+                              SelectedItem="{x:Bind ViewModel.SelectedSortType, Mode=TwoWay}"
+                              Margin="0,10"
+                              MinWidth="150"
+                              RelativePanel.Below="SortTypeTextBlock"
+                              RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
+                    <TextBlock FontSize="12" Foreground="{StaticResource SubTextBrush}"
+                               TextWrapping="WrapWholeWords"
+                               RelativePanel.Below="SortTypeCombobox"
+                               Text="* We usually sort the activities on the time they started, but the Strava website shows them sorted by end time. This difference is mostly visible in longer running activities." />
+                </RelativePanel>
             </PivotItem>
+            <PivotItem Header="data cache">
+                <TextBlock Margin="10,0,10,0"
+                           TextWrapping="WrapWholeWords">
+                    <Run Text="The app will cache the downloaded activity maps to minimize mobile data traffic." />
+                    <LineBreak />
+                    <Run Text="So once a map is downloaded and available in the cache, we will no longer request it from the internet." />
+                    <LineBreak />
+                    <LineBreak />
+                    <Run Text="But using such a cache will will take up size on your device, if needed you can clear it here..." />
+                </TextBlock>
+            </PivotItem>
+            
             <PivotItem Header="about">
-
+                <RichTextBlock VerticalAlignment="Top" Margin="10,0,10,0" FontFamily="{StaticResource OpenSansFontLight}">
+                    <Paragraph>
+                        <Bold>
+                            <Run FontSize="18" Text="{x:Bind ViewModel.AppVersion}" Foreground="{StaticResource KlivaDarkBrush}"/>
+                        </Bold>
+                        <LineBreak />
+                        <Run Text="version" FontSize="12" Foreground="{StaticResource SubTextBrush}"/>
+                    </Paragraph>
+                    <Paragraph FontSize="15">
+                        <LineBreak />
+                        <Run Text="Kliva ( Swedish for to climb / to strive )" />
+                        <LineBreak />
+                        <LineBreak />
+                        <Run Text="Tracking your own progress is something any sports performer likes to do!" />
+                        <LineBreak />
+                        <Run Text="But comparing them against friends and foes is even more fun..." />
+                        <LineBreak />
+                        <LineBreak />
+                        <Run Text="Thanks to Kliva, you'll now be able to get a detailed overview of all your sport endeavours and the data that goes with it." />
+                        <LineBreak />
+                        <Run Text="Follow up on what your friends achieved and take a look at the location where it happened, maybe you can best their effort next time?" />
+                    </Paragraph>
+                    <Paragraph Foreground="{StaticResource KlivaMainBrush}" FontSize="12">
+                        <LineBreak />
+                        <Bold>
+                            <Run Text="powered by STRAVA | developed by AppCreativity" />
+                            <LineBreak />
+                            <Run Text="special thanks to:" />
+                            <LineBreak />
+                            <Run Text="  - Kurt Alpaerts and Deani Hansen for their help on the Windows Phone 8 app" />
+                            <LineBreak />
+                            <LineBreak />
+                            <Run Text="translation thanks to Mark Tepper, Filip Skakun, Scott Lovegrove, Basile Cornet, Javier Suárez Ruiz" />
+                        </Bold>
+                    </Paragraph>
+                </RichTextBlock>
             </PivotItem>
         </Pivot>
     </Grid>

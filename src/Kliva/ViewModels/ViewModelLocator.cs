@@ -4,6 +4,7 @@ using GalaSoft.MvvmLight.Messaging;
 using Kliva.Services;
 using Kliva.Services.Interfaces;
 using Microsoft.Practices.ServiceLocation;
+using Windows.ApplicationModel;
 
 namespace Kliva.ViewModels
 {
@@ -23,7 +24,15 @@ namespace Kliva.ViewModels
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
-            SimpleIoc.Default.Register<INavigationService, NavigationService>();
+            if (DesignMode.DesignModeEnabled)
+            {
+                SimpleIoc.Default.Register<INavigationService, DesignModeNavigationService>();
+            }
+            else
+            {
+                SimpleIoc.Default.Register<INavigationService, NavigationService>();
+            }
+            
             SimpleIoc.Default.Register<IMessenger, Messenger>();
             SimpleIoc.Default.Register<IMessageBoxService, MessageBoxService>();
             SimpleIoc.Default.Register<IStorageService, StorageService>();

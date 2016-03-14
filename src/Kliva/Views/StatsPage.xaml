@@ -5,6 +5,8 @@
     xmlns:local="using:Kliva.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     NavigationCacheMode="Required"
     mc:Ignorable="d"
     DataContext="{Binding Stats, Source={StaticResource Locator}}">
