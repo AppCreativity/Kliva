@@ -43,8 +43,13 @@
                     <VisualState.Setters>
                         <Setter Target="ActivityDetailCommandBar.Visibility" Value="Visible" />
                         <Setter Target="BlurPanel.Visibility" Value="Collapsed"/>
+                        <Setter Target="BikeIcon.Visibility" Value="Collapsed"/>
+                        <Setter Target="ClockIcon.Visibility" Value="Collapsed"/>
+                        <Setter Target="AthleteProfilePicture.Visibility" Value="Collapsed"/>
+                        <Setter Target="DistanceFormattedTextBlockHeader.Visibility" Value="Collapsed"/>
+                        <Setter Target="TimeMovingFormattedTextBlockHeader.Visibility" Value="Collapsed"/>
+                        <Setter Target="ActivityName.Visibility" Value="Collapsed"/>
                         <Setter Target="ActivityMap.Height" Value="300" />
-
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
