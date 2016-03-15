@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace Kliva.Helpers
 {
@@ -14,6 +15,20 @@ namespace Kliva.Helpers
         public static T Parse(string value, bool ignoreCase = true)
         {
             return (T)Enum.Parse(typeof(T), value, ignoreCase);
+        }
+    }
+
+    public static class DateTimeExtensions
+    {
+        public static DateTime GetFirstDayOfTheWeek(this DateTime dateTime)
+        {
+            DayOfWeek firstDay = CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
+            DateTime firstDayInWeek = dateTime.Date;
+
+            while (firstDayInWeek.DayOfWeek != firstDay)
+                firstDayInWeek = firstDayInWeek.AddDays(-1);
+
+            return firstDayInWeek;
         }
     }
 }

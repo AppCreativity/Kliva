@@ -1,11 +1,6 @@
-﻿using System;
-using System.Linq;
-using Kliva.ViewModels.Interfaces;
+﻿using Kliva.ViewModels.Interfaces;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
-using Cimbalino.Toolkit.Extensions;
-using System.Collections.Generic;
 
 namespace Kliva.Views
 {

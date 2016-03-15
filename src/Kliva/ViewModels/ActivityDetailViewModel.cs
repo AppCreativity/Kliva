@@ -102,7 +102,6 @@ namespace Kliva.ViewModels
         private RelayCommand<ItemClickEventArgs> _athleteTappedCommand;
         public RelayCommand<ItemClickEventArgs> AthleteTappedCommand => _athleteTappedCommand ?? (_athleteTappedCommand = new RelayCommand<ItemClickEventArgs>(OnAthleteTapped));
 
-
         public ActivityDetailViewModel(INavigationService navigationService, IStravaService stravaService) : base(navigationService)
         {
             _stravaService = stravaService;

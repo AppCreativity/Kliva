@@ -200,6 +200,7 @@
     <Compile Include="ViewModels\ActivityDetailViewModel.cs" />
     <Compile Include="ViewModels\ClubDetailViewModel.cs" />
     <Compile Include="ViewModels\ClubsViewModel.cs" />
+    <Compile Include="ViewModels\DesignModeServices.cs" />
     <Compile Include="ViewModels\Interfaces\IStravaViewModel.cs" />
     <Compile Include="ViewModels\KlivaBaseViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
