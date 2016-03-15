@@ -1,4 +1,4 @@
-﻿<local:DetailPageBase 
+﻿<klivacontrols:DetailPageBase 
      x:Class="Kliva.Views.ActivityDetailPage" 
      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
@@ -10,12 +10,12 @@
      Loaded="Page_Loaded" 
      NavigationCacheMode="Required" 
      DataContext="{Binding ActivityDetail, Source={StaticResource Locator}}">
+
     <Page.Transitions>
         <TransitionCollection>
             <ContentThemeTransition />
         </TransitionCollection>
     </Page.Transitions>
-
 
     <Page.BottomAppBar>
         <CommandBar x:Name="BottomAppBar" Background="{StaticResource KlivaMainBrush}" 
@@ -66,4 +66,4 @@
         
     </Grid>
     
-</local:DetailPageBase> 
+</klivacontrols:DetailPageBase> 

@@ -40,7 +40,6 @@ namespace Kliva.Models
         private readonly string _name;
         protected ActivityFeedFilter _filter;
 
-
         #region Event handlers
         public event EventHandler DataLoaded;
 
@@ -65,30 +64,29 @@ namespace Kliva.Models
                 default:
                     _name = name.ToString();
                     break;
-            }            
+            }
             LoadNewData();
         }
-
-        private void LoadNewData()
+        
+        public void LoadNewData(TimeSpan? delay = null)
         {
+            if (delay == null) { delay = TimeSpan.FromMinutes(5); }
             DateTime timestamp = DateTime.MinValue;
             int page = 1;
 
             Task t = new Task(async () =>
             {
-                timestamp = await LocalCacheService.GetCacheTimestamp(_name);
-
                 if (!_hasLoaded)
                 {
                     string data = await LocalCacheService.ReadCacheData(this._name);
                     if (data != null && data.Length > 5)
                     {
                         var items = await HydrateItems(data);
-                        MergeInItems(items);                        
+                        MergeInItems(items);
+                        timestamp = await LocalCacheService.GetCacheTimestamp(_name);
                     }
                 }
-
-                if (DateTime.Now - timestamp > new TimeSpan(0, 5, 0))
+                if (DateTime.Now - timestamp > delay)
                 {
                     string data = await FetchData(page, _pageSize);
                     var items = await HydrateItems(data);
@@ -98,7 +96,6 @@ namespace Kliva.Models
                     }
                     MergeInItems(items);
                 }
-
                 _hasLoaded = true;
                 HasData = true;
 
@@ -130,7 +127,7 @@ namespace Kliva.Models
                                 index = _storage.IndexOf(olditem);
                                 _storage[index] = newitem;
                                 _storageLookup[key] = newitem;
-                                NotifyReplace(newitem, olditem, index);
+                                //NotifyReplace(newitem, olditem, index);
                             }
                             else
                             {

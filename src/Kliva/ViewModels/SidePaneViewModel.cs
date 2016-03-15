@@ -19,6 +19,14 @@ namespace Kliva.ViewModels
 
         private Type _pageType;
 
+        private bool _canGoBack;
+
+        public bool CanGoBack
+        {
+            get { return _canGoBack; }
+            set { Set(()=> CanGoBack, ref _canGoBack, value); }
+        }
+
         private bool _isPaneOpen = false;
         public bool IsPaneOpen
         {
@@ -186,6 +194,8 @@ namespace Kliva.ViewModels
             {
                 NavigationService.Navigate<DestinationPageType>();
             }
+
+            CanGoBack = NavigationService.CanGoBack;
         }
     }
 }

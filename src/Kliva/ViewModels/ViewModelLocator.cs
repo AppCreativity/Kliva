@@ -5,6 +5,7 @@ using Kliva.Services;
 using Kliva.Services.Interfaces;
 using Microsoft.Practices.ServiceLocation;
 using Windows.ApplicationModel;
+using Windows.Networking.BackgroundTransfer;
 
 namespace Kliva.ViewModels
 {
@@ -30,7 +31,7 @@ namespace Kliva.ViewModels
             }
             else
             {
-                SimpleIoc.Default.Register<INavigationService, NavigationService>();
+            SimpleIoc.Default.Register<INavigationService, NavigationService>();
             }
             
             SimpleIoc.Default.Register<IMessenger, Messenger>();
@@ -42,6 +43,7 @@ namespace Kliva.ViewModels
             SimpleIoc.Default.Register<IStravaAthleteService, StravaAthleteService>();
             SimpleIoc.Default.Register<IStravaClubService, StravaClubService>();
             SimpleIoc.Default.Register<IStravaSegmentService, StravaSegmentService>();
+            SimpleIoc.Default.Register<BackgroundDownloader>(() => new BackgroundDownloader());
 
             Register<MainViewModel>();
             Register<ActivityDetailViewModel>();

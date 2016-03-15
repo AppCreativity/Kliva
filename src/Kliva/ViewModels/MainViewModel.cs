@@ -1,17 +1,18 @@
-﻿using System.Collections.Generic;
-using Cimbalino.Toolkit.Services;
+﻿using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
+using Kliva.Helpers;
 using Kliva.Messages;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
 using Kliva.ViewModels.Interfaces;
 using Kliva.Views;
+using Microsoft.Practices.ServiceLocation;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
 using Windows.UI.Xaml;
-using GalaSoft.MvvmLight.Messaging;
-using Kliva.Helpers;
-using Microsoft.Practices.ServiceLocation;
 
 namespace Kliva.ViewModels
 {
@@ -94,6 +95,10 @@ namespace Kliva.ViewModels
                     break;
             }
         }));
+
+        private RelayCommand _refreshCommand;
+
+        public RelayCommand RefreshCommand => _refreshCommand ?? (_refreshCommand = new RelayCommand(() => this.ActivityIncrementalCollection.LoadNewData(TimeSpan.FromSeconds(0))));
 
         private RelayCommand _logoutCommand;
         public RelayCommand LogoutCommand => _logoutCommand ?? (_logoutCommand = new RelayCommand(async () => await this.Logout()));

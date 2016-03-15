@@ -1,6 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Threading;
 using Kliva.Controls;
-using Kliva.Services;
 using Kliva.Services.Interfaces;
 using Kliva.Views;
 using Microsoft.Practices.ServiceLocation;
@@ -11,7 +10,6 @@ using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Graphics.Display;
 using Windows.UI;
-using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -87,24 +85,17 @@ namespace Kliva
             if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
             {
                 view.SetPreferredMinSize(new Size(width: 800, height: 600));
+                CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+
                 var titleBar = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar;
-                titleBar.BackgroundColor = titleBar.ButtonBackgroundColor = (Color)App.Current.Resources["KlivaMainColor"];                
-                titleBar.ForegroundColor = titleBar.ButtonForegroundColor = Windows.UI.Colors.White;
-
-                CoreApplicationViewTitleBar tb = CoreApplication.GetCurrentView().TitleBar;
-                tb.ExtendViewIntoTitleBar = true;
-
-                var tbprops = ApplicationView.GetForCurrentView().TitleBar;
-                tbprops.BackgroundColor = Windows.UI.Colors.Transparent;
-                tbprops.ButtonBackgroundColor = Windows.UI.Colors.Transparent;
-                tbprops.ButtonForegroundColor = Windows.UI.Colors.Black;
-                tbprops.InactiveBackgroundColor= Windows.UI.Colors.Transparent;
-
-
+                titleBar.BackgroundColor = titleBar.InactiveBackgroundColor = titleBar.InactiveForegroundColor = Colors.Transparent;
+                titleBar.ButtonBackgroundColor = titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+                titleBar.ButtonForegroundColor = titleBar.ButtonInactiveForegroundColor = Colors.Black;
+                titleBar.ButtonHoverBackgroundColor = (Color)App.Current.Resources["KlivaMainColor"];
+                titleBar.ButtonHoverForegroundColor = Colors.White;
             }
 
-            //TODO: Glenn - Windows.Foundation.Metadata.ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar")){ .. }
-            if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile")
+            if (Windows.Foundation.Metadata.ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
             {
                 var statusBar = Windows.UI.ViewManagement.StatusBar.GetForCurrentView();
                 statusBar.BackgroundOpacity = 100;

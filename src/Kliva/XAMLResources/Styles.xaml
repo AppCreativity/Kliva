@@ -17,6 +17,7 @@
 
     <Color x:Key="KlivaMainColor">#f7630c</Color>
     <SolidColorBrush x:Key="KlivaMainBrush" Color="{StaticResource KlivaMainColor}" />
+    <SolidColorBrush x:Key="KlivaListSelectionBrush" Color="{StaticResource KlivaMainColor}" Opacity="0.7" />
 
     <Color x:Key="KlivaDarkColor">#b65033</Color>
     <SolidColorBrush x:Key="KlivaDarkBrush" Color="{StaticResource KlivaDarkColor}" />
@@ -36,6 +37,15 @@
 
     <Style x:Key="BaseTextBlock" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource OpenSansFontLight}" />
+    </Style>
+
+    <Style x:Key="SubheadingBaseTextBlock" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}">
+        <Setter Property="Foreground" Value="#FF777777"/>
+    </Style>
+
+    <Style x:Key="ActivityMetaTextBlock" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}">
+        <Setter Property="Foreground" Value="#FF9E28" />
+        <Setter Property="FontSize" Value="12" />
     </Style>
 
     <Style x:Key="TrimmingTextBlock" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}">
@@ -63,15 +73,15 @@
         <Setter Property="Margin" Value="10,0,0,10" />
     </Style>
 
-    <Style x:Name="DetailStatTextBlock" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}">
+    <Style x:Key="DetailStatTextBlock" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}">
         <Setter Property="FontSize" Value="50"></Setter>
         <Setter Property="Foreground" Value="#FF252525"></Setter>
     </Style>
 
-    <Style x:Name="DetailStatTextBlockLabel" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}">
+    <Style x:Key="DetailStatTextBlockLabel" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}">
         <Setter Property="Foreground" Value="{StaticResource KlivaMainBrush}"></Setter>
     </Style>
-    
+
     <Style x:Name="PaneIcon" TargetType="FontIcon">
         <Setter Property="Width" Value="40" />
         <Setter Property="Height" Value="40" />
@@ -119,13 +129,13 @@
         <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
     </Style>
 
-    <Style x:Name="ProfileEllipseDetail" TargetType="Ellipse">
+    <Style x:Key="ProfileEllipseDetail" TargetType="Ellipse">
         <Setter Property="Height" Value="100" />
         <Setter Property="Width" Value="100" />
         <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
     </Style>
-
-    <Style x:Name="ProfileEllipseMobile" TargetType="Ellipse">
+    
+    <Style x:Key="ProfileEllipseMobile" TargetType="Ellipse">
         <Setter Property="Height" Value="50" />
         <Setter Property="Width" Value="50" />
         <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
@@ -144,7 +154,7 @@
         <Setter Property="Foreground" Value="{StaticResource KlivaMainBrush}" />
     </Style>
 
-    <Style x:Name="ProfileLocationStyle" TargetType="TextBlock">
+    <Style x:Key="ProfileLocationStyle" TargetType="TextBlock">
         <Setter Property="FontSize" Value="16" />
         <Setter Property="FontFamily" Value="{StaticResource OpenSansFontSemibold}" />
         <Setter Property="Foreground" Value="{StaticResource SubTextBrush}" />
@@ -1149,26 +1159,6 @@
         </Setter>
     </Style>
 
-    <Style TargetType="ListView">
-        <Setter Property="ItemContainerStyle">
-            <Setter.Value>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                </Style>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style TargetType="ComboBox">
-        <Setter Property="ItemContainerStyle">
-            <Setter.Value>
-                <Style TargetType="ComboBoxItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                </Style>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
     <Style TargetType="ListViewItem">
         <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
         <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
@@ -1176,8 +1166,8 @@
         <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}" />
         <Setter Property="TabNavigation" Value="Local"/>
         <Setter Property="IsHoldingEnabled" Value="True"/>
-        <Setter Property="Padding" Value="0,0,0,0"/>
-        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="Padding" Value="0,5,0,5"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="MinWidth" Value="0"/>
         <Setter Property="MinHeight" Value="0"/>
@@ -1196,9 +1186,9 @@
           PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}"
           PointerOverBackground="{ThemeResource SystemControlHighlightListLowBrush}"
           PointerOverForeground="{ThemeResource SystemControlHighlightAltBaseHighBrush}"
-          SelectedBackground="{ThemeResource SystemControlHighlightListAccentLowBrush}"
+          SelectedBackground="{StaticResource KlivaMainBrush}"
           SelectedForeground="{ThemeResource SystemControlHighlightAltBaseHighBrush}"
-          SelectedPointerOverBackground="{ThemeResource SystemControlHighlightListAccentMediumBrush}"
+          SelectedPointerOverBackground="{StaticResource KlivaListSelectionBrush}"
           PressedBackground="{ThemeResource SystemControlHighlightListMediumBrush}"
           SelectedPressedBackground="{ThemeResource SystemControlHighlightListAccentHighBrush}"
           DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"

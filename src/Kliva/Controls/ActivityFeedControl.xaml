@@ -34,7 +34,7 @@
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
-            
+
             <VisualStateGroup x:Name="VisualStateGroupGoToButton">
                 <VisualState x:Name="HideGoToButton">
                     <Storyboard>
@@ -69,14 +69,19 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        <ListView x:Name="ActivityList"
+
+        <local:RefreshableListView x:Name="ActivityList"
                   ItemsSource="{x:Bind ViewModel.ActivityIncrementalCollection, Mode=OneWay}"
                   SelectedItem="{x:Bind ViewModel.SelectedActivity, Mode=OneWay, Converter={StaticResource XBindItemCastingConverter}}"
                   SelectionChanged="ActivityList_SelectionChanged"
+                  ContainerContentChanging="ActivityList_ContainerContentChanging"
                   ItemClick="ActivityList_ItemClick"
                   ItemTemplate="{StaticResource ActivityListItemDataTemplate}"
                   Loaded="OnActivityListLoaded"                  
-                  HorizontalContentAlignment="Stretch" />
+                  HorizontalContentAlignment="Stretch"
+                  ShowsScrollingPlaceholders="False" 
+                  ItemContainerTransitions="{x:Null}"
+                  RefreshCommand="{x:Bind ViewModel.RefreshCommand}" />
 
         <Button x:Name="GoToTopButton"
                 HorizontalAlignment="Right" VerticalAlignment="Bottom"
