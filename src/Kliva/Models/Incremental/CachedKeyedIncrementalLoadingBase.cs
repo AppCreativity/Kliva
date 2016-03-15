@@ -40,10 +40,31 @@ namespace Kliva.Models
         private readonly string _name;
         protected ActivityFeedFilter _filter;
 
+        #region Event handlers
+        public event EventHandler DataLoaded;
+
+        protected virtual void OnDataLoaded()
+        {
+            EventHandler handler = DataLoaded;
+            handler?.Invoke(this, null);
+        }
+        #endregion
+
         protected CachedKeyedIncrementalLoadingBase(ActivityFeedFilter name)
         {
             _filter = name;
-            _name = name.ToString(); // TODO review string > ActivityFeedFilter
+
+            //Currently the Strava API has no difference in returning Friends' feed of All feed, so we store the cache under the same name!
+            switch (name)
+            {
+                case ActivityFeedFilter.All:
+                case ActivityFeedFilter.Friends:
+                    _name = ActivityFeedFilter.All.ToString();
+                    break;
+                default:
+                    _name = name.ToString();
+                    break;
+            }
             LoadNewData();
         }
         
@@ -77,6 +98,8 @@ namespace Kliva.Models
                 }
                 _hasLoaded = true;
                 HasData = true;
+
+                OnDataLoaded();
             });
             t.Start();
         }

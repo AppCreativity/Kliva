@@ -4,6 +4,8 @@ using GalaSoft.MvvmLight.Messaging;
 using Kliva.Services;
 using Kliva.Services.Interfaces;
 using Microsoft.Practices.ServiceLocation;
+using Windows.ApplicationModel;
+using Windows.Networking.BackgroundTransfer;
 
 namespace Kliva.ViewModels
 {

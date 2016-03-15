@@ -165,15 +165,12 @@ namespace Kliva.Controls
             var itemContainer = (ListViewItem)sender;
             var itemIndex = ActivityList.IndexFromContainer(itemContainer);
 
-            Debug.WriteLine(string.Format("item index:{0}", itemIndex.ToString()));
-
             var uc = itemContainer.ContentTemplateRoot as UserControl;
             var childPanel = uc.FindName("ActivityListItemPanel") as RelativePanel;
 
             // Don't animate if we're not in the visible viewport
             if (itemIndex >= itemsPanel.FirstVisibleIndex && itemIndex <= itemsPanel.LastVisibleIndex)
             {
-                Debug.WriteLine(String.Format("Item {0}: {1}", itemIndex.ToString(), itemsPanel.LastVisibleIndex));
                 var itemVisual = ElementCompositionPreview.GetElementVisual(itemContainer);
 
                 float width = (float)childPanel.RenderSize.Width;
