@@ -309,7 +309,7 @@
             Grid.Row="0" Grid.RowSpan="2">
 
         </compositioncontrols:BlurPanelProto>
-        <TextBlock Margin="0,35,0,15" Foreground="White"
+        <TextBlock x:Name="ActivityName" Margin="0,35,0,15" Foreground="White"
                    HorizontalAlignment="Center" VerticalAlignment="Top"
                    FontFamily="{StaticResource OpenSansFontLight}" 
                        FontSize="18"

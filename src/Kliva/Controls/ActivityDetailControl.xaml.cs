@@ -158,7 +158,7 @@ namespace Kliva.Controls
 
                 ExpressionAnimation fadeDetails = compositor.CreateExpressionAnimation();
                 fadeDetails.SetReferenceParameter("scroller", scrollerManipProps);
-                fadeDetails.Expression = "1-(Clamp(scroller.Translation.Y, -80, 0)/-80)";  //100 is number of pixels scrolled by which the element will be at 0 opacity 
+                fadeDetails.Expression = "1-(Clamp(scroller.Translation.Y, -80, 0)/-80)";  //80 is number of pixels scrolled by which the element will be at 0 opacity 
                 Visual profilePictureVideo = ElementCompositionPreview.GetElementVisual(AthleteProfilePicture);
                 profilePictureVideo.StartAnimation("Opacity", fadeDetails);
 
@@ -170,8 +170,11 @@ namespace Kliva.Controls
 
                 ElementCompositionPreview.GetElementVisual(DistanceFormattedTextBlockHeader).StartAnimation("Opacity", fadeDetails);
 
-                
-                    
+                ExpressionAnimation moveTitle = compositor.CreateExpressionAnimation();
+                moveTitle.SetReferenceParameter("scroller", scrollerManipProps);
+                moveTitle.Expression = "Clamp(scroller.Translation.Y*0.2, -20, 0)";  //100 is number of pixels scrolled by which the element will be at 0 opacity 
+                Visual activityName = ElementCompositionPreview.GetElementVisual(ActivityName);
+                activityName.StartAnimation("Offset.Y", moveTitle);
             }
 
             if (_pivotDictionary.Count == 0)
