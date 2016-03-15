@@ -85,7 +85,7 @@
                                 RelativePanel.RightOf="AthleteProfilePicture"
                                 RelativePanel.AlignBottomWithPanel="True">
                             <TextBlock x:Name="ActivityImageIcon" Style="{StaticResource PaneIconMaterialTextBlock}"
-                                       Text="{x:Bind TypeImage}"/>
+                                       Text="{x:Bind TypeImage}" x:Phase="2"/>
                         </Border>
 
                         <RelativePanel x:Name="ActivityHighlightsPanel"
@@ -93,21 +93,21 @@
                                        RelativePanel.RightOf="ActivityImage"
                                        RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True"
                                        RelativePanel.AlignRightWithPanel="True">
-                            <TextBlock x:Name="ActivityName"
+                            <TextBlock x:Name="ActivityName" x:Phase="1"
                                        Margin="0,0,0,2.5"
                                        Text="{x:Bind Name, Mode=OneWay}"
                                        Style="{StaticResource TrimmingTextBlock}"
                                        FontFamily="{StaticResource OpenSansFontSemibold}"
                                        RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" />
 
-                            <TextBlock x:Name="ActivityAthleteName"
+                            <TextBlock x:Name="ActivityAthleteName" x:Phase="1"
                                        Margin="0,0,0,2.5"
                                        Text="{x:Bind Athlete.FullName, Mode=OneWay}"
                                        Style="{StaticResource SubheadingBaseTextBlock}"
                                        FontSize="14"
                                        RelativePanel.Below="ActivityName" RelativePanel.AlignLeftWithPanel="True" />
                             
-                            <TextBlock x:Name="ActivityStart"
+                            <TextBlock x:Name="ActivityStart" x:Phase="2"
                                        Margin="0,0,0,2.5"
                                        Text="{x:Bind StartDate, Mode=OneWay, Converter={StaticResource RelativeTimeConverter}}"
                                        Style="{StaticResource SubheadingBaseTextBlock}"

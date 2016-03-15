@@ -12,6 +12,7 @@ using Windows.UI.Composition;
 using System;
 using Windows.UI.Xaml.Hosting;
 using System.Numerics;
+using Kliva.ViewModels;
 
 namespace Kliva.Controls
 {
@@ -29,7 +30,8 @@ namespace Kliva.Controls
         #endregion
 
 
-        private IStravaViewModel ViewModel => DataContext as IStravaViewModel;
+        //private IStravaViewModel ViewModel => DataContext as IStravaViewModel;
+        private MainViewModel ViewModel => DataContext as MainViewModel;
 
         public ActivityFeedControl()
         {
@@ -127,8 +129,6 @@ namespace Kliva.Controls
         // To hook up per-item parallax and staggering animations we need to hook the render pipeline of the list
         private void ActivityList_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
         {
-            // TODO: Implement phasing
-            // TODO: Can we protect a deferred BottomPanel in a recycled container
             // TODO: Set up per-item parallax
 
             int index = args.ItemIndex;
