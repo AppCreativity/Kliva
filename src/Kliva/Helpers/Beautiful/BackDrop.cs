@@ -20,12 +20,12 @@ namespace SamplesCommon
         SpriteVisual m_blurVisual;
         CompositionEffectBrush m_blurBrush;
         bool m_setUpExpressions;
+        Visual m_rootVisual;
 
         public BackDrop()
         {
-            var myBackingVisual = ElementCompositionPreview.GetElementVisual(this as UIElement);
-            m_compositor = myBackingVisual.Compositor;
-            this.SizeChanged += BackDrop_SizeChanged;
+            m_rootVisual = ElementCompositionPreview.GetElementVisual(this as UIElement);
+            m_compositor = m_rootVisual.Compositor;
 
             m_blurBrush = BuildBlurBrush();
             m_blurBrush.SetSourceParameter("source", m_compositor.CreateDestinationBrush());
@@ -36,22 +36,21 @@ namespace SamplesCommon
             BlurAmount = 9;
             TintColor = Colors.Transparent;
 
-            BackDrop_SizeChanged(this, null);
-
             ElementCompositionPreview.SetElementChildVisual(this as UIElement, m_blurVisual);
 
-            this.Unloaded += BackDrop_Unloaded;
+            this.Loading += OnLoading;
+            this.Unloaded += OnUnloaded;
         }
 
-        public const string BlurAmountProperty = "BlurAmount";
-        public const string TintColorProperty = "TintColor";
+        public const string BlurAmountProperty = nameof(BlurAmount);
+        public const string TintColorProperty = nameof(TintColor);
 
         public double BlurAmount
         {
             get
             {
                 float value = 0;
-                m_blurVisual.Properties.TryGetScalar(BlurAmountProperty, out value);
+                m_rootVisual.Properties.TryGetScalar(BlurAmountProperty, out value);
                 return value;
             }
             set
@@ -60,7 +59,7 @@ namespace SamplesCommon
                 {
                     m_blurBrush.Properties.InsertScalar("Blur.BlurAmount", (float)value);
                 }
-                m_blurVisual.Properties.InsertScalar(BlurAmountProperty, (float)value);
+                m_rootVisual.Properties.InsertScalar(BlurAmountProperty, (float)value);
             }
         }
 
@@ -69,7 +68,7 @@ namespace SamplesCommon
             get
             {
                 Color value;
-                m_blurVisual.Properties.TryGetColor("TintColor", out value);
+                m_rootVisual.Properties.TryGetColor("TintColor", out value);
                 return value;
             }
             set
@@ -78,11 +77,11 @@ namespace SamplesCommon
                 {
                     m_blurBrush.Properties.InsertColor("Color.Color", value);
                 }
-                m_blurVisual.Properties.InsertColor(TintColorProperty, value);
+                m_rootVisual.Properties.InsertColor(TintColorProperty, value);
             }
         }
 
-        public CompositionPropertySet Properties
+        public CompositionPropertySet VisualProperties
         {
             get
             {
@@ -90,18 +89,23 @@ namespace SamplesCommon
                 {
                     SetUpPropertySetExpressions();
                 }
-                return m_blurVisual.Properties;
+                return m_rootVisual.Properties;
             }
         }
 
-        private void BackDrop_Unloaded(object sender, RoutedEventArgs e)
+        private void OnLoading(FrameworkElement sender, object args)
         {
-            this.SizeChanged -= BackDrop_SizeChanged;
-            m_blurVisual = null;
+            this.SizeChanged += OnSizeChanged;
+            OnSizeChanged(this, null);
+        }
+
+        private void OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            this.SizeChanged -= OnSizeChanged;
         }
 
 
-        private void BackDrop_SizeChanged(object sender, Windows.UI.Xaml.SizeChangedEventArgs e)
+        private void OnSizeChanged(object sender, Windows.UI.Xaml.SizeChangedEventArgs e)
         {
             if (m_blurVisual != null)
             {
@@ -113,15 +117,15 @@ namespace SamplesCommon
         {
             m_setUpExpressions = true;
 
-            var exprAnim = m_compositor.CreateExpressionAnimation();
-            exprAnim.Expression = $"sourceProperties.{BlurAmountProperty}";
-            exprAnim.SetReferenceParameter("sourceProperties", m_blurVisual.Properties);
+            var exprAnimation = m_compositor.CreateExpressionAnimation();
+            exprAnimation.Expression = $"sourceProperties.{BlurAmountProperty}";
+            exprAnimation.SetReferenceParameter("sourceProperties", m_rootVisual.Properties);
 
-            m_blurBrush.Properties.StartAnimation("Blur.BlurAmount", exprAnim);
+            m_blurBrush.Properties.StartAnimation("Blur.BlurAmount", exprAnimation);
 
-            exprAnim.Expression = $"sourceProperties.{TintColorProperty}";
+            exprAnimation.Expression = $"sourceProperties.{TintColorProperty}";
 
-            m_blurBrush.Properties.StartAnimation("Color.Color", exprAnim);
+            m_blurBrush.Properties.StartAnimation("Color.Color", exprAnimation);
         }
 
 
