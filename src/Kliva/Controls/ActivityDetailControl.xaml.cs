@@ -175,6 +175,16 @@ namespace Kliva.Controls
                 moveTitle.Expression = "Clamp(scroller.Translation.Y*0.2, -20, 0)";  //100 is number of pixels scrolled by which the element will be at 0 opacity 
                 Visual activityName = ElementCompositionPreview.GetElementVisual(ActivityName);
                 activityName.StartAnimation("Offset.Y", moveTitle);
+
+                //ExpressionAnimation reduceBlur = compositor.CreateExpressionAnimation();
+                //reduceBlur.SetReferenceParameter("scroller", scrollerManipProps);
+                //reduceBlur.Expression = "15*(1-(Clamp(scroller.Translation.Y, -80, 0)/-80))";  //80 is number of pixels scrolled by which the element will be at 0 opacity 
+                //BlurPanel.Params.StartAnimation("BlurValue", reduceBlur);
+
+                ExpressionAnimation crossfade = compositor.CreateExpressionAnimation();
+                crossfade.SetReferenceParameter("scroller", scrollerManipProps);
+                crossfade.Expression = "(1-(Clamp(scroller.Translation.Y*.5, -80, 0)/-80))";  //80 is number of pixels scrolled by which the element will be at 0 opacity 
+                BlurPanel.Params.StartAnimation("FadeValue", crossfade);
             }
 
             if (_pivotDictionary.Count == 0)
