@@ -25,12 +25,12 @@ namespace SamplesCommon
         public BackDrop()
         {
             m_rootVisual = ElementCompositionPreview.GetElementVisual(this as UIElement);
-            m_compositor = m_rootVisual.Compositor;
+            Compositor = m_rootVisual.Compositor;
 
             m_blurBrush = BuildBlurBrush();
-            m_blurBrush.SetSourceParameter("source", m_compositor.CreateDestinationBrush());
+            m_blurBrush.SetSourceParameter("source", Compositor.CreateDestinationBrush());
 
-            m_blurVisual = m_compositor.CreateSpriteVisual();
+            m_blurVisual = Compositor.CreateSpriteVisual();
             m_blurVisual.Brush = m_blurBrush;
 
             BlurAmount = 9;
@@ -93,6 +93,19 @@ namespace SamplesCommon
             }
         }
 
+        public Compositor Compositor
+        {
+            get
+            {
+                return m_compositor;
+            }
+
+            private set
+            {
+                m_compositor = value;
+            }
+        }
+
         private void OnLoading(FrameworkElement sender, object args)
         {
             this.SizeChanged += OnSizeChanged;
@@ -117,7 +130,7 @@ namespace SamplesCommon
         {
             m_setUpExpressions = true;
 
-            var exprAnimation = m_compositor.CreateExpressionAnimation();
+            var exprAnimation = Compositor.CreateExpressionAnimation();
             exprAnimation.Expression = $"sourceProperties.{BlurAmountProperty}";
             exprAnimation.SetReferenceParameter("sourceProperties", m_rootVisual.Properties);
 
@@ -145,7 +158,7 @@ namespace SamplesCommon
                 Mode = BlendEffectMode.Multiply
             };
 
-            var factory = m_compositor.CreateEffectFactory(
+            var factory = Compositor.CreateEffectFactory(
                 effect,
                 new [] { "Blur.BlurAmount", "Color.Color" }
                 );
