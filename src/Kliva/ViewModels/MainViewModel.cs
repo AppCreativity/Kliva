@@ -103,6 +103,10 @@ namespace Kliva.ViewModels
             }
         }));
 
+        private RelayCommand _refreshCommand;
+
+        public RelayCommand RefreshCommand => _refreshCommand ?? (_refreshCommand = new RelayCommand(() => this.ActivityIncrementalCollection.LoadNewData(TimeSpan.FromSeconds(0))));
+
         private RelayCommand _logoutCommand;
         public RelayCommand LogoutCommand => _logoutCommand ?? (_logoutCommand = new RelayCommand(async () => await this.Logout()));
 

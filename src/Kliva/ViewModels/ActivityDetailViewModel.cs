@@ -17,6 +17,30 @@ namespace Kliva.ViewModels
     {
         private readonly IStravaService _stravaService;
 
+        private AthleteSummary _selectedAthlete;
+
+        public AthleteSummary SelectedAthlete
+        {
+            get { return _selectedAthlete; }
+            set
+            {
+                Set(() => SelectedAthlete, ref _selectedAthlete, value);
+                RaisePropertyChanged(() => SelectedAthlete);   
+            }
+        }
+
+        private ActivitySummary _activitySummary;
+
+        public ActivitySummary SelectedActivitySummary
+        {
+            get { return _activitySummary; }
+            set
+            {
+                Set(() => SelectedActivitySummary, ref _activitySummary, value);
+                RaisePropertyChanged(() => SelectedActivitySummary);
+            }
+        }
+
         private Activity _selectedActivity;
         public Activity SelectedActivity
         {
@@ -82,7 +106,21 @@ namespace Kliva.ViewModels
         public ActivityDetailViewModel(INavigationService navigationService, IStravaService stravaService) : base(navigationService)
         {
             _stravaService = stravaService;
-            MessengerInstance.Register<ActivitySummaryMessage>(this, async item => await LoadActivityDetails(item.ActivitySummary.Id.ToString()));
+            
+            MessengerInstance.Register<ActivitySummaryMessage>(this, async 
+                
+                
+                
+                (item) => {
+                    this.SelectedAthlete = item.ActivitySummary.Athlete;
+                    this.SelectedActivitySummary = item.ActivitySummary;
+                    await LoadActivityDetails(item.ActivitySummary.Id.ToString());
+                  
+                }
+                
+                
+                
+                );
         }
 
         private async Task LoadActivityDetails(string activityId)

@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:triggers="using:WindowsStateTriggers"
+    xmlns:compositioncontrols="using:App1"
     mc:Ignorable="d"
     DataContext="{Binding Login, Source={StaticResource Locator}}">
 
@@ -30,7 +31,7 @@
                         <Setter Target="TitlePanel.Visibility" Value="Visible" />
                         <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockMobile}" />
                         <Setter Target="LoginButton.Style" Value="{StaticResource KlivaButtonMobile}" />
-                        <Setter Target="NewAccountButton.Style" Value="{StaticResource KlivaButtonMobile}" />                        
+                        <Setter Target="NewAccountButton.Style" Value="{StaticResource KlivaButtonMobile}" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="Desktop">
@@ -44,7 +45,7 @@
                         <Setter Target="TitlePanel.Visibility" Value="Collapsed" />
                         <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockDesktop}" />
                         <Setter Target="LoginButton.Style" Value="{StaticResource KlivaButtonDesktop}" />
-                        <Setter Target="NewAccountButton.Style" Value="{StaticResource KlivaButtonDesktop}" />                        
+                        <Setter Target="NewAccountButton.Style" Value="{StaticResource KlivaButtonDesktop}" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -57,8 +58,24 @@
                        Text="Kliva" />
         </StackPanel>
         
+        
+        <MediaElement Source="ms-appx:///assets/hyperlapse.mp4" 
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch" 
+                      Stretch="UniformToFill"
+                      Grid.Row="1"
+                      IsLooping="True"
+                      ></MediaElement>
+       
+        <compositioncontrols:BlurPanelProto 
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Grid.Row="1"
+            ></compositioncontrols:BlurPanelProto>
+        
         <RelativePanel x:Name="ContentPanel"                       
                        Grid.Row="1">
+            
             <Button x:Name="LoginButton"                    
                     Content="log in with strava"
                     Command="{Binding LoginCommand}"

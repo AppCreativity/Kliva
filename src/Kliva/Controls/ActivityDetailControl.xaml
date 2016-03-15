@@ -7,15 +7,17 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
     xmlns:converters="using:Kliva.Converters"
-    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
-    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:models="using:Kliva.Models"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
     DataContext="{Binding ActivityDetail, Source={StaticResource Locator}}"
-    Loaded="OnActivityDetailControlLoaded">
+    Loaded="OnActivityDetailControlLoaded"
+    xmlns:compositioncontrols="using:App1"
+    >
 
     <UserControl.Resources>
+        <converters:SecondsToTimeStringConverter x:Key="SecondsToTimeStringConverter" />
         <converters:AddAmountToStringConverter x:Key="AddAmountToStringConverter" />
     </UserControl.Resources>
 
@@ -28,7 +30,9 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="ActivityDetailCommandBar.Visibility" Value="Collapsed" />
-                        <Setter Target="ActivityMap.Height" Value="200" />
+                        <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseDetail}" />
+                        <Setter Target="ActivityMap.Height" Value="450" />
+                        <Setter Target="BlurPanel.Visibility" Value="Visible"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="Desktop">
@@ -37,26 +41,31 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="ActivityDetailCommandBar.Visibility" Value="Visible" />
+                        <Setter Target="BlurPanel.Visibility" Value="Collapsed"/>
                         <Setter Target="ActivityMap.Height" Value="300" />
+
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <RelativePanel>
-            <TextBlock x:Name="ActivityName"
+            <!--<TextBlock x:Name="ActivityName"
                        Text="{x:Bind ViewModel.SelectedActivity.Name, Mode=OneWay}"
                        TextWrapping="WrapWholeWords" MaxLines="2"
                        Margin="10,0,10,0"
-                       RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
+                       RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />-->
+
 
             <maps:MapControl x:Name="ActivityMap"
-                             Margin="0,10,0,0"
-                             RelativePanel.Below="ActivityName"
-                             RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
+                             Margin="0,0,0,0"
+                             RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                             MapServiceToken=" djEP5YkO2YftwiWR9MLF~kufsPJjSomRgYFl0Khn7xA~AvER_Qbb0ldEVri_AgBt6XQd9-rVmRfttbYkU5Ij1Why3LcgT-5zaJSSeEDhJy-R"
+                             
+                             />
 
             <Button x:Name="ExpandMapButton"
                     x:DeferLoadStrategy="Lazy"
-                    Margin="0,0,0,0"
+                    Margin="0,10,0,0"
                     RelativePanel.AlignBottomWith="ActivityMap"
                     RelativePanel.AlignRightWithPanel="True"
                     Command="{x:Bind ViewModel.MapCommand}">
@@ -81,11 +90,18 @@
 
             <Pivot x:Name="ActivityPivot"
                    RelativePanel.Below="ActivityDetailCommandBar"
-                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
-                <PivotItem x:Name="StatisticsPivot" Header="statistics" Tag="Statistics">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollMode="Disabled">
+                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" 
+                   Background="#FFDDDDDD"
+                   Margin="0,0,0,-200"
+                   >
+
+                <PivotItem x:Name="StatisticsPivot" Header="statistics" Tag="Statistics"
+                           Background="White"
+                           >
+                    <ScrollViewer x:Name="scroller" VerticalScrollBarVisibility="Auto" HorizontalScrollMode="Disabled">
                         <RelativePanel Margin="10,0,0,0">
                             <!-- DISTANCE BLOCK -->
+                            <!--
                             <TextBlock x:Name="DistanceLabelTextBlock"
                                    Text="distance"
                                    MinWidth="125"
@@ -100,142 +116,145 @@
                             <TextBlock x:Name="DistanceFormattedLabelTextBlock"
                                    Text="total distance"
                                    RelativePanel.Below="DistanceFormattedTextBlock"
-                                   RelativePanel.AlignLeftWith="DistanceFormattedTextBlock" />
+                                   RelativePanel.AlignLeftWith="DistanceFormattedTextBlock" />-->
 
                             <!-- SPEED BLOCK -->
-                            <TextBlock x:Name="SpeedLabelTextBlock"
-                                   Text="speed"
-                                   Margin="0,20,0,0"
-                                   RelativePanel.Below="DistanceFormattedLabelTextBlock"
-                                   RelativePanel.AlignLeftWithPanel="True" />
+
+
                             <TextBlock x:Name="SpeedAverageFormattedTextBlock"
-                                   Margin="0,20,0,0"
                                    MinWidth="125"
-                                   RelativePanel.RightOf="SpeedLabelTextBlock"
-                                   RelativePanel.AlignLeftWith="DistanceFormattedTextBlock"
-                                   RelativePanel.AlignTopWith="SpeedLabelTextBlock">
+                                   RelativePanel.AlignTopWithPanel="True"
+                                   RelativePanel.AlignLeftWithPanel="True"
+                                       FontSize="50"
+                                       FontFamily="{StaticResource OpenSansFontLight}" 
+                                       Foreground="#FF252525"
+                                       >
                             <Run Text="{x:Bind ViewModel.SelectedActivity.AverageSpeedFormatted, Mode=OneWay}" />
                             <Run Text="{x:Bind ViewModel.SelectedActivity.SpeedUnit, Mode=OneWay, Converter={StaticResource SpeedUnitToStringConverter}}" />
                             </TextBlock>
+
                             <TextBlock x:Name="SpeedAverageFormattedLabelTextBlock"
                                    Text="average"
+                                   Foreground="{StaticResource KlivaMainBrush}"
+                                       FontFamily="{StaticResource OpenSansFontLight}" 
                                    RelativePanel.Below="SpeedAverageFormattedTextBlock"
                                    RelativePanel.AlignLeftWith="SpeedAverageFormattedTextBlock" />
 
                             <TextBlock x:Name="SpeedMaxFormattedTextBlock"                                   
-                                   Margin="0,20,0,0"                                   
-                                   RelativePanel.RightOf="SpeedAverageFormattedTextBlock"
-                                   RelativePanel.AlignTopWith="SpeedLabelTextBlock">
+                                       FontFamily="{StaticResource OpenSansFontLight}" 
+                                   RelativePanel.Below="SpeedAverageFormattedLabelTextBlock"
+                                   RelativePanel.AlignLeftWith="SpeedAverageFormattedTextBlock"
+                                       Style="{StaticResource DetailStatTextBlock}"
+                                       >
                             <Run Text="{x:Bind ViewModel.SelectedActivity.MaxSpeedFormatted, Mode=OneWay}" />
                             <Run Text="{x:Bind ViewModel.SelectedActivity.SpeedUnit, Mode=OneWay, Converter={StaticResource SpeedUnitToStringConverter}}" />
                             </TextBlock>
                             <TextBlock x:Name="SpeedMaxFormattedLabelTextBlock"
                                    Text="max"
-                                   Margin="0,0,0,0"
+                                       FontFamily="{StaticResource OpenSansFontLight}" 
+                                   Foreground="{StaticResource KlivaMainBrush}"
+                                   Style="{StaticResource DetailStatTextBlockLabel}"
                                    RelativePanel.Below="SpeedMaxFormattedTextBlock"
-                                   RelativePanel.AlignLeftWith="SpeedMaxFormattedTextBlock" />
-
+                                   RelativePanel.AlignLeftWith="SpeedMaxFormattedTextBlock"
+                                   
+                                       />
                             <!-- TIME BLOCK -->
-                            <TextBlock x:Name="TimeLabelTextBlock"
-                                   Text="time"
-                                   Margin="0,20,0,0"
-                                   RelativePanel.Below="SpeedAverageFormattedLabelTextBlock"
-                                   RelativePanel.AlignLeftWithPanel="True" />
                             <TextBlock x:Name="TimeMovingFormattedTextBlock"
                                    Text="{x:Bind ViewModel.SelectedActivity.MovingTime, Mode=OneWay, Converter={StaticResource SecondsToTimeStringConverter}}"
-                                   Margin="0,20,0,0"
                                    MinWidth="125"
-                                   RelativePanel.RightOf="TimeLabelTextBlock"
-                                   RelativePanel.AlignLeftWith="DistanceFormattedTextBlock"
-                                   RelativePanel.AlignTopWith="TimeLabelTextBlock" />
+                                       Style="{StaticResource DetailStatTextBlock}"
+                                   RelativePanel.Below="SpeedMaxFormattedLabelTextBlock"
+                                   RelativePanel.AlignLeftWith="SpeedMaxFormattedTextBlock" />
                             <TextBlock x:Name="TimeMovingFormattedLabelTextBlock"
                                    Text="moving time"
+                                   Style="{StaticResource DetailStatTextBlockLabel}"
                                    RelativePanel.Below="TimeMovingFormattedTextBlock"
                                    RelativePanel.AlignLeftWith="TimeMovingFormattedTextBlock" />
 
+                            <!--<TextBlock x:Name="TimeLabelTextBlock"
+                                   Text="time"
+                                   Margin="0,20,0,0"
+                                   RelativePanel.Below="SpeedMaxFormattedLabelTextBlock"
+                                   RelativePanel.AlignLeftWithPanel="True" />-->
+
                             <!-- ELEVATION BLOCK -->
-                            <TextBlock x:Name="ElevationLabelTextBlock"
-                                   Text="elevation"
-                                   Margin="0,20,0,0"
-                                   RelativePanel.Below="TimeMovingFormattedLabelTextBlock"
-                                   RelativePanel.AlignLeftWithPanel="True" />
                             <TextBlock x:Name="ElevationGainFormattedTextBlock"                                   
-                                   Margin="0,20,0,0"
                                    MinWidth="125"
-                                   RelativePanel.RightOf="ElevationLabelTextBlock"
-                                   RelativePanel.AlignLeftWith="DistanceFormattedTextBlock"
-                                   RelativePanel.AlignTopWith="ElevationLabelTextBlock">
+                                   RelativePanel.Below="TimeMovingFormattedLabelTextBlock"
+                                   RelativePanel.AlignLeftWith="SpeedMaxFormattedTextBlock"
+                                   Style="{StaticResource DetailStatTextBlock}"
+                                       >
                             <Run Text="{x:Bind ViewModel.SelectedActivity.ElevationGainFormatted, Mode=OneWay}" />
                             <Run Text="{x:Bind ViewModel.SelectedActivity.ElevationUnit, Mode=OneWay, Converter={StaticResource DistanceUnitToStringConverter}}" />
                             </TextBlock>
-                            <TextBlock x:Name="ElevationGainFormattedLabelTextBlock"
+                            <TextBlock x:Name="ElevationLabelTextBlock"
+                                   Text="elevation"
+                                   Style="{StaticResource DetailStatTextBlockLabel}"
+                                   RelativePanel.Below="ElevationGainFormattedTextBlock"
+                                   RelativePanel.AlignLeftWithPanel="True" />
+                            <!--<TextBlock x:Name="ElevationGainFormattedLabelTextBlock"
                                    Text="gain"
                                    RelativePanel.Below="ElevationGainFormattedTextBlock"
-                                   RelativePanel.AlignLeftWith="ElevationGainFormattedTextBlock" />
+                                   RelativePanel.AlignLeftWith="ElevationGainFormattedTextBlock" />-->
 
                             <!-- HEART RATE BLOCK -->
-                            <TextBlock x:Name="HeartRateLabelTextBlock"
-                                   Text="heart rate"
-                                   Margin="0,20,0,0"
-                                   RelativePanel.Below="ElevationGainFormattedLabelTextBlock"
-                                   RelativePanel.AlignLeftWithPanel="True" />
                             <TextBlock x:Name="HeartRateAverageFormattedTextBlock"
-                                   Margin="0,20,0,0"
                                    MinWidth="125"
-                                   RelativePanel.RightOf="HeartRateLabelTextBlock"
-                                   RelativePanel.AlignLeftWith="DistanceFormattedTextBlock"
-                                   RelativePanel.AlignTopWith="HeartRateLabelTextBlock">
+                                   Style="{StaticResource DetailStatTextBlock}"
+                                   RelativePanel.Below="ElevationLabelTextBlock"
+                                   RelativePanel.AlignLeftWithPanel="true">
                             <Run Text="{x:Bind ViewModel.SelectedActivity.AverageHeartrate, Mode=OneWay}" />
                             <Run Text="bpm" />
                             </TextBlock>
+                            <TextBlock x:Name="HeartRateLabelTextBlock"
+                                   Text="average heart rate"
+                                   Style="{StaticResource DetailStatTextBlockLabel}"
+                                   RelativePanel.Below="HeartRateAverageFormattedTextBlock"
+                                   RelativePanel.AlignLeftWithPanel="True" />
+                            <!--
                             <TextBlock x:Name="HeartRateAverageFormattedLabelTextBlock"
                                    Text="average"
                                    RelativePanel.Below="HeartRateAverageFormattedTextBlock"
                                    RelativePanel.AlignLeftWith="HeartRateAverageFormattedTextBlock" />
-
+-->
                             <TextBlock x:Name="HeartRateMaxFormattedTextBlock"                                   
-                                   Margin="0,20,0,0"                                   
-                                   RelativePanel.RightOf="HeartRateAverageFormattedTextBlock"
-                                   RelativePanel.AlignTopWith="HeartRateLabelTextBlock">
+                                   RelativePanel.Below="HeartRateLabelTextBlock"
+                                   RelativePanel.AlignLeftWith="HeartRateLabelTextBlock"
+                                   Style="{StaticResource DetailStatTextBlock}"
+                                       >
                             <Run Text="{x:Bind ViewModel.SelectedActivity.MaxHeartrate, Mode=OneWay}" />
                             <Run Text="bpm" />
                             </TextBlock>
                             <TextBlock x:Name="HeartRateMaxFormattedLabelTextBlock"
-                                   Text="max"
-                                   Margin="0,0,0,0"
+                                   Text="max heart rate"
+                                   Style="{StaticResource DetailStatTextBlockLabel}"
                                    RelativePanel.Below="HeartRateMaxFormattedTextBlock"
                                    RelativePanel.AlignLeftWith="HeartRateMaxFormattedTextBlock" />
+                            <Rectangle Width="2" Height="500" Fill="Aqua" RelativePanel.Below="HeartRateMaxFormattedLabelTextBlock"></Rectangle>
                         </RelativePanel>
                     </ScrollViewer>
                 </PivotItem>
-                <PivotItem x:Name="SegmentsPivot" Tag="Segments"
-                           Header="{x:Bind ViewModel.SelectedActivity.SegmentEffortsCount, Converter={StaticResource AddAmountToStringConverter}, ConverterParameter=segments, Mode=OneWay}"
-                    x:DeferLoadStrategy="Lazy"
+                <PivotItem x:Name="SegmentsPivot" Header="segments" Tag="Segments"
+                           x:DeferLoadStrategy="Lazy"
+                           Background="White"
                            Visibility="{x:Bind ViewModel.HasSegments, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <ListView x:Name="AcitivtySegmentsList"
-                              ItemsSource="{x:Bind ViewModel.SelectedActivity.SegmentEfforts, Mode=OneWay}"
-                              ItemTemplate="{StaticResource SegmentEffortListItemTemplate}"/>
                 </PivotItem>
                 <PivotItem x:Name="KudosPivot" Tag="Kudos"
+                           Background="White"
                            Header="{x:Bind ViewModel.KudosCount, Converter={StaticResource AddAmountToStringConverter}, ConverterParameter=kudos, Mode=OneWay}">
                     <ListView x:Name="ActivityKudosList"
                               ItemsSource="{x:Bind ViewModel.Kudos, Mode=OneWay}"
-                              ItemTemplate="{StaticResource KudosListItemTemplate}"
-                              IsItemClickEnabled="True">
-                        <interactivity:Interaction.Behaviors>
-                            <core:EventTriggerBehavior EventName="ItemClick">
-                                <core:InvokeCommandAction Command="{x:Bind ViewModel.AthleteTappedCommand}" />
-                            </core:EventTriggerBehavior>
-                        </interactivity:Interaction.Behaviors>
-                    </ListView>
+                              ItemTemplate="{StaticResource KudosListItemTemplate}" />
                 </PivotItem>
                 <PivotItem x:Name="CommentsPivot" Tag="Comments"
+                           Background="White"
                            Header="{x:Bind ViewModel.CommentCount, Converter={StaticResource AddAmountToStringConverter}, ConverterParameter=comments, Mode=OneWay}">
                     <ListView x:Name="ActivityCommentsList"
                               ItemsSource="{x:Bind ViewModel.Comments, Mode=OneWay}"
                               ItemTemplate="{StaticResource CommentsListItemTemplate}"/>
                 </PivotItem>
                 <PivotItem x:Name="PhotosPivot" Tag="Photos"
+                           Background="White"
                            x:DeferLoadStrategy="Lazy"
                            Header="{x:Bind ViewModel.PhotoCount, Converter={StaticResource AddAmountToStringConverter}, ConverterParameter=photos, Mode=OneWay}"
                            Visibility="{x:Bind ViewModel.HasPhotos, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
@@ -250,14 +269,15 @@
                       ItemsSource="{x:Bind ViewModel.RelatedAthletes}"
                       Style="{StaticResource HorizontalListViewStyle}"
                       SelectionMode="None"
-                      RelativePanel.Below="ActivityName"
-                      RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+                      RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                      RelativePanel.AlignBottomWith="ActivityMap"
+                      >
                 <ListView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="models:AthleteSummary">
                         <Ellipse Style="{StaticResource ProfileEllipseMobile}"
-                                 Margin="0,0,5,0">
+                                 Margin="0,0,5,0" ToolTipService.ToolTip="{x:Bind FullName}" >
                             <Ellipse.Fill>
-                                <ImageBrush Stretch="Uniform" ImageSource="{Binding ProfileMediumFormatted}" />
+                                <ImageBrush Stretch="Uniform" ImageSource="{x:Bind ProfileMediumFormatted}" />
                             </Ellipse.Fill>
                         </Ellipse>
                     </DataTemplate>
@@ -265,5 +285,69 @@
             </ListView>
 
         </RelativePanel>
+        <compositioncontrols:BlurPanelProto 
+            x:Name="BlurPanel"
+            HorizontalAlignment="Stretch" 
+            VerticalAlignment="Top" 
+            Height="180px"
+            Margin="0,0,0,0"
+            Grid.Row="0" Grid.RowSpan="2">
+
+        </compositioncontrols:BlurPanelProto>
+        <TextBlock Margin="0,35,0,15" Foreground="White"
+                   HorizontalAlignment="Center" VerticalAlignment="Top"
+                   FontFamily="{StaticResource OpenSansFontLight}" 
+                       FontSize="18"
+                Text="{x:Bind ViewModel.SelectedActivitySummary.Name, Mode=OneWay}">
+        </TextBlock>
+        <TextBlock x:Name="TimeMovingFormattedTextBlockHeader"
+                                   Text="{x:Bind ViewModel.SelectedActivitySummary.MovingTime, Mode=OneWay, Converter={StaticResource SecondsToTimeStringConverter}}"
+                                   Margin="0,110,60,0"
+                                   MinWidth="125"
+                   FontFamily="{StaticResource OpenSansFontLight}" 
+                   Foreground="White"
+                   FontSize="25"
+                   TextAlignment="Right"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Top"
+                                    />
+        <TextBlock x:Name="DistanceFormattedTextBlockHeader"
+                                   MinWidth="125"
+                                   Foreground="White"
+                   Margin="60,110,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   FontFamily="{StaticResource OpenSansFontLight}" 
+                       FontSize="25"
+                   >
+                            <Run Text="{x:Bind ViewModel.SelectedActivitySummary.DistanceFormatted, Mode=OneWay}" />
+                            <Run Text="{x:Bind ViewModel.SelectedActivitySummary.DistanceUnit, Mode=OneWay, Converter={StaticResource DistanceUnitToStringConverter}}"/>
+        </TextBlock>
+        <Image Source="ms-appx:///Assets/Bike.png"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Margin="30,115,0,0"
+               Stretch="UniformToFill"
+               Width="25"
+               Height="25"
+               ></Image>
+        <Image Source="ms-appx:///Assets/clock.png"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Top"
+               Margin="0,115,30,0"
+               Stretch="UniformToFill"
+               Width="25"
+               Height="25"
+               ></Image>
+        <Ellipse 
+            x:Name="AthleteProfilePicture"
+            VerticalAlignment="Top"
+            HorizontalAlignment="Center"
+            Style="{StaticResource ProfileEllipseDesktop}"
+                                 Margin="0,75,0,0">
+            <Ellipse.Fill>
+                <ImageBrush Stretch="Uniform" ImageSource="{x:Bind ViewModel.SelectedAthlete.ProfileMediumFormatted}" />
+            </Ellipse.Fill>
+        </Ellipse>
     </Grid>
 </UserControl>
