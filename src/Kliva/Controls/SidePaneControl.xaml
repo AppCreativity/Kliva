@@ -23,7 +23,6 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <ListView x:Name="TopMenu"
-                  SelectionChanged="OnTopMenuSelectionChanged"
                   Background="Transparent"
                   ItemsSource="{x:Bind ViewModel.TopMenuItems}"
                   ItemTemplateSelector="{StaticResource MenuItemTemplateSelector}"                 
@@ -32,7 +31,6 @@
                   Grid.Row="0" />
 
         <ListView x:Name="BottomMenu"
-                  SelectionChanged="OnBottomMenuSelectionChanged"
                   VerticalAlignment="Bottom"
                   Background="Transparent"
                   ItemsSource="{x:Bind ViewModel.BottomMenuItems}"

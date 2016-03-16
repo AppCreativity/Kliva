@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml.Controls;
 using Kliva.Models;
+using System.Linq;
 
 namespace Kliva.ViewModels
 {
@@ -78,8 +79,6 @@ namespace Kliva.ViewModels
                                 ClubsCommand.Execute(null);
                                 break;
                         }
-
-                        SelectedTopMenuItem = null;
                     }
                 }
             }
@@ -104,8 +103,6 @@ namespace Kliva.ViewModels
                                 HamburgerCommand.Execute(null);
                                 break;
                         }
-
-                        SelectedBottomMenuItem = null;
                     }
                 }                
             }
@@ -116,10 +113,10 @@ namespace Kliva.ViewModels
 
         //TODO: Glenn - We hooked this up twice, once in SidePaneViewModel and once in MainViewModel because of difference in UI on desktop ( sidebar ) and mobile ( bottom appbar )
         private RelayCommand _statisticsCommand;
-        public RelayCommand StatisticsCommand => _statisticsCommand ?? (_statisticsCommand = new RelayCommand(() => NavigationService.Navigate<StatsPage>()));
+        public RelayCommand StatisticsCommand => _statisticsCommand ?? (_statisticsCommand = new RelayCommand(() => ChangePage<StatsPage>()));
 
         private RelayCommand _profileCommand;
-        public RelayCommand ProfileCommand => _profileCommand ?? (_profileCommand = new RelayCommand(() => NavigationService.Navigate<ProfilePage>()));
+        public RelayCommand ProfileCommand => _profileCommand ?? (_profileCommand = new RelayCommand(() => ChangePage<ProfilePage>()));
 
         private RelayCommand _clubsCommand;
         public RelayCommand ClubsCommand => _clubsCommand ?? (_clubsCommand = new RelayCommand(() => ChangePage<ClubsPage>()));
@@ -176,16 +173,61 @@ namespace Kliva.ViewModels
                 this.DisplayMode = SplitViewDisplayMode.Inline;
                 this.IsPaneOpen = false;
             }
+
+            UpdateSelectionForPageType();
+        }
+
+        private void UpdateSelectionForPageType()
+        {
+            if (_pageType == typeof(SettingsPage))
+            {
+                SelectedBottomMenuItem =
+                    BottomMenuItems.Where(i => i.MenuItemType == MenuItemType.Settings).First();
+            }
+            else
+            {
+                SelectedBottomMenuItem = null;
+            }
+
+            if (_pageType == typeof(ActivityDetailPage) || _pageType == typeof(MainPage))
+            {
+                SelectedTopMenuItem =
+                    TopMenuItems.Where(i => i.MenuItemType == MenuItemType.Home).First();
+            }
+            else if (_pageType == typeof(ClubDetailPage) || _pageType == typeof(ClubsPage))
+            {
+                SelectedTopMenuItem =
+                    TopMenuItems.Where(i => i.MenuItemType == MenuItemType.Clubs).First();
+            }
+            else if (_pageType == typeof(ProfilePage) && IsNoneParameter())
+            {
+                SelectedTopMenuItem =
+                    TopMenuItems.Where(i => i.MenuItemType == MenuItemType.Profile).First();
+            }
+            else if (_pageType == typeof(StatsPage) && IsNoneParameter())
+            {
+                SelectedTopMenuItem =
+                    TopMenuItems.Where(i => i.MenuItemType == MenuItemType.Statistics).First();
+            }
+            else
+            {
+                SelectedTopMenuItem = null;
+            }
         }
 
         private void ChangePage<DestinationPageType>()
         {
             // The side pane does not pass a navigation parameter, we can use this to distinguish
             // between a top-level page versus some other page in the hierarchy
-            if (typeof(DestinationPageType) != _pageType && NavigationService.CurrentParameter == null)
+            if (typeof(DestinationPageType) != _pageType && IsNoneParameter())
             {
                 NavigationService.Navigate<DestinationPageType>();
             }
+        }
+
+        private bool IsNoneParameter()
+        {
+            return string.IsNullOrEmpty(NavigationService.CurrentParameter as string);
         }
     }
 }
