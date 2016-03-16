@@ -108,7 +108,7 @@
                                        RelativePanel.Below="ActivityName" RelativePanel.AlignLeftWithPanel="True" />
                             
                             <TextBlock x:Name="ActivityStart" x:Phase="2"
-                                       Margin="0,0,0,2.5"
+                                       Margin="0,0,16,2.5"
                                        Text="{x:Bind StartDate, Mode=OneWay, Converter={StaticResource RelativeTimeConverter}}"
                                        Style="{StaticResource SubheadingBaseTextBlock}"
                                        FontSize="12"

@@ -127,7 +127,11 @@ namespace Kliva.Models
                                 index = _storage.IndexOf(olditem);
                                 _storage[index] = newitem;
                                 _storageLookup[key] = newitem;
-                                //NotifyReplace(newitem, olditem, index);
+
+                                if (newitem.GetType() == typeof(ActivitySummary))
+                                {
+                                    ((ActivitySummary)olditem).MergeInData(newitem as ActivitySummary);
+                                }
                             }
                             else
                             {
