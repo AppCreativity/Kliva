@@ -30,7 +30,7 @@ namespace Kliva.Models
 
             ActivitySort sort = await _settingsService.GetStoredActivitySortAsync();
             if (sort == ActivitySort.EndTime)
-                results = results.OrderBy(activity => activity.EndDate);
+                results = results.OrderByDescending(activity => activity.EndDate);
 
             return results.Cast<object>().ToList();
         }
