@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.Security.Authentication.Web;
@@ -130,8 +128,7 @@ namespace Kliva.Services
 
         protected virtual void OnStatusEvent(StravaServiceEventArgs e)
         {
-            EventHandler<StravaServiceEventArgs> handler = StatusEvent;
-            if (handler != null) handler(this, e);
+            StatusEvent?.Invoke(this, e);
         }
         #endregion
 

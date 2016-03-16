@@ -67,7 +67,6 @@ namespace Kliva.Services
                 string getUrl = $"{Endpoints.Activity}/{activityId}/related?access_token={accessToken}";
                 string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
 
-                //TODO: Glenn - Google maps?
                 var results = Unmarshaller<List<ActivitySummary>>.Unmarshal(json).Select(activity =>
                 {
                     StravaService.SetMetricUnits(activity, defaultDistanceUnitType);
@@ -140,7 +139,6 @@ namespace Kliva.Services
                 string getUrl = $"{Endpoints.Activities}?page={page}&per_page={perPage}&access_token={accessToken}";
                 string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
 
-                //TODO: Glenn - Google maps?
                 var results = Unmarshaller<List<ActivitySummary>>.Unmarshal(json).Select(activity =>
                 {
                     StravaService.SetMetricUnits(activity, defaultDistanceUnitType);

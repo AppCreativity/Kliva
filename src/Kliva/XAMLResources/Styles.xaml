@@ -34,50 +34,50 @@
     
     <!-- NAMED TYPES -->
 
-    <Style x:Name="BaseTextBlock" TargetType="TextBlock">
+    <Style x:Key="BaseTextBlock" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource OpenSansFontLight}" />
     </Style>
 
-    <Style x:Name="TrimmingTextBlock" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}">
+    <Style x:Key="TrimmingTextBlock" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}">
         <Setter Property="TextTrimming" Value="WordEllipsis" />
     </Style>
 
-    <Style x:Name="BaseWhiteTextBlock" BasedOn="{StaticResource BaseTextBlock}"
+    <Style x:Key="BaseWhiteTextBlock" BasedOn="{StaticResource BaseTextBlock}"
            TargetType="TextBlock">
         <Setter Property="Foreground" Value="White" />
     </Style>
 
-    <Style x:Name="TitleTextBlockMobile" BasedOn="{StaticResource BaseWhiteTextBlock}"
+    <Style x:Key="TitleTextBlockMobile" BasedOn="{StaticResource BaseWhiteTextBlock}"
            TargetType="TextBlock">
         <Setter Property="FontSize" Value="20" />
         <Setter Property="Margin" Value="14,-5,0,2" />
     </Style>
 
-    <Style x:Name="TitleTextBlockDesktop" BasedOn="{StaticResource BaseWhiteTextBlock}"
+    <Style x:Key="TitleTextBlockDesktop" BasedOn="{StaticResource BaseWhiteTextBlock}"
            TargetType="TextBlock">
         <Setter Property="Margin" Value="60,0,0,10" />
     </Style>
 
-    <Style x:Name="TitleTextBlockDesktopWithSideBar" BasedOn="{StaticResource BaseWhiteTextBlock}"
+    <Style x:Key="TitleTextBlockDesktopWithSideBar" BasedOn="{StaticResource BaseWhiteTextBlock}"
            TargetType="TextBlock">
         <Setter Property="Margin" Value="10,0,0,10" />
     </Style>
     
-    <Style x:Name="PaneIcon" TargetType="FontIcon">
+    <Style x:Key="PaneIcon" TargetType="FontIcon">
         <Setter Property="Width" Value="40" />
         <Setter Property="Height" Value="40" />
         <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
         <Setter Property="Foreground" Value="White" />
     </Style>
 
-    <Style x:Name="PaneButton" TargetType="Button">
+    <Style x:Key="PaneButton" TargetType="Button">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
     </Style>
 
-    <Style x:Name="PaneIconTextBlock" BasedOn="{StaticResource BaseWhiteTextBlock}" TargetType="TextBlock">
+    <Style x:Key="PaneIconTextBlock" BasedOn="{StaticResource BaseWhiteTextBlock}" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
         <Setter Property="FontSize" Value="20" />
         <Setter Property="Width" Value="48" />
@@ -86,66 +86,66 @@
         <Setter Property="TextAlignment" Value="Center" />
     </Style>
 
-    <Style x:Name="PaneIconMaterialTextBlock" BasedOn="{StaticResource PaneIconTextBlock}" TargetType="TextBlock">
+    <Style x:Key="PaneIconMaterialTextBlock" BasedOn="{StaticResource PaneIconTextBlock}" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}" />
     </Style>
 
-    <Style x:Name="KlivaButtonMobile" TargetType="Button">
+    <Style x:Key="KlivaButtonMobile" TargetType="Button">
         <Setter Property="Background" Value="{StaticResource KlivaDarkBrush}" />
         <Setter Property="Foreground" Value="White" />
         <Setter Property="FontFamily" Value="{StaticResource OpenSansFontLight}" />
         <Setter Property="FontSize" Value="18" />
     </Style>
 
-    <Style x:Name="KlivaButtonDesktop" TargetType="Button">
+    <Style x:Key="KlivaButtonDesktop" TargetType="Button">
         <Setter Property="Background" Value="{StaticResource KlivaDarkBrush}" />
         <Setter Property="Foreground" Value="White" />
         <Setter Property="FontFamily" Value="{StaticResource OpenSansFontLight}" />
         <Setter Property="FontSize" Value="22" />
     </Style>
 
-    <Style x:Name="ProfileEllipseDesktop" TargetType="Ellipse">
+    <Style x:Key="ProfileEllipseDesktop" TargetType="Ellipse">
         <Setter Property="Height" Value="65" />
         <Setter Property="Width" Value="65" />
         <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
     </Style>
 
-    <Style x:Name="ProfileEllipseMobile" TargetType="Ellipse">
+    <Style x:Key="ProfileEllipseMobile" TargetType="Ellipse">
         <Setter Property="Height" Value="50" />
         <Setter Property="Width" Value="50" />
         <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
     </Style>
 
-    <Style x:Name="ProfileEllipseLarge" TargetType="Ellipse">
+    <Style x:Key="ProfileEllipseLarge" TargetType="Ellipse">
         <Setter Property="Height" Value="124" />
         <Setter Property="Width" Value="124" />
         <Setter Property="Margin" Value="10" />
         <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
     </Style>
 
-    <Style x:Name="ProfileNameStyle" TargetType="TextBlock">
+    <Style x:Key="ProfileNameStyle" TargetType="TextBlock">
         <Setter Property="FontSize" Value="32" />
         <Setter Property="FontFamily" Value="{StaticResource OpenSansFontSemibold}" />
         <Setter Property="Foreground" Value="{StaticResource KlivaMainBrush}" />
     </Style>
 
-    <Style x:Name="ProfileLocationStyle" TargetType="TextBlock">
+    <Style x:Key="ProfileLocationStyle" TargetType="TextBlock">
         <Setter Property="FontSize" Value="16" />
         <Setter Property="FontFamily" Value="{StaticResource OpenSansFontSemibold}" />
         <Setter Property="Foreground" Value="{StaticResource SubTextBrush}" />
     </Style>
 
-    <Style x:Name="ActivityImageBorderMobile" TargetType="Border">
+    <Style x:Key="ActivityImageBorderMobile" TargetType="Border">
         <Setter Property="Height" Value="20" />
         <Setter Property="Width" Value="20" />
     </Style>
 
-    <Style x:Name="ActivityImageBorderDesktop" TargetType="Border">
+    <Style x:Key="ActivityImageBorderDesktop" TargetType="Border">
         <Setter Property="Height" Value="30" />
         <Setter Property="Width" Value="30" />
     </Style>
 
-    <Style x:Name="MenuItemContainerStyle" TargetType="ListViewItem">
+    <Style x:Key="MenuItemContainerStyle" TargetType="ListViewItem">
         <Setter Property="Padding" Value="0" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
@@ -959,7 +959,7 @@
         <Setter Property="HorizontalAlignment" Value="Stretch" />
     </Style>
 
-    <Style x:Name="HorizontalListViewStyle" TargetType="ListView">
+    <Style x:Key="HorizontalListViewStyle" TargetType="ListView">
         <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Auto" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden" />
         <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled" />
@@ -1138,6 +1138,16 @@
         <Setter Property="ItemContainerStyle">
             <Setter.Value>
                 <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ComboBox">
+        <Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style TargetType="ComboBoxItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                 </Style>
             </Setter.Value>
