@@ -81,10 +81,15 @@
                               MinWidth="150"
                               RelativePanel.Below="SortTypeTextBlock"
                               RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
-                    <TextBlock FontSize="12" Foreground="{StaticResource SubTextBrush}"
+                    <TextBlock x:Name="RemarkTextBlock"
+                               FontSize="12" Foreground="{StaticResource SubTextBrush}"
                                TextWrapping="WrapWholeWords"
                                RelativePanel.Below="SortTypeCombobox"
                                Text="* We usually sort the activities on the time they started, but the Strava website shows them sorted by end time. This difference is mostly visible in longer running activities." />
+                    <TextBlock FontSize="12" Foreground="{StaticResource SubTextBrush}"
+                               TextWrapping="WrapWholeWords"
+                               RelativePanel.Below="RemarkTextBlock"
+                               Text="** Changing these settings currently need a restart of the application." />
                 </RelativePanel>
             </PivotItem>
             <PivotItem Header="data cache">
