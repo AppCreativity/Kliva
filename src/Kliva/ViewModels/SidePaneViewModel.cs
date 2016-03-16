@@ -143,7 +143,7 @@ namespace Kliva.ViewModels
             TopMenuItems.Add(new MenuItem() { Icon = "", Title = "club", MenuItemType = MenuItemType.Clubs, MenuItemFontType = MenuItemFontType.Material });
 
             BottomMenuItems.Add(new MenuItem() { Icon = "", Title = "settings", MenuItemType = MenuItemType.Settings, MenuItemFontType = MenuItemFontType.MDL2 });
-            BottomMenuItems.Add(new MenuItem() { Icon = "", Title = "", MenuItemType = MenuItemType.Empty, MenuItemFontType = MenuItemFontType.MDL2 });
+            BottomMenuItems.Add(new MenuItem() { Icon = "", Title = null, MenuItemType = MenuItemType.Empty, MenuItemFontType = MenuItemFontType.MDL2 });
         }
 
         private void OnVisibleBoundsChanged(ApplicationView sender, object args)
