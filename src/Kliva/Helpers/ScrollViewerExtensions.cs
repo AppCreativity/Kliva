@@ -4,6 +4,7 @@ using System.Diagnostics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 
 namespace Kliva.Helpers
@@ -441,6 +442,31 @@ namespace Kliva.Helpers
                 factor, duration, easingFunction);
         }
         #endregion
+
+        public static ScrollViewer GetScrollViewer(this DependencyObject element)
+        {
+            if (element is ScrollViewer)
+            {
+                return (ScrollViewer)element;
+            }
+
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(element); i++)
+            {
+                var child = VisualTreeHelper.GetChild(element, i);
+
+                var result = GetScrollViewer(child);
+                if (result == null)
+                {
+                    continue;
+                }
+                else
+                {
+                    return result;
+                }
+            }
+
+            return null;
+        }
     }
 
     public class ScrollViewerAnimatedScrollHandler : FrameworkElement
