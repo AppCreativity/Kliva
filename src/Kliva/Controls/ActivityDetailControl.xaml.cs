@@ -151,7 +151,7 @@ namespace Kliva.Controls
                 headerColapseExpression.SetScalarParameter("minClamp", (float)BlurPanel.ActualHeight - 50); //50 is the desired height of the header when collapsed
                 //mapMoveExpression.Expression = "Clamp(scroller.Translation.Y, minClamp, 0)";
 
-                headerColapseExpression.Expression = "Clamp(scroller.Translation.Y,-130,0)";
+                headerColapseExpression.Expression = "Clamp(scroller.Translation.Y,-150,0)";
                 
                 Visual backgroundVisual = ElementCompositionPreview.GetElementVisual(BlurPanel);
                 backgroundVisual.StartAnimation("Offset.Y", headerColapseExpression);
