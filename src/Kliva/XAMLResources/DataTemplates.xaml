@@ -72,7 +72,7 @@
                             <Ellipse.Fill>
                                 <ImageBrush Stretch="UniformToFill">
                                     <ImageBrush.ImageSource>
-                                        <BitmapImage DecodePixelHeight="50" DecodePixelWidth="50" UriSource="{x:Bind Athlete.ProfileLargeFormatted, Mode=OneWay}" />
+                                        <BitmapImage DecodePixelHeight="65" DecodePixelWidth="65" UriSource="{x:Bind Athlete.ProfileLargeFormatted, Mode=OneWay}" />
                                     </ImageBrush.ImageSource>
                                 </ImageBrush>
                             </Ellipse.Fill>
@@ -108,7 +108,7 @@
                                        RelativePanel.Below="ActivityName" RelativePanel.AlignLeftWithPanel="True" />
                             
                             <TextBlock x:Name="ActivityStart" x:Phase="2"
-                                       Margin="0,0,0,2.5"
+                                       Margin="0,0,16,2.5"
                                        Text="{x:Bind StartDate, Mode=OneWay, Converter={StaticResource RelativeTimeConverter}}"
                                        Style="{StaticResource SubheadingBaseTextBlock}"
                                        FontSize="12"

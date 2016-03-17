@@ -309,8 +309,8 @@
             x:Name="BlurPanel"
             HorizontalAlignment="Stretch" 
             VerticalAlignment="Top" 
-            Height="180px"
-            Margin="0,0,0,0"
+            Height="200px"
+            Margin="0"
             Grid.Row="0" Grid.RowSpan="2">
 
         </compositioncontrols:BlurPanelProto>
@@ -370,7 +370,11 @@
             Style="{StaticResource ProfileEllipseDesktop}"
                                  Margin="0,75,0,0">
             <Ellipse.Fill>
-                <ImageBrush Stretch="Uniform" ImageSource="{x:Bind ViewModel.SelectedAthlete.ProfileMediumFormatted}" />
+                <ImageBrush Stretch="Uniform">
+                    <ImageBrush.ImageSource>
+                        <BitmapImage DecodePixelHeight="100" DecodePixelWidth="100" UriSource="{x:Bind ViewModel.SelectedAthlete.ProfileLargeFormatted, Mode=OneWay}" />
+                    </ImageBrush.ImageSource>
+                </ImageBrush>
             </Ellipse.Fill>
         </Ellipse>
     </Grid>

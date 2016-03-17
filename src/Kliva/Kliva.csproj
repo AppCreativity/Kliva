@@ -11,7 +11,7 @@
     <AssemblyName>Kliva</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.14284.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.14283.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <EnableDotNetNativeCompatibleProfile>true</EnableDotNetNativeCompatibleProfile>
@@ -96,6 +96,7 @@
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
     <Content Include="Assets\Bike.png" />
     <Content Include="Assets\clock.png" />
+    <Content Include="Assets\crank.png" />
     <Content Include="Assets\End.png" />
     <Content Include="Assets\Fonts\OpenSans-Bold.ttf" />
     <Content Include="Assets\Fonts\OpenSans-Light.ttf" />
@@ -121,7 +122,6 @@
     </Compile>
     <Compile Include="Controls\KlivaApplicationFrame.cs" />
     <Compile Include="Controls\MenuItemTemplateSelector.cs" />
-    <Compile Include="Controls\RefreshableListView.cs" />
     <Compile Include="Controls\OneUpPhotoViewer\ImagePopupViewer.xaml.cs">
       <DependentUpon>ImagePopupViewer.xaml</DependentUpon>
     </Compile>
@@ -304,11 +304,6 @@
     <Page Include="Controls\SidePaneControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\generic.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="Views\ActivityDetailPage.xaml">
       <SubType>Designer</SubType>
