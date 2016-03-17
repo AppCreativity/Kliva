@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Kliva.Services.Performance;
+using System.Diagnostics;
 
 namespace Kliva.Services
 {
@@ -37,7 +38,7 @@ namespace Kliva.Services
             {
                 _perflog.GetPhotosFromService(false, activityId);
 
-                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                var accessToken = await _settingsService.GetStoredStravaAccessTokenAsync();
 
                 string getUrl = $"{Endpoints.Activity}/{activityId}/photos?photo_sources=true&size=600&access_token={accessToken}";
                 string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
@@ -61,13 +62,12 @@ namespace Kliva.Services
             {
                 _perflog.GetRelatedActivitiesFromService(false, activityId);
 
-                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                var accessToken = await _settingsService.GetStoredStravaAccessTokenAsync();
                 var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitTypeAsync();
 
                 string getUrl = $"{Endpoints.Activity}/{activityId}/related?access_token={accessToken}";
                 string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
 
-                //TODO: Glenn - Google maps?
                 var results = Unmarshaller<List<ActivitySummary>>.Unmarshal(json).Select(activity =>
                 {
                     StravaService.SetMetricUnits(activity, defaultDistanceUnitType);
@@ -97,7 +97,7 @@ namespace Kliva.Services
             {
                 _perflog.GetActivityAsync(false, id, includeEfforts);
 
-                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                var accessToken = await _settingsService.GetStoredStravaAccessTokenAsync();
                 var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitTypeAsync();
 
                 string getUrl = $"{Endpoints.Activity}/{id}?include_all_efforts={includeEfforts}&access_token={accessToken}";
@@ -112,6 +112,7 @@ namespace Kliva.Services
                 }
 
                 _perflog.GetActivityAsync(true, id, includeEfforts);
+
                 return activity;
             }
             catch (Exception ex)
@@ -133,14 +134,13 @@ namespace Kliva.Services
             try
             {
                 _perflog.GetActivitiesAsync(false, page, perPage);
-                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                var accessToken = await _settingsService.GetStoredStravaAccessTokenAsync();
                 var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitTypeAsync();
 
                 //TODO: Glenn - Optional parameters should be treated as such!
                 string getUrl = $"{Endpoints.Activities}?page={page}&per_page={perPage}&access_token={accessToken}";
                 string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
 
-                //TODO: Glenn - Google maps?
                 var results = Unmarshaller<List<ActivitySummary>>.Unmarshal(json).Select(activity =>
                 {
                     StravaService.SetMetricUnits(activity, defaultDistanceUnitType);
@@ -168,7 +168,7 @@ namespace Kliva.Services
             try
             {
                 _perflog.GetFollowersActivitiesAsync(false, page, perPage);
-                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                var accessToken = await _settingsService.GetStoredStravaAccessTokenAsync();
                 var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitTypeAsync();
 
                 //TODO: Glenn - Optional parameters should be treated as such!
@@ -206,7 +206,7 @@ namespace Kliva.Services
             try
             {
                 _perflog.GetKudosAsync(false, activityId);
-                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                var accessToken = await _settingsService.GetStoredStravaAccessTokenAsync();
 
                 string getUrl = $"{Endpoints.Activity}/{activityId}/kudos?access_token={accessToken}";
                 string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
@@ -231,7 +231,7 @@ namespace Kliva.Services
         {
             try
             {
-                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                var accessToken = await _settingsService.GetStoredStravaAccessTokenAsync();
 
                 string postUrl = $"{Endpoints.Activity}/{activityId}/kudos?access_token={accessToken}";
                 await _stravaWebClient.SendPostAsync(new Uri(postUrl));
@@ -251,7 +251,7 @@ namespace Kliva.Services
         {
             try
             {
-                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                var accessToken = await _settingsService.GetStoredStravaAccessTokenAsync();
 
                 string getUrl = $"{Endpoints.Activity}/{activityId}/comments?access_token={accessToken}";
                 string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
@@ -283,7 +283,7 @@ namespace Kliva.Services
             try
             {
                 _perflog.GetFriendActivityDataAsync(false, page, perPage);
-                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                var accessToken = await _settingsService.GetStoredStravaAccessTokenAsync();
 
                 //TODO: Glenn - Optional parameters should be treated as such!
                 string getUrl = $"{Endpoints.ActivitiesFollowers}?page={page}&per_page={perPage}&access_token={accessToken}";
@@ -298,14 +298,13 @@ namespace Kliva.Services
             return data;
         }
 
-
         public async Task<string> GetMyActivityDataAsync(int page, int perPage)
         {
             string data = null;
 
             try
             {
-                var accessToken = await _settingsService.GetStoredStravaAccessToken();
+                var accessToken = await _settingsService.GetStoredStravaAccessTokenAsync();
                 string getUrl = $"{Endpoints.Activities}?page={page}&per_page={perPage}&access_token={accessToken}";
                 data = await _stravaWebClient.GetAsync(new Uri(getUrl));
             }
@@ -325,6 +324,15 @@ namespace Kliva.Services
                 results = Unmarshaller<List<ActivitySummary>>.Unmarshal(data).Select(activity =>
                 {
                     StravaService.SetMetricUnits(activity, defaultDistanceUnitType);
+
+                    if (!string.IsNullOrEmpty(activity.Map.SummaryPolyline))
+                    {
+                        activity.Map.GoogleImageApiUrl = string.Format("http://maps.googleapis.com/maps/api/staticmap?sensor=false&maptype={0}&size={1}x{2}&scale=2&path=weight:4|color:0xff0000ff|enc:{3}&key={4}",
+                                "roadmap",
+                                480, 220,
+                                activity.Map.SummaryPolyline,
+                                StravaIdentityConstants.GOOGLE_MAP_API);
+                    }
                     return activity;
                 }).ToList();
             }

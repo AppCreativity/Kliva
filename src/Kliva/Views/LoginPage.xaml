@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:triggers="using:WindowsStateTriggers"
-    xmlns:compositioncontrols="using:App1"
+    xmlns:compositioncontrols="using:SamplesCommon"
     mc:Ignorable="d"
     DataContext="{Binding Login, Source={StaticResource Locator}}">
 
@@ -51,13 +51,15 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <StackPanel x:Name="TitlePanel"
+        <Grid x:Name="TitlePanel"
                     Grid.Row="0"
+                    Height="60"
+                    VerticalAlignment="Center"
                     Background="{StaticResource KlivaMainBrush}">
             <TextBlock x:Name="TitleTextBlock"
+            VerticalAlignment="Center"
                        Text="Kliva" />
-        </StackPanel>
-        
+        </Grid>
         
         <MediaElement Source="ms-appx:///assets/hyperlapse.mp4" 
                       HorizontalAlignment="Stretch"
@@ -67,11 +69,13 @@
                       IsLooping="True"
                       ></MediaElement>
        
-        <compositioncontrols:BlurPanelProto 
+        <compositioncontrols:BackDrop 
+            x:Name="blurBackground"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Grid.Row="1"
-            ></compositioncontrols:BlurPanelProto>
+            BlurAmount="45"
+            ></compositioncontrols:BackDrop>
         
         <RelativePanel x:Name="ContentPanel"                       
                        Grid.Row="1">

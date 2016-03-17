@@ -43,8 +43,13 @@
                     <VisualState.Setters>
                         <Setter Target="ActivityDetailCommandBar.Visibility" Value="Visible" />
                         <Setter Target="BlurPanel.Visibility" Value="Collapsed"/>
+                        <Setter Target="BikeIcon.Visibility" Value="Collapsed"/>
+                        <Setter Target="ClockIcon.Visibility" Value="Collapsed"/>
+                        <Setter Target="AthleteProfilePicture.Visibility" Value="Collapsed"/>
+                        <Setter Target="DistanceFormattedTextBlockHeader.Visibility" Value="Collapsed"/>
+                        <Setter Target="TimeMovingFormattedTextBlockHeader.Visibility" Value="Collapsed"/>
+                        <Setter Target="ActivityName.Visibility" Value="Collapsed"/>
                         <Setter Target="ActivityMap.Height" Value="300" />
-
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -309,7 +314,7 @@
             Grid.Row="0" Grid.RowSpan="2">
 
         </compositioncontrols:BlurPanelProto>
-        <TextBlock Margin="0,35,0,15" Foreground="White"
+        <TextBlock x:Name="ActivityName" Margin="0,35,0,15" Foreground="White"
                    HorizontalAlignment="Center" VerticalAlignment="Top"
                    FontFamily="{StaticResource OpenSansFontLight}" 
                        FontSize="18"
@@ -338,7 +343,9 @@
                             <Run Text="{x:Bind ViewModel.SelectedActivitySummary.DistanceFormatted, Mode=OneWay}" />
                             <Run Text="{x:Bind ViewModel.SelectedActivitySummary.DistanceUnit, Mode=OneWay, Converter={StaticResource DistanceUnitToStringConverter}}"/>
         </TextBlock>
-        <Image Source="ms-appx:///Assets/Bike.png"
+        <Image 
+               x:Name="BikeIcon"
+               Source="ms-appx:///Assets/Bike.png"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
                Margin="30,115,0,0"
@@ -346,7 +353,9 @@
                Width="25"
                Height="25"
                ></Image>
-        <Image Source="ms-appx:///Assets/clock.png"
+        <Image 
+               x:Name="ClockIcon"
+               Source="ms-appx:///Assets/clock.png"
                HorizontalAlignment="Right"
                VerticalAlignment="Top"
                Margin="0,115,30,0"

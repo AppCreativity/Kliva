@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿using System;
+using Windows.UI.Xaml.Controls;
 
 namespace Kliva.Views
 {
@@ -10,6 +11,17 @@ namespace Kliva.Views
         public LoginPage()
         {
             this.InitializeComponent();
+            Loaded += LoginPage_Loaded;
+        }
+
+        private void LoginPage_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            var animation = blurBackground.Compositor.CreateScalarKeyFrameAnimation();
+            animation.InsertKeyFrame(0.0f, 0);
+            animation.InsertKeyFrame(1.0f, 45);
+            animation.Duration = TimeSpan.FromSeconds(10);
+
+            blurBackground.VisualProperties.StartAnimation("BlurAmount", animation);
         }
     }
 }

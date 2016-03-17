@@ -40,15 +40,37 @@ namespace Kliva.Models
         private readonly string _name;
         protected ActivityFeedFilter _filter;
 
+        #region Event handlers
+        public event EventHandler DataLoaded;
+
+        protected virtual void OnDataLoaded()
+        {
+            EventHandler handler = DataLoaded;
+            handler?.Invoke(this, null);
+        }
+        #endregion
+
         protected CachedKeyedIncrementalLoadingBase(ActivityFeedFilter name)
         {
             _filter = name;
-            _name = name.ToString(); // TODO review string > ActivityFeedFilter
+
+            //Currently the Strava API has no difference in returning Friends' feed of All feed, so we store the cache under the same name!
+            switch (name)
+            {
+                case ActivityFeedFilter.All:
+                case ActivityFeedFilter.Friends:
+                    _name = ActivityFeedFilter.All.ToString();
+                    break;
+                default:
+                    _name = name.ToString();
+                    break;
+            }
             LoadNewData();
         }
-
-        private void LoadNewData()
+        
+        public void LoadNewData(TimeSpan? delay = null)
         {
+            if (delay == null) { delay = TimeSpan.FromMinutes(5); }
             DateTime timestamp = DateTime.MinValue;
             int page = 1;
 
@@ -64,7 +86,7 @@ namespace Kliva.Models
                         timestamp = await LocalCacheService.GetCacheTimestamp(_name);
                     }
                 }
-                if (DateTime.Now - timestamp > new TimeSpan(0, 5, 0))
+                if (DateTime.Now - timestamp > delay)
                 {
                     string data = await FetchData(page, _pageSize);
                     var items = await HydrateItems(data);
@@ -76,6 +98,8 @@ namespace Kliva.Models
                 }
                 _hasLoaded = true;
                 HasData = true;
+
+                OnDataLoaded();
             });
             t.Start();
         }
@@ -103,7 +127,7 @@ namespace Kliva.Models
                                 index = _storage.IndexOf(olditem);
                                 _storage[index] = newitem;
                                 _storageLookup[key] = newitem;
-                                NotifyReplace(newitem, olditem, index);
+                                //NotifyReplace(newitem, olditem, index);
                             }
                             else
                             {

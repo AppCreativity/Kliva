@@ -22,14 +22,21 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <ListView x:Name="TopMenu"
+        <StackPanel Grid.Row="0">
+            <StackPanel Orientation="Horizontal" Height="48" ToolTipService.ToolTip="back" IsHitTestVisible="False" Visibility="{x:Bind ViewModel.CanGoBack, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <TextBlock Style="{StaticResource PaneIconTextBlock}" Text=""/>
+                <TextBlock Text="back"
+                       VerticalAlignment="Center"
+                       Style="{StaticResource BaseWhiteTextBlock}" />
+            </StackPanel>
+            <ListView x:Name="TopMenu"
                   SelectionChanged="OnTopMenuSelectionChanged"
                   Background="Transparent"
                   ItemsSource="{x:Bind ViewModel.TopMenuItems}"
                   ItemTemplateSelector="{StaticResource MenuItemTemplateSelector}"                 
                   ItemContainerStyle="{StaticResource MenuItemContainerStyle}"
-                  SelectedItem="{x:Bind ViewModel.SelectedTopMenuItem, Mode=TwoWay, Converter={StaticResource XBindItemCastingConverter}}"
-                  Grid.Row="0" />
+                  SelectedItem="{x:Bind ViewModel.SelectedTopMenuItem, Mode=TwoWay, Converter={StaticResource XBindItemCastingConverter}}" />
+        </StackPanel>
 
         <ListView x:Name="BottomMenu"
                   SelectionChanged="OnBottomMenuSelectionChanged"

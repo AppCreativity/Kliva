@@ -1,20 +1,18 @@
-﻿using System.Collections.Generic;
-using Cimbalino.Toolkit.Services;
+﻿using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
+using Kliva.Helpers;
 using Kliva.Messages;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
 using Kliva.ViewModels.Interfaces;
 using Kliva.Views;
-using System.Collections.ObjectModel;
+using Microsoft.Practices.ServiceLocation;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
 using Windows.UI.Xaml;
-using GalaSoft.MvvmLight.Messaging;
-using Kliva.Helpers;
-using Microsoft.Practices.ServiceLocation;
-using System.Diagnostics;
-using System;
 
 namespace Kliva.ViewModels
 {
@@ -50,13 +48,6 @@ namespace Kliva.ViewModels
             set { Set(() => FilterText, ref _filterText, value); }
         }
 
-        private ObservableCollection<ActivitySummary> _activities = new ObservableCollection<ActivitySummary>();
-        public ObservableCollection<ActivitySummary> Activities
-        {
-            get { return _activities; }
-            set { Set(() => Activities, ref _activities, value); }
-        }
-
         private ActivityIncrementalCollection _activityIncrementalCollection;
         public ActivityIncrementalCollection ActivityIncrementalCollection
         {
@@ -86,6 +77,8 @@ namespace Kliva.ViewModels
         public RelayCommand<string> FilterCommand => _filterCommand ?? (_filterCommand = new RelayCommand<string>((item) =>
         {
             ActivityFeedFilter filter = Enum<ActivityFeedFilter>.Parse(item);
+            _settingsService.SetActivityFeedFilterAsync(filter);
+
             switch (filter)
             {
                 case ActivityFeedFilter.All:
@@ -102,6 +95,10 @@ namespace Kliva.ViewModels
                     break;
             }
         }));
+
+        private RelayCommand _refreshCommand;
+
+        public RelayCommand RefreshCommand => _refreshCommand ?? (_refreshCommand = new RelayCommand(() => this.ActivityIncrementalCollection.LoadNewData(TimeSpan.FromSeconds(0))));
 
         private RelayCommand _logoutCommand;
         public RelayCommand LogoutCommand => _logoutCommand ?? (_logoutCommand = new RelayCommand(async () => await this.Logout()));
@@ -136,7 +133,7 @@ namespace Kliva.ViewModels
         {
             //this.IsBusy = true;
 
-            await _settingsService.RemoveStravaAccessToken();
+            await _settingsService.RemoveStravaAccessTokenAsync();
 
             //Remove the current 'main page' back entry and navigate to the login page
             NavigationService.Navigate<LoginPage>();
@@ -149,8 +146,10 @@ namespace Kliva.ViewModels
         {
             if (!_viewModelLoaded)
             {
+                ActivityFeedFilter filter = await _settingsService.GetStoredActivityFeedFilterAsync();
+
                 var athlete = await _stravaService.GetAthleteAsync();
-                ActivityIncrementalCollection = new FriendActivityIncrementalCollection(_stravaService, ActivityFeedFilter.All); // TODO store filter in settings for next app run
+                ActivityIncrementalCollection = new FriendActivityIncrementalCollection(_stravaService, filter);
                 _viewModelLoaded = true;
             }
         }

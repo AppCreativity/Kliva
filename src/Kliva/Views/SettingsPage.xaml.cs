@@ -1,6 +1,5 @@
 ﻿using Windows.UI.Xaml.Controls;
-
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
+using Kliva.ViewModels;
 
 namespace Kliva.Views
 {
@@ -9,6 +8,8 @@ namespace Kliva.Views
     /// </summary>
     public sealed partial class SettingsPage : Page
     {
+        private SettingsViewModel ViewModel => DataContext as SettingsViewModel;
+
         public SettingsPage()
         {
             this.InitializeComponent();

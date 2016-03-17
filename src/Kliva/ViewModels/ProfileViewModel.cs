@@ -127,11 +127,14 @@ namespace Kliva.ViewModels
         private async Task GetFollowersAsync(string athleteId, bool authenticatedUser = true)
         {
             var followers = await _stravaService.GetFollowersAsync(athleteId, authenticatedUser);
-            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+            if (followers != null)
             {
-                foreach (AthleteSummary follower in followers)
-                    Followers.Add(follower);
-            });
+                DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                {
+                    foreach (AthleteSummary follower in followers)
+                        Followers.Add(follower);
+                });
+            }
         }
 
         private async Task GetFriendsAsync(string athleteId, bool authenticatedUser = true)
@@ -166,17 +169,20 @@ namespace Kliva.ViewModels
 
         private async Task GetStarredSegmentsAsync(string athleteId = null)
         {
-            List<SegmentSummary> segments = new List<SegmentSummary>();
+            List<SegmentSummary> segments;
             if (string.IsNullOrEmpty(athleteId))
                 segments = await _stravaService.GetStarredSegmentsAsync();
             else
                 segments = await _stravaService.GetStarredSegmentsAsync(athleteId);
 
-            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+            if (segments != null)
             {
-                foreach(SegmentSummary segment in segments)
-                    StarredSegments.Add(segment);
-            });
+                DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                {
+                    foreach (SegmentSummary segment in segments)
+                        StarredSegments.Add(segment);
+                });
+            }
         }
     }
 }

@@ -9,25 +9,25 @@ namespace Kliva.Converters
     {
         //TODO: Glenn - Change back to use of Resources for translation like WP8.1 app
 
-        private const string XMonthsAgo_2To4 = "{0} months ago";
-        private const string XMonthsAgo_5To12 = "{0} months ago";
+        private const string XMonthsAgo_2To4 = "{0}mo ago";
+        private const string XMonthsAgo_5To12 = "{0}mo ago";
 
-        private const string XWeeksAgo_2To4 = "{0} weeks ago";
+        private const string XWeeksAgo_2To4 = "{0}w ago";
 
-        private const string XHoursAgo_2To4 = "{0} hours ago";
-        private const string XHoursAgo_EndsIn1Not11 = "{0} hours ago";
-        private const string XHoursAgo_EndsIn2To4Not12To14 = "{0} hours ago";
-        private const string XHoursAgo_Other = "{0} hours ago";
+        private const string XHoursAgo_2To4 = "{0}h ago";
+        private const string XHoursAgo_EndsIn1Not11 = "{0}h ago";
+        private const string XHoursAgo_EndsIn2To4Not12To14 = "{0}h ago";
+        private const string XHoursAgo_Other = "{0}h ago";
 
-        private const string XMinutesAgo_2To4 = "{0} minutes ago";
-        private const string XMinutesAgo_EndsIn1Not11 = "{0} minutes ago";
-        private const string XMinutesAgo_EndsIn2To4Not12To14 = "{0} minutes ago";
-        private const string XMinutesAgo_Other = "{0} minutes ago";
+        private const string XMinutesAgo_2To4 = "{0}m ago";
+        private const string XMinutesAgo_EndsIn1Not11 = "{0}m ago";
+        private const string XMinutesAgo_EndsIn2To4Not12To14 = "{0}m ago";
+        private const string XMinutesAgo_Other = "{0}m ago";
 
-        private const string XSecondsAgo_2To4 = "{0} seconds ago";
-        private const string XSecondsAgo_EndsIn1Not11 = "{0} seconds ago";
-        private const string XSecondsAgo_EndsIn2To4Not12To14 = "{0} seconds ago";
-        private const string XSecondsAgo_Other = "{0} seconds ago";
+        private const string XSecondsAgo_2To4 = "{0}s ago";
+        private const string XSecondsAgo_EndsIn1Not11 = "{0}s ago";
+        private const string XSecondsAgo_EndsIn2To4Not12To14 = "{0}s ago";
+        private const string XSecondsAgo_Other = "{0}s ago";
 
         /// <summary>
         /// A minute defined in seconds.
@@ -288,28 +288,28 @@ namespace Kliva.Converters
             switch (dow)
             {
                 case DayOfWeek.Monday:
-                    result = "on Monday";
+                    result = "Monday";
                     break;
                 case DayOfWeek.Tuesday:
-                    result = "on Tuesday";
+                    result = "Tuesday";
                     break;
                 case DayOfWeek.Wednesday:
-                    result = "on Wednesday";
+                    result = "Wednesday";
                     break;
                 case DayOfWeek.Thursday:
-                    result = "on Thursday";
+                    result = "Thursday";
                     break;
                 case DayOfWeek.Friday:
-                    result = "on Friday";
+                    result = "Friday";
                     break;
                 case DayOfWeek.Saturday:
-                    result = "on Saturday";
+                    result = "Saturday";
                     break;
                 case DayOfWeek.Sunday:
-                    result = "on Sunday";
+                    result = "Sunday";
                     break;
                 default:
-                    result = "on Sunday";
+                    result = "Sunday";
                     break;
             }
 

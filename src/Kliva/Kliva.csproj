@@ -121,6 +121,7 @@
     </Compile>
     <Compile Include="Controls\KlivaApplicationFrame.cs" />
     <Compile Include="Controls\MenuItemTemplateSelector.cs" />
+    <Compile Include="Controls\RefreshableListView.cs" />
     <Compile Include="Controls\OneUpPhotoViewer\ImagePopupViewer.xaml.cs">
       <DependentUpon>ImagePopupViewer.xaml</DependentUpon>
     </Compile>
@@ -207,6 +208,7 @@
     <Compile Include="ViewModels\ActivityDetailViewModel.cs" />
     <Compile Include="ViewModels\ClubDetailViewModel.cs" />
     <Compile Include="ViewModels\ClubsViewModel.cs" />
+    <Compile Include="ViewModels\DesignModeServices.cs" />
     <Compile Include="ViewModels\Interfaces\IStravaViewModel.cs" />
     <Compile Include="ViewModels\KlivaBaseViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
@@ -225,7 +227,7 @@
     <Compile Include="Views\ClubsPage.xaml.cs">
       <DependentUpon>ClubsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DetailPageBase.cs" />
+    <Compile Include="Controls\DetailPageBase.cs" />
     <Compile Include="Views\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
@@ -302,6 +304,11 @@
     <Page Include="Controls\SidePaneControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\generic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="Views\ActivityDetailPage.xaml">
       <SubType>Designer</SubType>
