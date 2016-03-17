@@ -10,23 +10,46 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
-
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" SizeChanged="Grid_SizeChanged">
+    
+    <Grid x:Name="MainGrid" Background="Transparent" SizeChanged="Grid_SizeChanged">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState x:Name="Mobile">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="320"/>
+                        <AdaptiveTrigger MinWindowHeight="320"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="MainGrid.Margin" Value="10,10,10,50"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Desktop">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="720"/>
+                        <AdaptiveTrigger MinWindowHeight="720" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="MainGrid.Margin" Value="50"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        
         <Grid.Clip>
-            <RectangleGeometry x:Name="GridClip" />
+            <RectangleGeometry x:Name="GridClip"/>
         </Grid.Clip>
+        
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" MinHeight="500"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height=".25*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <common:CompositionImage x:Name="BackgroundImage" Stretch="Uniform" Grid.RowSpan="2"/>
-        <StackPanel x:Name="BlurPanel" Grid.ColumnSpan="1" SizeChanged="BlurPanel_SizeChanged" Grid.RowSpan="2"/>
+        <common:CompositionImage x:Name="BackgroundImage" Stretch="Fill" Grid.RowSpan="2" />
+        <common:CompositionImage x:Name="PrimaryImage" Margin="10" Grid.Row="0" MinHeight="300" MinWidth="300"/>
 
-        <common:CompositionImage x:Name="PrimaryImage" Margin="10" Grid.Row="0" Width="600" Height="600"/>
         <ListView x:Name="ImageList" Grid.Row="1"
                     VerticalAlignment="Center"
                     ScrollViewer.HorizontalScrollBarVisibility="Visible"
@@ -35,8 +58,8 @@
                     ScrollViewer.VerticalScrollMode="Disabled"
                     ContainerContentChanging="ListView_ContainerContentChanging"
                     ItemClick="ImageList_ItemClick"
-                    IsItemClickEnabled="True"
-                    Margin="20">
+                    SelectionChanged="ImageList_SelectionChanged"
+                    IsItemClickEnabled="True">
 
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -46,14 +69,13 @@
 
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <RelativePanel Width="150"
-                                Height="150" 
-                                Margin="0, 20, 0, 20">
-                        <common:CompositionImage Width="150" Height="150"/>
+                    <RelativePanel Margin="0, 10, 0, 10">
+                        <common:CompositionImage MaxWidth="150" MaxHeight="150"/>
                     </RelativePanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
         <Button HorizontalAlignment="Right" VerticalAlignment="Top" Click="Close_Click" Width="40" Height="40" Foreground="White">x</Button>
     </Grid>
+
 </UserControl>

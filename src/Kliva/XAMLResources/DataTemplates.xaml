@@ -5,6 +5,7 @@
     xmlns:models="using:Kliva.Models"
     xmlns:local="using:Kliva.XAMLResources"
     xmlns:controls="using:Kliva.Controls"
+    xmlns:common="using:SamplesCommon"
     xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
@@ -308,7 +309,7 @@
     <DataTemplate x:Key="PhotosGridItemTemplate"
                   x:DataType="models:Photo">
         <UserControl>
-            <Image Source="{x:Bind ImageThumbnail, Mode=OneWay}"
+            <common:CompositionImage Source="{x:Bind ImageThumbnail, Mode=OneWay}"
                    Width="150" Height="150" />
         </UserControl>
     </DataTemplate>

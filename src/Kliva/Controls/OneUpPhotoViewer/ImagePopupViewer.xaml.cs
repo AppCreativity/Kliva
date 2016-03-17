@@ -1,4 +1,5 @@
-﻿using Microsoft.Graphics.Canvas;
+﻿using Kliva.Models;
+using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Effects;
 using Microsoft.Graphics.Canvas.UI.Composition;
 using SamplesCommon;
@@ -14,39 +15,164 @@ using Windows.UI.Composition;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Hosting;
+using Windows.UI.Xaml.Media;
 
 namespace CompositionSampleGallery
 {
     public sealed partial class ImagePopupViewer : UserControl
     {
         Compositor                  _compositor;
-        //CompositionEffectFactory    _lightEffectFactory;
-        //CompositionDrawingSurface   _normalMap;
-        //Vector3KeyFrameAnimation    _lightPositionAnimation;
-        //Vector3KeyFrameAnimation    _lightTargetAnimation;
-        Vector3KeyFrameAnimation    _backgroundOffsetAnimation;
+        CompositionEffectFactory    _lightEffectFactory;
+        CompositionSurfaceBrush     _normalMapBrush;
+        Vector3KeyFrameAnimation    _lightPositionAnimation;
+        Vector3KeyFrameAnimation    _lightTargetAnimation;
+        CompositionEffectBrush      _crossFadeBrush;
+        CompositionSurfaceBrush     _previousSurfaceBrush;
+        CompositionScopedBatch      _crossFadeBatch;
         ContinuityTransition        _transition;
-        static ImagePopupViewer _viewerInstance;
-        static Grid _hostGrid;
-        Func<object, Uri> _imageUriGetterFunc;
+        Photo                       _initialPhoto;
+        static ImagePopupViewer     _viewerInstance;
+        static Grid                 _hostGrid;
+        Func<object, bool, Uri>     _imageUriGetterFunc;
 
         /// <summary>
         /// Private constructor as Show() is responsible for creating an instance
         /// </summary>
-        private ImagePopupViewer(Func<object, Uri> photoGetter)
+        private ImagePopupViewer(Func<object, bool, Uri> photoGetter, ContinuityTransition transition, Photo photo)
         {
             this.InitializeComponent();
 
             _imageUriGetterFunc = photoGetter;
-
+            _transition = transition;
             _compositor = ElementCompositionPreview.GetElementVisual(this).Compositor;
-            _transition = new ContinuityTransition();
+            this.Loaded += ImagePopupViewer_Loaded;
 
-            // Initialize the blur
-            InitializeBlurPanel();
+            // Bring the selected item into view
+            _initialPhoto = photo;
 
             // Initialize the lighting effects
-            //InitializeLighting();
+            InitializeLighting();
+
+            // Hide until the content is available
+            this.Opacity = 0;
+            BackgroundImage.ImageOpened += BackgroundImage_FirstOpened;
+
+            // Disable the placeholder as we'll be using a transition
+            PrimaryImage.PlaceholderDelay = TimeSpan.FromMilliseconds(-1);
+            BackgroundImage.PlaceholderDelay = TimeSpan.FromMilliseconds(-1);
+            BackgroundImage.LoadTimeEffectHandler = SampleImageColor;
+            BackgroundImage.SharedSurface = true;
+
+            // Create a crossfade brush to animate image transitions
+            IGraphicsEffect graphicsEffect = new ArithmeticCompositeEffect()
+            {
+                Name="CrossFade",
+                Source1Amount  = 0,
+                Source2Amount  = 1,
+                MultiplyAmount = 0,
+                Source1 = new CompositionEffectSourceParameter("ImageSource"),
+                Source2 = new CompositionEffectSourceParameter("ImageSource2"),
+            };
+
+            CompositionEffectFactory factory = _compositor.CreateEffectFactory(graphicsEffect, new[] { "CrossFade.Source1Amount", "CrossFade.Source2Amount" });
+            _crossFadeBrush = factory.CreateBrush();
+
+        }
+
+        private void BackgroundImage_FirstOpened(object sender, RoutedEventArgs e)
+        {
+            // Image loaded, let's show the content
+            this.Opacity = 1;
+
+            // Show the content now that we should have something.
+            ScalarKeyFrameAnimation fadeInAnimation = _compositor.CreateScalarKeyFrameAnimation();
+            fadeInAnimation.InsertKeyFrame(0, 0);
+            fadeInAnimation.InsertKeyFrame(1, 1);
+            fadeInAnimation.Duration = TimeSpan.FromMilliseconds(1000);
+            BackgroundImage.SpriteVisual.StartAnimation("Opacity", fadeInAnimation);
+            ElementCompositionPreview.GetElementVisual(ImageList).StartAnimation("Opacity", fadeInAnimation);
+
+            // Start a slow UV scale to create movement in the background image
+            Vector2KeyFrameAnimation scaleAnimation = _compositor.CreateVector2KeyFrameAnimation();
+            scaleAnimation.InsertKeyFrame(0, new Vector2(1.1f, 1.1f));
+            scaleAnimation.InsertKeyFrame(.5f, new Vector2(2.0f, 2.0f));
+            scaleAnimation.InsertKeyFrame(1, new Vector2(1.1f, 1.1f));
+            scaleAnimation.Duration = TimeSpan.FromMilliseconds(40000);
+            scaleAnimation.IterationBehavior = AnimationIterationBehavior.Forever;
+
+            CompositionDrawingSurface surface = (CompositionDrawingSurface)BackgroundImage.SurfaceBrush.Surface;
+            BackgroundImage.SurfaceBrush.CenterPoint = new Vector2((float)surface.Size.Width, (float)surface.Size.Height) * .5f;
+            BackgroundImage.SurfaceBrush.StartAnimation("Scale", scaleAnimation);
+
+            // Start the animation of the cross-fade brush so they're in sync
+            _previousSurfaceBrush = _compositor.CreateSurfaceBrush();
+            _previousSurfaceBrush.StartAnimation("Scale", scaleAnimation);
+
+            BackgroundImage.ImageOpened -= BackgroundImage_FirstOpened;
+        }
+
+        private void BackgroundImage_ImageChanged(object sender, RoutedEventArgs e)
+        {
+            if (_crossFadeBatch == null)
+            {
+                TimeSpan duration = TimeSpan.FromMilliseconds(1000);
+
+                // Create the animations for cross-fading
+                ScalarKeyFrameAnimation fadeInAnimation = _compositor.CreateScalarKeyFrameAnimation();
+                fadeInAnimation.InsertKeyFrame(0, 0);
+                fadeInAnimation.InsertKeyFrame(1, 1);
+                fadeInAnimation.Duration = duration;
+
+                ScalarKeyFrameAnimation fadeOutAnimation = _compositor.CreateScalarKeyFrameAnimation();
+                fadeOutAnimation.InsertKeyFrame(0, 1);
+                fadeOutAnimation.InsertKeyFrame(1, 0);
+                fadeOutAnimation.Duration = duration;
+
+                // Create a batch object so we can cleanup when the cross-fade completes.
+                _crossFadeBatch = _compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
+
+                // Set the sources
+                _crossFadeBrush.SetSourceParameter("ImageSource", BackgroundImage.SurfaceBrush);
+                _crossFadeBrush.SetSourceParameter("ImageSource2", _previousSurfaceBrush);
+
+                // Animate the source amounts to fade between
+                _crossFadeBrush.StartAnimation("CrossFade.Source1Amount", fadeInAnimation);
+                _crossFadeBrush.StartAnimation("CrossFade.Source2Amount", fadeOutAnimation);
+
+                // Update the image to use the cross fade brush
+                BackgroundImage.Brush = _crossFadeBrush;
+
+                _crossFadeBatch.Completed += Batch_CrossFadeCompleted;
+                _crossFadeBatch.End();
+            }
+
+            // Unhook the handler
+            BackgroundImage.ImageOpened -= BackgroundImage_ImageChanged;
+        }
+
+        private void Batch_CrossFadeCompleted(object sender, CompositionBatchCompletedEventArgs args)
+        {
+            BackgroundImage.Brush = BackgroundImage.SurfaceBrush;
+            
+            // Dispose the image
+            ((CompositionDrawingSurface)_previousSurfaceBrush.Surface).Dispose();
+            _previousSurfaceBrush.Surface = null;
+
+            // Clear out the batch
+            _crossFadeBatch = null;
+        }
+
+        private void ImagePopupViewer_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Kick off the transition from originating thumbnail to final position
+            _transition.Start(Window.Current.Content, PrimaryImage, null, null);
+
+            // Update the sources
+            BackgroundImage.Source = new Uri(_initialPhoto.ImageLarge);
+            PrimaryImage.Source = new Uri(_initialPhoto.ImageLarge);
+
+            // Ensure the source thumbnail is in view
+            ImageList.ScrollIntoView(_initialPhoto);
         }
 
         public object ItemsSource
@@ -54,19 +180,7 @@ namespace CompositionSampleGallery
             get { return ImageList.ItemsSource; }
             set { ImageList.ItemsSource = value; }
         }
-
-        public double ImageWidth
-        {
-            get { return PrimaryImage.Width; }
-            set { PrimaryImage.Width = value; }
-        }
-
-        public double ImageHeight
-        {
-            get { return PrimaryImage.Height; }
-            set { PrimaryImage.Height = value; }
-        }
-
+        
         private async void InitializeLighting()
         {
             // Create a lighting effect with diffuse + specular components
@@ -77,7 +191,7 @@ namespace CompositionSampleGallery
                 {
                     new ArithmeticCompositeEffect()
                     {
-                        Source1Amount  = .4f,
+                        Source1Amount  = .8f,
                         Source2Amount  = .2f,
                         MultiplyAmount = 1,
 
@@ -92,102 +206,61 @@ namespace CompositionSampleGallery
                             LightColor = Colors.White,
                             Source = new CompositionEffectSourceParameter("NormalMap"),
                         },
-                    }//,
-                    //new SpotSpecularEffect()
-                    //{
-                    //    Name = "Light2",
-                    //    SpecularAmount = 1f,
-                    //    SpecularExponent = 10000f,
-                    //    LimitingConeAngle = (float)Math.PI / 8f,
-                    //    LightColor = Colors.White,
-                    //    Source = new CompositionEffectSourceParameter("NormalMap"),
-                    //}
+                    },
+                    new SpotSpecularEffect()
+                    {
+                        Name = "Light2",
+                        SpecularAmount = 1f,
+                        SpecularExponent = 10000f,
+                        LimitingConeAngle = (float)Math.PI / 8f,
+                        LightColor = Colors.White,
+                        Source = new CompositionEffectSourceParameter("NormalMap"),
+                    }
                 }
             };
 
             // Create the factory used to create brush for each sprite using lighting
-            //_lightEffectFactory = _compositor.CreateEffectFactory(graphicsEffect,
-            //                    new[] { "Light1.LightPosition", "Light1.LightTarget" }); //,
-            //                            //"Light2.LightPosition", "Light2.LightTarget"});
+            _lightEffectFactory = _compositor.CreateEffectFactory(graphicsEffect,
+                                new[] { "Light1.LightPosition", "Light1.LightTarget",
+                                        "Light2.LightPosition", "Light2.LightTarget"});
 
-            //// Bug - lights are currently in screen space which is not intended
-            //DisplayInformation info = DisplayInformation.GetForCurrentView();
-            //Vector2 sizeLightBounds = new Vector2((float)(Window.Current.Bounds.Width * info.RawPixelsPerViewPixel),
-            //                                      (float)(Window.Current.Bounds.Height * info.RawPixelsPerViewPixel));
+            // Bug - lights are currently in screen space which is not intended
+            DisplayInformation info = DisplayInformation.GetForCurrentView();
+            Vector2 sizePageBounds = new Vector2((float)(Window.Current.Bounds.Width * info.RawPixelsPerViewPixel),
+                                                  (float)(Window.Current.Bounds.Height * info.RawPixelsPerViewPixel));
 
-            //// Create the light position/target animations
-            //const float lightDistance = 1200;
-            //Vector3 centerPosition = new Vector3(sizeLightBounds.X * .5f, sizeLightBounds.Y * .8f, lightDistance);
-            //Vector3 rightPosition = new Vector3(sizeLightBounds.X * .55f, sizeLightBounds.Y * .9f, lightDistance);
-            //Vector3 leftPosition = new Vector3(sizeLightBounds.X * .45f, sizeLightBounds.Y * .9f, lightDistance);
+            // Create the light position/target animations
+            const float lightDistance = 1200;
+            Vector3 centerPosition = new Vector3(sizePageBounds.X * .5f, sizePageBounds.Y * .8f, lightDistance);
+            Vector3 rightPosition = new Vector3(sizePageBounds.X * .55f, sizePageBounds.Y * .9f, lightDistance);
+            Vector3 leftPosition = new Vector3(sizePageBounds.X * .45f, sizePageBounds.Y * .9f, lightDistance);
 
-            //_lightPositionAnimation = _compositor.CreateVector3KeyFrameAnimation();
-            //_lightPositionAnimation.InsertKeyFrame(0f, centerPosition);
-            //_lightPositionAnimation.InsertKeyFrame(.33f, rightPosition);
-            //_lightPositionAnimation.InsertKeyFrame(.66f, leftPosition);
-            //_lightPositionAnimation.InsertKeyFrame(1f, centerPosition);
-            //_lightPositionAnimation.Duration = TimeSpan.FromMilliseconds(20000);
-            //_lightPositionAnimation.IterationBehavior = AnimationIterationBehavior.Forever;
+            _lightPositionAnimation = _compositor.CreateVector3KeyFrameAnimation();
+            _lightPositionAnimation.InsertKeyFrame(0f, centerPosition);
+            _lightPositionAnimation.InsertKeyFrame(.33f, rightPosition);
+            _lightPositionAnimation.InsertKeyFrame(.66f, leftPosition);
+            _lightPositionAnimation.InsertKeyFrame(1f, centerPosition);
+            _lightPositionAnimation.Duration = TimeSpan.FromMilliseconds(20000);
+            _lightPositionAnimation.IterationBehavior = AnimationIterationBehavior.Forever;
 
-            //centerPosition.Z -= lightDistance;
-            //rightPosition.Z  -= lightDistance;
-            //leftPosition.Z   -= lightDistance;
+            centerPosition.Z -= lightDistance;
+            rightPosition.Z  -= lightDistance;
+            leftPosition.Z   -= lightDistance;
 
-            //_lightTargetAnimation = _compositor.CreateVector3KeyFrameAnimation();
-            //_lightTargetAnimation.InsertKeyFrame(0f, centerPosition);
-            //_lightTargetAnimation.InsertKeyFrame(.33f, rightPosition);
-            //_lightTargetAnimation.InsertKeyFrame(.66f, leftPosition);
-            //_lightTargetAnimation.InsertKeyFrame(1f, centerPosition);
-            //_lightTargetAnimation.Duration = TimeSpan.FromMilliseconds(20000);
-            //_lightTargetAnimation.IterationBehavior = AnimationIterationBehavior.Forever;
+            _lightTargetAnimation = _compositor.CreateVector3KeyFrameAnimation();
+            _lightTargetAnimation.InsertKeyFrame(0f, centerPosition);
+            _lightTargetAnimation.InsertKeyFrame(.33f, rightPosition);
+            _lightTargetAnimation.InsertKeyFrame(.66f, leftPosition);
+            _lightTargetAnimation.InsertKeyFrame(1f, centerPosition);
+            _lightTargetAnimation.Duration = TimeSpan.FromMilliseconds(20000);
+            _lightTargetAnimation.IterationBehavior = AnimationIterationBehavior.Forever;
 
-            //// Create the shared normal map used for the lighting effect
-            //_normalMap = await SurfaceLoader.LoadFromUri(new Uri("ms-appx:///Samples/SDK Insider/PhotoViewer/FlatNormals.jpg"));
+            // Create the shared normal map used for the lighting effect
+            _normalMapBrush = _compositor.CreateSurfaceBrush();
+            _normalMapBrush.Surface = await SurfaceLoader.LoadFromUri(new Uri("ms-appx:///Controls/OneUpPhotoViewer/FlatNormals.jpg"));
         }
 
-        private void InitializeBlurPanel()
-        {
-            //
-            // Create the tinted blur effect for use by the popup panel
-            //
-
-            IGraphicsEffect graphicsEffect = new ArithmeticCompositeEffect()
-            {
-                Source1Amount = .5f,
-                Source2Amount = .5f,
-                MultiplyAmount = 0,
-                Source1 = new GaussianBlurEffect()
-                {
-                    Source = new CompositionEffectSourceParameter("DestinationSource"),
-                    BlurAmount = 40.0f,
-                    Name = "Blur",
-                    BorderMode = EffectBorderMode.Hard,
-                    Optimization = EffectOptimization.Balanced
-                },
-                Source2 = new ColorSourceEffect()
-                {
-                    Name = "Tint",
-                    Color = Color.FromArgb(255, 255, 255, 255)
-                },
-            };
-
-            CompositionEffectFactory effectFactory = _compositor.CreateEffectFactory(graphicsEffect, new[] { "Tint.Color" });
-            CompositionEffectBrush brush = effectFactory.CreateBrush();
-            brush.SetSourceParameter("DestinationSource", _compositor.CreateDestinationBrush());
-
-            // Create the blur visual with the blur brush and attach it to the tree
-            SpriteVisual blurVisual = _compositor.CreateSpriteVisual();
-            blurVisual.Size = new Vector2((float)BlurPanel.ActualWidth, (float)BlurPanel.ActualHeight);
-            blurVisual.Brush = brush;
-            ElementCompositionPreview.SetElementChildVisual(BlurPanel, blurVisual);
-
-            // Use a load time effect handler to sample the predominant color from the image
-            PrimaryImage.LoadTimeEffectHandler = SampleImageColor;
-        }
-
-     
-
-        private void ExtractPredominantColor(Color[] colors, Size size)
+        private Color ExtractPredominantColor(Color[] colors, Size size)
         {
             Dictionary<uint, int> dict = new Dictionary<uint, int>();
             uint maxColor = 0xff000000;
@@ -241,175 +314,164 @@ namespace CompositionSampleGallery
             }
 
             // Convert to the final color value
-            Color final = Color.FromArgb((byte)(maxColor >> 24), (byte)(maxColor >> 16),
-                                         (byte)(maxColor >> 8),  (byte)(maxColor >> 0));
-
-            // Animate the blur's tint color to the new value
-            SpriteVisual blurVisual = (SpriteVisual)ElementCompositionPreview.GetElementChildVisual(BlurPanel);
-            if (blurVisual != null && blurVisual.Brush != null)
-            {
-                ColorKeyFrameAnimation colorAnimation = _compositor.CreateColorKeyFrameAnimation();
-                colorAnimation.InsertKeyFrame(1f, final);
-                colorAnimation.InterpolationColorSpace = CompositionColorSpace.Rgb;
-                colorAnimation.Duration = TimeSpan.FromMilliseconds(600);
-                blurVisual.Brush.StartAnimation("Tint.Color", colorAnimation);
-            }
+            return  Color.FromArgb((byte)(maxColor >> 24), (byte)(maxColor >> 16),
+                                   (byte)(maxColor >> 8),  (byte)(maxColor >> 0));
         }
 
         private CompositionDrawingSurface SampleImageColor(CanvasBitmap bitmap, CompositionGraphicsDevice device, Size sizeTarget)
         {
             // Extract the color to tint the blur with
-            ExtractPredominantColor(bitmap.GetPixelColors(), bitmap.Size);
+            Color predominantColor = ExtractPredominantColor(bitmap.GetPixelColors(), bitmap.Size);
 
-            // Load the bitmap normally
             Size sizeSource = bitmap.Size;
             if (sizeTarget.IsEmpty)
             {
                 sizeTarget = sizeSource;
             }
 
+            // Create a heavily blurred version of the image
+            GaussianBlurEffect blurEffect = new GaussianBlurEffect()
+            {
+                Source = bitmap,
+                BlurAmount = 20.0f
+            };
+
             CompositionDrawingSurface surface = device.CreateDrawingSurface(sizeTarget,
                                                             DirectXPixelFormat.B8G8R8A8UIntNormalized, DirectXAlphaMode.Premultiplied);
             using (var ds = CanvasComposition.CreateDrawingSession(surface))
             {
-                ds.Clear(Color.FromArgb(0, 0, 0, 0));
-                ds.DrawImage(bitmap, new Rect(0, 0, sizeTarget.Width, sizeTarget.Height), new Rect(0, 0, sizeSource.Width, sizeSource.Height));
+                ds.Clear(Color.FromArgb(255, 0, 0, 0));
+                Rect destination = new Rect(0, 0, sizeTarget.Width, sizeTarget.Height);
+                ds.DrawImage(blurEffect, destination, new Rect(0, 0, sizeSource.Width, sizeSource.Height));
+                predominantColor.A = 100;
+                ds.FillRectangle(destination, predominantColor);
             }
-
+            
             return surface;
         }
 
         private void ListView_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
         {
             CompositionImage image = args.ItemContainer.ContentTemplateRoot.GetFirstDescendantOfType<CompositionImage>();
-            Uri imageSource = _imageUriGetterFunc(args.Item);
+            Uri imageSource = _imageUriGetterFunc(args.Item, false);
 
             // Set the URI source, and size to the large target image
             image.Source = imageSource;
             
             // Setup the effect for each image
             SetLightingEffect(image);
-
-            // If the AlbumImage is not yet set, update it with the first item
-            if (PrimaryImage.Source == null && PrimaryImage.Brush == null)
-            {
-                // Set the background image with the same effect as the tiles
-                SetLightingEffect(BackgroundImage);
-
-                UpdateAlbumImage(imageSource, image.SurfaceBrush);
-            }
         }
 
         private void SetLightingEffect(CompositionImage image)
         {
             // Create a brush from the lighting effect factory
-            //CompositionEffectBrush brush = _lightEffectFactory.CreateBrush();
+            CompositionEffectBrush brush = _lightEffectFactory.CreateBrush();
 
-            //// Set the image sources
-            //brush.SetSourceParameter("ImageSource", image.SurfaceBrush);
-            //brush.SetSourceParameter("NormalMap", _compositor.CreateSurfaceBrush(_normalMap));
+            // Set the image sources
+            brush.SetSourceParameter("ImageSource", image.SurfaceBrush);
+            brush.SetSourceParameter("NormalMap", _normalMapBrush);
 
-            //// Update the image with the effect brush to use
-            //image.Brush = brush;
+            // Update the image with the effect brush to use
+            image.Brush = brush;
 
             // Kick off the animations
-            //brush.StartAnimation("Light1.LightPosition", _lightPositionAnimation);
-            //brush.StartAnimation("Light1.LightTarget", _lightTargetAnimation);
-            //brush.StartAnimation("Light2.LightPosition", _lightPositionAnimation);
-            //brush.StartAnimation("Light2.LightTarget", _lightTargetAnimation);
+            brush.StartAnimation("Light1.LightPosition", _lightPositionAnimation);
+            brush.StartAnimation("Light1.LightTarget", _lightTargetAnimation);
+            brush.StartAnimation("Light2.LightPosition", _lightPositionAnimation);
+            brush.StartAnimation("Light2.LightTarget", _lightTargetAnimation);
         }
 
 
         private void ImageList_ItemClick(object sender, ItemClickEventArgs e)
         {
             ListViewItem item = (ListViewItem)ImageList.ContainerFromItem(e.ClickedItem);
-            CompositionImage image = VisualTreeHelperExtensions.GetFirstDescendantOfType<CompositionImage>(item);
-            Uri imageSource = _imageUriGetterFunc(item.Content);
 
-            // Update the images with the new selection
-            UpdateAlbumImage(imageSource, image.SurfaceBrush);
+            // If we near the edges of the list, scroll more into view
+            GeneralTransform coordinate = item.TransformToVisual(ImageList);
+            Point position = coordinate.TransformPoint(new Point(0, 0));
 
-            if (!_transition.Completed)
+            if ((position.X + item.ActualWidth >= ImageList.ActualWidth) ||
+                (position.X - item.ActualWidth <= 0))
             {
-                _transition.Cancel();
+                double delta = position.X - item.ActualWidth <= 0 ? -item.ActualWidth : item.ActualWidth;
+                delta *= 1.5;
+
+                ScrollViewer scroller = ImageList.GetFirstDescendantOfType<ScrollViewer>();
+                scroller.ChangeView(scroller.HorizontalOffset + delta, null, null);
             }
-
-            // Kick off a continuity transition to animate from it's current position to it's new location
-            _transition.Initialize(this, image, null);
-            _transition.Start(this, PrimaryImage, null, null);
-        }
-
-        private void UpdateAlbumImage(Uri uri, CompositionBrush brush)
-        {
-            Size sizeBitmap = new Size(PrimaryImage.Width, PrimaryImage.Height);
-            Uri uriSized = uri;
-            PrimaryImage.Source = uriSized;
-
-            if (brush != null)
-            {
-                // If we have a brush ready to go, just update the effect to use it
-                CompositionEffectBrush effectBrush = BackgroundImage.Brush as CompositionEffectBrush;
-
-                if(brush != null && effectBrush!=null)
-                {
-                    effectBrush.SetSourceParameter("ImageSource", brush);
-                }
-            }
-            else
-            {
-                // No brush ready yet, update the source which will update the surface when available
-                BackgroundImage.Source = uriSized;
-            }
-        }
-
-        private void BlurPanel_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            Visual blurVisual = ElementCompositionPreview.GetElementChildVisual(BlurPanel);
-
-            Vector2 newSize = new Vector2((float)e.NewSize.Width, (float)e.NewSize.Height);
-            if (blurVisual != null)
-            {
-                blurVisual.Size = newSize;
-            }
-
-            // Update the center point since the size has changed
-            BackgroundImage.SpriteVisual.CenterPoint = new Vector3(newSize.X, newSize.Y, 0) * .5f;
-
-
-            // Start a slow animation of the background image which is under the blur
-            float max = Math.Max(newSize.X, newSize.Y);
-            Vector2 sizeBackground = new Vector2(max, max);
-
-            // Apply a scale from the center
-            SpriteVisual backgroundSprite = BackgroundImage.SpriteVisual;
-            backgroundSprite.Scale = new Vector3(2, 2, 0);
-            backgroundSprite.CenterPoint = new Vector3(sizeBackground.X, sizeBackground.Y, 0) * .5f;
-
-            // Linearly animate the offset side to side, slowly
-            LinearEasingFunction linear = _compositor.CreateLinearEasingFunction();
-            _backgroundOffsetAnimation = _compositor.CreateVector3KeyFrameAnimation();
-            _backgroundOffsetAnimation.InsertKeyFrame(0, new Vector3(0, 0, 0), linear);
-            _backgroundOffsetAnimation.InsertKeyFrame(.25f, new Vector3(-sizeBackground.X * .25f, 0, 0), linear);
-            _backgroundOffsetAnimation.InsertKeyFrame(.75f, new Vector3(sizeBackground.X * .25f, 0, 0), linear);
-            _backgroundOffsetAnimation.InsertKeyFrame(1, new Vector3(0, 0, 0), linear);
-            _backgroundOffsetAnimation.Duration = TimeSpan.FromMilliseconds(80000);
-            _backgroundOffsetAnimation.IterationBehavior = AnimationIterationBehavior.Forever;
-            backgroundSprite.StartAnimation("Offset", _backgroundOffsetAnimation);
         }
 
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             GridClip.Rect = new Rect(0, 0, e.NewSize.Width, e.NewSize.Height);
+
+            // Resize the desaturation visual
+            DisplayInformation info = DisplayInformation.GetForCurrentView();
+            Vector2 sizePageBounds = new Vector2((float)(Window.Current.Bounds.Width * info.RawPixelsPerViewPixel),
+                                                 (float)(Window.Current.Bounds.Height * info.RawPixelsPerViewPixel));
+
+            Visual desaturateVisual = ElementCompositionPreview.GetElementChildVisual(_hostGrid.Children[0]);
+            desaturateVisual.Size = sizePageBounds;
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)
         {
-            _hostGrid.Children.Remove(_viewerInstance);
-            _viewerInstance = null;
-            //TODO: IDisposible for viewer
+            CompositionScopedBatch batch = _compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
+            batch.Completed += Batch_Completed;
+
+            // Closing the viewer, fade it out
+            ScalarKeyFrameAnimation fadeOutAnimation = _compositor.CreateScalarKeyFrameAnimation();
+            fadeOutAnimation.InsertKeyFrame(0, 1);
+            fadeOutAnimation.InsertKeyFrame(1, 0);
+            fadeOutAnimation.Duration = TimeSpan.FromMilliseconds(800);
+            ElementCompositionPreview.GetElementVisual(this).StartAnimation("Opacity", fadeOutAnimation);
+            ElementCompositionPreview.GetElementChildVisual(_hostGrid.Children[0]).StartAnimation("Opacity", fadeOutAnimation);
+
+            batch.End();
         }
 
-        internal static void Show(object itemSource, Func<object, Uri> photoGetter, Thickness margin)
+        private void Batch_Completed(object sender, CompositionBatchCompletedEventArgs args)
+        {
+            ElementCompositionPreview.SetElementChildVisual(_hostGrid.Children[0], null);
+            _hostGrid.Children.Remove(_viewerInstance);
+            _viewerInstance = null;
+        }
+
+        private void ImageList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ImageList.SelectedItem != null)
+            {
+                ListViewItem item = (ListViewItem)ImageList.ContainerFromItem(ImageList.SelectedItem);
+                Uri imageSource = _imageUriGetterFunc(item.Content, true);
+
+                if (_crossFadeBatch == null)
+                {
+                    // Save the previous image for a cross-fade
+                    _previousSurfaceBrush.Surface = BackgroundImage.SurfaceBrush.Surface;
+                    _previousSurfaceBrush.CenterPoint = BackgroundImage.SurfaceBrush.CenterPoint;
+                    _previousSurfaceBrush.Stretch = BackgroundImage.SurfaceBrush.Stretch;
+
+                    // Load the new background image
+                    BackgroundImage.ImageOpened += BackgroundImage_ImageChanged;
+                }
+
+                // Update the images
+                BackgroundImage.Source = imageSource;
+                PrimaryImage.Source = imageSource;
+
+                if (!_transition.Completed)
+                {
+                    _transition.Cancel();
+                }
+
+                // Kick off a continuity transition to animate from it's current position to it's new location
+                CompositionImage image = VisualTreeHelperExtensions.GetFirstDescendantOfType<CompositionImage>(item);
+                _transition.Initialize(this, image, null);
+                _transition.Start(this, PrimaryImage, null, null);
+            }
+        }
+
+        internal static void Show(Photo photo, object itemSource, Func<object, bool, Uri> photoGetter, Thickness margin, ContinuityTransition transition)
         {
             if (_viewerInstance!=null)
             {
@@ -420,17 +482,44 @@ namespace CompositionSampleGallery
 
             if (_hostGrid != null)
             {
-                _viewerInstance = new ImagePopupViewer(photoGetter);
+                _viewerInstance = new ImagePopupViewer(photoGetter, transition, photo);
 
-                _viewerInstance.Margin = margin;
-                
                 // dialog needs to span all rows in the grid
                 _viewerInstance.SetValue(Grid.RowSpanProperty, (_hostGrid.RowDefinitions.Count>0?_hostGrid.RowDefinitions.Count:1));
                 _viewerInstance.SetValue(Grid.ColumnSpanProperty, (_hostGrid.ColumnDefinitions.Count > 0 ? _hostGrid.ColumnDefinitions.Count : 1));
 
                 _hostGrid.Children.Add(_viewerInstance);
                 
-              _viewerInstance.ItemsSource = itemSource;
+                _viewerInstance.ItemsSource = itemSource;
+
+                // Create a full page desaturate effect to de-emphasize the background content
+                DisplayInformation info = DisplayInformation.GetForCurrentView();
+                Vector2 sizePageBounds = new Vector2((float)(Window.Current.Bounds.Width * info.RawPixelsPerViewPixel),
+                                                     (float)(Window.Current.Bounds.Height * info.RawPixelsPerViewPixel));
+
+                IGraphicsEffect graphicsEffect = new SaturationEffect()
+                {
+                    Saturation = 0.0f,
+                    Source = new CompositionEffectSourceParameter("ImageSource")
+                };
+
+                Compositor compositor = ElementCompositionPreview.GetElementVisual(Window.Current.Content).Compositor;
+                CompositionEffectFactory effectFactory = compositor.CreateEffectFactory(graphicsEffect, null);
+                CompositionEffectBrush brush = effectFactory.CreateBrush();
+                brush.SetSourceParameter("ImageSource", compositor.CreateDestinationBrush());
+
+                // Hook a new sprite under the host grid to completely cover the background content
+                SpriteVisual desaturateVisual = compositor.CreateSpriteVisual();
+                desaturateVisual.Size = sizePageBounds;
+                desaturateVisual.Brush = brush;
+                ElementCompositionPreview.SetElementChildVisual(_hostGrid.Children[0], desaturateVisual);
+
+                // Fade the desaturation effect in
+                ScalarKeyFrameAnimation fadeInAnimation = compositor.CreateScalarKeyFrameAnimation();
+                fadeInAnimation.InsertKeyFrame(0, 0);
+                fadeInAnimation.InsertKeyFrame(1, 1);
+                fadeInAnimation.Duration = TimeSpan.FromMilliseconds(1000);
+                desaturateVisual.StartAnimation("Opacity", fadeInAnimation);
             }
             else
             {

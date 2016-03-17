@@ -170,6 +170,9 @@ namespace CompositionSampleGallery
             //Scoped batch completed event
             _scopeBatch.Completed += ScopeBatch_Completed;
             _scopeBatch.End();
+
+            // Clear the flag
+            _animationCompleted = false;
         }
 
         public void Cancel()
