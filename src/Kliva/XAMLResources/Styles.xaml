@@ -82,7 +82,7 @@
         <Setter Property="Foreground" Value="{StaticResource KlivaMainBrush}"></Setter>
     </Style>
 
-    <Style x:Key="PaneIcon" TargetType="FontIcon">
+    <Style x:Name="PaneIcon" TargetType="FontIcon">
         <Setter Property="Width" Value="40" />
         <Setter Property="Height" Value="40" />
         <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
@@ -129,26 +129,26 @@
         <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
     </Style>
 
-    <Style x:Name="ProfileEllipseDetail" TargetType="Ellipse">
+    <Style x:Key="ProfileEllipseDetail" TargetType="Ellipse">
         <Setter Property="Height" Value="100" />
         <Setter Property="Width" Value="100" />
         <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
     </Style>
-
+    
     <Style x:Key="ProfileEllipseMobile" TargetType="Ellipse">
         <Setter Property="Height" Value="50" />
         <Setter Property="Width" Value="50" />
         <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
     </Style>
 
-    <Style x:Key="ProfileEllipseLarge" TargetType="Ellipse">
+    <Style x:Name="ProfileEllipseLarge" TargetType="Ellipse">
         <Setter Property="Height" Value="124" />
         <Setter Property="Width" Value="124" />
         <Setter Property="Margin" Value="10" />
         <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
     </Style>
 
-    <Style x:Key="ProfileNameStyle" TargetType="TextBlock">
+    <Style x:Name="ProfileNameStyle" TargetType="TextBlock">
         <Setter Property="FontSize" Value="32" />
         <Setter Property="FontFamily" Value="{StaticResource OpenSansFontSemibold}" />
         <Setter Property="Foreground" Value="{StaticResource KlivaMainBrush}" />

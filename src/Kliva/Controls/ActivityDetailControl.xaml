@@ -7,7 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
     xmlns:converters="using:Kliva.Converters"
-    xmlns:models="using:Kliva.Models"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
@@ -17,7 +18,7 @@
     >
 
     <UserControl.Resources>
-        <converters:SecondsToTimeStringConverter x:Key="SecondsToTimeStringConverter" />
+       
         <converters:AddAmountToStringConverter x:Key="AddAmountToStringConverter" />
     </UserControl.Resources>
 
@@ -42,8 +43,13 @@
                     <VisualState.Setters>
                         <Setter Target="ActivityDetailCommandBar.Visibility" Value="Visible" />
                         <Setter Target="BlurPanel.Visibility" Value="Collapsed"/>
+                        <Setter Target="BikeIcon.Visibility" Value="Collapsed"/>
+                        <Setter Target="ClockIcon.Visibility" Value="Collapsed"/>
+                        <Setter Target="AthleteProfilePicture.Visibility" Value="Collapsed"/>
+                        <Setter Target="DistanceFormattedTextBlockHeader.Visibility" Value="Collapsed"/>
+                        <Setter Target="TimeMovingFormattedTextBlockHeader.Visibility" Value="Collapsed"/>
+                        <Setter Target="ActivityName.Visibility" Value="Collapsed"/>
                         <Setter Target="ActivityMap.Height" Value="300" />
-
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -65,7 +71,7 @@
 
             <Button x:Name="ExpandMapButton"
                     x:DeferLoadStrategy="Lazy"
-                    Margin="0,10,0,0"
+                    Margin="0,0,0,0"
                     RelativePanel.AlignBottomWith="ActivityMap"
                     RelativePanel.AlignRightWithPanel="True"
                     Command="{x:Bind ViewModel.MapCommand}">
@@ -234,17 +240,28 @@
                         </RelativePanel>
                     </ScrollViewer>
                 </PivotItem>
-                <PivotItem x:Name="SegmentsPivot" Header="segments" Tag="Segments"
-                           x:DeferLoadStrategy="Lazy"
+                <PivotItem x:Name="SegmentsPivot" Tag="Segments"
+                           Header="{x:Bind ViewModel.SelectedActivity.SegmentEffortsCount, Converter={StaticResource AddAmountToStringConverter}, ConverterParameter=segments, Mode=OneWay}"
+                    x:DeferLoadStrategy="Lazy"
                            Background="White"
                            Visibility="{x:Bind ViewModel.HasSegments, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <ListView x:Name="AcitivtySegmentsList"
+                              ItemsSource="{x:Bind ViewModel.SelectedActivity.SegmentEfforts, Mode=OneWay}"
+                              ItemTemplate="{StaticResource SegmentsEffortListItemTemplate}"/>
                 </PivotItem>
                 <PivotItem x:Name="KudosPivot" Tag="Kudos"
                            Background="White"
                            Header="{x:Bind ViewModel.KudosCount, Converter={StaticResource AddAmountToStringConverter}, ConverterParameter=kudos, Mode=OneWay}">
                     <ListView x:Name="ActivityKudosList"
                               ItemsSource="{x:Bind ViewModel.Kudos, Mode=OneWay}"
-                              ItemTemplate="{StaticResource KudosListItemTemplate}" />
+                             ItemTemplate="{StaticResource KudosListItemTemplate}"
+                              IsItemClickEnabled="True">
+                        <interactivity:Interaction.Behaviors>
+                            <core:EventTriggerBehavior EventName="ItemClick">
+                                <core:InvokeCommandAction Command="{x:Bind ViewModel.AthleteTappedCommand}" />
+                            </core:EventTriggerBehavior>
+                        </interactivity:Interaction.Behaviors>
+                    </ListView>
                 </PivotItem>
                 <PivotItem x:Name="CommentsPivot" Tag="Comments"
                            Background="White"
@@ -261,7 +278,10 @@
                     <GridView x:Name="ActivityPhotosGrid"
                               Margin="10,0,0,0"
                               ItemsSource="{x:Bind ViewModel.SelectedActivity.AllPhotos, Mode=OneWay}"
-                              ItemTemplate="{StaticResource PhotosGridItemTemplate}"/>
+                              ItemTemplate="{StaticResource PhotosGridItemTemplate}"
+                              IsItemClickEnabled="True"
+                              ItemClick="ActivityPhotosGrid_ItemClick"
+                              />
                 </PivotItem>
             </Pivot>
 
@@ -273,11 +293,11 @@
                       RelativePanel.AlignBottomWith="ActivityMap"
                       >
                 <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="models:AthleteSummary">
+                    <DataTemplate>
                         <Ellipse Style="{StaticResource ProfileEllipseMobile}"
-                                 Margin="0,0,5,0" ToolTipService.ToolTip="{x:Bind FullName}" >
+                                 Margin="0,0,5,0">
                             <Ellipse.Fill>
-                                <ImageBrush Stretch="Uniform" ImageSource="{x:Bind ProfileMediumFormatted}" />
+                                <ImageBrush Stretch="Uniform" ImageSource="{Binding ProfileMediumFormatted}" />
                             </Ellipse.Fill>
                         </Ellipse>
                     </DataTemplate>
@@ -294,7 +314,7 @@
             Grid.Row="0" Grid.RowSpan="2">
 
         </compositioncontrols:BlurPanelProto>
-        <TextBlock Margin="0,35,0,15" Foreground="White"
+        <TextBlock x:Name="ActivityName" Margin="0,35,0,15" Foreground="White"
                    HorizontalAlignment="Center" VerticalAlignment="Top"
                    FontFamily="{StaticResource OpenSansFontLight}" 
                        FontSize="18"
@@ -323,7 +343,9 @@
                             <Run Text="{x:Bind ViewModel.SelectedActivitySummary.DistanceFormatted, Mode=OneWay}" />
                             <Run Text="{x:Bind ViewModel.SelectedActivitySummary.DistanceUnit, Mode=OneWay, Converter={StaticResource DistanceUnitToStringConverter}}"/>
         </TextBlock>
-        <Image Source="ms-appx:///Assets/Bike.png"
+        <Image 
+               x:Name="BikeIcon"
+               Source="ms-appx:///Assets/Bike.png"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
                Margin="30,115,0,0"
@@ -331,7 +353,9 @@
                Width="25"
                Height="25"
                ></Image>
-        <Image Source="ms-appx:///Assets/clock.png"
+        <Image 
+               x:Name="ClockIcon"
+               Source="ms-appx:///Assets/clock.png"
                HorizontalAlignment="Right"
                VerticalAlignment="Top"
                Margin="0,115,30,0"
