@@ -69,7 +69,7 @@
 
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <RelativePanel Margin="0, 10, 0, 10">
+                    <RelativePanel Margin="10">
                         <common:CompositionImage MaxWidth="150" MaxHeight="150"/>
                     </RelativePanel>
                 </DataTemplate>
