@@ -1,19 +1,16 @@
-﻿using System.Diagnostics;
-using System.Linq;
-using Windows.UI.Xaml;
-using Kliva.ViewModels.Interfaces;
-using Windows.UI.Xaml.Controls;
-using Cimbalino.Toolkit.Extensions;
-using Kliva.Helpers;
+﻿using Kliva.Helpers;
 using Kliva.Models;
-using Windows.UI;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Composition;
-using System;
-using Windows.UI.Xaml.Hosting;
-using System.Numerics;
 using Kliva.ViewModels;
+using Kliva.ViewModels.Interfaces;
+using System;
+using System.Linq;
+using System.Numerics;
 using System.Threading.Tasks;
+using Windows.UI.Composition;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Hosting;
+using Windows.UI.Xaml.Media;
 
 namespace Kliva.Controls
 {
@@ -22,16 +19,16 @@ namespace Kliva.Controls
         private ScrollViewer _scrollViewer;
         private bool _isAtTop = true;
 
-
         #region Compositor Member vars
         private Compositor _compositor;
 
-        // STAGGER
+        #region Stagger constants
         private const float ENTRANCE_ANIMATION_DURATION = 350;
         private const float ENTRANCE_ANIMATION_OPACITY_STAGGER_DELAY = 25;
         private const float ENTRANCE_ANIMATION_TEXT_STAGGER_DELAY = 25;
+        #endregion
 
-        // PTR
+        #region PTR Member Variables
         private CompositionPropertySet _scrollerViewerManipulation;
         private ExpressionAnimation _rotationAnimation, _opacityAnimation, _offsetAnimation;
         private ScalarKeyFrameAnimation _resetAnimation, _loadingAnimation;
@@ -40,14 +37,13 @@ namespace Kliva.Controls
         private float _refreshIconOffsetY;
         private const float REFRESH_ICON_MAX_OFFSET_Y = 36.0f;
         bool _refresh;
-        private DateTime _pulledDownTime, _restoredTime;
-        
+        private DateTime _pulledDownTime, _restoredTime; 
         #endregion
 
+        #endregion
 
-        //private IStravaViewModel ViewModel => DataContext as IStravaViewModel;
-        private MainViewModel ViewModel => DataContext as MainViewModel;
-
+        private IStravaViewModel ViewModel => DataContext as IStravaViewModel;
+        
         public ActivityFeedControl()
         {
             this.InitializeComponent();
@@ -74,6 +70,7 @@ namespace Kliva.Controls
                 _scrollViewer.DirectManipulationStarted += OnDirectManipStarted;
                 _scrollViewer.DirectManipulationCompleted += OnDirectManipCompleted;
 
+                #region PTR Animation Setup
                 // Retrieve the ScrollViewer manipulation and the Compositor.
                 _scrollerViewerManipulation = ElementCompositionPreview.GetScrollViewerManipulationPropertySet(_scrollViewer);
                 _compositor = _scrollerViewerManipulation.Compositor;
@@ -114,7 +111,8 @@ namespace Kliva.Controls
                 var border = (Border)VisualTreeHelper.GetChild(ActivityList, 0);
                 _borderVisual = ElementCompositionPreview.GetElementVisual(border);
 
-                PrepareExpressionAnimationsOnScroll();
+                PrepareExpressionAnimationsOnScroll(); 
+                #endregion
             }
         }
         private void PrepareExpressionAnimationsOnScroll()
@@ -129,8 +127,6 @@ namespace Kliva.Controls
         {
             Windows.UI.Xaml.Media.CompositionTarget.Rendering -= OnCompositionTargetRendering;
 
-            // The ScrollViewer's rollback animation is appx. 200ms. So if the duration between the two DateTimes we recorded earlier
-            // is greater than 250ms, we should cancel the refresh.
             var cancelled = (_restoredTime - _pulledDownTime) > TimeSpan.FromMilliseconds(250);
 
             if (_refresh)
@@ -165,7 +161,7 @@ namespace Kliva.Controls
 
             _scrollViewer.ManipulationMode = Windows.UI.Xaml.Input.ManipulationModes.None;
 
-            ViewModel.ActivityIncrementalCollection.LoadNewData();
+            ((MainViewModel)ViewModel).ActivityIncrementalCollection.LoadNewData();
 
             // Gratiuitous demo delay to ensure the animation shows :-)
             await Task.Delay(1500);
@@ -178,13 +174,12 @@ namespace Kliva.Controls
         void StartResetAnimations()
         {
             var batch = _compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
-            // Looks like expression aniamtions will be removed after the following keyframe
-            // animations have run. So here I have to re-start them once the keyframe animations
-            // are completed.
+
             batch.Completed += (s, e) => PrepareExpressionAnimationsOnScroll();
 
             _borderVisual.StartAnimation("Offset.Y", _resetAnimation);
             _refreshIconVisual.StartAnimation("Opacity", _resetAnimation);
+
             batch.End();
         }
 
