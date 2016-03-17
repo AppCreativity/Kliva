@@ -184,7 +184,7 @@ namespace Kliva.Controls
                 ExpressionAnimation crossfade = compositor.CreateExpressionAnimation();
                 crossfade.SetReferenceParameter("scroller", scrollerManipProps);
                 crossfade.Expression = "(1-(Clamp(scroller.Translation.Y*.5, -80, 0)/-80))";  //80 is number of pixels scrolled by which the element will be at 0 opacity 
-                BlurPanel.Params.StartAnimation("FadeValue", crossfade);
+                BlurPanel.VisualProperties.StartAnimation("FadeValue", crossfade);
             }
 
             if (_pivotDictionary.Count == 0)

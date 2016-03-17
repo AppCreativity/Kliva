@@ -17,12 +17,13 @@ namespace App1
 {
     class BlurPanelProto : Control
     {
-        Compositor _compositor;
+        Compositor m_compositor;
         SpriteVisual m_blurVisual;
         SpriteVisual m_shadowVisual;
+        CompositionEffectBrush m_blurBrush;
         ContainerVisual m_container;
 
-        public CompositionPropertySet Params
+        public CompositionPropertySet VisualProperties
         {
             get
             {
@@ -30,83 +31,98 @@ namespace App1
             }
         }
 
+        public Compositor Compositor
+        {
+            get
+            {
+                return m_compositor;
+            }
+
+            private set
+            {
+                m_compositor = value;
+            }
+        }
+
         public BlurPanelProto()
         {
-            this.Loaded += BlurPanelProto_Loaded;
-            this.Unloaded += BlurPanelProto_Unloaded;
-            //this.Background = new Brush(Colors.from)
-        }
-
-        private void BlurPanelProto_Unloaded(object sender, RoutedEventArgs e)
-        {
-            //TODO: cleanup
-        }
-
-        private void BlurPanelProto_Loaded(object sender, RoutedEventArgs e)
-        {
-            var sharedSize = new System.Numerics.Vector2((float)this.ActualWidth, (float)this.ActualHeight);
-            //            this.Background = new SolidColorBrush(Colors.Red);
             var myBackingVisual = ElementCompositionPreview.GetElementVisual(this as UIElement);
-            _compositor = myBackingVisual.Compositor;
-            this.SizeChanged += BlurPanelProto_SizeChanged;
+            m_compositor = myBackingVisual.Compositor;
+            m_blurBrush = BuildColoredBlurBrush();
+            m_blurBrush.SetSourceParameter("source", m_compositor.CreateDestinationBrush());
 
-            var blurBrush = BuildColoredBlurBrush();
-            blurBrush.SetSourceParameter("dest", _compositor.CreateDestinationBrush());
-
-            m_blurVisual = _compositor.CreateSpriteVisual();
-            //m_blurVisual.Brush = _compositor.CreateColorBrush(Color.FromArgb(128,255,0,0));
-            m_blurVisual.Brush = blurBrush;
+            m_blurVisual = m_compositor.CreateSpriteVisual();
+            m_blurVisual.Brush = m_blurBrush;
 
             m_blurVisual.Properties.InsertScalar("BlurValue", 10.0f);
             m_blurVisual.Properties.InsertScalar("FadeValue", 1.0f);
 
-            var blurAnimator = _compositor.CreateExpressionAnimation();
-            blurAnimator.SetReferenceParameter("bluramount", m_blurVisual);
-            blurAnimator.Expression = "bluramount.BlurValue";
-            blurBrush.StartAnimation("GB.BlurAmount", blurAnimator);
+            SetupPropertySetExpression();
 
-            var fadeInAnimator = _compositor.CreateExpressionAnimation();
-            fadeInAnimator.SetReferenceParameter("fadeInAmount", m_blurVisual);
-            fadeInAnimator.Expression = "fadeInAmount.FadeValue";
-            blurBrush.StartAnimation("mixer.Source1Amount", fadeInAnimator);
-
-            var fadeOutAnimator = _compositor.CreateExpressionAnimation();
-            fadeOutAnimator.SetReferenceParameter("fadeOutAmount", m_blurVisual);
-            fadeOutAnimator.Expression = "1-fadeOutAmount.FadeValue";
-            blurBrush.StartAnimation("mixer.Source2Amount", fadeOutAnimator);
-
-            m_blurVisual.Size = sharedSize;
-
-            m_container = _compositor.CreateContainerVisual();
+            m_container = m_compositor.CreateContainerVisual();
             m_container.Children.InsertAtTop(m_blurVisual);
-            m_container.Size = sharedSize;
 
-            m_shadowVisual = _compositor.CreateSpriteVisual();
-
-            var theshadow = _compositor.CreateDropShadow();
-            theshadow.BlurRadius = 32.0f;
-            //theshadow.Color = Color.FromArgb(128, 0, 0, 0);
-            //theshadow.Offset = new Vector3(0.0f, 5.0f, 0.0f);
-            m_shadowVisual.Shadow = theshadow;
-
-            m_shadowVisual.Size = new System.Numerics.Vector2((float)this.ActualWidth + 100.0f, (float)4.0);
-            m_shadowVisual.Offset = new Vector3(0.0f, ((float)this.ActualHeight - 1), 0.0f);
-            m_container.Children.InsertAtBottom(m_shadowVisual);
+            CreateDropshadow();
 
             ElementCompositionPreview.SetElementChildVisual(this as UIElement, m_container);
+
+            this.Loading += OnLoading;
+            this.Unloaded += OnUnloaded;
         }
 
+        private void OnLoading(FrameworkElement sender, object args)
+        {
+            this.SizeChanged += OnSizeChanged;
+            OnSizeChanged(this, null);
+        }
 
-        private void BlurPanelProto_SizeChanged(object sender, Windows.UI.Xaml.SizeChangedEventArgs e)
+        private void OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            this.SizeChanged -= OnSizeChanged;
+        }
+
+        private void CreateDropshadow()
+        {
+            m_shadowVisual = m_compositor.CreateSpriteVisual();
+
+            var theshadow = m_compositor.CreateDropShadow();
+            theshadow.BlurRadius = 32.0f;
+            m_shadowVisual.Shadow = theshadow;
+
+            m_container.Children.InsertAtBottom(m_shadowVisual);
+        }
+
+        private void SetupPropertySetExpression()
+        {
+            var blurAnimator = m_compositor.CreateExpressionAnimation();
+            blurAnimator.SetReferenceParameter("bluramount", m_blurVisual);
+            blurAnimator.Expression = "bluramount.BlurValue";
+            m_blurBrush.StartAnimation("Blur.BlurAmount", blurAnimator);
+
+            var fadeInAnimator = m_compositor.CreateExpressionAnimation();
+            fadeInAnimator.SetReferenceParameter("fadeInAmount", m_blurVisual);
+            fadeInAnimator.Expression = "fadeInAmount.FadeValue";
+            m_blurBrush.StartAnimation("mixer.Source1Amount", fadeInAnimator);
+
+            var fadeOutAnimator = m_compositor.CreateExpressionAnimation();
+            fadeOutAnimator.SetReferenceParameter("fadeOutAmount", m_blurVisual);
+            fadeOutAnimator.Expression = "1-fadeOutAmount.FadeValue";
+            m_blurBrush.StartAnimation("mixer.Source2Amount", fadeOutAnimator);
+        }
+
+        private void OnSizeChanged(object sender, Windows.UI.Xaml.SizeChangedEventArgs e)
         {
             if (m_blurVisual != null)
             {
                 var sharedSize = new System.Numerics.Vector2((float)this.ActualWidth, (float)this.ActualHeight);
                 m_blurVisual.Size = sharedSize;
+             //   m_container.Size = sharedSize;
+            }
+
+            if (m_shadowVisual != null)
+            {
                 m_shadowVisual.Size = new Vector2((float)this.ActualWidth, 4.0f);
                 m_shadowVisual.Offset = new Vector3(0.0f, ((float)this.ActualHeight - 1), 0.0f);
-                m_container.Size = sharedSize;
-                //TODO: other sizes
             }
         }
 
@@ -114,38 +130,24 @@ namespace App1
         {
             GaussianBlurEffect se = new GaussianBlurEffect() { BlurAmount = 15.0f, Name = "Blur", BorderMode = EffectBorderMode.Hard, Optimization = EffectOptimization.Balanced };
 
-            se.Source = new CompositionEffectSourceParameter("dest");
+            se.Source = new CompositionEffectSourceParameter("source");
 
-            var factory = _compositor.CreateEffectFactory(se);
+            var factory = m_compositor.CreateEffectFactory(se);
 
             return factory.CreateBrush();
+        }
+
+        private void BuildDropShadow()
+        {
+
         }
 
 
         private CompositionEffectBrush BuildColoredBlurBrush()
         {
-            //var blurEffect = new BlendEffect
-            //{
-            //    Mode = BlendEffectMode.Multiply,
-
-            //    Foreground = new ColorSourceEffect
-            //    {
-            //        Name = "ColorSource",
-            //        Color = (Color)App.Current.Resources["KlivaMainColor"]
-            //    },
-            //    Background = new GaussianBlurEffect /* newly supported by Composition */
-            //    {
-            //        Name = "GB",
-            //        Source = new CompositionEffectSourceParameter("dest"),
-            //        BlurAmount = 0.0f, //15
-            //        BorderMode = EffectBorderMode.Hard,
-            //        Optimization = EffectOptimization.Balanced
-            //    }
-            //};
-
             var blurEffect = new ArithmeticCompositeEffect
             {
-                Name="mixer",
+                Name="Mixer",
                 Source1Amount = 0.0f,
                 Source2Amount = 0.0f,
                 MultiplyAmount = 0,
@@ -163,10 +165,10 @@ namespace App1
                         Name = "ColorSource2",
                         Color = (Color)App.Current.Resources["KlivaMainColor"]
                     },
-                    Background = new GaussianBlurEffect /* newly supported by Composition */
+                    Background = new GaussianBlurEffect 
                     {
-                        Name = "GB",
-                        Source = new CompositionEffectSourceParameter("dest"),
+                        Name = "Blur",
+                        Source = new CompositionEffectSourceParameter("source"),
                         BlurAmount = 0.0f, //15
                         BorderMode = EffectBorderMode.Hard,
                         Optimization = EffectOptimization.Balanced
@@ -174,18 +176,13 @@ namespace App1
                 }
             };
 
-
-            //GaussianBlurEffect se = new GaussianBlurEffect() { BlurAmount = 15.0f, Name = "Blur", BorderMode = EffectBorderMode.Hard, Optimization = EffectOptimization.Balanced };
-
-            //se.Source = new CompositionEffectSourceParameter("dest");
-
-            var factory = _compositor.CreateEffectFactory(blurEffect, new string[] { "GB.BlurAmount", "mixer.Source1Amount", "mixer.Source2Amount" });
+            var factory = m_compositor.CreateEffectFactory(blurEffect, new string[] { "Blur.BlurAmount", "Mixer.Source1Amount", "Mixer.Source2Amount" });
 
             var brush = factory.CreateBrush();
 
-            brush.Properties.InsertScalar("GB.BlurAmount", 0.0f);
-            brush.Properties.InsertScalar("mixer.Source1Amount", 1.0f);
-            brush.Properties.InsertScalar("mixer.Source2Amount", 0.0f);
+            brush.Properties.InsertScalar("Blur.BlurAmount", 0.0f);
+            brush.Properties.InsertScalar("Mixer.Source1Amount", 1.0f);
+            brush.Properties.InsertScalar("Mixer.Source2Amount", 0.0f);
 
             return brush;
         }
