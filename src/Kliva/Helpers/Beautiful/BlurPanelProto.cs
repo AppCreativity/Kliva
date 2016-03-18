@@ -48,7 +48,7 @@ namespace App1
         {
             var myBackingVisual = ElementCompositionPreview.GetElementVisual(this as UIElement);
             m_compositor = myBackingVisual.Compositor;
-            m_blurBrush = BuildColoredBlurBrush();
+            m_blurBrush = BuildBlurBrush();
             m_blurBrush.SetSourceParameter("source", m_compositor.CreateDestinationBrush());
 
             m_blurVisual = m_compositor.CreateSpriteVisual();
@@ -57,12 +57,12 @@ namespace App1
             m_blurVisual.Properties.InsertScalar("BlurValue", 10.0f);
             m_blurVisual.Properties.InsertScalar("FadeValue", 1.0f);
 
-            SetupPropertySetExpression();
+            //SetupPropertySetExpression();
 
             m_container = m_compositor.CreateContainerVisual();
             m_container.Children.InsertAtTop(m_blurVisual);
 
-            CreateDropshadow();
+            //CreateDropshadow();
 
             ElementCompositionPreview.SetElementChildVisual(this as UIElement, m_container);
 
@@ -116,7 +116,6 @@ namespace App1
             {
                 var sharedSize = new System.Numerics.Vector2((float)this.ActualWidth, (float)this.ActualHeight);
                 m_blurVisual.Size = sharedSize;
-             //   m_container.Size = sharedSize;
             }
 
             if (m_shadowVisual != null)
@@ -128,24 +127,55 @@ namespace App1
 
         private CompositionEffectBrush BuildBlurBrush()
         {
-            GaussianBlurEffect se = new GaussianBlurEffect() { BlurAmount = 15.0f, Name = "Blur", BorderMode = EffectBorderMode.Hard, Optimization = EffectOptimization.Balanced };
+            var gaussianBlur = new GaussianBlurEffect
+            {
+                Name = "Blur",
+                Source = new CompositionEffectSourceParameter("source"),
+                BlurAmount = 15.0f,
+                BorderMode = EffectBorderMode.Hard,
+                Optimization = EffectOptimization.Balanced
+            };
 
-            se.Source = new CompositionEffectSourceParameter("source");
-
-            var factory = m_compositor.CreateEffectFactory(se);
+            var factory = m_compositor.CreateEffectFactory(gaussianBlur);
 
             return factory.CreateBrush();
         }
 
-        private void BuildDropShadow()
-        {
-
-        }
-
-
         private CompositionEffectBrush BuildColoredBlurBrush()
         {
-            var blurEffect = new ArithmeticCompositeEffect
+            var gaussianBlur = new GaussianBlurEffect
+            {
+                Name = "Blur",
+                Source = new CompositionEffectSourceParameter("source"),
+                BlurAmount = 15.0f,
+                BorderMode = EffectBorderMode.Hard,
+                Optimization = EffectOptimization.Balanced
+            };
+
+            var colorEffect = new ColorSourceEffect
+            {
+                Name = "ColorSource2",
+                Color = (Color)App.Current.Resources["KlivaMainColor"]
+            };
+
+            var blendEffect = new BlendEffect
+            {
+                Mode = BlendEffectMode.Multiply,
+
+                Background = gaussianBlur,
+                Foreground = colorEffect
+            };
+
+            var factory = m_compositor.CreateEffectFactory(blendEffect);
+
+            var brush = factory.CreateBrush();
+
+            return brush;
+        }
+
+        private CompositionEffectBrush BuildColoredBlurMixerBrush()
+        {
+            var arithmeticComposit = new ArithmeticCompositeEffect
             {
                 Name="Mixer",
                 Source1Amount = 0.0f,
@@ -176,7 +206,7 @@ namespace App1
                 }
             };
 
-            var factory = m_compositor.CreateEffectFactory(blurEffect, new string[] { "Blur.BlurAmount", "Mixer.Source1Amount", "Mixer.Source2Amount" });
+            var factory = m_compositor.CreateEffectFactory(arithmeticComposit, new string[] { "Blur.BlurAmount", "Mixer.Source1Amount", "Mixer.Source2Amount" });
 
             var brush = factory.CreateBrush();
 
