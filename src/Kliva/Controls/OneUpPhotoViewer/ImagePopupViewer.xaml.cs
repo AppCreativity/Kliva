@@ -24,11 +24,12 @@ namespace CompositionSampleGallery
         Compositor                  _compositor;
         CompositionEffectFactory    _lightEffectFactory;
         CompositionSurfaceBrush     _normalMapBrush;
-        Vector3KeyFrameAnimation    _lightPositionAnimation;
-        Vector3KeyFrameAnimation    _lightTargetAnimation;
+        ExpressionAnimation         _lightPositionAnimation;
+        ExpressionAnimation         _lightTargetAnimation;
         CompositionEffectBrush      _crossFadeBrush;
         CompositionSurfaceBrush     _previousSurfaceBrush;
         CompositionScopedBatch      _crossFadeBatch;
+        CompositionPropertySet      _lightProperties;
         ContinuityTransition        _transition;
         Photo                       _initialPhoto;
         static ImagePopupViewer     _viewerInstance;
@@ -191,9 +192,9 @@ namespace CompositionSampleGallery
                 {
                     new ArithmeticCompositeEffect()
                     {
-                        Source1Amount  = .8f,
+                        Source1Amount  = .6f,
                         Source2Amount  = .2f,
-                        MultiplyAmount = 1,
+                        MultiplyAmount = .5f,
 
                         Source1 = new CompositionEffectSourceParameter("ImageSource"),
                         Source2 = new SpotDiffuseEffect()
@@ -201,8 +202,8 @@ namespace CompositionSampleGallery
                             Name = "Light1",
                             DiffuseAmount = 1f,
                             LimitingConeAngle = (float)Math.PI / 8f,
-                            LightTarget = new Vector3(1000, 1000, 100),
-                            LightPosition = new Vector3(0f, 0f, 100),
+                            LightTarget = new Vector3(1000, 1000, 0),
+                            LightPosition = new Vector3(1000f, 1000f, 2000),
                             LightColor = Colors.White,
                             Source = new CompositionEffectSourceParameter("NormalMap"),
                         },
@@ -210,9 +211,11 @@ namespace CompositionSampleGallery
                     new SpotSpecularEffect()
                     {
                         Name = "Light2",
-                        SpecularAmount = 1f,
+                        SpecularAmount = .75f,
                         SpecularExponent = 10000f,
                         LimitingConeAngle = (float)Math.PI / 8f,
+                        LightTarget = new Vector3(1000, 1000, 0),
+                        LightPosition = new Vector3(1000f, 1000f, 2000),
                         LightColor = Colors.White,
                         Source = new CompositionEffectSourceParameter("NormalMap"),
                     }
@@ -224,40 +227,19 @@ namespace CompositionSampleGallery
                                 new[] { "Light1.LightPosition", "Light1.LightTarget",
                                         "Light2.LightPosition", "Light2.LightTarget"});
 
-            // Bug - lights are currently in screen space which is not intended
-            DisplayInformation info = DisplayInformation.GetForCurrentView();
-            Vector2 sizePageBounds = new Vector2((float)(Window.Current.Bounds.Width * info.RawPixelsPerViewPixel),
-                                                  (float)(Window.Current.Bounds.Height * info.RawPixelsPerViewPixel));
-
             // Create the light position/target animations
-            const float lightDistance = 1200;
-            Vector3 centerPosition = new Vector3(sizePageBounds.X * .5f, sizePageBounds.Y * .8f, lightDistance);
-            Vector3 rightPosition = new Vector3(sizePageBounds.X * .55f, sizePageBounds.Y * .9f, lightDistance);
-            Vector3 leftPosition = new Vector3(sizePageBounds.X * .45f, sizePageBounds.Y * .9f, lightDistance);
+            _lightProperties = _compositor.CreatePropertySet();
+            _lightProperties.InsertVector3("LightPosition", new Vector3(1000,1000,1000));
+            _lightProperties.InsertScalar("LightDistance", 100f);
 
-            _lightPositionAnimation = _compositor.CreateVector3KeyFrameAnimation();
-            _lightPositionAnimation.InsertKeyFrame(0f, centerPosition);
-            _lightPositionAnimation.InsertKeyFrame(.33f, rightPosition);
-            _lightPositionAnimation.InsertKeyFrame(.66f, leftPosition);
-            _lightPositionAnimation.InsertKeyFrame(1f, centerPosition);
-            _lightPositionAnimation.Duration = TimeSpan.FromMilliseconds(20000);
-            _lightPositionAnimation.IterationBehavior = AnimationIterationBehavior.Forever;
-
-            centerPosition.Z -= lightDistance;
-            rightPosition.Z  -= lightDistance;
-            leftPosition.Z   -= lightDistance;
-
-            _lightTargetAnimation = _compositor.CreateVector3KeyFrameAnimation();
-            _lightTargetAnimation.InsertKeyFrame(0f, centerPosition);
-            _lightTargetAnimation.InsertKeyFrame(.33f, rightPosition);
-            _lightTargetAnimation.InsertKeyFrame(.66f, leftPosition);
-            _lightTargetAnimation.InsertKeyFrame(1f, centerPosition);
-            _lightTargetAnimation.Duration = TimeSpan.FromMilliseconds(20000);
-            _lightTargetAnimation.IterationBehavior = AnimationIterationBehavior.Forever;
-
+            _lightPositionAnimation = _compositor.CreateExpressionAnimation("propertySet.LightPosition + Vector3(0,0,propertySet.LightDistance)");
+            _lightPositionAnimation.SetReferenceParameter("propertySet", _lightProperties);
+            _lightTargetAnimation =   _compositor.CreateExpressionAnimation("propertySet.LightPosition - Vector3(0,0,propertySet.LightDistance)");
+            _lightTargetAnimation.SetReferenceParameter("propertySet", _lightProperties);
+            
             // Create the shared normal map used for the lighting effect
             _normalMapBrush = _compositor.CreateSurfaceBrush();
-            _normalMapBrush.Surface = await SurfaceLoader.LoadFromUri(new Uri("ms-appx:///Controls/OneUpPhotoViewer/FlatNormals.jpg"));
+            _normalMapBrush.Surface = await SurfaceLoader.LoadFromUri(new Uri("ms-appx:///Controls/OneUpPhotoViewer/NormalMap.jpg"));
         }
 
         private Color ExtractPredominantColor(Color[] colors, Size size)
@@ -412,6 +394,9 @@ namespace CompositionSampleGallery
 
             Visual desaturateVisual = ElementCompositionPreview.GetElementChildVisual(_hostGrid.Children[0]);
             desaturateVisual.Size = sizePageBounds;
+
+            float lightDistance = sizePageBounds.X * .5f;
+            _lightProperties.InsertVector3("LightPosition", new Vector3(sizePageBounds.X * .5f, sizePageBounds.Y * .85f, lightDistance));
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)
