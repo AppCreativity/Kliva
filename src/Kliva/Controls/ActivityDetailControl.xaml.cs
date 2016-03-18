@@ -30,18 +30,32 @@ namespace Kliva.Controls
 
         private readonly Dictionary<Pivots, Tuple<int, PivotItem>> _pivotDictionary = new Dictionary<Pivots, Tuple<int, PivotItem>>();
 
+        private ExpressionAnimation m_headerColapseExpression;
+        private Visual m_blurPanelVisual;
+
         public ActivityDetailControl()
         {
             this.InitializeComponent();
 
             ActivityMap.EnableLayoutImplicitAnimations();
 
-
-
-            //DataContextChanged += (sender, arg) => this.Bindings.Update();
-
             ServiceLocator.Current.GetInstance<IMessenger>().Register<ActivityPolylineMessage>(this, async message => await DrawPolyline(message.Geopositions));
             ServiceLocator.Current.GetInstance<IMessenger>().Register<PivotMessage>(this, AdjustPivots);
+            Loading += OnLoading;
+        }
+
+        private void OnLoading(FrameworkElement sender, object args)
+        {
+            SizeChanged += OnSizeChanged;
+        }
+
+        private void OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (m_headerColapseExpression != null)
+            {
+                m_headerColapseExpression.SetScalarParameter("minHeight", (float)BlurPanel.ActualHeight - 50); //50 is the desired height of the header when collapsed
+                m_blurPanelVisual.StartAnimation("Offset.Y", m_headerColapseExpression);
+            }
         }
 
         private void AdjustPivots(PivotMessage message)
@@ -123,72 +137,79 @@ namespace Kliva.Controls
 
         private void OnActivityDetailControlLoaded(object sender, RoutedEventArgs e)
         {
-            //ActivityMap.Opacity = 1.0f;
-
             var scrollerManipProps = ElementCompositionPreview.GetScrollViewerManipulationPropertySet(scroller);
 
             Compositor compositor = scrollerManipProps.Compositor;
 
             if (VisualStateGroup.CurrentState.Name == "Mobile")
             {
-                // Experimental custom scrolling
-
-                // Create the expression 
-                ExpressionAnimation expression = compositor.CreateExpressionAnimation();
-
-                // set "dynamic" reference parameter that will be used to evaluate the current position of the scrollbar every frame 
-                expression.SetReferenceParameter("scroller", scrollerManipProps);
-                expression.Expression = "Clamp(scroller.Translation.Y,-200,0)";
-
-                Visual pivotVisual = ElementCompositionPreview.GetElementVisual(ActivityPivot);
-                pivotVisual.StartAnimation("Offset.Y", expression);
-
-                Visual mapVisual = ElementCompositionPreview.GetElementVisual(ActivityMap);
-                mapVisual.StartAnimation("Offset.Y", expression);
-
-                ExpressionAnimation headerColapseExpression = compositor.CreateExpressionAnimation();
-                headerColapseExpression.SetReferenceParameter("scroller", scrollerManipProps);
-                headerColapseExpression.SetScalarParameter("minClamp", (float)BlurPanel.ActualHeight - 50); //50 is the desired height of the header when collapsed
-                //mapMoveExpression.Expression = "Clamp(scroller.Translation.Y, minClamp, 0)";
-
-                headerColapseExpression.Expression = "Clamp(scroller.Translation.Y,-150,0)";
-                
-                Visual backgroundVisual = ElementCompositionPreview.GetElementVisual(BlurPanel);
-                backgroundVisual.StartAnimation("Offset.Y", headerColapseExpression);
-
-                ExpressionAnimation fadeDetails = compositor.CreateExpressionAnimation();
-                fadeDetails.SetReferenceParameter("scroller", scrollerManipProps);
-                fadeDetails.Expression = "1-(Clamp(scroller.Translation.Y, -80, 0)/-80)";  //80 is number of pixels scrolled by which the element will be at 0 opacity 
-                Visual profilePictureVideo = ElementCompositionPreview.GetElementVisual(AthleteProfilePicture);
-                profilePictureVideo.StartAnimation("Opacity", fadeDetails);
-
-                ElementCompositionPreview.GetElementVisual(BikeIcon).StartAnimation("Opacity", fadeDetails);
-                
-                ElementCompositionPreview.GetElementVisual(ClockIcon).StartAnimation("Opacity", fadeDetails);
-
-                ElementCompositionPreview.GetElementVisual(TimeMovingFormattedTextBlockHeader).StartAnimation("Opacity", fadeDetails);
-
-                ElementCompositionPreview.GetElementVisual(DistanceFormattedTextBlockHeader).StartAnimation("Opacity", fadeDetails);
-
-                ExpressionAnimation moveTitle = compositor.CreateExpressionAnimation();
-                moveTitle.SetReferenceParameter("scroller", scrollerManipProps);
-                moveTitle.Expression = "Clamp(scroller.Translation.Y*0.2, -20, 0)";  //100 is number of pixels scrolled by which the element will be at 0 opacity 
-                Visual activityName = ElementCompositionPreview.GetElementVisual(ActivityName);
-                activityName.StartAnimation("Offset.Y", moveTitle);
-
-                //ExpressionAnimation reduceBlur = compositor.CreateExpressionAnimation();
-                //reduceBlur.SetReferenceParameter("scroller", scrollerManipProps);
-                //reduceBlur.Expression = "15*(1-(Clamp(scroller.Translation.Y, -80, 0)/-80))";  //80 is number of pixels scrolled by which the element will be at 0 opacity 
-                //BlurPanel.Params.StartAnimation("BlurValue", reduceBlur);
-
-                ExpressionAnimation crossfade = compositor.CreateExpressionAnimation();
-                crossfade.SetReferenceParameter("scroller", scrollerManipProps);
-                crossfade.Expression = "(1-(Clamp(scroller.Translation.Y*.5, -80, 0)/-80))";  //80 is number of pixels scrolled by which the element will be at 0 opacity 
-                BlurPanel.VisualProperties.StartAnimation("FadeValue", crossfade);
+                SetupShyHeaderExpressions(scrollerManipProps, compositor);
             }
 
             if (_pivotDictionary.Count == 0)
                 IndexPivotCollection();
+        }
+
+        private void SetupShyHeaderExpressions(CompositionPropertySet scrollerManipProps, Compositor compositor)
+        {
+            #region MoveMap
+            //// Create the expression 
+            ExpressionAnimation expression = compositor.CreateExpressionAnimation();
+
+            // set "dynamic" reference parameter that will be used to evaluate the current position of the scrollbar every frame 
+            expression.SetReferenceParameter("scroller", scrollerManipProps);
+
+            // move the target up the screen a maximum of 200 pixels
+            expression.Expression = "Clamp(scroller.Translation.Y,-200,0)";
+
+            ElementCompositionPreview.GetElementVisual(ActivityPivot).StartAnimation("Offset.Y", expression);
+            ElementCompositionPreview.GetElementVisual(ActivityMap).StartAnimation("Offset.Y", expression);
+            #endregion
+
+            #region FadeDetails
+            ExpressionAnimation fadeDetails = compositor.CreateExpressionAnimation();
+            fadeDetails.SetReferenceParameter("scroller", scrollerManipProps);
+            
+            //80 is number of pixels scrolled by which the element will be at 0 opacity 
+            fadeDetails.Expression = "1-(Clamp(scroller.Translation.Y, -80, 0)/-80)";  
+            Visual profilePictureVideo = ElementCompositionPreview.GetElementVisual(AthleteProfilePicture);
+            profilePictureVideo.StartAnimation("Opacity", fadeDetails);
+
+            ElementCompositionPreview.GetElementVisual(BikeIcon).StartAnimation("Opacity", fadeDetails);
+            ElementCompositionPreview.GetElementVisual(ClockIcon).StartAnimation("Opacity", fadeDetails);
+            ElementCompositionPreview.GetElementVisual(TimeMovingFormattedTextBlockHeader).StartAnimation("Opacity", fadeDetails);
+            ElementCompositionPreview.GetElementVisual(DistanceFormattedTextBlockHeader).StartAnimation("Opacity", fadeDetails);
+            #endregion
+
+            #region HeaderOpaque
+            ExpressionAnimation crossfade = compositor.CreateExpressionAnimation();
+            crossfade.SetReferenceParameter("scroller", scrollerManipProps);
+            
+            //80 is number of pixels scrolled by which the element will be at 0 opacity 
+            crossfade.Expression = "(1-(Clamp(scroller.Translation.Y*.5, -80, 0)/-80))";  
+            BlurPanel.VisualProperties.StartAnimation("FadeValue", crossfade);
+            #endregion
+
+            #region MoveTitle
+            ExpressionAnimation moveTitle = compositor.CreateExpressionAnimation();
+            moveTitle.SetReferenceParameter("scroller", scrollerManipProps);
+
+            //100 is number of pixels scrolled by which the element will be at 0 opacity 
+            moveTitle.Expression = "Clamp(scroller.Translation.Y*0.2, -20, 0)";  
+            Visual activityName = ElementCompositionPreview.GetElementVisual(ActivityName);
+            activityName.StartAnimation("Offset.Y", moveTitle);
+            #endregion
+
+            #region Header Colapse
+            m_headerColapseExpression = compositor.CreateExpressionAnimation();
+            m_headerColapseExpression.SetReferenceParameter("scroller", scrollerManipProps);
+            m_headerColapseExpression.SetScalarParameter("minHeight", (float)BlurPanel.ActualHeight - 50); //50 is the desired height of the header when collapsed
+            m_headerColapseExpression.Expression = "Clamp(scroller.Translation.Y, -minHeight, 0)";
+
+            m_blurPanelVisual = ElementCompositionPreview.GetElementVisual(BlurPanel);
+            m_blurPanelVisual.StartAnimation("Offset.Y", m_headerColapseExpression);
+
+            #endregion
         }
 
         private void IndexPivotCollection()
