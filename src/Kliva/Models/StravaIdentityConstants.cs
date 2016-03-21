@@ -2,8 +2,8 @@
 {
     public static class StravaIdentityConstants
     {
-        public const string STRAVA_AUTHORITY_CLIENT_ID = "***REMOVED***";
-        public const string STRAVA_AUTHORITY_CLIENT_SECRET = "***REMOVED***";
-        public const string GOOGLE_MAP_API = "***REMOVED***";
+        public const string STRAVA_AUTHORITY_CLIENT_ID = "yours here";
+        public const string STRAVA_AUTHORITY_CLIENT_SECRET = "yours here";
+        public const string GOOGLE_MAP_API = "yours here";
     }
 }
