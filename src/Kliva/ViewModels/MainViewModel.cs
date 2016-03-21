@@ -78,21 +78,7 @@ namespace Kliva.ViewModels
             ActivityFeedFilter filter = Enum<ActivityFeedFilter>.Parse(item);
             _settingsService.SetActivityFeedFilterAsync(filter);
 
-            switch (filter)
-            {
-                case ActivityFeedFilter.All:
-                    FilterText = "Showing all activities";
-                    ActivityIncrementalCollection = new FriendActivityIncrementalCollection(_stravaService, ActivityFeedFilter.All);
-                    break;
-                case ActivityFeedFilter.Followers:
-                    FilterText = "Showing friends' activities";
-                    ActivityIncrementalCollection = new FriendActivityIncrementalCollection(_stravaService, ActivityFeedFilter.Friends);
-                    break;
-                case ActivityFeedFilter.My:
-                    FilterText = "Showing my activities";
-                    ActivityIncrementalCollection = new MyActivityIncrementalCollection(_stravaService);
-                    break;
-            }
+            ApplyActivityFeedFilter(filter);
         }));
 
         private RelayCommand _logoutCommand;
@@ -119,9 +105,12 @@ namespace Kliva.ViewModels
         {
             _settingsService = settingsService;
             _stravaService = stravaService;
+        }
 
-            //TODO: Glenn - store selected filter in settings!            
-            FilterText = "Showing all activities";
+        public void ActivityInvoked(ActivitySummary selectedActivity)
+        {
+            SelectedActivity = selectedActivity;
+            TryNavigateToDetail();
         }
 
         private async Task Logout()
@@ -144,7 +133,8 @@ namespace Kliva.ViewModels
                 ActivityFeedFilter filter = await _settingsService.GetStoredActivityFeedFilterAsync();
 
                 var athlete = await _stravaService.GetAthleteAsync();
-                ActivityIncrementalCollection = new FriendActivityIncrementalCollection(_stravaService, filter);
+                ApplyActivityFeedFilter(filter);
+
                 _viewModelLoaded = true;
             }
         }
@@ -161,10 +151,25 @@ namespace Kliva.ViewModels
             return false;
         }
 
-        public void ActivityInvoked(ActivitySummary selectedActivity)
+        private void ApplyActivityFeedFilter(ActivityFeedFilter filter)
         {
-            SelectedActivity = selectedActivity;
-            TryNavigateToDetail();
+            switch (filter)
+            {
+                case ActivityFeedFilter.All:
+                    FilterText = "Showing all activities";
+                    ActivityIncrementalCollection = new FriendActivityIncrementalCollection(_stravaService,
+                        ActivityFeedFilter.All);
+                    break;
+                case ActivityFeedFilter.Followers:
+                    FilterText = "Showing friends' activities";
+                    ActivityIncrementalCollection = new FriendActivityIncrementalCollection(_stravaService,
+                        ActivityFeedFilter.Friends);
+                    break;
+                case ActivityFeedFilter.My:
+                    FilterText = "Showing my activities";
+                    ActivityIncrementalCollection = new MyActivityIncrementalCollection(_stravaService);
+                    break;
+            }
         }
     }
 }
