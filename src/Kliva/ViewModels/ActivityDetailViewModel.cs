@@ -65,6 +65,13 @@ namespace Kliva.ViewModels
             set { Set(() => HasPhotos, ref _hasPhotos, value); }
         }
 
+        private bool _hasKudoed;
+        public bool HasKudoed
+        {
+            get { return _hasKudoed; }
+            set { Set(() => HasKudoed, ref _hasKudoed, value); }
+        }
+
         public int KudosCount => SelectedActivity?.KudosCount ?? 0;
         public int CommentCount => SelectedActivity?.CommentCount ?? 0;
         public int PhotoCount => SelectedActivity?.TotalPhotoCount ?? 0;
@@ -121,6 +128,7 @@ namespace Kliva.ViewModels
                 //Currently the Public API of Strava will not give us the Photo links for 'other' athletes then the one logged in
                 //But we do get the photo count, so we also need to verify the current user vs the one from the activity
                 HasPhotos = athlete.Id == SelectedActivity.Athlete.Id && SelectedActivity.TotalPhotoCount > 0;
+                HasKudoed = athlete.Id == SelectedActivity.Athlete.Id || SelectedActivity.HasKudoed;
 
                 //TODO: Glenn - Why oh why are we not yet able to show/hide PivotItems through Visibility bindable
                 ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage>(new PivotMessage(Pivots.Segments, HasSegments));
