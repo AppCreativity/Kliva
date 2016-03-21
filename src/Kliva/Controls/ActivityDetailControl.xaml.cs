@@ -124,12 +124,12 @@ namespace Kliva.Controls
 
                 //Make room for the glass
 
-                Thickness padding;
+                Thickness padding; 
                 if (VisualStateGroup.CurrentState.Name == "Mobile")
                 {
-                    padding = new Thickness(0, 190, 0, 0);
+                     padding = new Thickness(0, 190, 0, 0);
                 }
-
+                
                 while (!zoomed)
                 {
                     zoomed = await ActivityMap.TrySetViewBoundsAsync(GeoboundingBox.TryCompute(geopositions), padding, MapAnimationKind.None);
@@ -138,9 +138,9 @@ namespace Kliva.Controls
             else
             {
                 if (ExpandMapButton != null)
-                    ExpandMapButton.Visibility = Visibility.Collapsed;
+                ExpandMapButton.Visibility = Visibility.Collapsed;
                 ActivityMap.Visibility = Visibility.Collapsed;
-            }
+        }
         }
 
         private void OnActivityDetailControlLoaded(object sender, RoutedEventArgs e)
@@ -232,10 +232,22 @@ namespace Kliva.Controls
 
         private void ActivityPhotosGrid_ItemClick(object sender, ItemClickEventArgs e)
         {
-            Func<object, Uri> getImageForPhoto = (o) => { return new Uri(((Photo)o).ImageLarge); };
+            Func<object, bool, Uri> getImageForPhoto = (o, large) => 
+            {
+                if (large)
+                    return new Uri(((Photo)o).ImageLarge);
+                else
+                    return new Uri(((Photo)o).ImageThumbnail);
+            };
+            GridView gridView = (GridView)sender;
+            GridViewItem item = (GridViewItem)gridView.ContainerFromItem(e.ClickedItem);
+            CompositionImage image = VisualTreeHelperExtensions.GetFirstDescendantOfType<CompositionImage>(item);
+
+            ContinuityTransition transition = new ContinuityTransition();
+            transition.Initialize(Window.Current.Content, image, null);
 
             //Display the imageViewer as an app modal experience.  Margin determines how much of the app is visible around the edges of the dialog
-            ImagePopupViewer.Show(ActivityPhotosGrid.ItemsSource, getImageForPhoto, new Thickness(100, 50, 50, 50));
+            ImagePopupViewer.Show((Photo) e.ClickedItem, ActivityPhotosGrid.ItemsSource, getImageForPhoto, new Thickness(100, 50, 50, 50), transition);
         }
 
         private void OnProfileImageOpened(object sender, RoutedEventArgs e)

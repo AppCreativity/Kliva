@@ -148,8 +148,9 @@ namespace CompositionSampleGallery
             }
 
             // Create size animation to change size of the visual
+            LinearEasingFunction linear = compositor.CreateLinearEasingFunction();
             Vector2KeyFrameAnimation sizeAnimation = compositor.CreateVector2KeyFrameAnimation();
-            sizeAnimation.InsertKeyFrame(1f, new Vector2((float)targetImage.ActualWidth, (float)targetImage.ActualHeight));
+            sizeAnimation.InsertKeyFrame(1f, new Vector2((float)targetImage.ActualWidth, (float)targetImage.ActualHeight), linear);
             sizeAnimation.Duration = TimeSpan.FromMilliseconds(1250);
 
             // Create the fade in animation for the other page content
@@ -170,6 +171,9 @@ namespace CompositionSampleGallery
             //Scoped batch completed event
             _scopeBatch.Completed += ScopeBatch_Completed;
             _scopeBatch.End();
+
+            // Clear the flag
+            _animationCompleted = false;
         }
 
         public void Cancel()

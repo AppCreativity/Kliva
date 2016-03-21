@@ -43,6 +43,7 @@ namespace SamplesCommon
         public event RoutedEventHandler     ImageOpened;
         public event RoutedEventHandler     ImageFailed;
         private TimeSpan                    _placeholderDelay;
+        private bool                        _sharedSurface;
 
         static private CompositionBrush     _loadingBrush;
         static private ScalarKeyFrameAnimation
@@ -64,6 +65,7 @@ namespace SamplesCommon
             _compositor = ElementCompositionPreview.GetElementVisual(this).Compositor;
             _sprite = _compositor.CreateSpriteVisual();
             _sprite.Size = new Vector2((float)ActualWidth, (float)ActualHeight);
+            _surfaceBrush = _compositor.CreateSurfaceBrush(null);
 
             // Intialize the statics as needed
             if (!_staticsInitialized)
@@ -112,7 +114,11 @@ namespace SamplesCommon
         {
             if (_surface != null)
             {
-                _surface.Dispose();
+                // If no one has asked to share, dispose it to free the memory
+                if (!_sharedSurface)
+                {
+                    _surface.Dispose();
+                }
                 _surface = null;
             }
         }
@@ -212,6 +218,8 @@ namespace SamplesCommon
         private void CompImage_Unloaded(object sender, RoutedEventArgs e)
         {
             _unloaded = true;
+
+            ReleaseSurface();
 
             if (_sprite != null)
             {
@@ -325,6 +333,12 @@ namespace SamplesCommon
         public bool IsContentLoaded
         {
             get { return _surface != null; }
+        }
+
+        public bool SharedSurface
+        {
+            get { return _sharedSurface; }
+            set { _sharedSurface = value; }
         }
 
         public LoadTimeEffectHandler LoadTimeEffectHandler
@@ -469,7 +483,7 @@ namespace SamplesCommon
             }
         }
 
-        public CompositionBrush SurfaceBrush
+        public CompositionSurfaceBrush SurfaceBrush
         {
             get { return _surfaceBrush; }
         }

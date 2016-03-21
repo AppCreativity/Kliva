@@ -48,7 +48,7 @@ namespace App1
         {
             var myBackingVisual = ElementCompositionPreview.GetElementVisual(this as UIElement);
             m_compositor = myBackingVisual.Compositor;
-            m_blurBrush = BuildBlurBrush();
+            m_blurBrush = BuildColoredBlurMixerBrush();
             m_blurBrush.SetSourceParameter("source", m_compositor.CreateDestinationBrush());
 
             m_blurVisual = m_compositor.CreateSpriteVisual();
@@ -57,12 +57,12 @@ namespace App1
             m_blurVisual.Properties.InsertScalar("BlurValue", 10.0f);
             m_blurVisual.Properties.InsertScalar("FadeValue", 1.0f);
 
-            //SetupPropertySetExpression();
+            SetupPropertySetExpression();
 
             m_container = m_compositor.CreateContainerVisual();
             m_container.Children.InsertAtTop(m_blurVisual);
 
-            //CreateDropshadow();
+            CreateDropshadow();
 
             ElementCompositionPreview.SetElementChildVisual(this as UIElement, m_container);
 
