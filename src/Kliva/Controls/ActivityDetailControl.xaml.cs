@@ -20,6 +20,7 @@ using Windows.UI.Xaml.Hosting;
 using Windows.UI.Composition;
 using System.Diagnostics;
 using CompositionSampleGallery;
+using SamplesCommon;
 
 namespace Kliva.Controls
 {
@@ -224,10 +225,22 @@ namespace Kliva.Controls
 
         private void ActivityPhotosGrid_ItemClick(object sender, ItemClickEventArgs e)
         {
-            Func<object, Uri> getImageForPhoto = (o) => { return new Uri(((Photo)o).ImageLarge); };
+            Func<object, bool, Uri> getImageForPhoto = (o, large) => 
+            {
+                if (large)
+                    return new Uri(((Photo)o).ImageLarge);
+                else
+                    return new Uri(((Photo)o).ImageThumbnail);
+            };
+            GridView gridView = (GridView)sender;
+            GridViewItem item = (GridViewItem)gridView.ContainerFromItem(e.ClickedItem);
+            CompositionImage image = VisualTreeHelperExtensions.GetFirstDescendantOfType<CompositionImage>(item);
 
+            ContinuityTransition transition = new ContinuityTransition();
+            transition.Initialize(Window.Current.Content, image, null);
+            
             //Display the imageViewer as an app modal experience.  Margin determines how much of the app is visible around the edges of the dialog
-            ImagePopupViewer.Show(ActivityPhotosGrid.ItemsSource, getImageForPhoto, new Thickness(100, 50, 50, 50));
+            ImagePopupViewer.Show((Photo) e.ClickedItem, ActivityPhotosGrid.ItemsSource, getImageForPhoto, new Thickness(100, 50, 50, 50), transition);
         }
     }
 }
