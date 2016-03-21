@@ -372,7 +372,7 @@
             <Ellipse.Fill>
                 <ImageBrush Stretch="Uniform">
                     <ImageBrush.ImageSource>
-                        <BitmapImage DecodePixelHeight="100" DecodePixelWidth="100" UriSource="{x:Bind ViewModel.SelectedAthlete.ProfileLargeFormatted, Mode=OneWay}" />
+                        <BitmapImage ImageOpened="OnProfileImageOpened" DecodePixelHeight="100" DecodePixelWidth="100" UriSource="{x:Bind ViewModel.SelectedAthlete.ProfileLargeFormatted, Mode=OneWay}" />
                     </ImageBrush.ImageSource>
                 </ImageBrush>
             </Ellipse.Fill>

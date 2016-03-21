@@ -20,6 +20,9 @@ using Windows.UI.Xaml.Hosting;
 using Windows.UI.Composition;
 using System.Diagnostics;
 using CompositionSampleGallery;
+using Windows.UI.Xaml.Shapes;
+using Windows.Foundation.Metadata;
+using Windows.UI.Xaml.Media.Animation;
 
 namespace Kliva.Controls
 {
@@ -96,6 +99,7 @@ namespace Kliva.Controls
 
             if (geopositions.Any())
             {
+                ActivityMap.Visibility = Visibility.Visible;
                 if (ExpandMapButton == null)
                     FindName("ExpandMapButton");
                 else
@@ -120,19 +124,23 @@ namespace Kliva.Controls
 
                 //Make room for the glass
 
-                Thickness padding; 
-                if (VisualStateGroup.CurrentState.Name=="Mobile") {
-                     padding = new Thickness(0, 190, 0, 0);
+                Thickness padding;
+                if (VisualStateGroup.CurrentState.Name == "Mobile")
+                {
+                    padding = new Thickness(0, 190, 0, 0);
                 }
-                
+
                 while (!zoomed)
                 {
                     zoomed = await ActivityMap.TrySetViewBoundsAsync(GeoboundingBox.TryCompute(geopositions), padding, MapAnimationKind.None);
                 }
             }
             else
+            {
                 if (ExpandMapButton != null)
-                ExpandMapButton.Visibility = Visibility.Collapsed;
+                    ExpandMapButton.Visibility = Visibility.Collapsed;
+                ActivityMap.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void OnActivityDetailControlLoaded(object sender, RoutedEventArgs e)
@@ -228,6 +236,21 @@ namespace Kliva.Controls
 
             //Display the imageViewer as an app modal experience.  Margin determines how much of the app is visible around the edges of the dialog
             ImagePopupViewer.Show(ActivityPhotosGrid.ItemsSource, getImageForPhoto, new Thickness(100, 50, 50, 50));
+        }
+
+        bool fired = false;
+
+        private void OnProfileImageOpened(object sender, RoutedEventArgs e)
+        {
+            if (!fired && ApiInformation.IsTypePresent("Windows.UI.Xaml.Media.Animation.ConnectedAnimationService"))
+            {
+                if (AthleteProfilePicture != null)
+                {
+                    ConnectedAnimationService cas = ConnectedAnimationService.GetForCurrentView();
+                    bool succeeded = cas.GetAnimation("AthleteProfilePicture").TryStart(AthleteProfilePicture);
+                    if (succeeded) fired = true;
+                }
+            }
         }
     }
 }

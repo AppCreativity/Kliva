@@ -82,7 +82,7 @@
                   ShowsScrollingPlaceholders="False" 
                   ItemContainerTransitions="{x:Null}" />
 
-        <Image x:Name="RefreshIcon" Width="48" Height="48" Source="ms-appx:///Assets/crank.png" VerticalAlignment="Top" Margin="0,-10,0,0" />
+        <Image x:Name="RefreshIcon" Width="48" Height="48" Source="ms-appx:///Assets/crank.png" VerticalAlignment="Top" />
 
         <Button x:Name="GoToTopButton"
                 HorizontalAlignment="Right" VerticalAlignment="Bottom"
