@@ -106,7 +106,7 @@
                                        Style="{StaticResource SubheadingBaseTextBlock}"
                                        FontSize="14"
                                        RelativePanel.Below="ActivityName" RelativePanel.AlignLeftWithPanel="True" />
-                            
+
                             <TextBlock x:Name="ActivityStart" x:Phase="2"
                                        Margin="0,0,16,2.5"
                                        Text="{x:Bind StartDate, Mode=OneWay, Converter={StaticResource RelativeTimeConverter}}"
@@ -202,7 +202,7 @@
                        VerticalAlignment="Center" HorizontalAlignment="Center"
                        Margin="0,0,10,0"
                        FontSize="14"
-                       Grid.Column="1"/>            
+                       Grid.Column="1"/>
         </Grid>
     </DataTemplate>
 
@@ -248,23 +248,14 @@
                         </VisualState>
                     </VisualStateGroup>
                 </VisualStateManager.VisualStateGroups>
-                <RelativePanel>
-                    <Ellipse x:Name="AthleteProfilePicture"
+                <Ellipse x:Name="AthleteProfilePicture"
                              Margin="0,5,0,5"
-                             RelativePanel.AlignLeftWithPanel="True">
-                        <Ellipse.Fill>
-                            <ImageBrush Stretch="UniformToFill" ImageSource="{x:Bind ProfileMediumFormatted, Mode=OneWay}" />
-                        </Ellipse.Fill>
-                    </Ellipse>
-
-                    <TextBlock x:Name="ActivityAthleteName"
-                               Text="{x:Bind FullName, Mode=OneWay}"
-                               Style="{StaticResource BaseTextBlock}"
-                               Margin="10,0,0,0"
-                               FontSize="14"
-                               RelativePanel.RightOf="AthleteProfilePicture"
-                               RelativePanel.AlignVerticalCenterWithPanel="True"/>
-                </RelativePanel>
+                             RelativePanel.AlignLeftWithPanel="True"
+                             ToolTipService.ToolTip="{x:Bind FullName, Mode=OneWay}">
+                    <Ellipse.Fill>
+                        <ImageBrush Stretch="UniformToFill" ImageSource="{x:Bind ProfileMediumFormatted, Mode=OneWay}" />
+                    </Ellipse.Fill>
+                </Ellipse>
             </Grid>
         </UserControl>
     </DataTemplate>

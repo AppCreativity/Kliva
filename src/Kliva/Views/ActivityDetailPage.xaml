@@ -10,34 +10,29 @@
      Loaded="Page_Loaded" 
      NavigationCacheMode="Required" 
      DataContext="{Binding ActivityDetail, Source={StaticResource Locator}}">
-
-    <Page.Transitions>
+    <!--<Page.Transitions>
         <TransitionCollection>
             <ContentThemeTransition />
         </TransitionCollection>
-    </Page.Transitions>
-
+    </Page.Transitions>-->
     <Page.BottomAppBar>
         <CommandBar x:Name="BottomAppBar" Background="{StaticResource KlivaMainBrush}" 
                     Visibility="Collapsed"
                      Foreground="White">
-          
-          <AppBarButton x:Name="AppBarKudos" 
+            <AppBarButton x:Name="AppBarKudos" 
                            Label="kudos" 
                            Icon="Like" 
                            Foreground="White" 
                            Visibility="{x:Bind ViewModel.SelectedActivity.HasKudoed, Mode=OneWay, Converter={StaticResource InverseBooleanToVisibilityConverter}}" 
                            Command="{x:Bind ViewModel.KudosCommand}" 
                            />
-          
-          <AppBarButton x:Name="AppBarComment" 
+            <AppBarButton x:Name="AppBarComment" 
                            Label="comment" 
                            Icon="Message" 
                            Foreground="White" 
                            />
         </CommandBar>
     </Page.BottomAppBar>
-     
     <Grid 
          x:Name="PageRoot" 
          x:DeferLoadStrategy="Lazy" 
@@ -61,9 +56,7 @@
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>        
+        </VisualStateManager.VisualStateGroups>
         <klivacontrols:ActivityDetailControl />
-        
     </Grid>
-    
 </klivacontrols:DetailPageBase> 

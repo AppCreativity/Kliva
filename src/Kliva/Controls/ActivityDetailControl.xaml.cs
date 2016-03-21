@@ -238,19 +238,14 @@ namespace Kliva.Controls
             ImagePopupViewer.Show(ActivityPhotosGrid.ItemsSource, getImageForPhoto, new Thickness(100, 50, 50, 50));
         }
 
-        bool fired = false;
-
         private void OnProfileImageOpened(object sender, RoutedEventArgs e)
         {
-            if (!fired && ApiInformation.IsTypePresent("Windows.UI.Xaml.Media.Animation.ConnectedAnimationService"))
-            {
-                if (AthleteProfilePicture != null)
-                {
-                    ConnectedAnimationService cas = ConnectedAnimationService.GetForCurrentView();
-                    bool succeeded = cas.GetAnimation("AthleteProfilePicture").TryStart(AthleteProfilePicture);
-                    if (succeeded) fired = true;
-                }
-            }
+            // TODO: Uncomment this once Issue #11 is fixed
+            //if (ApiInformation.IsTypePresent("Windows.UI.Xaml.Media.Animation.ConnectedAnimationService") && AthleteProfilePicture != null)
+            //{
+            //    ConnectedAnimationService cas = ConnectedAnimationService.GetForCurrentView();
+            //    bool succeeded = cas.GetAnimation("AthleteProfilePicture").TryStart(AthleteProfilePicture);
+            //}
         }
     }
 }

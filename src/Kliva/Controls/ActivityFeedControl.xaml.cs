@@ -256,19 +256,6 @@ namespace Kliva.Controls
         {
             if (IsDesktopState())
             {
-                #region Enable Connected Animation for Athlete Profile Pic
-                // get the profile pic element
-                ListViewItem lvi = ActivityList.ContainerFromItem(e.AddedItems) as ListViewItem;
-                UserControl root = lvi.ContentTemplateRoot as UserControl;
-                Ellipse profileImage = root.FindName("AthleteProfilePicture") as Ellipse;
-
-                if (ApiInformation.IsTypePresent("Windows.UI.Xaml.Media.Animation.ConnectedAnimationService"))
-                {
-                    ConnectedAnimationService cas = ConnectedAnimationService.GetForCurrentView();
-                    cas.PrepareToAnimate("AthleteProfilePicture", profileImage);
-                }
-                #endregion
-
                 // Only update the ViewModel if we are in the wide state where the list supports
                 // selection
                 ViewModel.SelectedActivity = (ActivitySummary)e.AddedItems.FirstOrDefault();
@@ -299,11 +286,12 @@ namespace Kliva.Controls
         private void ActivityList_ItemClick(object sender, ItemClickEventArgs e)
         {
             #region Enable Connected Animation for Athlete Profile Pic
-            // get the profile pic element
+            // Get the profile pic element from the source
             ListViewItem lvi = ActivityList.ContainerFromItem(e.ClickedItem) as ListViewItem;
             UserControl root = lvi.ContentTemplateRoot as UserControl;
             Ellipse profileImage = root.FindName("AthleteProfilePicture") as Ellipse;
 
+            // Verify we can set up a ConnectedAnimation
             if (ApiInformation.IsTypePresent("Windows.UI.Xaml.Media.Animation.ConnectedAnimationService"))
             {
                 ConnectedAnimationService cas = ConnectedAnimationService.GetForCurrentView();
@@ -314,7 +302,7 @@ namespace Kliva.Controls
             ViewModel.ActivityInvoked((ActivitySummary)e.ClickedItem);
         }
 
-        // To hook up per-item parallax and staggering animations we need to hook the render pipeline of the list
+        // To hook up per-item staggering animations we need to hook the render pipeline of the list
         private void ActivityList_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
         {
             int index = args.ItemIndex;

@@ -16,12 +16,9 @@
     Loaded="OnActivityDetailControlLoaded"
     xmlns:compositioncontrols="using:App1"
     >
-
     <UserControl.Resources>
-       
         <converters:AddAmountToStringConverter x:Key="AddAmountToStringConverter" />
     </UserControl.Resources>
-
     <Grid>
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup">
@@ -242,7 +239,7 @@
                 </PivotItem>
                 <PivotItem x:Name="SegmentsPivot" Tag="Segments"
                            Header="{x:Bind ViewModel.SelectedActivity.SegmentEffortsCount, Converter={StaticResource AddAmountToStringConverter}, ConverterParameter=segments, Mode=OneWay}"
-                    x:DeferLoadStrategy="Lazy"
+                           x:DeferLoadStrategy="Lazy"
                            Background="White"
                            Visibility="{x:Bind ViewModel.HasSegments, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <ListView x:Name="AcitivtySegmentsList"
@@ -252,23 +249,25 @@
                 <PivotItem x:Name="KudosPivot" Tag="Kudos"
                            Background="White"
                            Header="{x:Bind ViewModel.KudosCount, Converter={StaticResource AddAmountToStringConverter}, ConverterParameter=kudos, Mode=OneWay}">
-                    <ListView x:Name="ActivityKudosList"
+                    <GridView x:Name="ActivityKudosList2"
                               ItemsSource="{x:Bind ViewModel.Kudos, Mode=OneWay}"
-                             ItemTemplate="{StaticResource KudosListItemTemplate}"
-                              IsItemClickEnabled="True">
+                              ItemTemplate="{StaticResource KudosListItemTemplate}"
+                              IsItemClickEnabled="True"
+                              ItemContainerTransitions="{x:Null}">
                         <interactivity:Interaction.Behaviors>
                             <core:EventTriggerBehavior EventName="ItemClick">
                                 <core:InvokeCommandAction Command="{x:Bind ViewModel.AthleteTappedCommand}" />
                             </core:EventTriggerBehavior>
                         </interactivity:Interaction.Behaviors>
-                    </ListView>
+                    </GridView>
                 </PivotItem>
                 <PivotItem x:Name="CommentsPivot" Tag="Comments"
                            Background="White"
                            Header="{x:Bind ViewModel.CommentCount, Converter={StaticResource AddAmountToStringConverter}, ConverterParameter=comments, Mode=OneWay}">
                     <ListView x:Name="ActivityCommentsList"
                               ItemsSource="{x:Bind ViewModel.Comments, Mode=OneWay}"
-                              ItemTemplate="{StaticResource CommentsListItemTemplate}"/>
+                              ItemTemplate="{StaticResource CommentsListItemTemplate}"
+                              ItemContainerTransitions="{x:Null}"/>
                 </PivotItem>
                 <PivotItem x:Name="PhotosPivot" Tag="Photos"
                            Background="White"
