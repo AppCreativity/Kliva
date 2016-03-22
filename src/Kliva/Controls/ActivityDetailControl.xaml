@@ -254,7 +254,8 @@
                               ItemsSource="{x:Bind ViewModel.Kudos, Mode=OneWay}"
                               ItemTemplate="{StaticResource KudosListItemTemplate}"
                               IsItemClickEnabled="True"
-                              ItemContainerTransitions="{x:Null}">
+                              ItemContainerTransitions="{x:Null}"
+                              Margin="10,0,0,2">
                         <interactivity:Interaction.Behaviors>
                             <core:EventTriggerBehavior EventName="ItemClick">
                                 <core:InvokeCommandAction Command="{x:Bind ViewModel.AthleteTappedCommand}" />
