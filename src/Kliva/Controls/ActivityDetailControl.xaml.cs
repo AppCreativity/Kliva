@@ -152,6 +152,7 @@ namespace Kliva.Controls
             if (VisualStateGroup.CurrentState.Name == "Mobile")
             {
                 SetupShyHeaderExpressions(scrollerManipProps, compositor);
+                AthleteProfilePicture.Opacity = 0; // TODO: Remove this temporary workaround when Windows bug fixed
             }
 
             if (_pivotDictionary.Count == 0)
@@ -240,12 +241,12 @@ namespace Kliva.Controls
 
         private void OnProfileImageOpened(object sender, RoutedEventArgs e)
         {
-            // TODO: Uncomment this once Issue #11 is fixed
-            //if (ApiInformation.IsTypePresent("Windows.UI.Xaml.Media.Animation.ConnectedAnimationService") && AthleteProfilePicture != null)
-            //{
-            //    ConnectedAnimationService cas = ConnectedAnimationService.GetForCurrentView();
-            //    bool succeeded = cas.GetAnimation("AthleteProfilePicture").TryStart(AthleteProfilePicture);
-            //}
+            if (ApiInformation.IsTypePresent("Windows.UI.Xaml.Media.Animation.ConnectedAnimationService") && AthleteProfilePicture != null && VisualStateGroup.CurrentState.Name.ToLowerInvariant() != "desktop")
+            {
+                AthleteProfilePicture.Opacity = 1; // TODO: Remove this temporary workaround when Windows bug fixed
+                ConnectedAnimationService cas = ConnectedAnimationService.GetForCurrentView();
+                bool succeeded = cas.GetAnimation("AthleteProfilePicture").TryStart(AthleteProfilePicture);
+            }
         }
     }
 }

@@ -9,6 +9,7 @@
     xmlns:converters="using:Kliva.Converters"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:models="using:Kliva.Models"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
@@ -290,13 +291,15 @@
                       SelectionMode="None"
                       RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
                       RelativePanel.AlignBottomWith="ActivityMap"
+                      Margin="10,0,0,2"
                       >
                 <ListView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="models:AthleteSummary">
                         <Ellipse Style="{StaticResource ProfileEllipseMobile}"
-                                 Margin="0,0,5,0">
+                                 Margin="0,0,5,0"
+                                 ToolTipService.ToolTip="{x:Bind FullName}">
                             <Ellipse.Fill>
-                                <ImageBrush Stretch="Uniform" ImageSource="{Binding ProfileMediumFormatted}" />
+                                <ImageBrush Stretch="Uniform" ImageSource="{x:Bind ProfileMediumFormatted}" />
                             </Ellipse.Fill>
                         </Ellipse>
                     </DataTemplate>
@@ -369,9 +372,9 @@
             Style="{StaticResource ProfileEllipseDesktop}"
                                  Margin="0,75,0,0">
             <Ellipse.Fill>
-                <ImageBrush Stretch="Uniform">
+                <ImageBrush Stretch="Uniform" ImageOpened="OnProfileImageOpened">
                     <ImageBrush.ImageSource>
-                        <BitmapImage ImageOpened="OnProfileImageOpened" DecodePixelHeight="100" DecodePixelWidth="100" UriSource="{x:Bind ViewModel.SelectedAthlete.ProfileLargeFormatted, Mode=OneWay}" />
+                        <BitmapImage DecodePixelHeight="100" DecodePixelWidth="100" UriSource="{x:Bind ViewModel.SelectedAthlete.ProfileLargeFormatted, Mode=OneWay}" />
                     </ImageBrush.ImageSource>
                 </ImageBrush>
             </Ellipse.Fill>
