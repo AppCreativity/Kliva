@@ -103,7 +103,6 @@ namespace Kliva.ViewModels
         internal void ClubInvoked(ClubSummary clickedItem)
         {
             SelectedClub = clickedItem;
-            TryNavigateToDetail();
         }
     }
 }

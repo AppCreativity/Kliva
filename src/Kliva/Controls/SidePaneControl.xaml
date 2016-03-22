@@ -30,16 +30,15 @@
                        Style="{StaticResource BaseWhiteTextBlock}" />
             </StackPanel>
             <ListView x:Name="TopMenu"
-                  SelectionChanged="OnTopMenuSelectionChanged"
                   Background="Transparent"
                   ItemsSource="{x:Bind ViewModel.TopMenuItems}"
                   ItemTemplateSelector="{StaticResource MenuItemTemplateSelector}"                 
                   ItemContainerStyle="{StaticResource MenuItemContainerStyle}"
-                  SelectedItem="{x:Bind ViewModel.SelectedTopMenuItem, Mode=TwoWay, Converter={StaticResource XBindItemCastingConverter}}" />
-        </StackPanel>
+                  SelectedItem="{x:Bind ViewModel.SelectedTopMenuItem, Mode=TwoWay, Converter={StaticResource XBindItemCastingConverter}}" 
+                  Grid.Row="0" />
 
+        </StackPanel>
         <ListView x:Name="BottomMenu"
-                  SelectionChanged="OnBottomMenuSelectionChanged"
                   VerticalAlignment="Bottom"
                   Background="Transparent"
                   ItemsSource="{x:Bind ViewModel.BottomMenuItems}"

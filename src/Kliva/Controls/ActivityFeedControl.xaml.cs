@@ -40,13 +40,13 @@ namespace Kliva.Controls
         private float _refreshIconOffsetY;
         private const float REFRESH_ICON_MAX_OFFSET_Y = 36.0f;
         bool _refresh;
-        private DateTime _pulledDownTime, _restoredTime; 
+        private DateTime _pulledDownTime, _restoredTime;
         #endregion
 
         #endregion
 
         private IStravaViewModel ViewModel => DataContext as IStravaViewModel;
-        
+
         public ActivityFeedControl()
         {
             this.InitializeComponent();
@@ -114,7 +114,7 @@ namespace Kliva.Controls
                 var border = (Border)VisualTreeHelper.GetChild(ActivityList, 0);
                 _borderVisual = ElementCompositionPreview.GetElementVisual(border);
 
-                PrepareExpressionAnimationsOnScroll(); 
+                PrepareExpressionAnimationsOnScroll();
                 #endregion
             }
         }
@@ -201,7 +201,7 @@ namespace Kliva.Controls
             if (_refreshIconOffsetY == REFRESH_ICON_MAX_OFFSET_Y)
             {
                 _pulledDownTime = DateTime.Now;
-                
+
                 // Stop the Opacity animation on the RefreshIcon and the Offset.Y animation on the Border (ScrollViewer's host)
                 _refreshIconVisual.StopAnimation("Opacity");
                 _borderVisual.StopAnimation("Offset.Y");
@@ -294,8 +294,10 @@ namespace Kliva.Controls
             // Verify we can set up a ConnectedAnimation
             if (ApiInformation.IsTypePresent("Windows.UI.Xaml.Media.Animation.ConnectedAnimationService"))
             {
+#if CONNECTANIMATIONS
                 ConnectedAnimationService cas = ConnectedAnimationService.GetForCurrentView();
                 cas.PrepareToAnimate("AthleteProfilePicture", profileImage);
+#endif
             }
             #endregion
 

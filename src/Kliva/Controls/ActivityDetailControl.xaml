@@ -85,7 +85,7 @@
                 <CommandBar.Content>
                     <StackPanel Orientation="Horizontal">
                         <AppBarButton Icon="Like"
-                                      Visibility="{x:Bind ViewModel.SelectedActivity.HasKudoed, Mode=OneWay, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
+                                      Visibility="{x:Bind ViewModel.HasKudoed, Mode=OneWay, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
                                       Command="{x:Bind ViewModel.KudosCommand}"/>
                         <AppBarButton Icon="Message" />
                     </StackPanel>

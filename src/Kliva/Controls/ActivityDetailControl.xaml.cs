@@ -23,6 +23,7 @@ using CompositionSampleGallery;
 using Windows.UI.Xaml.Shapes;
 using Windows.Foundation.Metadata;
 using Windows.UI.Xaml.Media.Animation;
+using SamplesCommon;
 
 namespace Kliva.Controls
 {
