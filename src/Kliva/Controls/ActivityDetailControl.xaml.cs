@@ -125,12 +125,12 @@ namespace Kliva.Controls
 
                 //Make room for the glass
 
-                Thickness padding; 
+                Thickness padding;
                 if (VisualStateGroup.CurrentState.Name == "Mobile")
                 {
-                     padding = new Thickness(0, 190, 0, 0);
+                    padding = new Thickness(0, 190, 0, 0);
                 }
-                
+
                 while (!zoomed)
                 {
                     zoomed = await ActivityMap.TrySetViewBoundsAsync(GeoboundingBox.TryCompute(geopositions), padding, MapAnimationKind.None);
@@ -139,9 +139,9 @@ namespace Kliva.Controls
             else
             {
                 if (ExpandMapButton != null)
-                ExpandMapButton.Visibility = Visibility.Collapsed;
+                    ExpandMapButton.Visibility = Visibility.Collapsed;
                 ActivityMap.Visibility = Visibility.Collapsed;
-        }
+            }
         }
 
         private void OnActivityDetailControlLoaded(object sender, RoutedEventArgs e)
@@ -153,7 +153,8 @@ namespace Kliva.Controls
             if (VisualStateGroup.CurrentState.Name == "Mobile")
             {
                 SetupShyHeaderExpressions(scrollerManipProps, compositor);
-                AthleteProfilePicture.Opacity = 0; // TODO: Remove this temporary workaround when Windows bug fixed
+                if (ApiInformation.IsTypePresent("Windows.UI.Xaml.Media.Animation.ConnectedAnimationService") && AthleteProfilePicture != null && VisualStateGroup.CurrentState.Name.ToLowerInvariant() != "desktop")
+                    AthleteProfilePicture.Opacity = 0; // TODO: Remove this temporary workaround when Windows bug fixed
             }
 
             if (_pivotDictionary.Count == 0)
@@ -179,9 +180,9 @@ namespace Kliva.Controls
             #region FadeDetails
             ExpressionAnimation fadeDetails = compositor.CreateExpressionAnimation();
             fadeDetails.SetReferenceParameter("scroller", scrollerManipProps);
-            
+
             //80 is number of pixels scrolled by which the element will be at 0 opacity 
-            fadeDetails.Expression = "1-(Clamp(scroller.Translation.Y, -80, 0)/-80)";  
+            fadeDetails.Expression = "1-(Clamp(scroller.Translation.Y, -80, 0)/-80)";
             Visual profilePictureVideo = ElementCompositionPreview.GetElementVisual(AthleteProfilePicture);
             profilePictureVideo.StartAnimation("Opacity", fadeDetails);
 
@@ -194,9 +195,9 @@ namespace Kliva.Controls
             #region HeaderOpaque
             ExpressionAnimation crossfade = compositor.CreateExpressionAnimation();
             crossfade.SetReferenceParameter("scroller", scrollerManipProps);
-            
+
             //80 is number of pixels scrolled by which the element will be at 0 opacity 
-            crossfade.Expression = "(1-(Clamp(scroller.Translation.Y*.5, -80, 0)/-80))";  
+            crossfade.Expression = "(1-(Clamp(scroller.Translation.Y*.5, -80, 0)/-80))";
             BlurPanel.VisualProperties.StartAnimation("FadeValue", crossfade);
             #endregion
 
@@ -205,7 +206,7 @@ namespace Kliva.Controls
             moveTitle.SetReferenceParameter("scroller", scrollerManipProps);
 
             //100 is number of pixels scrolled by which the element will be at 0 opacity 
-            moveTitle.Expression = "Clamp(scroller.Translation.Y*0.2, -20, 0)";  
+            moveTitle.Expression = "Clamp(scroller.Translation.Y*0.2, -20, 0)";
             Visual activityName = ElementCompositionPreview.GetElementVisual(ActivityName);
             activityName.StartAnimation("Offset.Y", moveTitle);
             #endregion
@@ -234,7 +235,7 @@ namespace Kliva.Controls
 
         private void ActivityPhotosGrid_ItemClick(object sender, ItemClickEventArgs e)
         {
-            Func<object, bool, Uri> getImageForPhoto = (o, large) => 
+            Func<object, bool, Uri> getImageForPhoto = (o, large) =>
             {
                 if (large)
                     return new Uri(((Photo)o).ImageLarge);
@@ -249,7 +250,7 @@ namespace Kliva.Controls
             transition.Initialize(Window.Current.Content, image, null);
 
             //Display the imageViewer as an app modal experience.  Margin determines how much of the app is visible around the edges of the dialog
-            ImagePopupViewer.Show((Photo) e.ClickedItem, ActivityPhotosGrid.ItemsSource, getImageForPhoto, new Thickness(100, 50, 50, 50), transition);
+            ImagePopupViewer.Show((Photo)e.ClickedItem, ActivityPhotosGrid.ItemsSource, getImageForPhoto, new Thickness(100, 50, 50, 50), transition);
         }
 
         private void OnProfileImageOpened(object sender, RoutedEventArgs e)
