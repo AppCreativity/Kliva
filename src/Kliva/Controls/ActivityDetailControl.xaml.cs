@@ -257,8 +257,10 @@ namespace Kliva.Controls
             if (ApiInformation.IsTypePresent("Windows.UI.Xaml.Media.Animation.ConnectedAnimationService") && AthleteProfilePicture != null && VisualStateGroup.CurrentState.Name.ToLowerInvariant() != "desktop")
             {
                 AthleteProfilePicture.Opacity = 1; // TODO: Remove this temporary workaround when Windows bug fixed
+#if CONNECTANIMATIONS
                 ConnectedAnimationService cas = ConnectedAnimationService.GetForCurrentView();
                 bool succeeded = cas.GetAnimation("AthleteProfilePicture").TryStart(AthleteProfilePicture);
+#endif
             }
         }
     }
