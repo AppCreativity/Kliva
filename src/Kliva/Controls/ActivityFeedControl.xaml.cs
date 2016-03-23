@@ -79,21 +79,24 @@ namespace Kliva.Controls
                 _compositor = _scrollerViewerManipulation.Compositor;
 
                 // Create a rotation expression animation based on the overpan distance of the ScrollViewer.
-                _rotationAnimation = _compositor.CreateExpressionAnimation("min(max(0, ScrollManipulation.Translation.Y) * Multiplier, MaxDegree)");
+                _rotationAnimation = _compositor.CreateExpressionAnimation();
                 _rotationAnimation.SetScalarParameter("Multiplier", 10.0f);
                 _rotationAnimation.SetScalarParameter("MaxDegree", 400.0f);
                 _rotationAnimation.SetReferenceParameter("ScrollManipulation", _scrollerViewerManipulation);
+                _rotationAnimation.Expression = "min(max(0, ScrollManipulation.Translation.Y) * Multiplier, MaxDegree)";
 
                 // Create an opacity expression animation based on the overpan distance of the ScrollViewer.
-                _opacityAnimation = _compositor.CreateExpressionAnimation("min(max(0, ScrollManipulation.Translation.Y) / Divider, 1)");
+                _opacityAnimation = _compositor.CreateExpressionAnimation();
                 _opacityAnimation.SetScalarParameter("Divider", 30.0f);
                 _opacityAnimation.SetReferenceParameter("ScrollManipulation", _scrollerViewerManipulation);
+                _opacityAnimation.Expression = "min(max(0, ScrollManipulation.Translation.Y) / Divider, 1)";
 
                 // Create an offset expression animation based on the overpan distance of the ScrollViewer.
-                _offsetAnimation = _compositor.CreateExpressionAnimation("(min(max(0, ScrollManipulation.Translation.Y) / Divider, 1)) * MaxOffsetY");
+                _offsetAnimation = _compositor.CreateExpressionAnimation();
                 _offsetAnimation.SetScalarParameter("Divider", 30.0f);
                 _offsetAnimation.SetScalarParameter("MaxOffsetY", REFRESH_ICON_MAX_OFFSET_Y);
                 _offsetAnimation.SetReferenceParameter("ScrollManipulation", _scrollerViewerManipulation);
+                _offsetAnimation.Expression = "(min(max(0, ScrollManipulation.Translation.Y) / Divider, 1)) * MaxOffsetY";
 
                 // Create a keyframe animation to reset properties like Offset.Y, Opacity, etc.
                 _resetAnimation = _compositor.CreateScalarKeyFrameAnimation();
@@ -114,19 +117,15 @@ namespace Kliva.Controls
                 var border = (Border)VisualTreeHelper.GetChild(ActivityList, 0);
                 _borderVisual = ElementCompositionPreview.GetElementVisual(border);
 
-                PrepareExpressionAnimationsOnScroll();
+                _refreshIconVisual.StartAnimation("RotationAngleInDegrees", _rotationAnimation);
+                _refreshIconVisual.StartAnimation("Opacity", _opacityAnimation);
+                _refreshIconVisual.StartAnimation("Offset.Y", _offsetAnimation);
+                _borderVisual.StartAnimation("Offset.Y", _offsetAnimation);
                 #endregion
             }
         }
 
         #region Supporting PTR methods
-        private void PrepareExpressionAnimationsOnScroll()
-        {
-            _refreshIconVisual.StartAnimation("RotationAngleInDegrees", _rotationAnimation);
-            _refreshIconVisual.StartAnimation("Opacity", _opacityAnimation);
-            _refreshIconVisual.StartAnimation("Offset.Y", _offsetAnimation);
-            _borderVisual.StartAnimation("Offset.Y", _offsetAnimation);
-        }
         async private void OnDirectManipCompleted(object sender, object e)
         {
             Windows.UI.Xaml.Media.CompositionTarget.Rendering -= OnCompositionTargetRendering;
@@ -179,7 +178,13 @@ namespace Kliva.Controls
         {
             var batch = _compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
 
-            batch.Completed += (s, e) => PrepareExpressionAnimationsOnScroll();
+            batch.Completed += (s, e) =>
+            {
+                _refreshIconVisual.StartAnimation("RotationAngleInDegrees", _rotationAnimation);
+                _refreshIconVisual.StartAnimation("Opacity", _opacityAnimation);
+                _refreshIconVisual.StartAnimation("Offset.Y", _offsetAnimation);
+                _borderVisual.StartAnimation("Offset.Y", _offsetAnimation);
+            };
 
             _borderVisual.StartAnimation("Offset.Y", _resetAnimation);
             _refreshIconVisual.StartAnimation("Opacity", _resetAnimation);
