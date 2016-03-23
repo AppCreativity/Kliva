@@ -65,17 +65,20 @@
                    Grid.Row="1"
                    HorizontalAlignment="Stretch">
                 <PivotItem Header="following" Tag="Friends">
-                    <ListView ItemsSource="{x:Bind ViewModel.Friends, Mode=OneWay}"
-                              ItemTemplate="{StaticResource KudosListItemTemplate}" />
+                    <GridView ItemsSource="{x:Bind ViewModel.Friends, Mode=OneWay}"
+                              ItemTemplate="{StaticResource KudosListItemTemplate}"
+                              ContainerContentChanging="OnFriendsContainerChanging"/>
                 </PivotItem>
                 <PivotItem Header="followers" Tag="Followers">
-                    <ListView ItemsSource="{x:Bind ViewModel.Followers, Mode=OneWay}"
-                              ItemTemplate="{StaticResource KudosListItemTemplate}" />
+                    <GridView ItemsSource="{x:Bind ViewModel.Followers, Mode=OneWay}"
+                              ItemTemplate="{StaticResource KudosListItemTemplate}"
+                              ContainerContentChanging="OnFriendsContainerChanging"/>
                 </PivotItem>
                 <PivotItem Tag="MutualFriends"
                            Header="both following">
-                    <ListView ItemsSource="{x:Bind ViewModel.BothFollowing, Mode=OneWay}"
-                              ItemTemplate="{StaticResource KudosListItemTemplate}" />
+                    <GridView ItemsSource="{x:Bind ViewModel.BothFollowing, Mode=OneWay}"
+                              ItemTemplate="{StaticResource KudosListItemTemplate}"
+                              ContainerContentChanging="OnFriendsContainerChanging"/>
                 </PivotItem>
                 <PivotItem Tag="Koms" Header="koms">
                     <ListView ItemsSource="{x:Bind ViewModel.Koms, Mode=OneWay}"
