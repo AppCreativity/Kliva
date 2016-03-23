@@ -264,5 +264,29 @@ namespace Kliva.Controls
 #endif
             }
         }
+
+        private void OnKudosContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            int index = args.ItemIndex;
+            var root = args.ItemContainer.ContentTemplateRoot as UserControl;
+            
+            // get the Visual for the item container
+            var visual = args.ItemContainer.GetVisual(); // this is the GridViewItem
+
+            // get the instance of the compositor
+            Compositor compositor = visual.Compositor;
+
+            // create the animation we want to run implicitly when the property changes
+            var offsetAnimation = compositor.CreateVector3KeyFrameAnimation();
+            offsetAnimation.InsertExpressionKeyFrame(1.0f, "this.FinalValue");
+            offsetAnimation.Duration = TimeSpan.FromMilliseconds(450);
+
+            // create the implicit map to the properties we care about
+            var implicitMap = compositor.CreateImplicitAnimationMap();
+            implicitMap.Add("Offset", offsetAnimation);
+
+            // set the implicit map to the visual
+            visual.ImplicitAnimations = implicitMap;
+        }
     }
 }
