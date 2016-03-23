@@ -42,6 +42,10 @@ namespace Kliva.Services
                 string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
 
                 var result = Unmarshaller<Athlete>.Unmarshal(json);
+
+                if (result != null)
+                    ConsolidateWithCache(result);
+
                 _perflog.GetAthleteFromServiceAsync(true, athleteId);
                 return result;
             }
@@ -213,7 +217,7 @@ namespace Kliva.Services
                 AthleteSummary c_summary = entry as AthleteSummary;
                 AthleteSummary n_summary = athlete as AthleteSummary;
 
-                if (n_summary != null && n_summary.UpdatedAt > c_summary.UpdatedAt && n_summary.ResourceState >= c_summary.ResourceState)
+                if (c_summary == null || (n_summary != null && n_summary.UpdatedAt > c_summary.UpdatedAt && n_summary.ResourceState >= c_summary.ResourceState))
                 {
                     _cachedAthleteTasks[athlete.Id.ToString()] = n_summary;
                     return n_summary;

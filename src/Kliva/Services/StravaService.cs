@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.Security.Authentication.Web;
@@ -226,9 +227,13 @@ namespace Kliva.Services
             return StravaActivityService.GetMyActivityDataAsync(page, pageSize);
         }
 
-        public Task<List<ActivitySummary>> HydrateActivityData(string data)
+        public async Task<List<ActivitySummary>> HydrateActivityData(string data)
         {
-            return StravaActivityService.HydrateActivityData(data);
+            var activities = await StravaActivityService.HydrateActivityData(data);
+            if (activities != null && activities.Any())
+                await GetActivitySummaryRelationsAsync(activities);
+
+            return activities;
         }
 
         //public async Task<IEnumerable<ActivitySummary>> GetActivitiesWithAthletesAsync(int page, int perPage, ActivityFeedFilter filter)
