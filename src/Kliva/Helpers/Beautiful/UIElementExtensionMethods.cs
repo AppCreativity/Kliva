@@ -22,7 +22,7 @@ namespace ImplicitAnimations
         private static KeyFrameAnimation createOffsetAnimation(Compositor compositor)
         {
             Vector3KeyFrameAnimation kf = compositor.CreateVector3KeyFrameAnimation();
-            kf.InsertExpressionKeyFrame(1.0f, "FinalValue");
+            kf.InsertExpressionKeyFrame(1.0f, "this.FinalValue");
             kf.Duration = TimeSpan.FromSeconds(0.9);
             return kf;
         }
@@ -30,9 +30,14 @@ namespace ImplicitAnimations
         private static KeyFrameAnimation createOpacityAnimation(Compositor compositor)
         {
             ScalarKeyFrameAnimation kf = compositor.CreateScalarKeyFrameAnimation();
-            kf.InsertExpressionKeyFrame(1.0f, "FinalValue");
+            kf.InsertExpressionKeyFrame(1.0f, "this.FinalValue");
             kf.Duration = TimeSpan.FromSeconds(0.9);
             return kf;
+        }
+
+        public static Visual GetVisual(this UIElement element)
+        {
+            return ElementCompositionPreview.GetElementVisual(element);
         }
     }
 }

@@ -101,6 +101,7 @@ namespace Kliva.Controls
             if (geopositions.Any())
             {
                 ActivityMap.Visibility = Visibility.Visible;
+                ActivityPivot.Margin = new Thickness(0, 0, 0, -200);
                 if (ExpandMapButton == null)
                     FindName("ExpandMapButton");
                 else
@@ -141,6 +142,12 @@ namespace Kliva.Controls
                 if (ExpandMapButton != null)
                     ExpandMapButton.Visibility = Visibility.Collapsed;
                 ActivityMap.Visibility = Visibility.Collapsed;
+
+                // if mobile view, we need to move the stats panel down so not occluded by header
+                if (VisualStateGroup.CurrentState.Name.ToLowerInvariant() == "mobile")
+                {
+                    ActivityPivot.Margin = new Thickness(0, 300, 0, -200);
+                }
             }
         }
 
