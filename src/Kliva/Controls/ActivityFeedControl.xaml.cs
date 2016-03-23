@@ -119,7 +119,7 @@ namespace Kliva.Controls
             }
         }
 
-
+        #region Supporting PTR methods
         private void PrepareExpressionAnimationsOnScroll()
         {
             _refreshIconVisual.StartAnimation("RotationAngleInDegrees", _rotationAnimation);
@@ -127,7 +127,6 @@ namespace Kliva.Controls
             _refreshIconVisual.StartAnimation("Offset.Y", _offsetAnimation);
             _borderVisual.StartAnimation("Offset.Y", _offsetAnimation);
         }
-
         async private void OnDirectManipCompleted(object sender, object e)
         {
             Windows.UI.Xaml.Media.CompositionTarget.Rendering -= OnCompositionTargetRendering;
@@ -213,7 +212,8 @@ namespace Kliva.Controls
             }
 
             _refreshIconVisual.StartAnimation("Offset.Y", _offsetAnimation);
-        }
+        } 
+        #endregion
 
         private void OnScrollViewerViewChanging(object sender, ScrollViewerViewChangingEventArgs e)
         {
