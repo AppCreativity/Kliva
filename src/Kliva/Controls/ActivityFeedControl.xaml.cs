@@ -80,23 +80,23 @@ namespace Kliva.Controls
 
                 // Create a rotation expression animation based on the overpan distance of the ScrollViewer.
                 _rotationAnimation = _compositor.CreateExpressionAnimation();
-                _rotationAnimation.SetScalarParameter("Multiplier", 10.0f);
-                _rotationAnimation.SetScalarParameter("MaxDegree", 400.0f);
-                _rotationAnimation.SetReferenceParameter("ScrollManipulation", _scrollerViewerManipulation);
-                _rotationAnimation.Expression = "min(max(0, ScrollManipulation.Translation.Y) * Multiplier, MaxDegree)";
+                _rotationAnimation.SetScalarParameter("MyMultiplier", 10.0f);
+                _rotationAnimation.SetScalarParameter("MyMaxDegree", 400.0f);
+                _rotationAnimation.SetReferenceParameter("MyScrollManipulation", _scrollerViewerManipulation);
+                _rotationAnimation.Expression = "min(max(0, MyScrollManipulation.Translation.Y) * MyMultiplier, MyMaxDegree)";
 
                 // Create an opacity expression animation based on the overpan distance of the ScrollViewer.
                 _opacityAnimation = _compositor.CreateExpressionAnimation();
-                _opacityAnimation.SetScalarParameter("Divider", 30.0f);
-                _opacityAnimation.SetReferenceParameter("ScrollManipulation", _scrollerViewerManipulation);
-                _opacityAnimation.Expression = "min(max(0, ScrollManipulation.Translation.Y) / Divider, 1)";
+                _opacityAnimation.SetScalarParameter("MyDivider", 30.0f);
+                _opacityAnimation.SetReferenceParameter("MyScrollManipulation", _scrollerViewerManipulation);
+                _opacityAnimation.Expression = "min(max(0, MyScrollManipulation.Translation.Y) / MyDivider, 1)";
 
                 // Create an offset expression animation based on the overpan distance of the ScrollViewer.
                 _offsetAnimation = _compositor.CreateExpressionAnimation();
-                _offsetAnimation.SetScalarParameter("Divider", 30.0f);
-                _offsetAnimation.SetScalarParameter("MaxOffsetY", REFRESH_ICON_MAX_OFFSET_Y);
-                _offsetAnimation.SetReferenceParameter("ScrollManipulation", _scrollerViewerManipulation);
-                _offsetAnimation.Expression = "(min(max(0, ScrollManipulation.Translation.Y) / Divider, 1)) * MaxOffsetY";
+                _offsetAnimation.SetScalarParameter("MyDivider", 30.0f);
+                _offsetAnimation.SetScalarParameter("MyMaxOffsetY", REFRESH_ICON_MAX_OFFSET_Y);
+                _offsetAnimation.SetReferenceParameter("MyScrollManipulation", _scrollerViewerManipulation);
+                _offsetAnimation.Expression = "(min(max(0, MyScrollManipulation.Translation.Y) / MyDivider, 1)) * MyMaxOffsetY";
 
                 // Create a keyframe animation to reset properties like Offset.Y, Opacity, etc.
                 _resetAnimation = _compositor.CreateScalarKeyFrameAnimation();
@@ -322,6 +322,7 @@ namespace Kliva.Controls
                 args.ItemContainer.Loaded += ItemContainer_Loaded;
             }
 
+            #region Other Performance Optimizations for Deferred items
             // Collapse the BottomPanel if we're using a recycled container that had it before
             if (args.InRecycleQueue && item.OtherAthleteCount > 0)
             {
@@ -335,7 +336,8 @@ namespace Kliva.Controls
                 // undefer the bottom panel and show it
                 var bottomPanel = root.FindName("BottomPanel") as RelativePanel;
                 bottomPanel.Visibility = Visibility.Visible;
-            }
+            } 
+            #endregion
 
             args.Handled = true;
         }

@@ -278,7 +278,7 @@ namespace Kliva.Controls
             var root = args.ItemContainer.ContentTemplateRoot as UserControl;
             
             // get the Visual for the item container
-            var visual = args.ItemContainer.GetVisual(); // this is the GridViewItem
+            var visual = ElementCompositionPreview.GetElementVisual(args.ItemContainer); // this is the GridViewItem
 
             // get the instance of the compositor
             Compositor compositor = visual.Compositor;
