@@ -370,10 +370,10 @@ namespace Kliva.Controls
                 offsetAnimation.Duration = TimeSpan.FromMilliseconds(1250);
                 offsetAnimation.DelayTime = TimeSpan.FromMilliseconds(itemIndex * 100);
 
-                KeyFrameAnimation scaleAnimation = _compositor.CreateVector3KeyFrameAnimation();
-                scaleAnimation.InsertExpressionKeyFrame(0, "Vector3(1, 1, 0)");
-                scaleAnimation.InsertExpressionKeyFrame(0.1f, "Vector3(0.05, 0.05, 0)");
-                scaleAnimation.InsertExpressionKeyFrame(1f, "Vector3(1, 1, 0)");
+                Vector3KeyFrameAnimation scaleAnimation = _compositor.CreateVector3KeyFrameAnimation();
+                scaleAnimation.InsertKeyFrame(0, new Vector3(1f, 1f, 0f));
+                scaleAnimation.InsertKeyFrame(0.1f, new Vector3(0.05f, 0.05f, 0.05f));
+                scaleAnimation.InsertKeyFrame(1f, new Vector3(1f, 1f, 0f));
                 scaleAnimation.Duration = TimeSpan.FromMilliseconds(1000);
                 scaleAnimation.DelayTime = TimeSpan.FromMilliseconds(itemIndex * 100);
 
