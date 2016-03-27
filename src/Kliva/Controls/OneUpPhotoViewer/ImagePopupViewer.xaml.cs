@@ -12,6 +12,7 @@ using Windows.Graphics.Display;
 using Windows.Graphics.Effects;
 using Windows.UI;
 using Windows.UI.Composition;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Hosting;
@@ -28,7 +29,7 @@ namespace CompositionSampleGallery
         ExpressionAnimation         _lightTargetAnimation;
         CompositionEffectBrush      _crossFadeBrush;
         CompositionSurfaceBrush     _previousSurfaceBrush;
-        CompositionScopedBatch      _crossFadeBatch;
+        CompositionScopedBatch      _backgroundCrossFadeBatch;
         CompositionPropertySet      _lightProperties;
         ContinuityTransition        _transition;
         Photo                       _initialPhoto;
@@ -36,6 +37,7 @@ namespace CompositionSampleGallery
         static Grid                 _hostGrid;
         Func<object, bool, Uri>     _imageUriGetterFunc;
 
+        #region Initialization
         /// <summary>
         /// Private constructor as Show() is responsible for creating an instance
         /// </summary>
@@ -67,9 +69,9 @@ namespace CompositionSampleGallery
             // Create a crossfade brush to animate image transitions
             IGraphicsEffect graphicsEffect = new ArithmeticCompositeEffect()
             {
-                Name="CrossFade",
-                Source1Amount  = 0,
-                Source2Amount  = 1,
+                Name = "CrossFade",
+                Source1Amount = 0,
+                Source2Amount = 1,
                 MultiplyAmount = 0,
                 Source1 = new CompositionEffectSourceParameter("ImageSource"),
                 Source2 = new CompositionEffectSourceParameter("ImageSource2"),
@@ -79,6 +81,21 @@ namespace CompositionSampleGallery
             _crossFadeBrush = factory.CreateBrush();
 
         }
+
+        private void ImagePopupViewer_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Kick off the transition from originating thumbnail to final position
+            _transition.Start(Window.Current.Content, PrimaryImage, null, null);
+
+            // Update the sources
+            BackgroundImage.Source = new Uri(_initialPhoto.ImageLarge);
+            PrimaryImage.Source = new Uri(_initialPhoto.ImageLarge);
+
+            // Ensure the source thumbnail is in view
+            ImageList.ScrollIntoView(_initialPhoto);
+        }
+        #endregion
+        #region BackgroundImage
 
         private void BackgroundImage_FirstOpened(object sender, RoutedEventArgs e)
         {
@@ -114,7 +131,7 @@ namespace CompositionSampleGallery
 
         private void BackgroundImage_ImageChanged(object sender, RoutedEventArgs e)
         {
-            if (_crossFadeBatch == null)
+            if (_backgroundCrossFadeBatch == null)
             {
                 TimeSpan duration = TimeSpan.FromMilliseconds(1000);
 
@@ -130,7 +147,7 @@ namespace CompositionSampleGallery
                 fadeOutAnimation.Duration = duration;
 
                 // Create a batch object so we can cleanup when the cross-fade completes.
-                _crossFadeBatch = _compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
+                _backgroundCrossFadeBatch = _compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
 
                 // Set the sources
                 _crossFadeBrush.SetSourceParameter("ImageSource", BackgroundImage.SurfaceBrush);
@@ -143,105 +160,35 @@ namespace CompositionSampleGallery
                 // Update the image to use the cross fade brush
                 BackgroundImage.Brush = _crossFadeBrush;
 
-                _crossFadeBatch.Completed += Batch_CrossFadeCompleted;
-                _crossFadeBatch.End();
+                _backgroundCrossFadeBatch.Completed += (fadesender, args) =>
+                {
+                    BackgroundImage.Brush = BackgroundImage.SurfaceBrush;
+
+                    // Dispose the image
+                    ((CompositionDrawingSurface)_previousSurfaceBrush.Surface).Dispose();
+                    _previousSurfaceBrush.Surface = null;
+
+                    // Clear out the batch
+                    _backgroundCrossFadeBatch = null;
+                };
+                _backgroundCrossFadeBatch.End();
             }
 
             // Unhook the handler
             BackgroundImage.ImageOpened -= BackgroundImage_ImageChanged;
         }
-
-        private void Batch_CrossFadeCompleted(object sender, CompositionBatchCompletedEventArgs args)
-        {
-            BackgroundImage.Brush = BackgroundImage.SurfaceBrush;
-            
-            // Dispose the image
-            ((CompositionDrawingSurface)_previousSurfaceBrush.Surface).Dispose();
-            _previousSurfaceBrush.Surface = null;
-
-            // Clear out the batch
-            _crossFadeBatch = null;
-        }
-
-        private void ImagePopupViewer_Loaded(object sender, RoutedEventArgs e)
-        {
-            // Kick off the transition from originating thumbnail to final position
-            _transition.Start(Window.Current.Content, PrimaryImage, null, null);
-
-            // Update the sources
-            BackgroundImage.Source = new Uri(_initialPhoto.ImageLarge);
-            PrimaryImage.Source = new Uri(_initialPhoto.ImageLarge);
-
-            // Ensure the source thumbnail is in view
-            ImageList.ScrollIntoView(_initialPhoto);
-        }
+        #endregion
+        #region Public Properties
 
         public object ItemsSource
         {
             get { return ImageList.ItemsSource; }
             set { ImageList.ItemsSource = value; }
         }
+
+        #endregion
         
-        private async void InitializeLighting()
-        {
-            // Create a lighting effect with diffuse + specular components
-            IGraphicsEffect graphicsEffect = new CompositeEffect()
-            {
-                Mode = CanvasComposite.Add,
-                Sources =
-                {
-                    new ArithmeticCompositeEffect()
-                    {
-                        Source1Amount  = .6f,
-                        Source2Amount  = .2f,
-                        MultiplyAmount = .5f,
-
-                        Source1 = new CompositionEffectSourceParameter("ImageSource"),
-                        Source2 = new SpotDiffuseEffect()
-                        {
-                            Name = "Light1",
-                            DiffuseAmount = 1f,
-                            LimitingConeAngle = (float)Math.PI / 8f,
-                            LightTarget = new Vector3(1000, 1000, 0),
-                            LightPosition = new Vector3(1000f, 1000f, 2000),
-                            LightColor = Colors.White,
-                            Source = new CompositionEffectSourceParameter("NormalMap"),
-                        },
-                    },
-                    new SpotSpecularEffect()
-                    {
-                        Name = "Light2",
-                        SpecularAmount = .75f,
-                        SpecularExponent = 10000f,
-                        LimitingConeAngle = (float)Math.PI / 8f,
-                        LightTarget = new Vector3(1000, 1000, 0),
-                        LightPosition = new Vector3(1000f, 1000f, 2000),
-                        LightColor = Colors.White,
-                        Source = new CompositionEffectSourceParameter("NormalMap"),
-                    }
-                }
-            };
-
-            // Create the factory used to create brush for each sprite using lighting
-            _lightEffectFactory = _compositor.CreateEffectFactory(graphicsEffect,
-                                new[] { "Light1.LightPosition", "Light1.LightTarget",
-                                        "Light2.LightPosition", "Light2.LightTarget"});
-
-            // Create the light position/target animations
-            _lightProperties = _compositor.CreatePropertySet();
-            _lightProperties.InsertVector3("LightPosition", new Vector3(1000,1000,1000));
-            _lightProperties.InsertScalar("LightDistance", 100f);
-
-            _lightPositionAnimation = _compositor.CreateExpressionAnimation("propertySet.LightPosition + Vector3(0,0,propertySet.LightDistance)");
-            _lightPositionAnimation.SetReferenceParameter("propertySet", _lightProperties);
-            _lightTargetAnimation =   _compositor.CreateExpressionAnimation("propertySet.LightPosition - Vector3(0,0,propertySet.LightDistance)");
-            _lightTargetAnimation.SetReferenceParameter("propertySet", _lightProperties);
-            
-            // Create the shared normal map used for the lighting effect
-            _normalMapBrush = _compositor.CreateSurfaceBrush();
-            _normalMapBrush.Surface = await SurfaceLoader.LoadFromUri(new Uri("ms-appx:///Controls/OneUpPhotoViewer/NormalMap.jpg"));
-        }
-
+        #region Color Helpers
         private Color ExtractPredominantColor(Color[] colors, Size size)
         {
             Dictionary<uint, int> dict = new Dictionary<uint, int>();
@@ -296,8 +243,8 @@ namespace CompositionSampleGallery
             }
 
             // Convert to the final color value
-            return  Color.FromArgb((byte)(maxColor >> 24), (byte)(maxColor >> 16),
-                                   (byte)(maxColor >> 8),  (byte)(maxColor >> 0));
+            return Color.FromArgb((byte)(maxColor >> 24), (byte)(maxColor >> 16),
+                                   (byte)(maxColor >> 8), (byte)(maxColor >> 0));
         }
 
         private CompositionDrawingSurface SampleImageColor(CanvasBitmap bitmap, CompositionGraphicsDevice device, Size sizeTarget)
@@ -328,10 +275,70 @@ namespace CompositionSampleGallery
                 predominantColor.A = 100;
                 ds.FillRectangle(destination, predominantColor);
             }
-            
+
             return surface;
         }
+        #endregion
 
+        private async void InitializeLighting()
+        {
+            // Create a lighting effect with diffuse + specular components
+            IGraphicsEffect graphicsEffect = new CompositeEffect()
+            {
+                Mode = CanvasComposite.Add,
+                Sources =
+                {
+                    new ArithmeticCompositeEffect()
+                    {
+                        Source1Amount  = .6f,
+                        Source2Amount  = .2f,
+                        MultiplyAmount = .5f,
+
+                        Source1 = new CompositionEffectSourceParameter("ImageSource"),
+                        Source2 = new SpotDiffuseEffect()
+                        {
+                            Name = "Light1",
+                            DiffuseAmount = 1f,
+                            LimitingConeAngle = (float)Math.PI / 8f,
+                            LightTarget = new Vector3(1000, 1000, 0),
+                            LightPosition = new Vector3(1000f, 1000f, 2000),
+                            LightColor = Colors.White,
+                            Source = new CompositionEffectSourceParameter("NormalMap"),
+                        },
+                    },
+                    new SpotSpecularEffect()
+                    {
+                        Name = "Light2",
+                        SpecularAmount = .75f,
+                        SpecularExponent = 10000f,
+                        LimitingConeAngle = (float)Math.PI / 8f,
+                        LightTarget = new Vector3(1000, 1000, 0),
+                        LightPosition = new Vector3(1000f, 1000f, 2000),
+                        LightColor = Colors.White,
+                        Source = new CompositionEffectSourceParameter("NormalMap"),
+                    }
+                }
+            };
+
+            // Create the factory used to create brush for each sprite using lighting
+            _lightEffectFactory = _compositor.CreateEffectFactory(graphicsEffect,
+                                new[] { "Light1.LightPosition", "Light1.LightTarget",
+                                        "Light2.LightPosition", "Light2.LightTarget"});
+
+            // Create the light position/target animations
+            _lightProperties = _compositor.CreatePropertySet();
+            _lightProperties.InsertVector3("LightPosition", new Vector3(1000, 1000, 1000));
+            _lightProperties.InsertScalar("LightDistance", 100f);
+
+            _lightPositionAnimation = _compositor.CreateExpressionAnimation("propertySet.LightPosition + Vector3(0,0,propertySet.LightDistance)");
+            _lightPositionAnimation.SetReferenceParameter("propertySet", _lightProperties);
+            _lightTargetAnimation = _compositor.CreateExpressionAnimation("propertySet.LightPosition - Vector3(0,0,propertySet.LightDistance)");
+            _lightTargetAnimation.SetReferenceParameter("propertySet", _lightProperties);
+
+            // Create the shared normal map used for the lighting effect
+            _normalMapBrush = _compositor.CreateSurfaceBrush();
+            _normalMapBrush.Surface = await SurfaceLoader.LoadFromUri(new Uri("ms-appx:///Controls/OneUpPhotoViewer/NormalMap.jpg"));
+        }
         private void ListView_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
         {
             CompositionImage image = args.ItemContainer.ContentTemplateRoot.GetFirstDescendantOfType<CompositionImage>();
@@ -363,6 +370,20 @@ namespace CompositionSampleGallery
             brush.StartAnimation("Light2.LightTarget", _lightTargetAnimation);
         }
 
+        private void StartDistanceAnimation()
+        {
+            // 3. animate distance of light from closer to farther and back
+
+            var distanceAnimation = _compositor.CreateScalarKeyFrameAnimation();
+            distanceAnimation.IterationCount = 1;
+            distanceAnimation.InsertKeyFrame(0.0f, 80); // closer is smaller beam radius
+            distanceAnimation.InsertKeyFrame(1.0f, 120); //further is bigger beam radius
+            distanceAnimation.IterationBehavior = AnimationIterationBehavior.Forever;
+            distanceAnimation.Direction = AnimationDirection.Alternate;
+            distanceAnimation.Duration = TimeSpan.FromSeconds(2);
+            _lightProperties.StartAnimation("LightDistance", distanceAnimation);
+
+        }
 
         private void ImageList_ItemClick(object sender, ItemClickEventArgs e)
         {
@@ -383,45 +404,6 @@ namespace CompositionSampleGallery
             }
         }
 
-        private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            GridClip.Rect = new Rect(0, 0, e.NewSize.Width, e.NewSize.Height);
-
-            // Resize the desaturation visual
-            DisplayInformation info = DisplayInformation.GetForCurrentView();
-            Vector2 sizePageBounds = new Vector2((float)(Window.Current.Bounds.Width * info.RawPixelsPerViewPixel),
-                                                 (float)(Window.Current.Bounds.Height * info.RawPixelsPerViewPixel));
-
-            Visual desaturateVisual = ElementCompositionPreview.GetElementChildVisual(_hostGrid.Children[0]);
-            desaturateVisual.Size = sizePageBounds;
-
-            float lightDistance = sizePageBounds.X * .5f;
-            _lightProperties.InsertVector3("LightPosition", new Vector3(sizePageBounds.X * .5f, sizePageBounds.Y * .85f, lightDistance));
-        }
-
-        private void Close_Click(object sender, RoutedEventArgs e)
-        {
-            CompositionScopedBatch batch = _compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
-            batch.Completed += Batch_Completed;
-
-            // Closing the viewer, fade it out
-            ScalarKeyFrameAnimation fadeOutAnimation = _compositor.CreateScalarKeyFrameAnimation();
-            fadeOutAnimation.InsertKeyFrame(0, 1);
-            fadeOutAnimation.InsertKeyFrame(1, 0);
-            fadeOutAnimation.Duration = TimeSpan.FromMilliseconds(800);
-            ElementCompositionPreview.GetElementVisual(this).StartAnimation("Opacity", fadeOutAnimation);
-            ElementCompositionPreview.GetElementChildVisual(_hostGrid.Children[0]).StartAnimation("Opacity", fadeOutAnimation);
-
-            batch.End();
-        }
-
-        private void Batch_Completed(object sender, CompositionBatchCompletedEventArgs args)
-        {
-            ElementCompositionPreview.SetElementChildVisual(_hostGrid.Children[0], null);
-            _hostGrid.Children.Remove(_viewerInstance);
-            _viewerInstance = null;
-        }
-
         private void ImageList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ImageList.SelectedItem != null)
@@ -429,7 +411,7 @@ namespace CompositionSampleGallery
                 ListViewItem item = (ListViewItem)ImageList.ContainerFromItem(ImageList.SelectedItem);
                 Uri imageSource = _imageUriGetterFunc(item.Content, true);
 
-                if (_crossFadeBatch == null)
+                if (_backgroundCrossFadeBatch == null)
                 {
                     // Save the previous image for a cross-fade
                     _previousSurfaceBrush.Surface = BackgroundImage.SurfaceBrush.Surface;
@@ -456,9 +438,10 @@ namespace CompositionSampleGallery
             }
         }
 
+        #region Dialog Functionality
         internal static void Show(Photo photo, object itemSource, Func<object, bool, Uri> photoGetter, Thickness margin, ContinuityTransition transition)
         {
-            if (_viewerInstance!=null)
+            if (_viewerInstance != null)
             {
                 throw new InvalidOperationException("Already displaying a photoviewer popup");
             }
@@ -470,11 +453,11 @@ namespace CompositionSampleGallery
                 _viewerInstance = new ImagePopupViewer(photoGetter, transition, photo);
 
                 // dialog needs to span all rows in the grid
-                _viewerInstance.SetValue(Grid.RowSpanProperty, (_hostGrid.RowDefinitions.Count>0?_hostGrid.RowDefinitions.Count:1));
+                _viewerInstance.SetValue(Grid.RowSpanProperty, (_hostGrid.RowDefinitions.Count > 0 ? _hostGrid.RowDefinitions.Count : 1));
                 _viewerInstance.SetValue(Grid.ColumnSpanProperty, (_hostGrid.ColumnDefinitions.Count > 0 ? _hostGrid.ColumnDefinitions.Count : 1));
 
                 _hostGrid.Children.Add(_viewerInstance);
-                
+
                 _viewerInstance.ItemsSource = itemSource;
 
                 // Create a full page desaturate effect to de-emphasize the background content
@@ -511,5 +494,55 @@ namespace CompositionSampleGallery
                 throw new ArgumentException("can't find a top level grid");
             }
         }
+
+        private void Close_Click(object sender, RoutedEventArgs e)
+        {
+            CompositionScopedBatch batch = _compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
+            batch.Completed += (batchSender, args) =>
+            {
+                ElementCompositionPreview.SetElementChildVisual(_hostGrid.Children[0], null);
+                _hostGrid.Children.Remove(_viewerInstance);
+                _viewerInstance = null;
+            };
+
+            // Closing the viewer, fade it out
+            ScalarKeyFrameAnimation fadeOutAnimation = _compositor.CreateScalarKeyFrameAnimation();
+            fadeOutAnimation.InsertKeyFrame(0, 1);
+            fadeOutAnimation.InsertKeyFrame(1, 0);
+            fadeOutAnimation.Duration = TimeSpan.FromMilliseconds(800);
+            ElementCompositionPreview.GetElementVisual(this).StartAnimation("Opacity", fadeOutAnimation);
+            ElementCompositionPreview.GetElementChildVisual(_hostGrid.Children[0]).StartAnimation("Opacity", fadeOutAnimation);
+
+            batch.End();
+        }
+
+        private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            #region PositionLights relative to grid size
+            GridClip.Rect = new Rect(0, 0, e.NewSize.Width, e.NewSize.Height);
+
+            // Resize the desaturation visual
+            DisplayInformation info = DisplayInformation.GetForCurrentView();
+            Vector2 sizePageBounds = new Vector2((float)(Window.Current.Bounds.Width * info.RawPixelsPerViewPixel),
+                                                 (float)(Window.Current.Bounds.Height * info.RawPixelsPerViewPixel));
+
+            var pageLeft = (float)CoreWindow.GetForCurrentThread().Bounds.Left * info.RawPixelsPerViewPixel;
+            var pageTop = (float)CoreWindow.GetForCurrentThread().Bounds.Top * info.RawPixelsPerViewPixel;
+
+            Visual desaturateVisual = ElementCompositionPreview.GetElementChildVisual(_hostGrid.Children[0]);
+            desaturateVisual.Size = sizePageBounds;
+
+            float lightDistance = sizePageBounds.X * .25f;
+            var pos = new Vector3((float)pageLeft + (sizePageBounds.X * .5f), (float)pageTop + (sizePageBounds.Y * .85f), lightDistance);
+
+            if (_lightProperties != null)
+            {
+                _lightProperties.InsertVector3("LightPosition", pos);
+            }
+            #endregion
+
+            StartDistanceAnimation();
+        } 
+        #endregion
     }
 }
