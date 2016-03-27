@@ -55,6 +55,7 @@ namespace CompositionSampleGallery
 
             // Initialize the lighting effects
             InitializeLighting();
+            BindLightPositions();
 
             // Hide until the content is available
             this.Opacity = 0;
@@ -280,14 +281,30 @@ namespace CompositionSampleGallery
         }
         #endregion
 
+        private void BindLightPositions()
+        {
+            #region BindLightPositions
+            _lightPositionAnimation = _compositor.CreateExpressionAnimation("propertySet.LightGlobalPosition + Vector3(0,0,propertySet.LightGlobalDistance)");
+            _lightPositionAnimation.SetReferenceParameter("propertySet", _lightProperties);
+            _lightTargetAnimation = _compositor.CreateExpressionAnimation("propertySet.LightGlobalPosition - Vector3(0,0,propertySet.LightGlobalDistance)");
+            _lightTargetAnimation.SetReferenceParameter("propertySet", _lightProperties);
+            #endregion
+        }
+
         private async void InitializeLighting()
         {
-            // Create a lighting effect with diffuse + specular components
-            IGraphicsEffect graphicsEffect = new CompositeEffect()
+            // Create a lighting effect description
+
+            var diffuseLightSource = new SpotDiffuseEffect()
             {
-                Mode = CanvasComposite.Add,
-                Sources =
-                {
+                Name = "Light1",
+                DiffuseAmount = 1f,
+                LimitingConeAngle = (float)Math.PI / 8f,
+                LightColor = Colors.White,
+                Source = new CompositionEffectSourceParameter("NormalMap"),
+            };
+
+            var combineImageWithLight = 
                     new ArithmeticCompositeEffect()
                     {
                         Source1Amount  = .6f,
@@ -295,46 +312,19 @@ namespace CompositionSampleGallery
                         MultiplyAmount = .5f,
 
                         Source1 = new CompositionEffectSourceParameter("ImageSource"),
-                        Source2 = new SpotDiffuseEffect()
-                        {
-                            Name = "Light1",
-                            DiffuseAmount = 1f,
-                            LimitingConeAngle = (float)Math.PI / 8f,
-                            LightTarget = new Vector3(1000, 1000, 0),
-                            LightPosition = new Vector3(1000f, 1000f, 2000),
-                            LightColor = Colors.White,
-                            Source = new CompositionEffectSourceParameter("NormalMap"),
-                        },
-                    },
-                    new SpotSpecularEffect()
-                    {
-                        Name = "Light2",
-                        SpecularAmount = .75f,
-                        SpecularExponent = 10000f,
-                        LimitingConeAngle = (float)Math.PI / 8f,
-                        LightTarget = new Vector3(1000, 1000, 0),
-                        LightPosition = new Vector3(1000f, 1000f, 2000),
-                        LightColor = Colors.White,
-                        Source = new CompositionEffectSourceParameter("NormalMap"),
-                    }
-                }
+                        Source2 = diffuseLightSource
             };
 
             // Create the factory used to create brush for each sprite using lighting
-            _lightEffectFactory = _compositor.CreateEffectFactory(graphicsEffect,
-                                new[] { "Light1.LightPosition", "Light1.LightTarget",
-                                        "Light2.LightPosition", "Light2.LightTarget"});
+            _lightEffectFactory = _compositor.CreateEffectFactory(combineImageWithLight,
+                                new[] { "Light1.LightPosition", "Light1.LightTarget"});
 
             // Create the light position/target animations
             _lightProperties = _compositor.CreatePropertySet();
-            _lightProperties.InsertVector3("LightPosition", new Vector3(1000, 1000, 1000));
-            _lightProperties.InsertScalar("LightDistance", 100f);
+            _lightProperties.InsertVector3("LightGlobalPosition", GetGlobalLightPosition());
+            _lightProperties.InsertScalar("LightGlobalDistance", 100f);
 
-            _lightPositionAnimation = _compositor.CreateExpressionAnimation("propertySet.LightPosition + Vector3(0,0,propertySet.LightDistance)");
-            _lightPositionAnimation.SetReferenceParameter("propertySet", _lightProperties);
-            _lightTargetAnimation = _compositor.CreateExpressionAnimation("propertySet.LightPosition - Vector3(0,0,propertySet.LightDistance)");
-            _lightTargetAnimation.SetReferenceParameter("propertySet", _lightProperties);
-
+           
             // Create the shared normal map used for the lighting effect
             _normalMapBrush = _compositor.CreateSurfaceBrush();
             _normalMapBrush.Surface = await SurfaceLoader.LoadFromUri(new Uri("ms-appx:///Controls/OneUpPhotoViewer/NormalMap.jpg"));
@@ -366,8 +356,6 @@ namespace CompositionSampleGallery
             // Kick off the animations
             brush.StartAnimation("Light1.LightPosition", _lightPositionAnimation);
             brush.StartAnimation("Light1.LightTarget", _lightTargetAnimation);
-            brush.StartAnimation("Light2.LightPosition", _lightPositionAnimation);
-            brush.StartAnimation("Light2.LightTarget", _lightTargetAnimation);
         }
 
         private void StartDistanceAnimation()
@@ -381,7 +369,7 @@ namespace CompositionSampleGallery
             distanceAnimation.IterationBehavior = AnimationIterationBehavior.Forever;
             distanceAnimation.Direction = AnimationDirection.Alternate;
             distanceAnimation.Duration = TimeSpan.FromSeconds(2);
-            _lightProperties.StartAnimation("LightDistance", distanceAnimation);
+            _lightProperties.StartAnimation("LightGlobalDistance", distanceAnimation);
 
         }
 
@@ -521,7 +509,20 @@ namespace CompositionSampleGallery
             #region PositionLights relative to grid size
             GridClip.Rect = new Rect(0, 0, e.NewSize.Width, e.NewSize.Height);
 
-            // Resize the desaturation visual
+            if (_lightProperties != null)
+            {
+                _lightProperties.InsertVector3("LightGlobalPosition", GetGlobalLightPosition());
+            }
+            #endregion
+
+            Visual desaturateVisual = ElementCompositionPreview.GetElementChildVisual(_hostGrid.Children[0]);
+            desaturateVisual.Size = GetPageBounds();
+
+            StartDistanceAnimation();
+        } 
+
+        private Vector3 GetGlobalLightPosition()
+        {
             DisplayInformation info = DisplayInformation.GetForCurrentView();
             Vector2 sizePageBounds = new Vector2((float)(Window.Current.Bounds.Width * info.RawPixelsPerViewPixel),
                                                  (float)(Window.Current.Bounds.Height * info.RawPixelsPerViewPixel));
@@ -529,20 +530,20 @@ namespace CompositionSampleGallery
             var pageLeft = (float)CoreWindow.GetForCurrentThread().Bounds.Left * info.RawPixelsPerViewPixel;
             var pageTop = (float)CoreWindow.GetForCurrentThread().Bounds.Top * info.RawPixelsPerViewPixel;
 
-            Visual desaturateVisual = ElementCompositionPreview.GetElementChildVisual(_hostGrid.Children[0]);
-            desaturateVisual.Size = sizePageBounds;
-
             float lightDistance = sizePageBounds.X * .25f;
             var pos = new Vector3((float)pageLeft + (sizePageBounds.X * .5f), (float)pageTop + (sizePageBounds.Y * .85f), lightDistance);
 
-            if (_lightProperties != null)
-            {
-                _lightProperties.InsertVector3("LightPosition", pos);
-            }
-            #endregion
+            return pos;
+        }
 
-            StartDistanceAnimation();
-        } 
+        private Vector2 GetPageBounds()
+        {
+            DisplayInformation info = DisplayInformation.GetForCurrentView();
+            Vector2 sizePageBounds = new Vector2((float)(Window.Current.Bounds.Width * info.RawPixelsPerViewPixel),
+                                                 (float)(Window.Current.Bounds.Height * info.RawPixelsPerViewPixel));
+            return sizePageBounds;
+        }
+
         #endregion
     }
 }
