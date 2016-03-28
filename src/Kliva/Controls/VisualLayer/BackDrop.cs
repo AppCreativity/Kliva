@@ -13,9 +13,9 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Hosting;
 using Windows.UI.Xaml.Media;
 
-namespace App1
+namespace Kliva.Controls.VisualLayer
 {
-    class BlurPanelProto : Control
+    class BackDrop : Control
     {
         Compositor m_compositor;
         SpriteVisual m_blurVisual;
@@ -44,7 +44,7 @@ namespace App1
             }
         }
 
-        public BlurPanelProto()
+        public BackDrop()
         {
             var myBackingVisual = ElementCompositionPreview.GetElementVisual(this as UIElement);
             m_compositor = myBackingVisual.Compositor;

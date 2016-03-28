@@ -13,6 +13,7 @@
 //*********************************************************
 
 using Microsoft.Graphics.Canvas;
+using SamplesCommon;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -26,7 +27,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Hosting;
 using Windows.UI.Xaml.Media;
 
-namespace SamplesCommon
+namespace Kliva.Controls.VisualLayer
 {
     public sealed class CompositionImage : Control
     {

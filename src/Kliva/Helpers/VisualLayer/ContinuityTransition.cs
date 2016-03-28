@@ -12,6 +12,7 @@
 //
 //*********************************************************
 
+using Kliva.Controls.VisualLayer;
 using SamplesCommon;
 using System;
 using System.Numerics;

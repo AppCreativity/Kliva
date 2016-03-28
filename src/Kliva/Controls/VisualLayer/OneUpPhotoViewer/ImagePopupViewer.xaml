@@ -1,8 +1,8 @@
 ﻿<UserControl
-    x:Class="CompositionSampleGallery.ImagePopupViewer"
+    x:Class="Kliva.Controls.VisualLayer.ImagePopupViewer"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:CompositionSampleGallery"
+    xmlns:local="using:Kliva.Controls.VisualLayer"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:common="using:SamplesCommon"
@@ -47,8 +47,8 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <common:CompositionImage x:Name="BackgroundImage" Stretch="Fill" Grid.RowSpan="2" />
-        <common:CompositionImage x:Name="PrimaryImage" Margin="10" Grid.Row="0" MinHeight="300" MinWidth="300"/>
+        <local:CompositionImage x:Name="BackgroundImage" Stretch="Fill" Grid.RowSpan="2" />
+        <local:CompositionImage x:Name="PrimaryImage" Margin="10" Grid.Row="0" MinHeight="300" MinWidth="300"/>
 
         <ListView x:Name="ImageList" Grid.Row="1"
                     VerticalAlignment="Center"
@@ -70,7 +70,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <RelativePanel Margin="10">
-                        <common:CompositionImage MaxWidth="150" MaxHeight="150"/>
+                        <local:CompositionImage MaxWidth="150" MaxHeight="150"/>
                     </RelativePanel>
                 </DataTemplate>
             </ListView.ItemTemplate>

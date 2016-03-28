@@ -122,7 +122,7 @@
     </Compile>
     <Compile Include="Controls\KlivaApplicationFrame.cs" />
     <Compile Include="Controls\MenuItemTemplateSelector.cs" />
-    <Compile Include="Controls\OneUpPhotoViewer\ImagePopupViewer.xaml.cs">
+    <Compile Include="Controls\VisualLayer\OneUpPhotoViewer\ImagePopupViewer.xaml.cs">
       <DependentUpon>ImagePopupViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\SidePaneControl.xaml.cs">
@@ -135,14 +135,14 @@
     <Compile Include="Converters\SecondsToTimeStringConverter.cs" />
     <Compile Include="Converters\SpeedUnitToStringConverter.cs" />
     <Compile Include="Converters\XBindItemCastingConverter.cs" />
-    <Compile Include="Helpers\Beautiful\BackDrop.cs" />
-    <Compile Include="Helpers\Beautiful\BlurPanelProto.cs" />
+    <Compile Include="Helpers\VisualLayer\BackDrop.cs" />
+    <Compile Include="Controls\VisualLayer\BackDrop.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Helpers\Beautiful\CompositionImage.cs" />
-    <Compile Include="Helpers\Beautiful\ContinuityTransition.cs" />
-    <Compile Include="Helpers\Beautiful\SurfaceLoader.cs" />
-    <Compile Include="Helpers\Beautiful\UIElementExtensionMethods.cs" />
-    <Compile Include="Helpers\Beautiful\VisualTreeHelperExtensions.cs" />
+    <Compile Include="Controls\VisualLayer\CompositionImage.cs" />
+    <Compile Include="Helpers\VisualLayer\ContinuityTransition.cs" />
+    <Compile Include="Helpers\VisualLayer\SurfaceLoader.cs" />
+    <Compile Include="Helpers\VisualLayer\UIElementExtensionMethods.cs" />
+    <Compile Include="Helpers\VisualLayer\VisualTreeHelperExtensions.cs" />
     <Compile Include="Helpers\DateTimeFormatHelper.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\PolylineConverter.cs" />
@@ -267,7 +267,7 @@
     <Content Include="Assets\Square71x71Logo.scale-200.png" />
     <Content Include="Assets\Start.png" />
     <Content Include="Assets\ToTop.scale-240.png" />
-    <Content Include="Controls\OneUpPhotoViewer\NormalMap.jpg" />
+    <Content Include="Controls\VisualLayer\OneUpPhotoViewer\NormalMap.jpg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -297,7 +297,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\OneUpPhotoViewer\ImagePopupViewer.xaml">
+    <Page Include="Controls\VisualLayer\OneUpPhotoViewer\ImagePopupViewer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

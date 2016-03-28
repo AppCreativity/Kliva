@@ -15,7 +15,7 @@
     d:DesignWidth="400"
     DataContext="{Binding ActivityDetail, Source={StaticResource Locator}}"
     Loaded="OnActivityDetailControlLoaded"
-    xmlns:compositioncontrols="using:App1"
+    xmlns:compositioncontrols="using:Kliva.Controls.VisualLayer"
     >
     <UserControl.Resources>
         <converters:AddAmountToStringConverter x:Key="AddAmountToStringConverter" />
@@ -309,7 +309,7 @@
             </ListView>
 
         </RelativePanel>
-        <compositioncontrols:BlurPanelProto 
+        <compositioncontrols:BackDrop 
             x:Name="BlurPanel"
             HorizontalAlignment="Stretch" 
             VerticalAlignment="Top" 
@@ -317,7 +317,7 @@
             Margin="0"
             Grid.Row="0" Grid.RowSpan="2">
 
-        </compositioncontrols:BlurPanelProto>
+        </compositioncontrols:BackDrop>
         <TextBlock x:Name="ActivityName" Margin="0,35,0,15" Foreground="White"
                    HorizontalAlignment="Center" VerticalAlignment="Top"
                    FontFamily="{StaticResource OpenSansFontLight}" 

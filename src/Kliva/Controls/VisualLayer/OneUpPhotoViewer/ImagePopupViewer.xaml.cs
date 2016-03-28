@@ -1,4 +1,5 @@
-﻿using Kliva.Models;
+﻿using CompositionSampleGallery;
+using Kliva.Models;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Effects;
 using Microsoft.Graphics.Canvas.UI.Composition;
@@ -18,7 +19,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Hosting;
 using Windows.UI.Xaml.Media;
 
-namespace CompositionSampleGallery
+namespace Kliva.Controls.VisualLayer
 {
     public sealed partial class ImagePopupViewer : UserControl
     {
@@ -519,7 +520,7 @@ namespace CompositionSampleGallery
 
             // Create the shared normal map used for the lighting effect
             _normalMapBrush = _compositor.CreateSurfaceBrush();
-            _normalMapBrush.Surface = await SurfaceLoader.LoadFromUri(new Uri("ms-appx:///Controls/OneUpPhotoViewer/NormalMap.jpg"));
+            _normalMapBrush.Surface = await SurfaceLoader.LoadFromUri(new Uri("ms-appx:///Controls/VisualLayer/OneUpPhotoViewer/NormalMap.jpg"));
         }
         private void ListView_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
         {
