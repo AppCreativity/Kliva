@@ -96,6 +96,7 @@ namespace CompositionSampleGallery
             ImageList.ScrollIntoView(_initialPhoto);
         }
         #endregion
+
         #region BackgroundImage
 
         private void BackgroundImage_FirstOpened(object sender, RoutedEventArgs e)
@@ -179,6 +180,7 @@ namespace CompositionSampleGallery
             BackgroundImage.ImageOpened -= BackgroundImage_ImageChanged;
         }
         #endregion
+
         #region Public Properties
 
         public object ItemsSource
@@ -281,98 +283,7 @@ namespace CompositionSampleGallery
         }
         #endregion
 
-        private void BindLightPositions()
-        {
-            #region BindLightPositions
-            _lightPositionAnimation = _compositor.CreateExpressionAnimation("propertySet.LightGlobalPosition + Vector3(0,0,propertySet.LightGlobalDistance)");
-            _lightPositionAnimation.SetReferenceParameter("propertySet", _lightProperties);
-            _lightTargetAnimation = _compositor.CreateExpressionAnimation("propertySet.LightGlobalPosition - Vector3(0,0,propertySet.LightGlobalDistance)");
-            _lightTargetAnimation.SetReferenceParameter("propertySet", _lightProperties);
-            #endregion
-        }
-
-        private async void InitializeLighting()
-        {
-            // Create a lighting effect description
-
-            var diffuseLightSource = new SpotDiffuseEffect()
-            {
-                Name = "Light1",
-                DiffuseAmount = 1f,
-                LimitingConeAngle = (float)Math.PI / 8f,
-                LightColor = Colors.White,
-                Source = new CompositionEffectSourceParameter("NormalMap"),
-            };
-
-            var combineImageWithLight = 
-                    new ArithmeticCompositeEffect()
-                    {
-                        Source1Amount  = .6f,
-                        Source2Amount  = .2f,
-                        MultiplyAmount = .5f,
-
-                        Source1 = new CompositionEffectSourceParameter("ImageSource"),
-                        Source2 = diffuseLightSource
-            };
-
-            // Create the factory used to create brush for each sprite using lighting
-            _lightEffectFactory = _compositor.CreateEffectFactory(combineImageWithLight,
-                                new[] { "Light1.LightPosition", "Light1.LightTarget"});
-
-            // Create the light position/target animations
-            _lightProperties = _compositor.CreatePropertySet();
-            _lightProperties.InsertVector3("LightGlobalPosition", GetGlobalLightPosition());
-            _lightProperties.InsertScalar("LightGlobalDistance", 100f);
-
-           
-            // Create the shared normal map used for the lighting effect
-            _normalMapBrush = _compositor.CreateSurfaceBrush();
-            _normalMapBrush.Surface = await SurfaceLoader.LoadFromUri(new Uri("ms-appx:///Controls/OneUpPhotoViewer/NormalMap.jpg"));
-        }
-        private void ListView_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
-        {
-            CompositionImage image = args.ItemContainer.ContentTemplateRoot.GetFirstDescendantOfType<CompositionImage>();
-            Uri imageSource = _imageUriGetterFunc(args.Item, false);
-
-            // Set the URI source, and size to the large target image
-            image.Source = imageSource;
-            
-            // Setup the effect for each image
-            SetLightingEffect(image);
-        }
-
-        private void SetLightingEffect(CompositionImage image)
-        {
-            // Create a brush from the lighting effect factory
-            CompositionEffectBrush brush = _lightEffectFactory.CreateBrush();
-
-            // Set the image sources
-            brush.SetSourceParameter("ImageSource", image.SurfaceBrush);
-            brush.SetSourceParameter("NormalMap", _normalMapBrush);
-
-            // Update the image with the effect brush to use
-            image.Brush = brush;
-
-            // Kick off the animations
-            brush.StartAnimation("Light1.LightPosition", _lightPositionAnimation);
-            brush.StartAnimation("Light1.LightTarget", _lightTargetAnimation);
-        }
-
-        private void StartDistanceAnimation()
-        {
-            // 3. animate distance of light from closer to farther and back
-
-            var distanceAnimation = _compositor.CreateScalarKeyFrameAnimation();
-            distanceAnimation.IterationCount = 1;
-            distanceAnimation.InsertKeyFrame(0.0f, 80); // closer is smaller beam radius
-            distanceAnimation.InsertKeyFrame(1.0f, 120); //further is bigger beam radius
-            distanceAnimation.IterationBehavior = AnimationIterationBehavior.Forever;
-            distanceAnimation.Direction = AnimationDirection.Alternate;
-            distanceAnimation.Duration = TimeSpan.FromSeconds(2);
-            _lightProperties.StartAnimation("LightGlobalDistance", distanceAnimation);
-
-        }
-
+        #region List Selection
         private void ImageList_ItemClick(object sender, ItemClickEventArgs e)
         {
             ListViewItem item = (ListViewItem)ImageList.ContainerFromItem(e.ClickedItem);
@@ -425,6 +336,7 @@ namespace CompositionSampleGallery
                 _transition.Start(this, PrimaryImage, null, null);
             }
         }
+        #endregion
 
         #region Dialog Functionality
         internal static void Show(Photo photo, object itemSource, Func<object, bool, Uri> photoGetter, Thickness margin, ContinuityTransition transition)
@@ -519,7 +431,7 @@ namespace CompositionSampleGallery
             desaturateVisual.Size = GetPageBounds();
 
             StartDistanceAnimation();
-        } 
+        }
 
         private Vector3 GetGlobalLightPosition()
         {
@@ -545,5 +457,112 @@ namespace CompositionSampleGallery
         }
 
         #endregion
+
+        #region Lighting Helpers
+        private void BindLightPositions()
+        {
+            #region BindLightPositions
+            _lightPositionAnimation = _compositor.CreateExpressionAnimation("propertySet.LightGlobalPosition + Vector3(0,0,propertySet.LightGlobalDistance)");
+            _lightPositionAnimation.SetReferenceParameter("propertySet", _lightProperties);
+            _lightTargetAnimation = _compositor.CreateExpressionAnimation("propertySet.LightGlobalPosition - Vector3(0,0,propertySet.LightGlobalDistance)");
+            _lightTargetAnimation.SetReferenceParameter("propertySet", _lightProperties);
+            #endregion
+        }
+
+        private void PositionImageLight(CompositionEffectBrush brush)
+        {
+            // Kick off the animations
+            brush.StartAnimation("Light1.LightPosition", _lightPositionAnimation);
+            brush.StartAnimation("Light1.LightTarget", _lightTargetAnimation);
+        }
+        #endregion
+
+        #region List Helpers
+        public Uri GetImageUriForListItem(object item)
+        {
+            return _imageUriGetterFunc(item, false);
+        }
+        #endregion
+
+        private async void InitializeLighting()
+        {
+            // Create a lighting effect description
+
+            var diffuseLightSource = new SpotDiffuseEffect()
+            {
+                Name = "Light1",
+                DiffuseAmount = 1f,
+                LimitingConeAngle = (float)Math.PI / 8f,
+                LightColor = Colors.White,
+                Source = new CompositionEffectSourceParameter("NormalMap"),
+            };
+
+            var combineImageWithLight = 
+                    new ArithmeticCompositeEffect()
+                    {
+                        Source1Amount  = .6f,
+                        Source2Amount  = .2f,
+                        MultiplyAmount = .5f,
+
+                        Source1 = new CompositionEffectSourceParameter("ImageSource"),
+                        Source2 = diffuseLightSource
+            };
+
+            // Create the factory used to create brush for each sprite using lighting
+            _lightEffectFactory = _compositor.CreateEffectFactory(combineImageWithLight,
+                                new[] { "Light1.LightPosition", "Light1.LightTarget"});
+
+            // Create the light position/target animations
+            _lightProperties = _compositor.CreatePropertySet();
+            _lightProperties.InsertVector3("LightGlobalPosition", GetGlobalLightPosition());
+            _lightProperties.InsertScalar("LightGlobalDistance", 100f);
+
+            // Create the shared normal map used for the lighting effect
+            _normalMapBrush = _compositor.CreateSurfaceBrush();
+            _normalMapBrush.Surface = await SurfaceLoader.LoadFromUri(new Uri("ms-appx:///Controls/OneUpPhotoViewer/NormalMap.jpg"));
+        }
+        private void ListView_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            CompositionImage image = args.ItemContainer.ContentTemplateRoot.GetFirstDescendantOfType<CompositionImage>();
+            Uri imageSource = GetImageUriForListItem(args.Item);
+
+            // Set the URI source, and size to the large target image
+            image.Source = imageSource;
+            
+            // Setup the effect for each image
+            SetLightingEffect(image);
+        }
+
+        private void SetLightingEffect(CompositionImage image)
+        {
+            // Create a brush from the lighting effect factory
+            CompositionEffectBrush brush = _lightEffectFactory.CreateBrush();
+
+            // Set the image sources
+            brush.SetSourceParameter("ImageSource", image.SurfaceBrush);
+            brush.SetSourceParameter("NormalMap", _normalMapBrush);
+
+            // Update the image with the effect brush to use
+            image.Brush = brush;
+
+            PositionImageLight(brush);
+        }
+
+        private void StartDistanceAnimation()
+        {
+            // 3. animate distance of light from closer to farther and back
+
+            var distanceAnimation = _compositor.CreateScalarKeyFrameAnimation();
+            distanceAnimation.IterationCount = 1;
+            distanceAnimation.InsertKeyFrame(0.0f, 80); // closer is smaller beam radius
+            distanceAnimation.InsertKeyFrame(1.0f, 120); //further is bigger beam radius
+            distanceAnimation.IterationBehavior = AnimationIterationBehavior.Forever;
+            distanceAnimation.Direction = AnimationDirection.Alternate;
+            distanceAnimation.Duration = TimeSpan.FromSeconds(2);
+            _lightProperties.StartAnimation("LightGlobalDistance", distanceAnimation);
+
+        }
+
+      
     }
 }
