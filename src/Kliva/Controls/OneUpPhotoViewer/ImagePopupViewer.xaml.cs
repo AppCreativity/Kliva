@@ -524,11 +524,10 @@ namespace CompositionSampleGallery
         private void ListView_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
         {
             CompositionImage image = args.ItemContainer.ContentTemplateRoot.GetFirstDescendantOfType<CompositionImage>();
-            Uri imageSource = GetImageUriForListItem(args.Item);
-
+           
             // Set the URI source, and size to the large target image
-            image.Source = imageSource;
-            
+            image.Source = GetImageUriForListItem(args.Item);
+
             // Setup the effect for each image
             SetLightingEffect(image);
         }
