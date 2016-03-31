@@ -1,7 +1,9 @@
 # Kliva
 <img src="https://ci.appveyor.com/api/projects/status/esusas0y99tn2982?svg=true" width="250"/>
 
-This repository is used for feature/bug tracking of the existing app and also contains the open-source UWP (Universal Windows Platform) version of Kliva.
+This repository originated as feature/bug tracking of the existing Windows Phone 8 app. With the release of Windows 10, we decided to bring our app to Windows 10 and open-source the UWP (Universal Windows Platform) version of Kliva.
+
+*If you're visiting our repository while watching the [Build 2016 session](https://channel9.msdn.com/Events/Build/2016/B818), please check out the [Alcatraz branch](https://github.com/AppCreativity/Kliva/tree/alcatraz/src/Kliva) to see what the team implemented. Note some shortcuts are taken for demo purposes. We'll bring in these awesome features in the main branch in the upcoming weeks.*
 
 ### Info
 Kliva ( Swedish for to climb / to strive )
