@@ -47,8 +47,12 @@
                 </VisualStateManager.VisualStateGroups>
                 
                 <RelativePanel x:Name="ActivityListItemPanel"
-                               Margin="0,0,10,0"
-                               Padding="0,5,0,5">
+                               Margin="0"
+                               Padding="0,15,0,15">
+                    <RelativePanel.Background>
+                        <ImageBrush controls:GoogleImageDependencyObject.GoogleImageUrl="{Binding Map, Mode=OneWay}"
+                                    Stretch="UniformToFill" Opacity="0.2" />
+                    </RelativePanel.Background>
                     <interactivity:Interaction.Behaviors>
                         <core:DataTriggerBehavior Binding="{x:Bind OtherAthleteCount, Mode=OneWay}" ComparisonCondition="GreaterThan" Value="0">
                             <core:ChangePropertyAction TargetObject="{Binding ElementName=BottomPanel}" PropertyName="Visibility" Value="Visible"/>

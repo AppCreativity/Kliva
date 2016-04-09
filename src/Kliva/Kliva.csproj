@@ -114,6 +114,7 @@
     <Compile Include="Controls\ClubFeedControl.xaml.cs">
       <DependentUpon>ClubFeedControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\GoogleImageDependencyObject.cs" />
     <Compile Include="Controls\KlivaApplicationFrame.cs" />
     <Compile Include="Controls\MenuItemTemplateSelector.cs" />
     <Compile Include="Controls\SidePaneControl.xaml.cs">
@@ -171,6 +172,7 @@
     <Compile Include="Models\StravaIdentityConstants.cs" />
     <Compile Include="Models\Usage.cs" />
     <Compile Include="Services\ApplicationInfoService.cs" />
+    <Compile Include="Services\IOService.cs" />
     <Compile Include="Services\LocalCacheService.cs" />
     <Compile Include="Services\Endpoints.cs" />
     <Compile Include="Services\Framework\AsyncResponseReceivedEventArgs.cs" />

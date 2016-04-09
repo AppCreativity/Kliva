@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DeviceId>30F105C9-681E-420b-A277-7C086EAD8A4E</DeviceId>
+    <DeviceId>9E663E22-CF9E-4F8A-AAC9-DC758E55304E</DeviceId>
     <UseEmulator>false</UseEmulator>
     <RemoteDebugMachine>DepSurface</RemoteDebugMachine>
     <AuthenticationMode>Windows</AuthenticationMode>

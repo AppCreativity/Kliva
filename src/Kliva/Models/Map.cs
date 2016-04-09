@@ -8,7 +8,7 @@ namespace Kliva.Models
     /// <summary>
     /// This class contains information about the route of an activity.
     /// </summary>
-    public class Map : BaseClass
+    public partial class Map : BaseClass
     {
         /// <summary>
         /// The map id.
@@ -41,6 +41,19 @@ namespace Kliva.Models
             {
                 return _geopositions ?? (string.IsNullOrEmpty(this.SummaryPolyline) ? (_geopositions = PolylineConverter.DecodePolylinePoints(this.Polyline)) : (_geopositions = PolylineConverter.DecodePolylinePoints(this.SummaryPolyline)));
             }
+        }
+    }
+
+    /// <summary>
+    /// Separated added fields from original response class!
+    /// </summary>
+    public partial class Map : BaseClass
+    {
+        private string _googleImageApiUrl;
+        public string GoogleImageApiUrl
+        {
+            get { return _googleImageApiUrl; }
+            set { Set(() => GoogleImageApiUrl, ref _googleImageApiUrl, value); }
         }
     }
 }
