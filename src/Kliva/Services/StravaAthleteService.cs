@@ -41,7 +41,7 @@ namespace Kliva.Services
                 string getUrl = string.Format("{0}/{1}?access_token={2}", Endpoints.Athletes, athleteId, accessToken);
                 string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
 
-                var result = Unmarshaller<Athlete>.Unmarshal(json);
+                var result = Unmarshaller<AthleteSummary>.Unmarshal(json);
 
                 if (result != null)
                     ConsolidateWithCache(result);

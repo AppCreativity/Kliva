@@ -31,7 +31,7 @@
     <FontFamily x:Key="OpenSansFontBold">/Assets/Fonts/OpenSans-Bold.ttf#Open Sans</FontFamily>
     <FontFamily x:Key="OpenSansFontSemibold">/Assets/Fonts/OpenSans-Semibold.ttf#Open Sans</FontFamily>
     <FontFamily x:Key="MaterialDesignFont">/Assets/Fonts/materialdesignicons-webfont.ttf#Material Design Icons</FontFamily>
-    
+
     <!-- NAMED TYPES -->
 
     <Style x:Key="BaseTextBlock" TargetType="TextBlock">
@@ -62,7 +62,7 @@
            TargetType="TextBlock">
         <Setter Property="Margin" Value="10,0,0,10" />
     </Style>
-    
+
     <Style x:Key="PaneIcon" TargetType="FontIcon">
         <Setter Property="Width" Value="40" />
         <Setter Property="Height" Value="40" />
@@ -953,7 +953,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <Style x:Key="EmptyButtonStyleStretched" BasedOn="{StaticResource EmptyButtonStyle}" TargetType="ButtonBase">
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -1134,7 +1134,8 @@
         </Setter>
     </Style>
 
-    <Style TargetType="ListView">
+    <!-- TODO: Glenn - not needed because of ListViewItem definition below -->
+    <!--<Style TargetType="ListView">
         <Setter Property="ItemContainerStyle">
             <Setter.Value>
                 <Style TargetType="ListViewItem">
@@ -1142,7 +1143,7 @@
                 </Style>
             </Setter.Value>
         </Setter>
-    </Style>
+    </Style>-->
 
     <Style TargetType="ComboBox">
         <Setter Property="ItemContainerStyle">
@@ -1154,6 +1155,7 @@
         </Setter>
     </Style>
 
+    <!-- Each list view is fully horizontally stretched and has no margin nor padding -->
     <Style TargetType="ListViewItem">
         <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
         <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
@@ -1162,37 +1164,37 @@
         <Setter Property="TabNavigation" Value="Local"/>
         <Setter Property="IsHoldingEnabled" Value="True"/>
         <Setter Property="Padding" Value="0,0,0,0"/>
-        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <!--<Setter Property="HorizontalContentAlignment" Value="Left"/>-->
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="MinWidth" Value="0"/>
         <Setter Property="MinHeight" Value="0"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListViewItem">
-                    <ListViewItemPresenter
-          ContentTransitions="{TemplateBinding ContentTransitions}"
-          SelectionCheckMarkVisualEnabled="True"
-          CheckBrush="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
-          CheckBoxBrush="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
-          DragBackground="{ThemeResource ListViewItemDragBackgroundThemeBrush}"
-          DragForeground="{ThemeResource ListViewItemDragForegroundThemeBrush}"
-          FocusBorderBrush="{ThemeResource SystemControlForegroundAltHighBrush}"
-          FocusSecondaryBorderBrush="{ThemeResource SystemControlForegroundBaseHighBrush}"
-          PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}"
-          PointerOverBackground="{ThemeResource SystemControlHighlightListLowBrush}"
-          PointerOverForeground="{ThemeResource SystemControlHighlightAltBaseHighBrush}"
-          SelectedBackground="{ThemeResource SystemControlHighlightListAccentLowBrush}"
-          SelectedForeground="{ThemeResource SystemControlHighlightAltBaseHighBrush}"
-          SelectedPointerOverBackground="{ThemeResource SystemControlHighlightListAccentMediumBrush}"
-          PressedBackground="{ThemeResource SystemControlHighlightListMediumBrush}"
-          SelectedPressedBackground="{ThemeResource SystemControlHighlightListAccentHighBrush}"
-          DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
-          DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
-          ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
-          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-          ContentMargin="{TemplateBinding Padding}"
-          CheckMode="Inline"/>
+                    <ListViewItemPresenter ContentTransitions="{TemplateBinding ContentTransitions}"
+                                           SelectionCheckMarkVisualEnabled="True"
+                                           CheckBrush="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
+                                           CheckBoxBrush="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
+                                           DragBackground="{ThemeResource ListViewItemDragBackgroundThemeBrush}"
+                                           DragForeground="{ThemeResource ListViewItemDragForegroundThemeBrush}"
+                                           FocusBorderBrush="{ThemeResource SystemControlForegroundAltHighBrush}"
+                                           FocusSecondaryBorderBrush="{ThemeResource SystemControlForegroundBaseHighBrush}"
+                                           PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}"                                           
+                                           PointerOverBackground="{ThemeResource SystemControlHighlightListLowBrush}"                                           
+                                           PointerOverForeground="{ThemeResource SystemControlHighlightAltBaseHighBrush}"
+                                           SelectedBackground="{ThemeResource SystemControlHighlightListAccentLowBrush}"                                           
+                                           SelectedForeground="{ThemeResource SystemControlHighlightAltBaseHighBrush}"
+                                           SelectedPointerOverBackground="{ThemeResource SystemControlHighlightListAccentMediumBrush}"
+                                           PressedBackground="{ThemeResource SystemControlHighlightListMediumBrush}"
+                                           SelectedPressedBackground="{ThemeResource SystemControlHighlightListAccentHighBrush}"
+                                           DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
+                                           DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
+                                           ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
+                                           HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                           VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"                                           
+                                           ContentMargin="0" Padding="0"
+                                           CheckMode="Inline"/>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
