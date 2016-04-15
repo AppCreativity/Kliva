@@ -986,7 +986,7 @@
         <Setter Property="Foreground" Value="{StaticResource KlivaMainColor}" />
         <!-- original value {ThemeResource SystemControlForegroundBaseMediumBrush} -->
         <Setter Property="Padding" Value="{ThemeResource PivotHeaderItemMargin}" />
-        <Setter Property="Height" Value="48" />
+        <Setter Property="Height" Value="Auto" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="Template">

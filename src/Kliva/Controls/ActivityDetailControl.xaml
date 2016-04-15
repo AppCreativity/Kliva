@@ -82,7 +82,11 @@
             <Pivot x:Name="ActivityPivot"
                    RelativePanel.Below="ActivityDetailCommandBar"
                    RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
-                <PivotItem x:Name="StatisticsPivot" Header="statistics" Tag="Statistics">
+                <PivotItem x:Name="StatisticsPivot" Tag="Statistics">
+                    <PivotItem.Header>
+                        <local:IconPivotHeader Label="statistics"
+                                               Glyph="&#xE1E9;" />
+                    </PivotItem.Header>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollMode="Disabled">
                         <RelativePanel Margin="10,0,0,0">
                             <!-- DISTANCE BLOCK -->
@@ -209,15 +213,21 @@
                     </ScrollViewer>
                 </PivotItem>
                 <PivotItem x:Name="SegmentsPivot" Tag="Segments"
-                           Header="{x:Bind ViewModel.SelectedActivity.SegmentEffortsCount, Converter={StaticResource AddAmountToStringConverter}, ConverterParameter=segments, Mode=OneWay}"
-                    x:DeferLoadStrategy="Lazy"
+                           x:DeferLoadStrategy="Lazy"
                            Visibility="{x:Bind ViewModel.HasSegments, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <PivotItem.Header>
+                        <local:IconPivotHeader Label="{x:Bind ViewModel.SelectedActivity.SegmentEffortsCount, Converter={StaticResource AddAmountToStringConverter}, ConverterParameter=segments, Mode=OneWay}"
+                                               Glyph="&#xEC1B;" />
+                    </PivotItem.Header>
                     <ListView x:Name="AcitivtySegmentsList"
                               ItemsSource="{x:Bind ViewModel.SelectedActivity.SegmentEfforts, Mode=OneWay}"
                               ItemTemplate="{StaticResource SegmentEffortListItemTemplate}"/>
                 </PivotItem>
-                <PivotItem x:Name="KudosPivot" Tag="Kudos"
-                           Header="{x:Bind ViewModel.KudosCount, Converter={StaticResource AddAmountToStringConverter}, ConverterParameter=kudos, Mode=OneWay}">
+                <PivotItem x:Name="KudosPivot" Tag="Kudos">
+                    <PivotItem.Header>
+                        <local:IconPivotHeader Label="{x:Bind ViewModel.KudosCount, Converter={StaticResource AddAmountToStringConverter}, ConverterParameter=kudos, Mode=OneWay}"
+                                               Glyph="&#xE8E1;" />
+                    </PivotItem.Header>
                     <ListView x:Name="ActivityKudosList"
                               ItemsSource="{x:Bind ViewModel.Kudos, Mode=OneWay}"
                               ItemTemplate="{StaticResource KudosListItemTemplate}"
@@ -229,16 +239,22 @@
                         </interactivity:Interaction.Behaviors>
                     </ListView>
                 </PivotItem>
-                <PivotItem x:Name="CommentsPivot" Tag="Comments"
-                           Header="{x:Bind ViewModel.CommentCount, Converter={StaticResource AddAmountToStringConverter}, ConverterParameter=comments, Mode=OneWay}">
+                <PivotItem x:Name="CommentsPivot" Tag="Comments">
+                    <PivotItem.Header>
+                        <local:IconPivotHeader Label="{x:Bind ViewModel.CommentCount, Converter={StaticResource AddAmountToStringConverter}, ConverterParameter=comments, Mode=OneWay}"
+                                               Glyph="&#xE8BD;" />
+                    </PivotItem.Header>
                     <ListView x:Name="ActivityCommentsList"
                               ItemsSource="{x:Bind ViewModel.Comments, Mode=OneWay}"
                               ItemTemplate="{StaticResource CommentsListItemTemplate}"/>
                 </PivotItem>
                 <PivotItem x:Name="PhotosPivot" Tag="Photos"
-                           x:DeferLoadStrategy="Lazy"
-                           Header="{x:Bind ViewModel.PhotoCount, Converter={StaticResource AddAmountToStringConverter}, ConverterParameter=photos, Mode=OneWay}"
+                           x:DeferLoadStrategy="Lazy"                           
                            Visibility="{x:Bind ViewModel.HasPhotos, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <PivotItem.Header>
+                        <local:IconPivotHeader Label="{x:Bind ViewModel.PhotoCount, Converter={StaticResource AddAmountToStringConverter}, ConverterParameter=photos, Mode=OneWay}"
+                                               Glyph="&#xEB9F;" />
+                    </PivotItem.Header>
                     <GridView x:Name="ActivityPhotosGrid"
                               Margin="10,0,0,0"
                               ItemsSource="{x:Bind ViewModel.SelectedActivity.AllPhotos, Mode=OneWay}"

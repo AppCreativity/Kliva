@@ -4,5 +4,6 @@
     {
         public const string STRAVA_AUTHORITY_CLIENT_ID = "0";
         public const string STRAVA_AUTHORITY_CLIENT_SECRET = "riiiiight :)";
+        public const string GOOGLE_MAP_API = "bliep bliep";
     }
 }
