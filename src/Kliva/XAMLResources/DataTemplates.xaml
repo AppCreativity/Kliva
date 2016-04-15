@@ -20,7 +20,8 @@
                   x:DataType="models:ActivitySummary">
         <!-- UserControl needed for visual state manager -->
         <UserControl>
-            <Grid>
+            <RelativePanel x:Name="ActivityListItemPanel"
+                               Margin="0">
                 <VisualStateManager.VisualStateGroups>
                     <VisualStateGroup x:Name="VisualStateGroup">
                         <VisualState x:Name="Mobile">
@@ -31,6 +32,8 @@
                                 <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseMobile}" />
                                 <Setter Target="ActivityImage.Style" Value="{StaticResource ActivityImageBorderMobile}"/>
                                 <Setter Target="ActivityImageIcon.FontSize" Value="12" />
+                                <!-- TODO: Glenn - This is not 100% correct! Because small view on a non Windows 10 Mobile device would also need 15 margin Right because of the 'fat' scrollbar, on WP10 scrollbar design in 'small' -->
+                                <Setter Target="ActivityListItemPanel.Padding" Value="10,10,10,10" />
                             </VisualState.Setters>
                         </VisualState>
                         <VisualState x:Name="Desktop">
@@ -41,14 +44,12 @@
                                 <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseDesktop}" />
                                 <Setter Target="ActivityImage.Style" Value="{StaticResource ActivityImageBorderDesktop}"/>
                                 <Setter Target="ActivityImageIcon.FontSize" Value="14" />
+                                <Setter Target="ActivityListItemPanel.Padding" Value="10,10,15,10" />
                             </VisualState.Setters>
                         </VisualState>
                     </VisualStateGroup>
                 </VisualStateManager.VisualStateGroups>
                 
-                <RelativePanel x:Name="ActivityListItemPanel"
-                               Margin="0"
-                               Padding="0,15,0,15">
                     <RelativePanel.Background>
                         <ImageBrush controls:GoogleImageDependencyObject.GoogleImageUrl="{Binding Map, Mode=OneWay}"
                                     Stretch="UniformToFill" Opacity="0.2" />
@@ -148,74 +149,124 @@
                                    Style="{StaticResource BaseTextBlock}" />
                     </RelativePanel>
                 </RelativePanel>
-            </Grid>
         </UserControl>
     </DataTemplate>
 
     <DataTemplate x:Key="SegmentEffortListItemTemplate"
                   x:DataType="models:SegmentEffort">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <RelativePanel x:Name="SegmentHighlights"
-                           Grid.Column="0">
-                <TextBlock x:Name="SegmentName"
-                           Text="{x:Bind Name}"
-                           Style="{StaticResource TrimmingTextBlock}"
+        <!-- UserControl needed for visual state manager -->
+        <UserControl>
+            <Grid Margin="0,0,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="VisualStateGroup">
+                        <VisualState x:Name="Mobile">
+                            <VisualState.StateTriggers>
+                                <AdaptiveTrigger MinWindowWidth="320" />
+                            </VisualState.StateTriggers>
+                            <VisualState.Setters>
+                                <!-- TODO: Glenn - This is not 100% correct! Because small view on a non Windows 10 Mobile device would also need 15 margin Right because of the 'fat' scrollbar, on WP10 scrollbar design in 'small' -->
+                                <Setter Target="SegmentPersonalRankShield.Margin" Value="0,0,10,0" />
+                                <Setter Target="SegmentPersonalRank.Margin" Value="0,0,10,0" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Desktop">
+                            <VisualState.StateTriggers>
+                                <AdaptiveTrigger MinWindowWidth="720" />
+                            </VisualState.StateTriggers>
+                            <VisualState.Setters>
+                                <Setter Target="SegmentPersonalRankShield.Margin" Value="0,0,15,0" />
+                                <Setter Target="SegmentPersonalRank.Margin" Value="0,0,15,0" />                                
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+                
+                <RelativePanel x:Name="SegmentHighlights"
+                               Margin="10,0"
+                               Grid.Column="0">
+                    <TextBlock x:Name="SegmentName"
+                               Text="{x:Bind Name}"
+                               Style="{StaticResource TrimmingTextBlock}"
+                               FontSize="14"
+                               RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" />
+                    <TextBlock x:Name="SegmentDistance"
+                           Style="{StaticResource BaseTextBlock}"
+                           FontSize="12"
+                           RelativePanel.Below="SegmentName" RelativePanel.AlignLeftWithPanel="True">
+                    <Run Text="{x:Bind DistanceFormatted, Mode=OneWay}" />
+                    <Run Text="{x:Bind DistanceUnit, Mode=OneWay, Converter={StaticResource DistanceUnitToStringConverter}}"/>
+                    </TextBlock>
+
+                    <TextBlock x:Name="SegmentMovingTime"
+                           Text="{x:Bind MovingTime, Mode=OneWay, Converter={StaticResource SecondsToTimeStringConverter}}"
+                           Style="{StaticResource BaseTextBlock}"
+                           FontSize="12"
+                           Margin="10,0"
+                           RelativePanel.Below="SegmentName" RelativePanel.RightOf="SegmentDistance" />
+                </RelativePanel>
+
+                <TextBlock x:Name="SegmentPersonalRankShield"
+                           Visibility="{x:Bind PersonalRecordRank, Converter={StaticResource VisibilityConverter}}"
+                           Text=""
+                           VerticalAlignment="Center"
+                           FontFamily="Segoe MDL2 Assets"
+                           FontSize="22"
+                           Grid.Column="1"/>
+                <TextBlock x:Name="SegmentPersonalRank"
+                           Text="{x:Bind PersonalRecordRank}"
+                           Visibility="{x:Bind PersonalRecordRank, Converter={StaticResource VisibilityConverter}}"
+                           Style="{StaticResource BaseTextBlock}"
+                           VerticalAlignment="Center" HorizontalAlignment="Center"
                            FontSize="14"
-                           RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" />
-                <TextBlock x:Name="SegmentDistance"
-                       Style="{StaticResource BaseTextBlock}"
-                       FontSize="12"
-                       RelativePanel.Below="SegmentName" RelativePanel.AlignLeftWithPanel="True">
-                <Run Text="{x:Bind DistanceFormatted, Mode=OneWay}" />
-                <Run Text="{x:Bind DistanceUnit, Mode=OneWay, Converter={StaticResource DistanceUnitToStringConverter}}"/>
-                </TextBlock>
-
-                <TextBlock x:Name="SegmentMovingTime"
-                       Text="{x:Bind MovingTime, Mode=OneWay, Converter={StaticResource SecondsToTimeStringConverter}}"
-                       Style="{StaticResource BaseTextBlock}"
-                       FontSize="12"
-                       Margin="10,0"
-                       RelativePanel.Below="SegmentName" RelativePanel.RightOf="SegmentDistance" />
-            </RelativePanel>
-
-            <TextBlock x:Name="SegmentPersonalRankShield"
-                       Visibility="{x:Bind PersonalRecordRank, Converter={StaticResource VisibilityConverter}}"
-                       Text=""
-                       VerticalAlignment="Center"
-                       Margin="0,0,10,0"
-                       FontFamily="Segoe MDL2 Assets"
-                       FontSize="22"
-                       Grid.Column="1"/>
-            <TextBlock Text="{x:Bind PersonalRecordRank}"
-                       Visibility="{x:Bind PersonalRecordRank, Converter={StaticResource VisibilityConverter}}"
-                       Style="{StaticResource BaseTextBlock}"
-                       VerticalAlignment="Center" HorizontalAlignment="Center"
-                       Margin="0,0,10,0"
-                       FontSize="14"
-                       Grid.Column="1"/>            
-        </Grid>
+                           Grid.Column="1"/>            
+            </Grid>
+        </UserControl>
     </DataTemplate>
 
     <DataTemplate x:Key="SegmentSummaryListItemTemplate"
                   x:DataType="models:SegmentSummary">
-        <RelativePanel x:Name="SegmentHighlights">
-            <TextBlock x:Name="SegmentName"
-                           Text="{x:Bind Name}"
-                           Style="{StaticResource TrimmingTextBlock}"
-                           FontSize="14"
-                           RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" />
-            <TextBlock x:Name="SegmentDistance"
-                       Style="{StaticResource BaseTextBlock}"
-                       FontSize="12"
-                       RelativePanel.Below="SegmentName" RelativePanel.AlignLeftWithPanel="True">
-                <Run Text="{x:Bind DistanceFormatted, Mode=OneWay}" />
-                <Run Text="{x:Bind DistanceUnit, Mode=OneWay, Converter={StaticResource DistanceUnitToStringConverter}}"/>
-            </TextBlock>
-        </RelativePanel>
+        <!-- UserControl needed for visual state manager -->
+        <UserControl>
+            <RelativePanel x:Name="SegmentHighlights">
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="VisualStateGroup">
+                        <VisualState x:Name="Mobile">
+                            <VisualState.StateTriggers>
+                                <AdaptiveTrigger MinWindowWidth="320" />
+                            </VisualState.StateTriggers>
+                            <VisualState.Setters>
+                                <!-- TODO: Glenn - This is not 100% correct! Because small view on a non Windows 10 Mobile device would also need 15 margin Right because of the 'fat' scrollbar, on WP10 scrollbar design in 'small' -->
+                                <Setter Target="SegmentHighlights.Padding" Value="10,0,10,10" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Desktop">
+                            <VisualState.StateTriggers>
+                                <AdaptiveTrigger MinWindowWidth="720" />
+                            </VisualState.StateTriggers>
+                            <VisualState.Setters>
+                                <Setter Target="SegmentHighlights.Padding" Value="10,0,15,10" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+                <TextBlock x:Name="SegmentName"
+                            Text="{x:Bind Name}"
+                            Style="{StaticResource TrimmingTextBlock}"
+                            FontSize="14"
+                            RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" />
+                <TextBlock x:Name="SegmentDistance"
+                            Style="{StaticResource BaseTextBlock}"
+                            FontSize="12"
+                            RelativePanel.Below="SegmentName" RelativePanel.AlignLeftWithPanel="True">
+                    <Run Text="{x:Bind DistanceFormatted, Mode=OneWay}" />
+                    <Run Text="{x:Bind DistanceUnit, Mode=OneWay, Converter={StaticResource DistanceUnitToStringConverter}}"/>
+                </TextBlock>
+            </RelativePanel>
+        </UserControl>
     </DataTemplate>
 
     <DataTemplate x:Key="KudosListItemTemplate"
@@ -229,6 +280,8 @@
                                 <AdaptiveTrigger MinWindowWidth="320" />
                             </VisualState.StateTriggers>
                             <VisualState.Setters>
+                                <!-- TODO: Glenn - This is not 100% correct! Because small view on a non Windows 10 Mobile device would also need 15 margin Right because of the 'fat' scrollbar, on WP10 scrollbar design in 'small' -->
+                                <Setter Target="KudosListItemPanel.Padding" Value="10,0,10,10" />
                                 <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseMobile}" />
                             </VisualState.Setters>
                         </VisualState>
@@ -237,12 +290,13 @@
                                 <AdaptiveTrigger MinWindowWidth="720" />
                             </VisualState.StateTriggers>
                             <VisualState.Setters>
+                                <Setter Target="KudosListItemPanel.Padding" Value="10,0,15,10" />
                                 <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseDesktop}" />
                             </VisualState.Setters>
                         </VisualState>
                     </VisualStateGroup>
                 </VisualStateManager.VisualStateGroups>
-                <RelativePanel>
+                <RelativePanel x:Name="KudosListItemPanel">
                     <Ellipse x:Name="AthleteProfilePicture"
                              Margin="0,5,0,5"
                              RelativePanel.AlignLeftWithPanel="True">
@@ -274,6 +328,8 @@
                                 <AdaptiveTrigger MinWindowWidth="320" />
                             </VisualState.StateTriggers>
                             <VisualState.Setters>
+                                <!-- TODO: Glenn - This is not 100% correct! Because small view on a non Windows 10 Mobile device would also need 15 margin Right because of the 'fat' scrollbar, on WP10 scrollbar design in 'small' -->
+                                <Setter Target="CommentsListItemPanel.Padding" Value="10,0,10,10" />
                                 <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseMobile}" />
                             </VisualState.Setters>
                         </VisualState>
@@ -282,12 +338,13 @@
                                 <AdaptiveTrigger MinWindowWidth="720" />
                             </VisualState.StateTriggers>
                             <VisualState.Setters>
+                                <Setter Target="CommentsListItemPanel.Padding" Value="10,0,15,10" />
                                 <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseDesktop}" />
                             </VisualState.Setters>
                         </VisualState>
                     </VisualStateGroup>
                 </VisualStateManager.VisualStateGroups>
-                <RelativePanel>
+                <RelativePanel x:Name="CommentsListItemPanel">
                     <Ellipse x:Name="AthleteProfilePicture"
                              Margin="0,5,0,5"
                              RelativePanel.AlignLeftWithPanel="True">
