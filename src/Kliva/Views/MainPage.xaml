@@ -25,9 +25,13 @@
                     Foreground="White">
             <AppBarButton x:Name="AppBarStats"
                           Label="statistics"
-                          Icon="FourBars"
                           Foreground="White"
-                          Command="{Binding StatisticsCommand}"/>
+                          Command="{Binding StatisticsCommand}">
+                <AppBarButton.Icon>
+                    <FontIcon FontFamily="{StaticResource MaterialDesignFont}"
+                              Glyph="&#xF204;" />
+                </AppBarButton.Icon>
+            </AppBarButton>
             <AppBarButton x:Name="AppBarProfile"
                           Label="profile"
                           Icon="Contact"

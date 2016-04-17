@@ -47,20 +47,32 @@
         <Setter Property="Foreground" Value="White" />
     </Style>
 
-    <Style x:Key="TitleTextBlockMobile" BasedOn="{StaticResource BaseWhiteTextBlock}"
+    <Style x:Key="TitleTextBlock" BasedOn="{StaticResource BaseWhiteTextBlock}"
            TargetType="TextBlock">
         <Setter Property="FontSize" Value="20" />
+    </Style>
+
+    <Style x:Key="TitleTextBlockMobile" BasedOn="{StaticResource TitleTextBlock}"
+           TargetType="TextBlock">
         <Setter Property="Margin" Value="14,-5,0,2" />
     </Style>
 
-    <Style x:Key="TitleTextBlockDesktop" BasedOn="{StaticResource BaseWhiteTextBlock}"
+    <Style x:Key="TitleTextBlockDesktop" BasedOn="{StaticResource TitleTextBlock}"
            TargetType="TextBlock">
         <Setter Property="Margin" Value="60,0,0,10" />
     </Style>
 
-    <Style x:Key="TitleTextBlockDesktopWithSideBar" BasedOn="{StaticResource BaseWhiteTextBlock}"
+    <Style x:Key="TitleTextBlockDesktopWithSideBar" BasedOn="{StaticResource TitleTextBlock}"
            TargetType="TextBlock">
         <Setter Property="Margin" Value="10,0,0,10" />
+    </Style>
+
+    <Style x:Key="ActivityNameTextBlockMobile" BasedOn="{StaticResource TitleTextBlock}"
+           TargetType="TextBlock">
+    </Style>
+
+    <Style x:Key="ActivityNameTextBlockDesktop" BasedOn="{StaticResource TitleTextBlock}"
+           TargetType="TextBlock">
     </Style>
 
     <Style x:Key="PaneIcon" TargetType="FontIcon">
