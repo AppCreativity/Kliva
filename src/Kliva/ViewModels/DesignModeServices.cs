@@ -30,6 +30,11 @@ namespace Kliva.ViewModels
             }
         }
 
+        public void RegisterFrame(object frame)
+        {
+            throw new NotImplementedException();
+        }
+
         public Uri CurrentSource
         {
             get

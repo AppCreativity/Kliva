@@ -30,7 +30,7 @@ namespace Kliva.ViewModels
             }
             else
             {
-                SimpleIoc.Default.Register<INavigationService, NavigationService>();
+                SimpleIoc.Default.Register<INavigationService>(() => new NavigationService());
             }
             
             SimpleIoc.Default.Register<IMessenger, Messenger>();
