@@ -4,8 +4,14 @@ using Kliva.Helpers;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using Windows.Globalization.NumberFormatting;
+using Windows.Storage;
+using Windows.Storage.FileProperties;
+using Windows.Storage.Search;
+using GalaSoft.MvvmLight.Threading;
 
 namespace Kliva.ViewModels
 {
@@ -13,6 +19,7 @@ namespace Kliva.ViewModels
     {
         private readonly ISettingsService _settingsService;
         private bool _loading;
+        private DecimalFormatter _decimalFormat = new DecimalFormatter();
 
         public string AppVersion => _settingsService.AppVersion.ToString();
 
@@ -44,14 +51,30 @@ namespace Kliva.ViewModels
             set { Set(() => SelectedSortType, ref _selectedSortType, value); }
         }
 
+        private string _mapSizes;
+        public string MapSizes
+        {
+            get { return _mapSizes; }
+            set { Set(() => MapSizes, ref _mapSizes, value); }
+        }
+
         private RelayCommand _viewLoadedCommand;
         public RelayCommand ViewLoadedCommand => _viewLoadedCommand ?? (_viewLoadedCommand = new RelayCommand(async () => await ViewLoaded()));
+
+        private RelayCommand _clearMapsCommand;
+
+        public RelayCommand ClearMapsCommand => _clearMapsCommand ?? (_clearMapsCommand = new RelayCommand(async () => await ClearMaps()));
 
         public SettingsViewModel(INavigationService navigationService, ISettingsService settingsService) : base(navigationService)
         {
             _settingsService = settingsService;
 
             PropertyChanged += OnSettingsViewModelPropertyChanged;
+
+            IncrementNumberRounder rounder = new IncrementNumberRounder();
+            rounder.Increment = 0.01;
+            rounder.RoundingAlgorithm = RoundingAlgorithm.RoundHalfUp;
+            _decimalFormat.NumberRounder = rounder;
 
             //TODO: Glenn - Translate enums!
             MeasurementUnits.Add(DistanceUnitType.Kilometres.ToString());
@@ -83,7 +106,53 @@ namespace Kliva.ViewModels
             ActivitySort activitySort = await _settingsService.GetStoredActivitySortAsync();
             SelectedSortType = activitySort.ToString();
 
+            await Task.Run(GetMapSizes);
+
             _loading = false;
+        }
+
+        private async Task<IReadOnlyList<StorageFile>> GetMapFiles()
+        {
+            List<string> fileTypes = new List<string>() { ".map" };
+            QueryOptions queryOptions = new QueryOptions(CommonFileQuery.DefaultQuery, fileTypes);
+            StorageFileQueryResult queryResult = ApplicationData.Current.LocalFolder.CreateFileQueryWithOptions(queryOptions);
+            IReadOnlyList<StorageFile> mapFiles = await queryResult.GetFilesAsync();
+
+            return mapFiles;
+        }
+
+        private async Task GetMapSizes()
+        {
+            var mapFiles = await GetMapFiles();
+
+            long totalFileSize = 0;
+            foreach (StorageFile mapFile in mapFiles)
+            {
+                BasicProperties basicProperties = await mapFile.GetBasicPropertiesAsync();
+                totalFileSize += Convert.ToInt64(basicProperties.Size);
+            }
+
+            double mapSizeInMB = totalFileSize > 0 ? (totalFileSize / 1024.0) / 1024.0 : 0;
+
+            DispatcherHelper.CheckBeginInvokeOnUI(() => MapSizes = $"Currently we have {mapFiles.Count} maps cached, with a total of {_decimalFormat.Format(mapSizeInMB)} MB");
+        }
+
+        private async Task ClearMaps()
+        {
+            var mapFiles = await GetMapFiles();
+            foreach (StorageFile mapFile in mapFiles)
+            {
+                try
+                {
+                    await mapFile.DeleteAsync(StorageDeleteOption.PermanentDelete);
+                }
+                catch (Exception exception)
+                {
+                    //TODO: Glenn - implement
+                }
+            }
+
+            await this.GetMapSizes();
         }
     }
 }

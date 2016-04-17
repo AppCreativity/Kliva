@@ -17,6 +17,19 @@
         </core:EventTriggerBehavior>
     </interactivity:Interaction.Behaviors>
 
+    <Page.BottomAppBar>
+        <CommandBar x:Name="BottomAppBar"
+                    Background="{StaticResource KlivaMainBrush}"
+                    Foreground="White">
+            <AppBarButton x:Name="ClearAppBarButton"                          
+                          Label="clear"
+                          Icon="Delete"
+                          Foreground="White"
+                          Command="{x:Bind ViewModel.ClearMapsCommand}"
+                          />
+        </CommandBar>
+    </Page.BottomAppBar>
+
     <Grid x:Name="LayoutRoot" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -32,6 +45,8 @@
                         <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockMobile}" />
                         <Setter Target="MeasurementUnitsCombobox.HorizontalAlignment" Value="Stretch" />
                         <Setter Target="SortTypeCombobox.HorizontalAlignment" Value="Stretch" />
+                        <Setter Target="ClearMapsButton.Visibility" Value="Collapsed" />
+                        <Setter Target="BottomAppBar.Visibility" Value="Visible" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="Desktop">
@@ -42,6 +57,8 @@
                         <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockDesktopWithSideBar}" />
                         <Setter Target="MeasurementUnitsCombobox.HorizontalAlignment" Value="Left" />
                         <Setter Target="SortTypeCombobox.HorizontalAlignment" Value="Left" />
+                        <Setter Target="ClearMapsButton.Visibility" Value="Visible" />
+                        <Setter Target="BottomAppBar.Visibility" Value="Collapsed" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -55,10 +72,20 @@
         </StackPanel>
         
         <Pivot x:Name="SettingsPivot" Grid.Row="1">
-            <PivotItem Header="what's new">
+            <interactivity:Interaction.Behaviors>
+                <core:DataTriggerBehavior Binding="{Binding SelectedItem.Name, ElementName=SettingsPivot}" ComparisonCondition="Equal" Value="CachePivot">
+                    <core:ChangePropertyAction TargetObject="{Binding ElementName=ClearAppBarButton}" PropertyName="Visibility" Value="Visible"/>
+                </core:DataTriggerBehavior>
+                <core:DataTriggerBehavior Binding="{Binding SelectedItem.Name, ElementName=SettingsPivot}" ComparisonCondition="NotEqual" Value="CachePivot">
+                    <core:ChangePropertyAction TargetObject="{Binding ElementName=ClearAppBarButton}" PropertyName="Visibility" Value="Collapsed"/>
+                </core:DataTriggerBehavior>
+            </interactivity:Interaction.Behaviors>
+
+            <PivotItem x:Name="NewPivot" Header="what's new">
 
             </PivotItem>
-            <PivotItem Header="general">
+            <PivotItem x:Name="GeneralPivot"
+                       Header="general">
                 <RelativePanel Margin="10,0">
                     <TextBlock x:Name="MeasurementUnitTextBlock" Text="measurement unit"
                                RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True"/>
@@ -92,19 +119,33 @@
                                Text="** Changing these settings currently need a restart of the application." />
                 </RelativePanel>
             </PivotItem>
-            <PivotItem Header="data cache">
-                <TextBlock Margin="10,0,10,0"
-                           TextWrapping="WrapWholeWords">
-                    <Run Text="The app will cache the downloaded activity maps to minimize mobile data traffic." />
-                    <LineBreak />
-                    <Run Text="So once a map is downloaded and available in the cache, we will no longer request it from the internet." />
-                    <LineBreak />
-                    <LineBreak />
-                    <Run Text="But using such a cache will will take up size on your device, if needed you can clear it here..." />
-                </TextBlock>
+            <PivotItem x:Name="CachePivot"
+                       Header="data cache">
+                <StackPanel Margin="10,0,10,0">
+                    <TextBlock TextWrapping="WrapWholeWords">
+                        <Run Text="The app will cache the downloaded activity maps to minimize mobile data traffic." />
+                        <LineBreak />
+                        <Run Text="So once a map is downloaded and available in the cache, we will no longer request it from the internet." />
+                        <LineBreak />
+                        <LineBreak />
+                        <Run Text="But using such a cache will will take up size on your device, if needed you can clear it here..." />
+                    </TextBlock>
+                    <TextBlock Text="{x:Bind ViewModel.MapSizes, Mode=OneWay}"
+                               FontWeight="Bold"
+                               Margin="0,10,0,0"/>
+                    <Button x:Name="ClearMapsButton"
+                            Command="{x:Bind ViewModel.ClearMapsCommand}"
+                            Margin="0,10,0,0">
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon Glyph="&#xE107;" />
+                            <TextBlock Text="clear"
+                                       Margin="5,0" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
             </PivotItem>
-            
-            <PivotItem Header="about">
+            <PivotItem x:Name="AboutPivot"
+                       Header="about">
                 <RichTextBlock VerticalAlignment="Top" Margin="10,0,10,0" FontFamily="{StaticResource OpenSansFontLight}">
                     <Paragraph>
                         <Bold>
