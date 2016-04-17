@@ -9,7 +9,8 @@
         <ResourceDictionary>
             <viewModels:ViewModelLocator x:Key="Locator"/>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="XAMLResources/Styles.xaml" />                
+                <ResourceDictionary Source="XAMLResources/Styles.xaml" />
+                <ResourceDictionary Source="XAMLResources/ControlTemplates.xaml" />
                 <ResourceDictionary Source="XAMLResources/DeviceFamilyDataTemplates.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

@@ -81,7 +81,8 @@
 
             <Pivot x:Name="ActivityPivot"
                    RelativePanel.Below="ActivityDetailCommandBar"
-                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
+                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True"
+                   Template="{StaticResource PivotWithIconsControlTemplate}">
                 <PivotItem x:Name="StatisticsPivot" Tag="Statistics">
                     <PivotItem.Header>
                         <local:IconPivotHeader Label="statistics"

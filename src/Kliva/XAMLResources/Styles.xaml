@@ -983,6 +983,7 @@
         <Setter Property="FontWeight" Value="{ThemeResource PivotHeaderItemThemeFontWeight}" />
         <Setter Property="CharacterSpacing" Value="{ThemeResource PivotHeaderItemCharacterSpacing}" />
         <Setter Property="Background" Value="Transparent" />
+        <!--<Setter Property="Background" Value="{ThemeResource SystemControlBackgroundChromeMediumBrush}" />-->
         <Setter Property="Foreground" Value="{StaticResource KlivaMainColor}" />
         <!-- original value {ThemeResource SystemControlForegroundBaseMediumBrush} -->
         <Setter Property="Padding" Value="{ThemeResource PivotHeaderItemMargin}" />
@@ -1036,7 +1037,8 @@
                                             <!-- original value {ThemeResource SystemControlHighlightAltBaseHighBrush} -->
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Grid" Storyboard.TargetProperty="Background">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightTransparentBrush}" />
+                                            <!--<DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightTransparentBrush}" />-->
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="White" />
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
