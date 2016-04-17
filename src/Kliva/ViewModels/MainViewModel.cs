@@ -61,14 +61,7 @@ namespace Kliva.ViewModels
             set
             {
                 if (Set(() => SelectedActivity, ref _selectedActivity, value) && value != null)
-                {
                     MessengerInstance.Send<ActivitySummaryMessage>(new ActivitySummaryMessage(_selectedActivity));
-
-                    if (!string.IsNullOrEmpty(SelectedActivity?.Map.SummaryPolyline))
-                        ServiceLocator.Current.GetInstance<IMessenger>().Send<ActivityPolylineMessage>(new ActivityPolylineMessage(SelectedActivity.Map.GeoPositions));
-                    else
-                        ServiceLocator.Current.GetInstance<IMessenger>().Send<ActivityPolylineMessage>(new ActivityPolylineMessage(new List<BasicGeoposition>()));
-                }
             }
         }
 

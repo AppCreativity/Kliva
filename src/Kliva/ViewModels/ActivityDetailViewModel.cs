@@ -1,6 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.Devices.Geolocation;
 using Windows.UI.Xaml.Controls;
 using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
@@ -133,6 +135,11 @@ namespace Kliva.ViewModels
                 //TODO: Glenn - Why oh why are we not yet able to show/hide PivotItems through Visibility bindable
                 ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage>(new PivotMessage(Pivots.Segments, HasSegments));
                 ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage>(new PivotMessage(Pivots.Photos, HasPhotos));
+
+                ServiceLocator.Current.GetInstance<IMessenger>()
+                    .Send<ActivityPolylineMessage>(!string.IsNullOrEmpty(activity?.Map.SummaryPolyline)
+                        ? new ActivityPolylineMessage(activity.Map.GeoPositions)
+                        : new ActivityPolylineMessage(new List<BasicGeoposition>()));
             }
         }
 

@@ -271,12 +271,13 @@
             <ListView x:Name="RelatedAthletesList"
                       ItemsSource="{x:Bind ViewModel.RelatedAthletes}"
                       Style="{StaticResource HorizontalListViewStyle}"
+                      Margin="5,5,0,0"
                       SelectionMode="None"
                       RelativePanel.Below="ActivityName"
                       RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Ellipse Style="{StaticResource ProfileEllipseMobile}"
+                        <Ellipse Style="{StaticResource ProfileEllipseTiny}"
                                  Margin="0,0,5,0">
                             <Ellipse.Fill>
                                 <ImageBrush Stretch="Uniform" ImageSource="{Binding ProfileMediumFormatted}" />
