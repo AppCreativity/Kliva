@@ -56,7 +56,7 @@ namespace Kliva.Controls
         private static async void DownloadGoogleImage(ImageBrush image, Map googleMap)
         {
             string fileName = string.Concat(googleMap.Id, ".map");
-            FileRandomAccessStream fileStream = await ServiceLocator.Current.GetInstance<IOService>().GetFile(fileName);
+            FileRandomAccessStream fileStream = await ServiceLocator.Current.GetInstance<IOService>().GetFileAsync(fileName);
 
             if (fileStream == null)
             {
@@ -66,7 +66,7 @@ namespace Kliva.Controls
                     try
                     {
                         var result = await Task.Run(() => client.GetByteArrayAsync(googleMap.GoogleImageApiUrl));
-                        await ServiceLocator.Current.GetInstance<IOService>().SaveFile(fileName, result);
+                        await ServiceLocator.Current.GetInstance<IOService>().SaveFileAsync(fileName, result);
                         var stream = new InMemoryRandomAccessStream();
                         await stream.WriteAsync(result.AsBuffer());
                         stream.Seek(0);

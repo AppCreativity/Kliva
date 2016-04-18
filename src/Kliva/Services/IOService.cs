@@ -12,7 +12,7 @@ namespace Kliva.Services
     {
         private readonly StorageFolder _storage = ApplicationData.Current.LocalFolder;
 
-        public async Task<FileRandomAccessStream> GetFile(string fileName)
+        public async Task<FileRandomAccessStream> GetFileAsync(string fileName)
         {
             FileRandomAccessStream stream = null;
 
@@ -29,7 +29,7 @@ namespace Kliva.Services
             return stream;
         }
 
-        public async Task<IReadOnlyList<StorageFile>> GetFiles(List<string> fileTypes)
+        public async Task<IReadOnlyList<StorageFile>> GetFilesAsync(List<string> fileTypes)
         {
             QueryOptions queryOptions = new QueryOptions(CommonFileQuery.DefaultQuery, fileTypes);
             StorageFileQueryResult queryResult = _storage.CreateFileQueryWithOptions(queryOptions);
@@ -38,7 +38,7 @@ namespace Kliva.Services
             return files;
         }
 
-        public async Task SaveFile(string fileName, byte[] content)
+        public async Task SaveFileAsync(string fileName, byte[] content)
         {
             StorageFile destinationFile = await _storage.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
             await FileIO.WriteBytesAsync(destinationFile, content);

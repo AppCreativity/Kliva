@@ -117,7 +117,7 @@ namespace Kliva.ViewModels
         private async Task<IReadOnlyList<StorageFile>> GetMapFiles()
         {
             List<string> fileTypes = new List<string>() { ".map" };
-            var mapFiles = await _ioService.GetFiles(fileTypes);
+            var mapFiles = await _ioService.GetFilesAsync(fileTypes);
 
             return mapFiles;
         }
