@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
@@ -14,6 +15,9 @@ using Microsoft.Practices.ServiceLocation;
 
 namespace Kliva.Controls
 {
+    /// <summary>
+    /// Due to perfomance hits we are no longer using this approach ( here for Dependency property example reference )
+    /// </summary>
     public static class GoogleImageDependencyObject
     {
         public static readonly DependencyProperty GoogleImageUrlProperty = DependencyProperty.RegisterAttached(
@@ -33,8 +37,20 @@ namespace Kliva.Controls
 
         private static void OnUrlChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+            ImageBrush imageBrush = (ImageBrush)d;
+
             if (e.NewValue != null && e.NewValue is Map)
-                DownloadGoogleImage((ImageBrush)d, (Map)e.NewValue);
+            {
+                Map googleMap = (Map)e.NewValue;
+
+                if (googleMap.GoogleImage != null)
+                {
+                    if(imageBrush.ImageSource != googleMap.GoogleImage)
+                        imageBrush.ImageSource = googleMap.GoogleImage;
+                }
+                else
+                    DownloadGoogleImage((ImageBrush) d, (Map) e.NewValue);
+            }
         }
 
         private static async void DownloadGoogleImage(ImageBrush image, Map googleMap)
@@ -61,7 +77,7 @@ namespace Kliva.Controls
                             bitmap.DecodePixelHeight = 190;
                             bitmap.DecodePixelWidth = 480;
                             bitmap.SetSource(stream);
-                            image.ImageSource = bitmap;
+                            image.ImageSource = googleMap.GoogleImage = bitmap;
                         });
                     }
                     catch (Exception e)
@@ -78,7 +94,7 @@ namespace Kliva.Controls
                     bitmap.DecodePixelHeight = 190;
                     bitmap.DecodePixelWidth = 480;
                     bitmap.SetSource(fileStream);
-                    image.ImageSource = bitmap;
+                    image.ImageSource = googleMap.GoogleImage = bitmap;
                 });
             }
         }

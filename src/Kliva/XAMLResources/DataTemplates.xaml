@@ -51,7 +51,7 @@
                 </VisualStateManager.VisualStateGroups>
                 
                     <RelativePanel.Background>
-                        <ImageBrush controls:GoogleImageDependencyObject.GoogleImageUrl="{Binding Map, Mode=OneWay}"
+                        <ImageBrush ImageSource=""
                                     Stretch="UniformToFill" Opacity="0.2" />
                     </RelativePanel.Background>
                     <interactivity:Interaction.Behaviors>

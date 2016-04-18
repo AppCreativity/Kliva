@@ -12,12 +12,15 @@ using Windows.Storage;
 using Windows.Storage.FileProperties;
 using Windows.Storage.Search;
 using GalaSoft.MvvmLight.Threading;
+using Kliva.Services;
 
 namespace Kliva.ViewModels
 {
     public class SettingsViewModel : KlivaBaseViewModel
     {
         private readonly ISettingsService _settingsService;
+        private readonly IOService _ioService;
+
         private bool _loading;
         private DecimalFormatter _decimalFormat = new DecimalFormatter();
 
@@ -62,12 +65,12 @@ namespace Kliva.ViewModels
         public RelayCommand ViewLoadedCommand => _viewLoadedCommand ?? (_viewLoadedCommand = new RelayCommand(async () => await ViewLoaded()));
 
         private RelayCommand _clearMapsCommand;
-
         public RelayCommand ClearMapsCommand => _clearMapsCommand ?? (_clearMapsCommand = new RelayCommand(async () => await ClearMaps()));
 
-        public SettingsViewModel(INavigationService navigationService, ISettingsService settingsService) : base(navigationService)
+        public SettingsViewModel(INavigationService navigationService, ISettingsService settingsService, IOService ioService) : base(navigationService)
         {
             _settingsService = settingsService;
+            _ioService = ioService;
 
             PropertyChanged += OnSettingsViewModelPropertyChanged;
 
@@ -114,12 +117,11 @@ namespace Kliva.ViewModels
         private async Task<IReadOnlyList<StorageFile>> GetMapFiles()
         {
             List<string> fileTypes = new List<string>() { ".map" };
-            QueryOptions queryOptions = new QueryOptions(CommonFileQuery.DefaultQuery, fileTypes);
-            StorageFileQueryResult queryResult = ApplicationData.Current.LocalFolder.CreateFileQueryWithOptions(queryOptions);
-            IReadOnlyList<StorageFile> mapFiles = await queryResult.GetFilesAsync();
+            var mapFiles = await _ioService.GetFiles(fileTypes);
 
             return mapFiles;
         }
+
 
         private async Task GetMapSizes()
         {

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.Storage.Search;
 using Windows.Storage.Streams;
 
 namespace Kliva.Services
@@ -25,6 +27,15 @@ namespace Kliva.Services
             }
 
             return stream;
+        }
+
+        public async Task<IReadOnlyList<StorageFile>> GetFiles(List<string> fileTypes)
+        {
+            QueryOptions queryOptions = new QueryOptions(CommonFileQuery.DefaultQuery, fileTypes);
+            StorageFileQueryResult queryResult = _storage.CreateFileQueryWithOptions(queryOptions);
+            IReadOnlyList<StorageFile> files = await queryResult.GetFilesAsync();
+
+            return files;
         }
 
         public async Task SaveFile(string fileName, byte[] content)

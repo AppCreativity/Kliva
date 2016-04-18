@@ -332,6 +332,7 @@ namespace Kliva.Services
             {
                 results = new List<ActivitySummary>();
             }
+
             return results;
         }
     }

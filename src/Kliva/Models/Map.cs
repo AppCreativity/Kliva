@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Windows.Devices.Geolocation;
+using Windows.UI.Xaml.Media.Imaging;
 using Kliva.Helpers;
 using Newtonsoft.Json;
 
@@ -54,6 +55,14 @@ namespace Kliva.Models
         {
             get { return _googleImageApiUrl; }
             set { Set(() => GoogleImageApiUrl, ref _googleImageApiUrl, value); }
+        }
+
+        private BitmapImage _googleImage;
+
+        public BitmapImage GoogleImage
+        {
+            get { return _googleImage; }
+            set { Set(() => GoogleImage, ref _googleImage, value); }
         }
     }
 }

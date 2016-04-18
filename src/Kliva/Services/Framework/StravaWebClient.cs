@@ -15,7 +15,7 @@ namespace Kliva.Services
     /// </summary>
     public class StravaWebClient
     {
-        private HttpClient _stravaHttpClient;
+        public HttpClient StravaHttpClient;
 
         /// <summary>
         /// The Response Code that was received on the last request.
@@ -44,7 +44,7 @@ namespace Kliva.Services
                 throw new ArgumentException("Parameter uri must not be null. Please commit a valid Uri object.");
             }
 
-            using (HttpResponseMessage response = await _stravaHttpClient.GetAsync(uri))
+            using (HttpResponseMessage response = await StravaHttpClient.GetAsync(uri))
             {
                 if (response != null)
                 {
@@ -74,7 +74,7 @@ namespace Kliva.Services
                 throw new ArgumentException("Parameter uri must not be null. Please commit a valid Uri object.");
             }
 
-            using (HttpResponseMessage response = await _stravaHttpClient.PostAsync(uri, null))
+            using (HttpResponseMessage response = await StravaHttpClient.PostAsync(uri, null))
             {
                 if (response != null)
                 {
@@ -105,7 +105,7 @@ namespace Kliva.Services
                 throw new ArgumentException("Parameter uri must not be null. Please commit a valid Uri object.");
             }
 
-            using (HttpResponseMessage response = await _stravaHttpClient.PutAsync(uri, null))
+            using (HttpResponseMessage response = await StravaHttpClient.PutAsync(uri, null))
             {
                 if (response != null)
                 {
@@ -136,7 +136,7 @@ namespace Kliva.Services
                 throw new ArgumentException("Parameter uri must not be null. Please commit a valid Uri object.");
             }
 
-            using (HttpResponseMessage response = await _stravaHttpClient.DeleteAsync(uri))
+            using (HttpResponseMessage response = await StravaHttpClient.DeleteAsync(uri))
             {
 
                 if (response != null)
@@ -159,13 +159,13 @@ namespace Kliva.Services
         private void InitializeHttpClient()
         {
             HttpMessageHandler handler = new HttpClientHandler { AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip }; // support gzip,deflate
-            _stravaHttpClient = new HttpClient(handler);
+            StravaHttpClient = new HttpClient(handler);
 
             //foreach (KeyValuePair<string, string> headerData in this.HttpHeaders)
             //{
             //    _stravaHttpClient.DefaultRequestHeaders.Add(headerData.Key, headerData.Value);
             //}
-            _stravaHttpClient.MaxResponseContentBufferSize = 10000000; // 10mb
+            StravaHttpClient.MaxResponseContentBufferSize = 10000000; // 10mb
         }
 
         // TODO Bart: debug, check and see if we can add logging for this
