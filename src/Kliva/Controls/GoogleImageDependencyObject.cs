@@ -71,12 +71,12 @@ namespace Kliva.Controls
                         await stream.WriteAsync(result.AsBuffer());
                         stream.Seek(0);
 
-                        DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                        DispatcherHelper.CheckBeginInvokeOnUI(async () =>
                         {
                             var bitmap = new BitmapImage();
                             bitmap.DecodePixelHeight = 190;
                             bitmap.DecodePixelWidth = 480;
-                            bitmap.SetSource(stream);
+                            await bitmap.SetSourceAsync(stream);
                             image.ImageSource = googleMap.GoogleImage = bitmap;
                         });
                     }
@@ -88,12 +88,12 @@ namespace Kliva.Controls
             }
             else
             {
-                DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                DispatcherHelper.CheckBeginInvokeOnUI(async () =>
                 {
                     var bitmap = new BitmapImage();
                     bitmap.DecodePixelHeight = 190;
                     bitmap.DecodePixelWidth = 480;
-                    bitmap.SetSource(fileStream);
+                    await bitmap.SetSourceAsync(fileStream);
                     image.ImageSource = googleMap.GoogleImage = bitmap;
                 });
             }

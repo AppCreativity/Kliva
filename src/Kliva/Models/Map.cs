@@ -1,7 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
+using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media.Imaging;
+using GalaSoft.MvvmLight.Threading;
 using Kliva.Helpers;
+using Kliva.Services;
+using Microsoft.Practices.ServiceLocation;
 using Newtonsoft.Json;
 
 namespace Kliva.Models
@@ -50,6 +58,61 @@ namespace Kliva.Models
     /// </summary>
     public partial class Map : BaseClass
     {
+        public Map()
+        {
+            PropertyChanged += OnMapPropertyChanged;
+        }
+
+        private async void OnMapPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName.Equals("GoogleImageApiUrl", StringComparison.OrdinalIgnoreCase) && !string.IsNullOrEmpty(GoogleImageApiUrl))
+            {
+                string fileName = string.Concat(Id, ".map");
+                FileRandomAccessStream fileStream = await ServiceLocator.Current.GetInstance<IOService>().GetFileAsync(fileName);
+
+                if (fileStream == null)
+                {
+                    if (!string.IsNullOrEmpty(GoogleImageApiUrl))
+                    {
+                        //TODO: Glenn - reuse HttpClient!
+                        HttpClient client = new HttpClient();
+                        try
+                        {
+                            var result = await Task.Run(() => client.GetByteArrayAsync(GoogleImageApiUrl));
+                            await ServiceLocator.Current.GetInstance<IOService>().SaveFileAsync(fileName, result);
+                            var stream = new InMemoryRandomAccessStream();
+                            await stream.WriteAsync(result.AsBuffer());
+                            stream.Seek(0);
+
+                            DispatcherHelper.CheckBeginInvokeOnUI(async () =>
+                            {
+                                var bitmap = new BitmapImage();
+                                bitmap.DecodePixelHeight = 190;
+                                bitmap.DecodePixelWidth = 480;
+                                await bitmap.SetSourceAsync(stream);
+                                GoogleImage = bitmap;
+                            });
+                        }
+                        catch (Exception exception)
+                        {
+                            //TODO: Show exception
+                        }
+                    }
+                }
+                else
+                {
+                    DispatcherHelper.CheckBeginInvokeOnUI(async () =>
+                    {
+                        var bitmap = new BitmapImage();
+                        bitmap.DecodePixelHeight = 190;
+                        bitmap.DecodePixelWidth = 480;
+                        await bitmap.SetSourceAsync(fileStream);
+                        GoogleImage = bitmap;
+                    });
+                }
+            }
+        }
+
         private string _googleImageApiUrl;
         public string GoogleImageApiUrl
         {
@@ -58,7 +121,6 @@ namespace Kliva.Models
         }
 
         private BitmapImage _googleImage;
-
         public BitmapImage GoogleImage
         {
             get { return _googleImage; }

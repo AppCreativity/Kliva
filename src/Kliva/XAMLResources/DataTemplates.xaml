@@ -49,11 +49,9 @@
                         </VisualState>
                     </VisualStateGroup>
                 </VisualStateManager.VisualStateGroups>
-                
-                    <RelativePanel.Background>
-                        <ImageBrush ImageSource=""
-                                    Stretch="UniformToFill" Opacity="0.2" />
-                    </RelativePanel.Background>
+                <RelativePanel.Background>
+                    <ImageBrush ImageSource="{x:Bind Map.GoogleImage, Mode=OneWay}" Stretch="UniformToFill" Opacity="0.2" />
+                </RelativePanel.Background>
                     <interactivity:Interaction.Behaviors>
                         <core:DataTriggerBehavior Binding="{x:Bind OtherAthleteCount, Mode=OneWay}" ComparisonCondition="GreaterThan" Value="0">
                             <core:ChangePropertyAction TargetObject="{Binding ElementName=BottomPanel}" PropertyName="Visibility" Value="Visible"/>
@@ -81,7 +79,7 @@
                                 RelativePanel.RightOf="AthleteProfilePicture"
                                 RelativePanel.AlignBottomWithPanel="True">
                             <TextBlock x:Name="ActivityImageIcon" Style="{StaticResource PaneIconMaterialTextBlock}"
-                                       Text="{x:Bind TypeImage}"/>
+                                       Text="{x:Bind TypeImage, Mode=OneWay}"/>
                         </Border>
 
                         <RelativePanel x:Name="ActivityHighlightsPanel"
