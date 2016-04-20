@@ -1,11 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace Kliva.Models
 {
     /// <summary>
     /// Represents a comment of an activity.
     /// </summary>
-    public class Comment
+    public partial class Comment
     {
         /// <summary>
         /// The comment id.
@@ -42,5 +43,13 @@ namespace Kliva.Models
         /// </summary>
         [JsonProperty("created_at")]
         public string TimeCreated { get; set; }
+    }
+
+    public partial class Comment
+    {
+        /// <summary>
+        /// Returns the TimeCreated as a DateTime object.
+        /// </summary>
+        public DateTime DateTimeCreated => DateTime.Parse(TimeCreated);
     }
 }

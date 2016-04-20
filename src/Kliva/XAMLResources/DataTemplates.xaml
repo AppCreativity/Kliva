@@ -355,10 +355,23 @@
                                Text="{x:Bind Text, Mode=OneWay}"
                                Style="{StaticResource BaseTextBlock}"
                                TextWrapping="WrapWholeWords"
-                               Margin="10,0,10,0"
+                               Margin="10,5,10,0"
                                FontSize="14"
                                RelativePanel.RightOf="AthleteProfilePicture"
-                               RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                               RelativePanel.AlignTopWith="AthleteProfilePicture" />
+
+                    <TextBlock x:Name="CommentCreated"
+                               Style="{StaticResource BaseTextBlock}"
+                               Foreground="{StaticResource SubTextBrush}"
+                               FontSize="12"
+                               Margin="10,0,10,0"
+                               RelativePanel.RightOf="AthleteProfilePicture"
+                               RelativePanel.Below="Comment">
+                        <Run Text="{x:Bind Athlete.FirstName, Mode=OneWay}" />
+                        <Run Text="{x:Bind Athlete.LastName, Mode=OneWay}" />
+                        <Run Text="-" />
+                        <Run Text="{x:Bind TimeCreated, Mode=OneWay, Converter={StaticResource RelativeTimeConverter}}" />
+                    </TextBlock>
                 </RelativePanel>
             </Grid>
         </UserControl>
