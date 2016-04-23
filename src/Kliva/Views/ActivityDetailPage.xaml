@@ -18,7 +18,7 @@
                           Label="kudos"
                           Icon="Like"
                           Foreground="White"
-                          Visibility="{x:Bind ViewModel.SelectedActivity.HasKudoed, Mode=OneWay, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
+                          Visibility="{x:Bind ViewModel.HasKudoed, Mode=OneWay, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
                           Command="{x:Bind ViewModel.KudosCommand}"
                           />
             <AppBarButton x:Name="AppBarComment"
