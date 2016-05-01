@@ -995,10 +995,15 @@
 
     <!-- GENERAL TYPES -->
 
+    <Style TargetType="MenuFlyoutItem">
+        <Setter Property="FontFamily" Value="{StaticResource OpenSansFontLight}" />
+    </Style>
+
     <Style TargetType="PivotHeaderItem">
         <Setter Property="FontSize" Value="{ThemeResource PivotHeaderItemFontSize}" />
-        <Setter Property="FontFamily" Value="{ThemeResource PivotHeaderItemFontFamily}" />
-        <Setter Property="FontWeight" Value="{ThemeResource PivotHeaderItemThemeFontWeight}" />
+        <!--<Setter Property="FontFamily" Value="{ThemeResource PivotHeaderItemFontFamily}" />-->
+        <Setter Property="FontFamily" Value="{StaticResource OpenSansFontLight}" />
+        <!--<Setter Property="FontWeight" Value="{ThemeResource PivotHeaderItemThemeFontWeight}" />-->
         <Setter Property="CharacterSpacing" Value="{ThemeResource PivotHeaderItemCharacterSpacing}" />
         <Setter Property="Background" Value="Transparent" />
         <!--<Setter Property="Background" Value="{ThemeResource SystemControlBackgroundChromeMediumBrush}" />-->

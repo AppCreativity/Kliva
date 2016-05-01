@@ -29,10 +29,9 @@
         </CommandBar>
     </Page.BottomAppBar>
 
-    <Grid
-        x:Name="PageRoot"
-        x:DeferLoadStrategy="Lazy"
-        Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid x:Name="PageRoot"
+          x:DeferLoadStrategy="Lazy"
+          Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <klivacontrols:ActivityDetailControl />
     </Grid>
 </local:DetailPageBase>
