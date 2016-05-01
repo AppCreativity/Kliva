@@ -7,6 +7,7 @@ using Windows.UI.Xaml.Controls;
 using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using Kliva.Converters;
 using Kliva.Messages;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
@@ -106,6 +107,8 @@ namespace Kliva.ViewModels
             {
                 SelectedActivity = activity;
 
+                FillStatistics();                
+
                 if (activity.KudosCount > 0 && activity.Kudos != null && activity.Kudos.Any())
                 {                    
                     foreach (AthleteSummary kudo in activity.Kudos)
@@ -148,6 +151,42 @@ namespace Kliva.ViewModels
             await _stravaService.GiveKudosAsync(SelectedActivity.Id.ToString());
             await LoadActivityDetails(SelectedActivity.Id.ToString());
             ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage>(new PivotMessage(Pivots.Kudos, true, true));
+        }
+
+        private void FillStatistics()
+        {
+            DistanceUnitToStringConverter distanceConverter = new DistanceUnitToStringConverter();
+            SpeedUnitToStringConverter speedConverter = new SpeedUnitToStringConverter();
+
+            StatisticsGroup distance = new StatisticsGroup() {Name = "distance", Sort = 0};
+            StatisticsDetail totalDistance = new StatisticsDetail()
+            {
+                Sort = 0,
+                DisplayDescription = "total distance",
+                DisplayValue = $"{SelectedActivity.DistanceFormatted} {distanceConverter.Convert(SelectedActivity.DistanceUnit, typeof(DistanceUnitType), null, string.Empty)}",
+                Group = distance
+            };
+
+            StatisticsGroup speed = new StatisticsGroup() {Name = "speed", Sort = 1};
+            StatisticsDetail averageSpeed = new StatisticsDetail()
+            {
+                Sort = 0,
+                DisplayDescription = "average speed",
+                DisplayValue = $"{SelectedActivity.AverageSpeedFormatted} {speedConverter.Convert(SelectedActivity.SpeedUnit, typeof (SpeedUnit), null, string.Empty)}",
+                Group = speed
+            };
+
+            StatisticsDetail maxSpeed = new StatisticsDetail()
+            {
+                Sort = 1,
+                DisplayDescription = "max speed",
+                DisplayValue = $"{SelectedActivity.MaxSpeedFormatted} {speedConverter.Convert(SelectedActivity.SpeedUnit, typeof(SpeedUnit), null, string.Empty)}",
+                Group = speed
+            };
+
+            SelectedActivity.Statistics.Add(totalDistance);
+            SelectedActivity.Statistics.Add(averageSpeed);
+            SelectedActivity.Statistics.Add(maxSpeed);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace Kliva.Models
@@ -41,5 +42,12 @@ namespace Kliva.Models
     public partial class Activity
     {
         public int SegmentEffortsCount => SegmentEfforts?.Count ?? 0;
+
+        private ObservableCollection<StatisticsDetail> _statistics = new ObservableCollection<StatisticsDetail>();
+        public ObservableCollection<StatisticsDetail> Statistics
+        {
+            get { return _statistics; }
+            set { Set(() => Statistics, ref _statistics, value); }
+        }
     }
 }

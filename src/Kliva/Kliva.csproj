@@ -108,6 +108,7 @@
     <Compile Include="Controls\ActivityFeedControl.xaml.cs">
       <DependentUpon>ActivityFeedControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\AdaptiveGridView.cs" />
     <Compile Include="Controls\ClubDetailControl.xaml.cs">
       <DependentUpon>ClubDetailControl.xaml</DependentUpon>
     </Compile>
@@ -172,6 +173,7 @@
     <Compile Include="Models\SegmentEffort.cs" />
     <Compile Include="Models\SegmentSummary.cs" />
     <Compile Include="Models\Settings.cs" />
+    <Compile Include="Models\StatisticsDetail.cs" />
     <Compile Include="Models\StravaIdentityConstants.cs" />
     <Compile Include="Models\Usage.cs" />
     <Compile Include="Services\ApplicationInfoService.cs" />
