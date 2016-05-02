@@ -152,17 +152,19 @@
     
     <DataTemplate x:Key="StatisticsListItemTemplate"
                   x:DataType="models:StatisticsDetail">
-        <RelativePanel VerticalAlignment="Top" Margin="0,0,5,5">
+        <RelativePanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderThickness="1" BorderBrush="Black">
             <TextBlock x:Name="Value"
                        Text="{x:Bind DisplayValue}"
                        Style="{StaticResource StatisticsItemValueTextBlock}"
                        RelativePanel.AlignTopWithPanel="True"
-                       RelativePanel.AlignRightWithPanel="True" />
+                       RelativePanel.AlignLeftWithPanel="True" />
             
             <TextBlock x:Name="Description"
                        Text="{x:Bind DisplayDescription}"
+                       Style="{StaticResource StatisticsItemDescriptionTextBlock}"
+                       Margin="0,-5,0,0"
                        RelativePanel.Below="Value"
-                       RelativePanel.AlignRightWithPanel="True" />
+                       RelativePanel.AlignLeftWithPanel="True" />
         </RelativePanel>
     </DataTemplate>
 
