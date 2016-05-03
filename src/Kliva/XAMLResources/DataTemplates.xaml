@@ -152,8 +152,11 @@
     
     <DataTemplate x:Key="StatisticsListItemTemplate"
                   x:DataType="models:StatisticsDetail">
-        <RelativePanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderThickness="1" BorderBrush="Black">
+        <RelativePanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                       BorderThickness="0,1,0,0" BorderBrush="Black"
+                       Margin="10,0,10,0">
             <TextBlock x:Name="Value"
+                       Margin="0,5,0,0"
                        Text="{x:Bind DisplayValue}"
                        Style="{StaticResource StatisticsItemValueTextBlock}"
                        RelativePanel.AlignTopWithPanel="True"
@@ -165,6 +168,17 @@
                        Margin="0,-5,0,0"
                        RelativePanel.Below="Value"
                        RelativePanel.AlignLeftWithPanel="True" />
+
+            <TextBlock x:Name="Icon"
+                       Margin="0,2,0,0"
+                       RelativePanel.RightOf="Value"
+                       RelativePanel.AlignBottomWith="Value"
+                       RelativePanel.AlignRightWithPanel="True"
+                       HorizontalAlignment="Right"
+                       Style="{StaticResource PaneIconMaterialTextBlock}"
+                       Foreground="Black"
+                       FontSize="26"
+                       Text="{x:Bind Icon, Mode=OneWay}"/>
         </RelativePanel>
     </DataTemplate>
 

@@ -1,8 +1,4 @@
-﻿using Windows.UI.Xaml.Controls;
-using Kliva.ViewModels;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Navigation;
-using System.Diagnostics;
+﻿using Kliva.ViewModels;
 
 namespace Kliva.Views
 {

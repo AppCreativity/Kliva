@@ -28,9 +28,11 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="ActivityDetailCommandBar.Visibility" Value="Collapsed" />
-                        <Setter Target="ActivityMap.Height" Value="200" />
+                        <Setter Target="ActivityMap.Height" Value="185" />
                         <Setter Target="ActivityName.Background" Value="{StaticResource KlivaMainBrush}"/>
                         <Setter Target="ActivityNameTextBlock.Style" Value="{StaticResource ActivityNameTextBlockMobile}" />
+                        <Setter Target="StatisticsGrid.MinItemWidth" Value="200" />
+                        <Setter Target="StatisticsGrid.MinItemHeight" Value="70" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="Desktop">
@@ -43,6 +45,8 @@
                         <Setter Target="ActivityName.Background" Value="Transparent"/>
                         <Setter Target="ActivityNameTextBlock.Foreground" Value="{StaticResource KlivaMainBrush}"/>
                         <Setter Target="ActivityNameTextBlock.Style" Value="{StaticResource ActivityNameTextBlockDesktop}" />
+                        <Setter Target="StatisticsGrid.MinItemWidth" Value="200" />
+                        <Setter Target="StatisticsGrid.MinItemHeight" Value="100" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -93,9 +97,9 @@
                         <local:IconPivotHeader Label="statistics"
                                                Glyph="&#xE1E9;" />
                     </PivotItem.Header>
-                    <local:AdaptiveGridView ItemsSource="{x:Bind ViewModel.SelectedActivity.Statistics, Mode=OneWay}"
-                                            ItemTemplate="{StaticResource StatisticsListItemTemplate}"
-                                            MinItemWidth="200" MinItemHeight="100">
+                    <local:AdaptiveGridView x:Name="StatisticsGrid"
+                                            ItemsSource="{x:Bind ViewModel.SelectedActivity.Statistics, Mode=OneWay}"
+                                            ItemTemplate="{StaticResource StatisticsListItemTemplate}">
                         <local:AdaptiveGridView.ItemContainerStyle>
                             <Style TargetType="GridViewItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
