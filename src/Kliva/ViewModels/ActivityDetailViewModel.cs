@@ -7,7 +7,6 @@ using Windows.UI.Xaml.Controls;
 using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-using Kliva.Converters;
 using Kliva.Messages;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
@@ -155,19 +154,13 @@ namespace Kliva.ViewModels
 
         private void FillStatistics()
         {
-            //TODO: Glenn extract out group creations and converters!
-
-            DistanceUnitToStringConverter distanceConverter = new DistanceUnitToStringConverter();
-            SpeedUnitToStringConverter speedConverter = new SpeedUnitToStringConverter();
-            SecondsToTimeStringConverter secToTimeConverter = new SecondsToTimeStringConverter();
-
             StatisticsGroup distance = new StatisticsGroup() {Name = "distance", Sort = 0};
             StatisticsDetail totalDistance = new StatisticsDetail()
             {
                 Sort = 0,
                 Icon = "",
                 DisplayDescription = "total distance",
-                DisplayValue = $"{SelectedActivity.DistanceFormatted} {distanceConverter.Convert(SelectedActivity.DistanceUnit, typeof(DistanceUnitType), null, string.Empty)}",
+                DisplayValue = $"{SelectedActivity.DistanceFormatted} {Helpers.Converters.DistanceConverter.Convert(SelectedActivity.DistanceUnit, typeof(DistanceUnitType), null, string.Empty)}",
                 Group = distance
             };
 
@@ -177,7 +170,7 @@ namespace Kliva.ViewModels
                 Sort = 0,
                 Icon = "",
                 DisplayDescription = "average speed",
-                DisplayValue = $"{SelectedActivity.AverageSpeedFormatted} {speedConverter.Convert(SelectedActivity.SpeedUnit, typeof (SpeedUnit), null, string.Empty)}",
+                DisplayValue = $"{SelectedActivity.AverageSpeedFormatted} {Helpers.Converters.SpeedConverter.Convert(SelectedActivity.SpeedUnit, typeof (SpeedUnit), null, string.Empty)}",
                 Group = speed
             };
 
@@ -186,7 +179,7 @@ namespace Kliva.ViewModels
                 Sort = 1,
                 Icon = "",
                 DisplayDescription = "max speed",
-                DisplayValue = $"{SelectedActivity.MaxSpeedFormatted} {speedConverter.Convert(SelectedActivity.SpeedUnit, typeof(SpeedUnit), null, string.Empty)}",
+                DisplayValue = $"{SelectedActivity.MaxSpeedFormatted} {Helpers.Converters.SpeedConverter.Convert(SelectedActivity.SpeedUnit, typeof(SpeedUnit), null, string.Empty)}",
                 Group = speed
             };
 
@@ -196,7 +189,7 @@ namespace Kliva.ViewModels
                 Sort = 0,
                 Icon = "",
                 DisplayDescription = "moving time",
-                DisplayValue = $"{secToTimeConverter.Convert(SelectedActivity.MovingTime, typeof(int), null, string.Empty)}",
+                DisplayValue = $"{Helpers.Converters.SecToTimeConverter.Convert(SelectedActivity.MovingTime, typeof(int), null, string.Empty)}",
                 Group = time
             };
 
@@ -206,7 +199,7 @@ namespace Kliva.ViewModels
                 Sort = 0,
                 Icon = "",
                 DisplayDescription = "elevation gain",
-                DisplayValue = $"{SelectedActivity.ElevationGainFormatted} {distanceConverter.Convert(SelectedActivity.ElevationUnit, typeof(DistanceUnitType), null, string.Empty)}",
+                DisplayValue = $"{SelectedActivity.ElevationGainFormatted} {Helpers.Converters.DistanceConverter.Convert(SelectedActivity.ElevationUnit, typeof(DistanceUnitType), null, string.Empty)}",
                 Group = elevation
             };
 
