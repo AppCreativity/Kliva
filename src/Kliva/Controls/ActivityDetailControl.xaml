@@ -119,7 +119,14 @@
                     </PivotItem.Header>
                     <ListView x:Name="AcitivtySegmentsList"
                               ItemsSource="{x:Bind ViewModel.SelectedActivity.SegmentEfforts, Mode=OneWay}"
-                              ItemTemplate="{StaticResource SegmentEffortListItemTemplate}"/>
+                              ItemTemplate="{StaticResource SegmentEffortListItemTemplate}"
+                              IsItemClickEnabled="True">
+                        <interactivity:Interaction.Behaviors>
+                            <core:EventTriggerBehavior EventName="ItemClick">
+                                <core:InvokeCommandAction Command="{x:Bind ViewModel.SegmentTappedCommand}" />
+                            </core:EventTriggerBehavior>
+                        </interactivity:Interaction.Behaviors>                        
+                    </ListView>
                 </PivotItem>
                 <PivotItem x:Name="KudosPivot" Tag="Kudos">
                     <PivotItem.Header>

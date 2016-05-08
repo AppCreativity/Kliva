@@ -3,11 +3,11 @@ using Kliva.ViewModels;
 
 namespace Kliva.Views
 {
-    public sealed partial class ProfilePage : Page
+    public sealed partial class SegmentPage : Page
     {
-        private ProfileViewModel ViewModel => DataContext as ProfileViewModel;
+        private SegmentViewModel ViewModel => DataContext as SegmentViewModel;
 
-        public ProfilePage()
+        public SegmentPage()
         {
             this.InitializeComponent();
         }
