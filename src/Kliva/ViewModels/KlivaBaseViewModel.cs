@@ -33,7 +33,7 @@ namespace Kliva.ViewModels
         {
             SegmentEffort segmentEffort = args.ClickedItem as SegmentEffort;
             if (segmentEffort != null)
-                NavigationService.Navigate<SegmentPage>(segmentEffort.Id.ToString());
+                NavigationService.Navigate<SegmentPage>(segmentEffort.Segment.Id.ToString());
         }
     }
 }

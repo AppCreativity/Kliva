@@ -285,6 +285,11 @@ namespace Kliva.Services
             return club;
         }
 
+        public Task<Segment> GetSegmentAsync(string segmentId)
+        {
+            return StravaSegmentService.GetSegmentAsync(segmentId);
+        }
+
         public Task<List<SegmentSummary>> GetStarredSegmentsAsync()
         {
             return StravaSegmentService.GetStarredSegmentsAsync();

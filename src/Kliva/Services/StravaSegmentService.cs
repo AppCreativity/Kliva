@@ -16,11 +16,36 @@ namespace Kliva.Services
 
         private readonly ConcurrentDictionary<string, Task<List<SegmentSummary>>> _cachedStarredSegmentsTasks = new ConcurrentDictionary<string, Task<List<SegmentSummary>>>();
 
+        //TODO: Glenn - How long before we invalidate an in memory cached segment? Maybe use MemoryCache? https://msdn.microsoft.com/en-us/library/system.runtime.caching.memorycache(v=vs.110).aspx
+        private readonly ConcurrentDictionary<string, Task<Segment>> _cachedSegmentTasks = new ConcurrentDictionary<string, Task<Segment>>();
 
         public StravaSegmentService(ISettingsService settingsService, StravaWebClient stravaWebClient)
         {
             _settingsService = settingsService;
             _stravaWebClient = stravaWebClient;
+        }
+
+        private async Task<Segment> GetSegmentFromServiceAsync(string segmentId)
+        {
+            try
+            {
+                var accessToken = await _settingsService.GetStoredStravaAccessTokenAsync();
+                var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitTypeAsync();
+
+                string getUrl = $"{Endpoints.Segment}/{segmentId}?access_token={accessToken}";
+                string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
+
+                var segment = Unmarshaller<Segment>.Unmarshal(json);
+                StravaService.SetMetricUnits(segment, defaultDistanceUnitType);
+
+                return segment;
+            }
+            catch (Exception ex)
+            {
+                //TODO: Glenn - Use logger to log errors ( Google )
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -49,6 +74,11 @@ namespace Kliva.Services
             }
 
             return null;
+        }
+
+        public Task<Segment> GetSegmentAsync(string segmentId)
+        {
+            return _cachedSegmentTasks.GetOrAdd(segmentId, GetSegmentFromServiceAsync);
         }
 
         public async Task<List<SegmentSummary>> GetStarredSegmentsAsync()
