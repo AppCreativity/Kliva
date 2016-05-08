@@ -74,6 +74,15 @@
     <Style x:Key="ActivityNameTextBlockDesktop" BasedOn="{StaticResource TitleTextBlock}"
            TargetType="TextBlock">
     </Style>
+    
+    <Style x:Key="StatisticsItemValueTextBlock" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}">
+        <Setter Property="FontSize" Value="24" />
+    </Style>
+
+    <Style x:Key="StatisticsItemDescriptionTextBlock" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Foreground" Value="{StaticResource KlivaMainBrush}" />
+    </Style>
 
     <Style x:Key="PaneIcon" TargetType="FontIcon">
         <Setter Property="Width" Value="40" />

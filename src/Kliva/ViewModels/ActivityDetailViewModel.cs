@@ -106,6 +106,8 @@ namespace Kliva.ViewModels
             {
                 SelectedActivity = activity;
 
+                FillStatistics();                
+
                 if (activity.KudosCount > 0 && activity.Kudos != null && activity.Kudos.Any())
                 {                    
                     foreach (AthleteSummary kudo in activity.Kudos)
@@ -148,6 +150,85 @@ namespace Kliva.ViewModels
             await _stravaService.GiveKudosAsync(SelectedActivity.Id.ToString());
             await LoadActivityDetails(SelectedActivity.Id.ToString());
             ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage>(new PivotMessage(Pivots.Kudos, true, true));
+        }
+
+        private void FillStatistics()
+        {
+            StatisticsGroup distance = new StatisticsGroup() {Name = "distance", Sort = 0};
+            StatisticsDetail totalDistance = new StatisticsDetail()
+            {
+                Sort = 0,
+                Icon = "",
+                DisplayDescription = "total distance",
+                DisplayValue = $"{SelectedActivity.DistanceFormatted} {Helpers.Converters.DistanceConverter.Convert(SelectedActivity.DistanceUnit, typeof(DistanceUnitType), null, string.Empty)}",
+                Group = distance
+            };
+
+            StatisticsGroup speed = new StatisticsGroup() {Name = "speed", Sort = 1};
+            StatisticsDetail averageSpeed = new StatisticsDetail()
+            {
+                Sort = 0,
+                Icon = "",
+                DisplayDescription = "average speed",
+                DisplayValue = $"{SelectedActivity.AverageSpeedFormatted} {Helpers.Converters.SpeedConverter.Convert(SelectedActivity.SpeedUnit, typeof (SpeedUnit), null, string.Empty)}",
+                Group = speed
+            };
+
+            StatisticsDetail maxSpeed = new StatisticsDetail()
+            {
+                Sort = 1,
+                Icon = "",
+                DisplayDescription = "max speed",
+                DisplayValue = $"{SelectedActivity.MaxSpeedFormatted} {Helpers.Converters.SpeedConverter.Convert(SelectedActivity.SpeedUnit, typeof(SpeedUnit), null, string.Empty)}",
+                Group = speed
+            };
+
+            StatisticsGroup time = new StatisticsGroup() {Name="time", Sort = 2};
+            StatisticsDetail movingTime = new StatisticsDetail()
+            {
+                Sort = 0,
+                Icon = "",
+                DisplayDescription = "moving time",
+                DisplayValue = $"{Helpers.Converters.SecToTimeConverter.Convert(SelectedActivity.MovingTime, typeof(int), null, string.Empty)}",
+                Group = time
+            };
+
+            StatisticsGroup elevation = new StatisticsGroup() {Name = "elevation", Sort = 3};
+            StatisticsDetail elevationGain = new StatisticsDetail()
+            {
+                Sort = 0,
+                Icon = "",
+                DisplayDescription = "elevation gain",
+                DisplayValue = $"{SelectedActivity.ElevationGainFormatted} {Helpers.Converters.DistanceConverter.Convert(SelectedActivity.ElevationUnit, typeof(DistanceUnitType), null, string.Empty)}",
+                Group = elevation
+            };
+
+            StatisticsGroup heartRate = new StatisticsGroup() {Name = "heart rate", Sort = 4};
+            StatisticsDetail averageHeartRate = new StatisticsDetail()
+            {
+                Sort = 0,
+                Icon = "",
+                DisplayDescription = "average heart rate",
+                DisplayValue = $"{SelectedActivity.AverageHeartrate} bpm",
+                Group = heartRate
+            };
+
+            StatisticsDetail maxHeartRate = new StatisticsDetail()
+            {
+                Sort = 0,
+                Icon = "",
+                DisplayDescription = "max heart rate",
+                DisplayValue = $"{SelectedActivity.MaxHeartrate} bpm",
+                Group = heartRate
+            };
+
+            SelectedActivity.Statistics.Add(totalDistance);
+            SelectedActivity.Statistics.Add(averageSpeed);
+            SelectedActivity.Statistics.Add(maxSpeed);
+            SelectedActivity.Statistics.Add(movingTime);
+            SelectedActivity.Statistics.Add(elevationGain);
+            SelectedActivity.Statistics.Add(averageHeartRate);
+            SelectedActivity.Statistics.Add(maxHeartRate);
         }
     }
 }
