@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
 using Windows.UI.Xaml.Controls;
@@ -142,9 +143,9 @@ namespace Kliva.ViewModels
                 ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage>(new PivotMessage(Pivots.Photos, HasPhotos));
 
                 ServiceLocator.Current.GetInstance<IMessenger>()
-                    .Send<ActivityPolylineMessage>(!string.IsNullOrEmpty(activity?.Map.SummaryPolyline)
-                        ? new ActivityPolylineMessage(activity.Map.GeoPositions)
-                        : new ActivityPolylineMessage(new List<BasicGeoposition>()));
+                    .Send<PolylineMessage>(!string.IsNullOrEmpty(activity?.Map.SummaryPolyline)
+                        ? new PolylineMessage(activity.Map.GeoPositions)
+                        : new PolylineMessage(new List<BasicGeoposition>()), Tokens.ActivityPolylineMessage);
             }
         }
 

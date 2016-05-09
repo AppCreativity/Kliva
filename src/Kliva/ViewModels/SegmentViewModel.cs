@@ -1,8 +1,15 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Windows.Devices.Geolocation;
 using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
+using Kliva.Messages;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
+using Kliva.Views;
+using Microsoft.Practices.ServiceLocation;
 
 namespace Kliva.ViewModels
 {
@@ -21,6 +28,9 @@ namespace Kliva.ViewModels
 
         private RelayCommand _viewLoadedCommand;       
         public RelayCommand ViewLoadedCommand => _viewLoadedCommand ?? (_viewLoadedCommand = new RelayCommand(() => ViewLoaded()));
+
+        private RelayCommand _mapCommand;
+        public RelayCommand MapCommand => _mapCommand ?? (_mapCommand = new RelayCommand(() => NavigationService.Navigate<MapPage>(Segment?.Map)));
 
         public SegmentViewModel(INavigationService navigationService, IStravaService stravaService) : base(navigationService)
         {
@@ -44,7 +54,13 @@ namespace Kliva.ViewModels
             if (!string.IsNullOrEmpty(currentParameter))
             {
                 //TODO: Glenn - What do we need? Segment of Segment Effort or both?
-                await _stravaService.GetSegmentAsync(currentParameter);
+                //TODO: Glenn - load leaderboard entries
+                Segment = await _stravaService.GetSegmentAsync(currentParameter);
+
+                ServiceLocator.Current.GetInstance<IMessenger>()
+                    .Send<PolylineMessage>(Segment.Map.GeoPositions.Any()
+                        ? new PolylineMessage(Segment.Map.GeoPositions)
+                        : new PolylineMessage(new List<BasicGeoposition>()), Tokens.SegmentPolylineMessage);
             }
         }
 

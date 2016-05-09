@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
     mc:Ignorable="d"
     DataContext="{Binding Segment, Source={StaticResource Locator}}">
 
@@ -16,7 +17,55 @@
         </core:EventTriggerBehavior>
     </interactivity:Interaction.Behaviors>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState x:Name="Mobile">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="320" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="SegmentMap.Height" Value="185" />
+                        <Setter Target="SegmentName.Background" Value="{StaticResource KlivaMainBrush}"/>
+                        <Setter Target="SegmentNameTextBlock.Style" Value="{StaticResource ActivityNameTextBlockMobile}" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Desktop">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="720" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="SegmentMap.Height" Value="300" />
+                        <Setter Target="SegmentName.Background" Value="Transparent"/>
+                        <Setter Target="SegmentNameTextBlock.Foreground" Value="{StaticResource KlivaMainBrush}"/>
+                        <Setter Target="SegmentNameTextBlock.Style" Value="{StaticResource ActivityNameTextBlockDesktop}" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <RelativePanel>
+            <Border x:Name="SegmentName"                    
+                    RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" >
+                <TextBlock x:Name="SegmentNameTextBlock"
+                           Text="{x:Bind ViewModel.Segment.Name, Mode=OneWay}"
+                           TextWrapping="WrapWholeWords" MaxLines="2"
+                           Margin="10,0,10,5" />
+            </Border>
+            <maps:MapControl x:Name="SegmentMap"
+                             RelativePanel.Below="SegmentName"
+                             RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
 
+            <Button x:Name="ExpandMapButton"
+                    x:DeferLoadStrategy="Lazy"
+                    Margin="0,0,0,0"
+                    RelativePanel.AlignBottomWith="SegmentMap"
+                    RelativePanel.AlignRightWithPanel="True"
+                    Command="{x:Bind ViewModel.MapCommand}">
+                <TextBlock Text=""
+                           Style="{StaticResource PaneIconMaterialTextBlock}"
+                           Foreground="Black"/>
+            </Button>
+
+        </RelativePanel>
     </Grid>
 </Page>

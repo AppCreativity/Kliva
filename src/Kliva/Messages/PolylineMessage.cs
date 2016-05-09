@@ -4,11 +4,11 @@ using GalaSoft.MvvmLight.Messaging;
 
 namespace Kliva.Messages
 {
-    public class ActivityPolylineMessage : MessageBase
+    public class PolylineMessage : MessageBase
     {
         public List<BasicGeoposition> Geopositions { get; private set; }
 
-        public ActivityPolylineMessage(List<BasicGeoposition> geopositions)
+        public PolylineMessage(List<BasicGeoposition> geopositions)
         {
             this.Geopositions = geopositions;
         }        

@@ -139,7 +139,7 @@
     <Compile Include="Helpers\ScrollViewerExtensions.cs" />
     <Compile Include="Helpers\UnitConverter.cs" />
     <Compile Include="Helpers\Unmarshaller.cs" />
-    <Compile Include="Messages\ActivityPolylineMessage.cs" />
+    <Compile Include="Messages\PolylineMessage.cs" />
     <Compile Include="Messages\ActivitySummaryMessage.cs" />
     <Compile Include="Messages\ClubSummaryMessage.cs" />
     <Compile Include="Messages\PivotMessage.cs" />
@@ -176,6 +176,7 @@
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Models\StatisticsDetail.cs" />
     <Compile Include="Models\StravaIdentityConstants.cs" />
+    <Compile Include="Models\Tokens.cs" />
     <Compile Include="Models\Usage.cs" />
     <Compile Include="Services\ApplicationInfoService.cs" />
     <Compile Include="Services\IOService.cs" />

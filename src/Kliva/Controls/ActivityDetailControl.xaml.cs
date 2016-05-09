@@ -31,7 +31,7 @@ namespace Kliva.Controls
 
             //DataContextChanged += (sender, arg) => this.Bindings.Update();
 
-            ServiceLocator.Current.GetInstance<IMessenger>().Register<ActivityPolylineMessage>(this, async message => await DrawPolyline(message.Geopositions));
+            ServiceLocator.Current.GetInstance<IMessenger>().Register<PolylineMessage>(this, Tokens.ActivityPolylineMessage, async message => await DrawPolyline(message.Geopositions));
             ServiceLocator.Current.GetInstance<IMessenger>().Register<PivotMessage>(this, AdjustPivots);
         }
 
