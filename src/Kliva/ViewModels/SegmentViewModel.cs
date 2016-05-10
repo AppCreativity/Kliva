@@ -55,6 +55,7 @@ namespace Kliva.ViewModels
             if (!string.IsNullOrEmpty(currentParameter))
             {
                 //TODO: Glenn - What do we need? Segment of Segment Effort or both?
+                //TODO: Glenn - We need Segment Effort for analytics! So move analytics groups to SegmentEffortClass
                 //TODO: Glenn - load leaderboard entries
                 Segment = await _stravaService.GetSegmentAsync(currentParameter);
 
