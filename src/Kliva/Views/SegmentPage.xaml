@@ -8,6 +8,7 @@
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
+    xmlns:controls="using:Kliva.Controls"
     mc:Ignorable="d"
     DataContext="{Binding Segment, Source={StaticResource Locator}}">
 
@@ -16,6 +17,13 @@
             <core:InvokeCommandAction Command="{Binding ViewLoadedCommand}" />
         </core:EventTriggerBehavior>
     </interactivity:Interaction.Behaviors>
+
+    <Page.Resources>
+        <CollectionViewSource x:Name="GroupedStatisticsDetails"
+                              Source="{x:Bind ViewModel.Segment.Statistics, Mode=OneWay}"
+                              IsSourceGrouped="true"
+                              ItemsPath="Details"/>
+    </Page.Resources>
 
     <Grid>
         <VisualStateManager.VisualStateGroups>
@@ -66,6 +74,35 @@
                            Foreground="Black"/>
             </Button>
 
+            <Pivot x:Name="SegmentPivot"
+                   RelativePanel.Below="SegmentMap"
+                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True"
+                   Template="{StaticResource PivotWithIconsControlTemplate}">
+                <PivotItem x:Name="StatisticsPivot" Tag="Statistics">
+                    <PivotItem.Header>
+                        <controls:IconPivotHeader Label="statistics" Glyph="&#xE1E9;" />
+                    </PivotItem.Header>
+                    <controls:AdaptiveGridView x:Name="StatisticsGrid"
+                                               ItemsSource="{Binding Source={StaticResource GroupedStatisticsDetails}}"
+                                               ItemTemplate="{StaticResource StatisticsListItemTemplate}">
+                        <controls:AdaptiveGridView.GroupStyle>
+                            <GroupStyle HeaderTemplate="{StaticResource StatisticsGroupHeaderTemplate}" />
+                        </controls:AdaptiveGridView.GroupStyle>
+                        <controls:AdaptiveGridView.ItemContainerStyle>
+                            <Style TargetType="GridViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                                <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                                <Setter Property="VerticalAlignment" Value="Stretch" />
+                            </Style>
+                        </controls:AdaptiveGridView.ItemContainerStyle>
+                    </controls:AdaptiveGridView>                    
+                </PivotItem>
+            </Pivot>
+
         </RelativePanel>
     </Grid>
 </Page>
+
+
+

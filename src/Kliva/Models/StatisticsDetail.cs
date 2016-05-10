@@ -1,9 +1,13 @@
-﻿namespace Kliva.Models
+﻿using System.Collections.Generic;
+
+namespace Kliva.Models
 {
     public class StatisticsGroup
     {
         public string Name { get; set; }
         public int Sort { get; set; }
+
+        public List<StatisticsDetail> Details { get; set; } = new List<StatisticsDetail>();
     }
 
     public class StatisticsDetail

@@ -25,6 +25,50 @@ namespace Kliva.Services
             _stravaWebClient = stravaWebClient;
         }
 
+        private static void FillStatistics(Segment segment)
+        {
+            //TODO: Fill in with real data!
+
+            StatisticsGroup current = new StatisticsGroup() { Name = "this effort", Sort = 0 };
+            StatisticsDetail movingTimeCurrent = new StatisticsDetail()
+            {
+                Sort = 0,
+                Icon = "",
+                DisplayDescription = "moving time",
+                DisplayValue = "testing",
+                //DisplayValue = $"{Helpers.Converters.SecToTimeConverter.Convert(segment.MovingTime, typeof(int), null, string.Empty)}",
+                Group = current
+            };
+            StatisticsDetail movingTimeCurrent2 = new StatisticsDetail()
+            {
+                Sort = 1,
+                Icon = "",
+                DisplayDescription = "moving time",
+                DisplayValue = "testing",
+                //DisplayValue = $"{Helpers.Converters.SecToTimeConverter.Convert(segment.MovingTime, typeof(int), null, string.Empty)}",
+                Group = current
+            };
+
+            current.Details.Add(movingTimeCurrent);
+            current.Details.Add(movingTimeCurrent2);
+
+            StatisticsGroup pr = new StatisticsGroup() { Name = "personal record", Sort = 1 };
+            StatisticsDetail movingTimePR = new StatisticsDetail()
+            {
+                Sort = 0,
+                Icon = "",
+                DisplayDescription = "moving time",
+                DisplayValue = "testing",
+                //DisplayValue = $"{Helpers.Converters.SecToTimeConverter.Convert(segment.MovingTime, typeof(int), null, string.Empty)}",
+                Group = pr
+            };
+
+            pr.Details.Add(movingTimePR);
+
+            segment.Statistics.Add(current);
+            segment.Statistics.Add(pr);
+        }
+
         private async Task<Segment> GetSegmentFromServiceAsync(string segmentId)
         {
             try
@@ -37,6 +81,8 @@ namespace Kliva.Services
 
                 var segment = Unmarshaller<Segment>.Unmarshal(json);
                 StravaService.SetMetricUnits(segment, defaultDistanceUnitType);
+
+                FillStatistics(segment);
 
                 return segment;
             }
