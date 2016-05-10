@@ -375,7 +375,7 @@ namespace Kliva.Controls.VisualLayer
                 Compositor compositor = ElementCompositionPreview.GetElementVisual(Window.Current.Content).Compositor;
                 CompositionEffectFactory effectFactory = compositor.CreateEffectFactory(graphicsEffect, null);
                 CompositionEffectBrush brush = effectFactory.CreateBrush();
-                brush.SetSourceParameter("ImageSource", compositor.CreateDestinationBrush());
+                brush.SetSourceParameter("ImageSource", compositor.CreateBackdropBrush());
 
                 // Hook a new sprite under the host grid to completely cover the background content
                 SpriteVisual desaturateVisual = compositor.CreateSpriteVisual();

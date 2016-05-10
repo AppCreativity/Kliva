@@ -28,7 +28,7 @@ namespace SamplesCommon
             Compositor = m_rootVisual.Compositor;
 
             m_blurBrush = BuildBlurBrush();
-            m_blurBrush.SetSourceParameter("source", Compositor.CreateDestinationBrush());
+            m_blurBrush.SetSourceParameter("source", Compositor.CreateBackdropBrush());
 
             m_blurVisual = Compositor.CreateSpriteVisual();
             m_blurVisual.Brush = m_blurBrush;

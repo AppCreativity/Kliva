@@ -49,7 +49,7 @@ namespace Kliva.Controls.VisualLayer
             var myBackingVisual = ElementCompositionPreview.GetElementVisual(this as UIElement);
             m_compositor = myBackingVisual.Compositor;
             m_blurBrush = BuildColoredBlurMixerBrush();
-            m_blurBrush.SetSourceParameter("source", m_compositor.CreateDestinationBrush());
+            m_blurBrush.SetSourceParameter("source", m_compositor.CreateBackdropBrush());
 
             m_blurVisual = m_compositor.CreateSpriteVisual();
             m_blurVisual.Brush = m_blurBrush;

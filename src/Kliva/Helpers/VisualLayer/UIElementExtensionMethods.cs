@@ -13,7 +13,7 @@ namespace ImplicitAnimations
             var result = ElementCompositionPreview.GetElementVisual(element);
             compositor = result.Compositor;
 
-            var elementImplicitAnimation = compositor.CreateImplicitAnimationMap();
+            var elementImplicitAnimation = compositor.CreateImplicitAnimationCollection();
             elementImplicitAnimation["Offset"] = createOffsetAnimation(compositor);
             elementImplicitAnimation["Opacity"] = createOpacityAnimation(compositor);
             result.ImplicitAnimations = elementImplicitAnimation;

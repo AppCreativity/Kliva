@@ -290,7 +290,7 @@ namespace Kliva.Controls
             offsetAnimation.Duration = TimeSpan.FromMilliseconds(450);
 
             // create the implicit map to the properties we care about
-            var implicitMap = compositor.CreateImplicitAnimationMap();
+            var implicitMap = compositor.CreateImplicitAnimationCollection();
             implicitMap.Add("Offset", offsetAnimation);
 
             // set the implicit map to the visual
