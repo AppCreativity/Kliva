@@ -36,6 +36,8 @@
                         <Setter Target="SegmentMap.Height" Value="185" />
                         <Setter Target="SegmentName.Background" Value="{StaticResource KlivaMainBrush}"/>
                         <Setter Target="SegmentNameTextBlock.Style" Value="{StaticResource ActivityNameTextBlockMobile}" />
+                        <Setter Target="StatisticsGrid.MinItemWidth" Value="200" />
+                        <Setter Target="StatisticsGrid.MinItemHeight" Value="70" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="Desktop">
@@ -47,6 +49,8 @@
                         <Setter Target="SegmentName.Background" Value="Transparent"/>
                         <Setter Target="SegmentNameTextBlock.Foreground" Value="{StaticResource KlivaMainBrush}"/>
                         <Setter Target="SegmentNameTextBlock.Style" Value="{StaticResource ActivityNameTextBlockDesktop}" />
+                        <Setter Target="StatisticsGrid.MinItemWidth" Value="200" />
+                        <Setter Target="StatisticsGrid.MinItemHeight" Value="100" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
