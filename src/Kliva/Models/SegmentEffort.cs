@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using Kliva.Helpers;
 using Newtonsoft.Json;
 
@@ -149,6 +150,18 @@ namespace Kliva.Models
     /// </summary>
     public partial class SegmentEffort : BaseClass
     {
+        /// <summary>
+        /// Take Segment distance to allign result with actual Strava website!
+        /// </summary>
+        public float AverageSpeed => Segment.Distance/ElapsedTime;
+
+        private ObservableCollection<StatisticsGroup> _statistics = new ObservableCollection<StatisticsGroup>();
+        public ObservableCollection<StatisticsGroup> Statistics
+        {
+            get { return _statistics; }
+            set { Set(() => Statistics, ref _statistics, value); }
+        }
+
         private DistanceUnitType _distanceUnit;
         public DistanceUnitType DistanceUnit
         {
@@ -157,6 +170,33 @@ namespace Kliva.Models
             {
                 Set(() => DistanceUnit, ref _distanceUnit, value);
                 RaisePropertyChanged(() => DistanceFormatted);
+
+                //TODO: Glenn - do we need to 'recalculate' other values?
+            }
+        }
+
+        private SpeedUnit _speedUnit;
+        public SpeedUnit SpeedUnit
+        {
+            get { return _speedUnit; }
+            set
+            {
+                Set(() => SpeedUnit, ref _speedUnit, value);
+                RaisePropertyChanged(() => AverageSpeedFormatted);
+                //RaisePropertyChanged(() => MaxSpeedFormatted);
+
+                //TODO: Glenn - do we need to 'recalculate' other values?
+            }
+        }
+
+        private DistanceUnitType _elevationUnit;
+        public DistanceUnitType ElevationUnit
+        {
+            get { return _elevationUnit; }
+            set
+            {
+                Set(() => ElevationUnit, ref _elevationUnit, value);
+                //RaisePropertyChanged(() => ElevationGainFormatted);
 
                 //TODO: Glenn - do we need to 'recalculate' other values?
             }
@@ -172,6 +212,22 @@ namespace Kliva.Models
                         return UnitConverter.ConvertDistance(Distance, DistanceUnitType.Metres, DistanceUnitType.Kilometres).ToString("F2");
                     case DistanceUnitType.Miles:
                         return UnitConverter.ConvertDistance(Distance, DistanceUnitType.Metres, DistanceUnitType.Miles).ToString("F2");
+                }
+
+                return null;
+            }
+        }
+
+        public string AverageSpeedFormatted
+        {
+            get
+            {
+                switch (DistanceUnit)
+                {
+                    case DistanceUnitType.Kilometres:
+                        return UnitConverter.ConvertSpeed(AverageSpeed, SpeedUnit.MetresPerSecond, SpeedUnit.KilometresPerHour).ToString("F1");
+                    case DistanceUnitType.Miles:
+                        return UnitConverter.ConvertSpeed(AverageSpeed, SpeedUnit.MetresPerSecond, SpeedUnit.MilesPerHour).ToString("F1");
                 }
 
                 return null;

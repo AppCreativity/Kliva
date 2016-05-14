@@ -99,7 +99,8 @@
                     </PivotItem.Header>
                     <local:AdaptiveGridView x:Name="StatisticsGrid"
                                             ItemsSource="{x:Bind ViewModel.SelectedActivity.Statistics, Mode=OneWay}"
-                                            ItemTemplate="{StaticResource StatisticsListItemTemplate}">
+                                            ItemTemplate="{StaticResource StatisticsListItemTemplate}"
+                                            SelectionMode="None">
                         <local:AdaptiveGridView.ItemContainerStyle>
                             <Style TargetType="GridViewItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />

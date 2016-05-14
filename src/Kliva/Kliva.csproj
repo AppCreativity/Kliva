@@ -165,6 +165,8 @@
     <Compile Include="Models\Incremental\FriendActivityIncrementalCollection.cs" />
     <Compile Include="Models\Incremental\IKey.cs" />
     <Compile Include="Models\Incremental\MyActivityIncrementalCollection.cs" />
+    <Compile Include="Models\Leaderboard.cs" />
+    <Compile Include="Models\LeaderboardEntry.cs" />
     <Compile Include="Models\Limit.cs" />
     <Compile Include="Models\Limits.cs" />
     <Compile Include="Models\Map.cs" />

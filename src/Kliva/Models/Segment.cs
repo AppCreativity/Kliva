@@ -69,17 +69,4 @@ namespace Kliva.Models
         [JsonProperty("star_count")]
         public int StarCount { get; set; }
     }
-
-    /// <summary>
-    /// Seperated added fields from original response class!
-    /// </summary>
-    public partial class Segment
-    {
-        private ObservableCollection<StatisticsGroup> _statistics = new ObservableCollection<StatisticsGroup>();
-        public ObservableCollection<StatisticsGroup> Statistics
-        {
-            get { return _statistics; }
-            set { Set(() => Statistics, ref _statistics, value); }
-        }
-    }
 }

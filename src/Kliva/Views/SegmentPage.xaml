@@ -20,7 +20,7 @@
 
     <Page.Resources>
         <CollectionViewSource x:Name="GroupedStatisticsDetails"
-                              Source="{x:Bind ViewModel.Segment.Statistics, Mode=OneWay}"
+                              Source="{x:Bind ViewModel.SegmentEffort.Statistics, Mode=OneWay}"
                               IsSourceGrouped="true"
                               ItemsPath="Details"/>
     </Page.Resources>
@@ -59,7 +59,7 @@
             <Border x:Name="SegmentName"                    
                     RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" >
                 <TextBlock x:Name="SegmentNameTextBlock"
-                           Text="{x:Bind ViewModel.Segment.Name, Mode=OneWay}"
+                           Text="{x:Bind ViewModel.SegmentEffort.Segment.Name, Mode=OneWay}"
                            TextWrapping="WrapWholeWords" MaxLines="2"
                            Margin="10,0,10,5" />
             </Border>
@@ -88,7 +88,8 @@
                     </PivotItem.Header>
                     <controls:AdaptiveGridView x:Name="StatisticsGrid"
                                                ItemsSource="{Binding Source={StaticResource GroupedStatisticsDetails}}"
-                                               ItemTemplate="{StaticResource StatisticsListItemTemplate}">
+                                               ItemTemplate="{StaticResource StatisticsListItemTemplate}"
+                                               SelectionMode="None">
                         <controls:AdaptiveGridView.GroupStyle>
                             <GroupStyle HeaderTemplate="{StaticResource StatisticsGroupHeaderTemplate}" />
                         </controls:AdaptiveGridView.GroupStyle>

@@ -20,18 +20,18 @@ namespace Kliva.ViewModels
 
         private string _currentSegmentId;
 
-        private Segment _segment;
-        public Segment Segment
+        private SegmentEffort _segmentEffort;
+        public SegmentEffort SegmentEffort
         {
-            get { return _segment;}
-            set { Set(() => Segment, ref _segment, value); }
+            get { return _segmentEffort;}
+            set { Set(() => SegmentEffort, ref _segmentEffort, value); }
         }
 
         private RelayCommand _viewLoadedCommand;       
         public RelayCommand ViewLoadedCommand => _viewLoadedCommand ?? (_viewLoadedCommand = new RelayCommand(() => ViewLoaded()));
 
         private RelayCommand _mapCommand;
-        public RelayCommand MapCommand => _mapCommand ?? (_mapCommand = new RelayCommand(() => NavigationService.Navigate<MapPage>(Segment?.Map)));
+        public RelayCommand MapCommand => _mapCommand ?? (_mapCommand = new RelayCommand(() => NavigationService.Navigate<MapPage>(SegmentEffort.Segment?.Map)));
 
         public SegmentViewModel(INavigationService navigationService, IStravaService stravaService) : base(navigationService)
         {
@@ -56,19 +56,20 @@ namespace Kliva.ViewModels
             {
                 //TODO: Glenn - What do we need? Segment of Segment Effort or both?
                 //TODO: Glenn - We need Segment Effort for analytics! So move analytics groups to SegmentEffortClass
-                //TODO: Glenn - load leaderboard entries
-                Segment = await _stravaService.GetSegmentAsync(currentParameter);
+                SegmentEffort = await _stravaService.GetSegmentEffortAsync(currentParameter);
+                //TODO: Glenn - We need to retrieve the actual segment too, for extra data ( like MAP ) - Look how we can combine/merge this with SegmentEffort.Segment
+                Segment segment = await _stravaService.GetSegmentAsync(SegmentEffort.Segment.Id.ToString());
 
                 ServiceLocator.Current.GetInstance<IMessenger>()
-                    .Send<PolylineMessage>(Segment.Map.GeoPositions.Any()
-                        ? new PolylineMessage(Segment.Map.GeoPositions)
+                    .Send<PolylineMessage>(segment.Map.GeoPositions.Any()
+                        ? new PolylineMessage(segment.Map.GeoPositions)
                         : new PolylineMessage(new List<BasicGeoposition>()), Tokens.SegmentPolylineMessage);
             }
         }
 
         private void ClearProperties()
         {
-            Segment = null;
+            SegmentEffort = null;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Kliva.Helpers;
@@ -18,6 +19,8 @@ namespace Kliva.Services
 
         //TODO: Glenn - How long before we invalidate an in memory cached segment? Maybe use MemoryCache? https://msdn.microsoft.com/en-us/library/system.runtime.caching.memorycache(v=vs.110).aspx
         private readonly ConcurrentDictionary<string, Task<Segment>> _cachedSegmentTasks = new ConcurrentDictionary<string, Task<Segment>>();
+        private readonly ConcurrentDictionary<string, Task<SegmentEffort>> _cachedSegmentEffortTasks = new ConcurrentDictionary<string, Task<SegmentEffort>>();
+        private readonly ConcurrentDictionary<string, Task<Leaderboard>> _cachedLeaderBoardTasks = new ConcurrentDictionary<string, Task<Leaderboard>>();
 
         public StravaSegmentService(ISettingsService settingsService, StravaWebClient stravaWebClient)
         {
@@ -25,48 +28,51 @@ namespace Kliva.Services
             _stravaWebClient = stravaWebClient;
         }
 
-        private static void FillStatistics(Segment segment)
+        private static void FillStatistics(SegmentEffort segmentEffort)
         {
-            //TODO: Fill in with real data!
-
-            StatisticsGroup current = new StatisticsGroup() { Name = "this effort", Sort = 0 };
+            StatisticsGroup current = new StatisticsGroup() { Name = "this effort", Sort = 0, Type = StatisticGroupType.Current};
             StatisticsDetail movingTimeCurrent = new StatisticsDetail()
             {
                 Sort = 0,
                 Icon = "",
                 DisplayDescription = "moving time",
-                DisplayValue = "testing",
-                //DisplayValue = $"{Helpers.Converters.SecToTimeConverter.Convert(segment.MovingTime, typeof(int), null, string.Empty)}",
+                DisplayValue = $"{Helpers.Converters.SecToTimeConverter.Convert(segmentEffort.ElapsedTime, typeof(int), null, string.Empty)}",
                 Group = current
             };
-            StatisticsDetail movingTimeCurrent2 = new StatisticsDetail()
+
+            StatisticsDetail averageSpeedCurrent = new StatisticsDetail()
             {
                 Sort = 1,
-                Icon = "",
-                DisplayDescription = "moving time",
-                DisplayValue = "testing",
-                //DisplayValue = $"{Helpers.Converters.SecToTimeConverter.Convert(segment.MovingTime, typeof(int), null, string.Empty)}",
+                Icon = "",
+                DisplayDescription = "average speed",
+                DisplayValue = $"{segmentEffort.AverageSpeedFormatted} {Helpers.Converters.SpeedConverter.Convert(segmentEffort.SpeedUnit, typeof(SpeedUnit), null, string.Empty)}",
+                Group = current
+            };
+
+            StatisticsDetail averageHeartRateCurrent = new StatisticsDetail()
+            {
+                Sort = 2,
+                Icon = "",
+                DisplayDescription = "average heart rate",
+                DisplayValue = $"{segmentEffort.AverageHeartrate} bpm",
+                Group = current
+            };
+
+            StatisticsDetail maxHeartRateCurrent = new StatisticsDetail()
+            {
+                Sort = 3,
+                Icon = "",
+                DisplayDescription = "max heart rate",
+                DisplayValue = $"{segmentEffort.MaxHeartrate} bpm",
                 Group = current
             };
 
             current.Details.Add(movingTimeCurrent);
-            current.Details.Add(movingTimeCurrent2);
+            current.Details.Add(averageSpeedCurrent);
+            current.Details.Add(averageHeartRateCurrent);
+            current.Details.Add(maxHeartRateCurrent);
 
-            StatisticsGroup pr = new StatisticsGroup() { Name = "personal record", Sort = 1 };
-            StatisticsDetail movingTimePR = new StatisticsDetail()
-            {
-                Sort = 0,
-                Icon = "",
-                DisplayDescription = "moving time",
-                DisplayValue = "testing",
-                //DisplayValue = $"{Helpers.Converters.SecToTimeConverter.Convert(segment.MovingTime, typeof(int), null, string.Empty)}",
-                Group = pr
-            };
-
-            pr.Details.Add(movingTimePR);
-
-            segment.Statistics.Add(current);
-            segment.Statistics.Add(pr);
+            segmentEffort.Statistics.Add(current);
         }
 
         private async Task<Segment> GetSegmentFromServiceAsync(string segmentId)
@@ -82,9 +88,59 @@ namespace Kliva.Services
                 var segment = Unmarshaller<Segment>.Unmarshal(json);
                 StravaService.SetMetricUnits(segment, defaultDistanceUnitType);
 
-                FillStatistics(segment);
-
                 return segment;
+            }
+            catch (Exception ex)
+            {
+                //TODO: Glenn - Use logger to log errors ( Google )
+            }
+
+            return null;
+        }
+
+        private async Task<SegmentEffort> GetSegmentEffortFromServiceAsync(string segmentEffortId)
+        {
+            try
+            {
+                var accessToken = await _settingsService.GetStoredStravaAccessTokenAsync();
+                var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitTypeAsync();
+
+                string getUrl = $"{Endpoints.SegmentEffort}/{segmentEffortId}?access_token={accessToken}";
+                string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
+
+                var segmentEffort = Unmarshaller<SegmentEffort>.Unmarshal(json);
+                StravaService.SetMetricUnits(segmentEffort, defaultDistanceUnitType);
+
+                FillStatistics(segmentEffort);
+
+                return segmentEffort;
+            }
+            catch (Exception ex)
+            {
+                //TODO: Glenn - Use logger to log errors ( Google )
+            }
+
+            return null;
+        }
+
+        private async Task<Leaderboard> GetLeaderBoardFromServiceAsync(string segmentId)
+        {
+            try
+            {
+                var accessToken = await _settingsService.GetStoredStravaAccessTokenAsync();
+                var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitTypeAsync();
+
+                string getUrl = $"{string.Format(Endpoints.Leaderboard, segmentId)}?access_token={accessToken}";
+                string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
+
+                var leaderboard = Unmarshaller<Leaderboard>.Unmarshal(json);
+                if (leaderboard.Entries != null)
+                {
+                    foreach (LeaderboardEntry entry in leaderboard.Entries)
+                        StravaService.SetMetricUnits(entry, defaultDistanceUnitType);
+                }
+
+                return leaderboard;
             }
             catch (Exception ex)
             {
@@ -122,9 +178,76 @@ namespace Kliva.Services
             return null;
         }
 
+        public void FillStatistics(SegmentEffort segmentEffort, Leaderboard leaderboard)
+        {
+            if (leaderboard != null)
+            {
+                var entry = (from element in leaderboard.Entries
+                             where element.AthleteId == segmentEffort.Athlete.Id
+                             select element).FirstOrDefault();
+
+                if (entry != null)
+                {
+                    //TODO: Glenn - Verify SegmentViewModel - There we also retrieve the corresponding Segment for MAP info, maybe better we do it here in the Service?? ( Merge/Combine )
+                    entry.Segment = segmentEffort.Segment;
+
+                    StatisticsGroup pr = new StatisticsGroup() {Name = "personal record", Sort = 1, Type = StatisticGroupType.PR};
+                    StatisticsDetail movingTimePR = new StatisticsDetail()
+                    {
+                        Sort = 0,
+                        Icon = "",
+                        DisplayDescription = "moving time",
+                        DisplayValue =
+                            $"{Helpers.Converters.SecToTimeConverter.Convert(entry.MovingTime, typeof (int), null, string.Empty)}",
+                        Group = pr
+                    };
+
+                    StatisticsDetail averageSpeedPR = new StatisticsDetail()
+                    {
+                        Sort = 1,
+                        Icon = "",
+                        DisplayDescription = "average speed",
+                        DisplayValue =
+                            $"{entry.AverageSpeedFormatted} {Helpers.Converters.SpeedConverter.Convert(segmentEffort.SpeedUnit, typeof (SpeedUnit), null, string.Empty)}",
+                        Group = pr
+                    };
+
+                    StatisticsDetail averageHeartRatePR = new StatisticsDetail()
+                    {
+                        Sort = 2,
+                        Icon = "",
+                        DisplayDescription = "average heart rate",
+                        DisplayValue = $"{entry.AverageHeartrate} bpm",
+                        Group = pr
+                    };
+
+                    StatisticsDetail rankPR = new StatisticsDetail()
+                    {
+                        Sort = 2,
+                        //Icon = "",
+                        DisplayDescription = "rank",
+                        DisplayValue = $"{entry.Rank}/{leaderboard.EntryCount}",
+                        Group = pr
+                    };
+
+                    pr.Details.Add(movingTimePR);
+                    pr.Details.Add(averageSpeedPR);
+                    pr.Details.Add(averageHeartRatePR);
+                    pr.Details.Add(rankPR);
+
+                    segmentEffort.Statistics.Add(pr);
+                }
+            }
+        }
+
         public Task<Segment> GetSegmentAsync(string segmentId)
         {
             return _cachedSegmentTasks.GetOrAdd(segmentId, GetSegmentFromServiceAsync);
+        }
+
+        public Task<SegmentEffort> GetSegmentEffortAsync(string segmentEffortId)
+        {
+            return _cachedSegmentEffortTasks.GetOrAdd(segmentEffortId, GetSegmentEffortFromServiceAsync);
         }
 
         public async Task<List<SegmentSummary>> GetStarredSegmentsAsync()
@@ -155,6 +278,11 @@ namespace Kliva.Services
         public Task<List<SegmentSummary>> GetStarredSegmentsAsync(string athleteId)
         {
             return _cachedStarredSegmentsTasks.GetOrAdd(athleteId, GetStarredSegmentsFromServiceAsync);
+        }
+
+        public Task<Leaderboard> GetLeaderBoardAsync(string segmentId)
+        {
+            return _cachedLeaderBoardTasks.GetOrAdd(segmentId, GetLeaderBoardFromServiceAsync);
         }
     }
 }

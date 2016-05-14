@@ -142,6 +142,33 @@ namespace Kliva.Models
             }
         }
 
+        private SpeedUnit _speedUnit;
+        public SpeedUnit SpeedUnit
+        {
+            get { return _speedUnit; }
+            set
+            {
+                Set(() => SpeedUnit, ref _speedUnit, value);
+                //RaisePropertyChanged(() => AverageSpeedFormatted);
+                //RaisePropertyChanged(() => MaxSpeedFormatted);
+
+                //TODO: Glenn - do we need to 'recalculate' other values?
+            }
+        }
+
+        private DistanceUnitType _elevationUnit;
+        public DistanceUnitType ElevationUnit
+        {
+            get { return _elevationUnit; }
+            set
+            {
+                Set(() => ElevationUnit, ref _elevationUnit, value);
+                //RaisePropertyChanged(() => ElevationGainFormatted);
+
+                //TODO: Glenn - do we need to 'recalculate' other values?
+            }
+        }
+
         public string DistanceFormatted
         {
             get

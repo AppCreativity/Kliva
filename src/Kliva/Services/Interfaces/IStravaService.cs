@@ -44,6 +44,7 @@ namespace Kliva.Services.Interfaces
         Task<Club> GetClubAsync(string id);
 
         Task<Segment> GetSegmentAsync(string segmentId);
+        Task<SegmentEffort> GetSegmentEffortAsync(string segmentEffortId);
         Task<List<SegmentSummary>> GetStarredSegmentsAsync();
         Task<List<SegmentSummary>> GetStarredSegmentsAsync(string athleteId);
 
