@@ -224,7 +224,7 @@ namespace Kliva.Services
                     StatisticsDetail rankPR = new StatisticsDetail()
                     {
                         Sort = 2,
-                        //Icon = "",
+                        Icon = "",
                         DisplayDescription = "rank",
                         DisplayValue = $"{entry.Rank}/{leaderboard.EntryCount}",
                         Group = pr
