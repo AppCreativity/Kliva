@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using Newtonsoft.Json;
 
 namespace Kliva.Models
@@ -6,7 +7,7 @@ namespace Kliva.Models
     /// <summary>
     /// Represents a Strava segment.
     /// </summary>
-    public class Segment : SegmentSummary
+    public partial class Segment : SegmentSummary
     {
         /// <summary>
         /// The date when the segment was created.

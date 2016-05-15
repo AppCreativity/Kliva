@@ -66,7 +66,15 @@ namespace Kliva.Services
         /// <summary>
         /// Url to the endpoint used for receiving segment information.
         /// </summary>
-        public const string Leaderboard = "https://www.strava.com/api/v3/segments";
+        public const string Segment = "https://www.strava.com/api/v3/segments";
+        /// <summary>
+        /// Url to the endpoint used for receiving segment effort information.
+        /// </summary>
+        public const string SegmentEffort = "https://www.strava.com/api/v3/segment_efforts";
+        /// <summary>
+        /// Url to the endpoint used for receiving segment leaderboard information.
+        /// </summary>
+        public const string Leaderboard = "https://www.strava.com/api/v3/segments/{0}/leaderboard";
         /// <summary>
         /// Url to the endpoint used for receiving starred segments.
         /// </summary>

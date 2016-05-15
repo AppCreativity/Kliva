@@ -9,13 +9,17 @@ namespace Kliva.Converters
         {
             var timeSpan = TimeSpan.FromSeconds((int)value);
 
-            string answer;
+            string answer = string.Empty;
 
             //TODO: Glenn - use translated resources
-            if (timeSpan.Days != 0)
+            if (string.IsNullOrEmpty(answer) && timeSpan.Days != 0)
                 answer = $"{timeSpan.Days}d {timeSpan.Hours:D2}h {timeSpan.Minutes:D2}m";
-            else
+
+            if(string.IsNullOrEmpty(answer) && timeSpan.Hours != 0)
                 answer = $"{timeSpan.Hours}h {timeSpan.Minutes:D2}m";
+
+            if (string.IsNullOrEmpty(answer))
+                answer = $"{timeSpan.Minutes}m {timeSpan.Seconds:D2}s";
 
             return parameter == null ? answer : null;
         }

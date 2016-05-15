@@ -28,5 +28,12 @@ namespace Kliva.ViewModels
             if(athlete != null)
                 NavigationService.Navigate<ProfilePage>(athlete.Id.ToString());
         }
+
+        protected void OnSegmentTapped(ItemClickEventArgs args)
+        {
+            SegmentEffort segmentEffort = args.ClickedItem as SegmentEffort;
+            if (segmentEffort != null)
+                NavigationService.Navigate<SegmentPage>(segmentEffort.Id.ToString());
+        }
     }
 }

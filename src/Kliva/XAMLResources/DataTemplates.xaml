@@ -149,6 +149,11 @@
                 </RelativePanel>
         </UserControl>
     </DataTemplate>
+
+    <DataTemplate x:Key="StatisticsGroupHeaderTemplate"
+                  x:DataType="models:StatisticsGroup">
+        <TextBlock Text="{x:Bind Name}" Margin="0,-5,0,0" />
+    </DataTemplate>
     
     <DataTemplate x:Key="StatisticsListItemTemplate"
                   x:DataType="models:StatisticsDetail">

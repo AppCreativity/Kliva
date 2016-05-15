@@ -99,7 +99,8 @@
                     </PivotItem.Header>
                     <local:AdaptiveGridView x:Name="StatisticsGrid"
                                             ItemsSource="{x:Bind ViewModel.SelectedActivity.Statistics, Mode=OneWay}"
-                                            ItemTemplate="{StaticResource StatisticsListItemTemplate}">
+                                            ItemTemplate="{StaticResource StatisticsListItemTemplate}"
+                                            SelectionMode="None">
                         <local:AdaptiveGridView.ItemContainerStyle>
                             <Style TargetType="GridViewItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -119,7 +120,14 @@
                     </PivotItem.Header>
                     <ListView x:Name="AcitivtySegmentsList"
                               ItemsSource="{x:Bind ViewModel.SelectedActivity.SegmentEfforts, Mode=OneWay}"
-                              ItemTemplate="{StaticResource SegmentEffortListItemTemplate}"/>
+                              ItemTemplate="{StaticResource SegmentEffortListItemTemplate}"
+                              IsItemClickEnabled="True">
+                        <interactivity:Interaction.Behaviors>
+                            <core:EventTriggerBehavior EventName="ItemClick">
+                                <core:InvokeCommandAction Command="{x:Bind ViewModel.SegmentTappedCommand}" />
+                            </core:EventTriggerBehavior>
+                        </interactivity:Interaction.Behaviors>                        
+                    </ListView>
                 </PivotItem>
                 <PivotItem x:Name="KudosPivot" Tag="Kudos">
                     <PivotItem.Header>

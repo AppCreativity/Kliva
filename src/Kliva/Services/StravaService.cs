@@ -105,6 +105,7 @@ namespace Kliva.Services
             return Task.CompletedTask;
         }
 
+        //TODO: Glenn - Should we set these at some BaseClass?
         public static void SetMetricUnits(ActivitySummary activity, DistanceUnitType distanceUnitType)
         {
             activity.DistanceUnit = distanceUnitType;
@@ -112,16 +113,28 @@ namespace Kliva.Services
             activity.ElevationUnit = activity.DistanceUnit == DistanceUnitType.Kilometres ? DistanceUnitType.Metres : DistanceUnitType.Feet;
         }
 
-        //TODO: Glenn - Should we set these at some SegmentBaseClass?
+        //TODO: Glenn - Should we set these at some BaseClass?
         public static void SetMetricUnits(SegmentEffort segment, DistanceUnitType distanceUnitType)
         {
             segment.DistanceUnit = distanceUnitType;
+            segment.SpeedUnit = segment.DistanceUnit == DistanceUnitType.Kilometres ? SpeedUnit.KilometresPerHour : SpeedUnit.MilesPerHour;
+            segment.ElevationUnit = segment.DistanceUnit == DistanceUnitType.Kilometres ? DistanceUnitType.Metres : DistanceUnitType.Feet;
         }
 
-        //TODO: Glenn - Should we set these at some SegmentBaseClass?
+        //TODO: Glenn - Should we set these at some BaseClass?
         public static void SetMetricUnits(SegmentSummary segment, DistanceUnitType distanceUnitType)
         {
             segment.DistanceUnit = distanceUnitType;
+            segment.SpeedUnit = segment.DistanceUnit == DistanceUnitType.Kilometres ? SpeedUnit.KilometresPerHour : SpeedUnit.MilesPerHour;
+            segment.ElevationUnit = segment.DistanceUnit == DistanceUnitType.Kilometres ? DistanceUnitType.Metres : DistanceUnitType.Feet;
+        }
+
+        //TODO: Glenn - Should we set these at some BaseClass?
+        public static void SetMetricUnits(LeaderboardEntry entry, DistanceUnitType distanceUnitType)
+        {
+            entry.DistanceUnit = distanceUnitType;
+            entry.SpeedUnit = entry.DistanceUnit == DistanceUnitType.Kilometres ? SpeedUnit.KilometresPerHour : SpeedUnit.MilesPerHour;
+            entry.ElevationUnit = entry.DistanceUnit == DistanceUnitType.Kilometres ? DistanceUnitType.Metres : DistanceUnitType.Feet;
         }
 
         #region Event handlers
@@ -236,31 +249,6 @@ namespace Kliva.Services
             return activities;
         }
 
-        //public async Task<IEnumerable<ActivitySummary>> GetActivitiesWithAthletesAsync(int page, int perPage, ActivityFeedFilter filter)
-        //{
-        //    IList<ActivitySummary> activities = null;
-        //    switch (filter)
-        //    {
-        //        case ActivityFeedFilter.All:
-        //        case ActivityFeedFilter.Followers:
-        //            activities = await StravaActivityService.GetFollowersActivitiesAsync(page, perPage);
-        //            break;
-        //        case ActivityFeedFilter.My:
-        //            activities = await StravaActivityService.GetActivitiesAsync(page, perPage);
-        //            break;
-        //    }
-
-        //    if (activities != null && activities.Any())
-        //    {
-        //        await GetActivitySummaryRelationsAsync(activities);
-
-        //        if (filter == ActivityFeedFilter.Followers)
-        //            activities = activities.Where(activity => activity.Athlete.Id != StravaAthleteService.Athlete.Id).ToList();
-        //    }
-
-        //    return activities;
-        //}
-
         public Task GiveKudosAsync(string activityId)
         {
             return StravaActivityService.GiveKudosAsync(activityId);
@@ -283,6 +271,27 @@ namespace Kliva.Services
             }
 
             return club;
+        }
+
+        public Task<Segment> GetSegmentAsync(string segmentId)
+        {
+            return StravaSegmentService.GetSegmentAsync(segmentId);
+        }
+
+        public async Task<SegmentEffort> GetSegmentEffortAsync(string segmentEffortId)
+        {
+            SegmentEffort segmentEffort = await StravaSegmentService.GetSegmentEffortAsync(segmentEffortId);
+
+            if (segmentEffort != null)
+            {
+                //TODO: Glenn - Load up Leaderboard to show PR in SegmentEffort!
+                Leaderboard leaderboard = await StravaSegmentService.GetLeaderBoardAsync(segmentEffort.Segment.Id.ToString());
+
+                if (leaderboard != null && segmentEffort.Statistics.FirstOrDefault(item => item.Type == StatisticGroupType.PR) == null)
+                    StravaSegmentService.FillStatistics(segmentEffort, leaderboard);
+            }
+
+            return segmentEffort;
         }
 
         public Task<List<SegmentSummary>> GetStarredSegmentsAsync()

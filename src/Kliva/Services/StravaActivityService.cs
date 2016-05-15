@@ -84,6 +84,85 @@ namespace Kliva.Services
             return null;
         }
 
+        private static void FillStatistics(Activity activity)
+        {
+            StatisticsGroup distance = new StatisticsGroup() { Name = "distance", Sort = 0 };
+            StatisticsDetail totalDistance = new StatisticsDetail()
+            {
+                Sort = 0,
+                Icon = "",
+                DisplayDescription = "total distance",
+                DisplayValue = $"{activity.DistanceFormatted} {Helpers.Converters.DistanceConverter.Convert(activity.DistanceUnit, typeof(DistanceUnitType), null, string.Empty)}",
+                Group = distance
+            };
+
+            StatisticsGroup speed = new StatisticsGroup() { Name = "speed", Sort = 1 };
+            StatisticsDetail averageSpeed = new StatisticsDetail()
+            {
+                Sort = 0,
+                Icon = "",
+                DisplayDescription = "average speed",
+                DisplayValue = $"{activity.AverageSpeedFormatted} {Helpers.Converters.SpeedConverter.Convert(activity.SpeedUnit, typeof(SpeedUnit), null, string.Empty)}",
+                Group = speed
+            };
+
+            StatisticsDetail maxSpeed = new StatisticsDetail()
+            {
+                Sort = 1,
+                Icon = "",
+                DisplayDescription = "max speed",
+                DisplayValue = $"{activity.MaxSpeedFormatted} {Helpers.Converters.SpeedConverter.Convert(activity.SpeedUnit, typeof(SpeedUnit), null, string.Empty)}",
+                Group = speed
+            };
+
+            StatisticsGroup time = new StatisticsGroup() { Name = "time", Sort = 2 };
+            StatisticsDetail movingTime = new StatisticsDetail()
+            {
+                Sort = 0,
+                Icon = "",
+                DisplayDescription = "moving time",
+                DisplayValue = $"{Helpers.Converters.SecToTimeConverter.Convert(activity.MovingTime, typeof(int), null, string.Empty)}",
+                Group = time
+            };
+
+            StatisticsGroup elevation = new StatisticsGroup() { Name = "elevation", Sort = 3 };
+            StatisticsDetail elevationGain = new StatisticsDetail()
+            {
+                Sort = 0,
+                Icon = "",
+                DisplayDescription = "elevation gain",
+                DisplayValue = $"{activity.ElevationGainFormatted} {Helpers.Converters.DistanceConverter.Convert(activity.ElevationUnit, typeof(DistanceUnitType), null, string.Empty)}",
+                Group = elevation
+            };
+
+            StatisticsGroup heartRate = new StatisticsGroup() { Name = "heart rate", Sort = 4 };
+            StatisticsDetail averageHeartRate = new StatisticsDetail()
+            {
+                Sort = 0,
+                Icon = "",
+                DisplayDescription = "average heart rate",
+                DisplayValue = $"{activity.AverageHeartrate} bpm",
+                Group = heartRate
+            };
+
+            StatisticsDetail maxHeartRate = new StatisticsDetail()
+            {
+                Sort = 0,
+                Icon = "",
+                DisplayDescription = "max heart rate",
+                DisplayValue = $"{activity.MaxHeartrate} bpm",
+                Group = heartRate
+            };
+
+            activity.Statistics.Add(totalDistance);
+            activity.Statistics.Add(averageSpeed);
+            activity.Statistics.Add(maxSpeed);
+            activity.Statistics.Add(movingTime);
+            activity.Statistics.Add(elevationGain);
+            activity.Statistics.Add(averageHeartRate);
+            activity.Statistics.Add(maxHeartRate);
+        }
+
         /// <summary>
         /// Gets a single activity from Strava asynchronously.
         /// </summary>
@@ -109,6 +188,8 @@ namespace Kliva.Services
                     foreach (SegmentEffort segment in activity.SegmentEfforts)
                         StravaService.SetMetricUnits(segment, defaultDistanceUnitType);
                 }
+
+                FillStatistics(activity);
 
                 _perflog.GetActivityAsync(true, id, includeEfforts);
                 return activity;
