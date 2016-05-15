@@ -25,7 +25,8 @@
                               ItemsPath="Details"/>
     </Page.Resources>
 
-    <Grid>
+    <Grid x:Name="PageRoot"
+          Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup">
                 <VisualState x:Name="Mobile">
