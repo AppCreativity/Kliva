@@ -137,6 +137,8 @@ namespace Kliva.Models
 
         public float AverageSpeed => Segment.Distance/ElapsedTime;
 
+        public float AverageHeartrateDisplay => AverageHeartrate ?? 0;
+
         private DistanceUnitType _distanceUnit;
         public DistanceUnitType DistanceUnit
         {

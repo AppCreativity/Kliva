@@ -65,6 +65,7 @@
                     RelativePanel.Above="NewAccountButton" />
             <Button x:Name="NewAccountButton"                    
                     Content="create new strava account"
+                    Command="{Binding NewAccountCommand}"
                     Margin="0,10,0,0"
                     RelativePanel.AlignBottomWithPanel="True" />
         </RelativePanel>

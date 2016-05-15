@@ -217,7 +217,7 @@ namespace Kliva.Services
                         Sort = 2,
                         Icon = "",
                         DisplayDescription = "average heart rate",
-                        DisplayValue = $"{entry.AverageHeartrate} bpm",
+                        DisplayValue = $"{entry.AverageHeartrateDisplay} bpm",
                         Group = pr
                     };
 

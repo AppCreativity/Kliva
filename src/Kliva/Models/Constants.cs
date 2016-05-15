@@ -8,6 +8,7 @@
         public const string STRAVA_AUTHORITY_TOKEN_URL = "https://www.strava.com/oauth/token";
         public const string STRAVA_AUTHORITY_REDIRECT_URL = "http://www.versweyveld.info";
 
-        public const string STRAVA_DEFAULT_AVATAR = "http://d3nn82uaxijpm6.cloudfront.net/assets/avatar/athlete/medium.png";        
+        public const string STRAVA_DEFAULT_AVATAR = "http://d3nn82uaxijpm6.cloudfront.net/assets/avatar/athlete/medium.png";
+        public const string STRAVA_NEW_ACCOUNT = "https://www.strava.com/register/free?utm_source=home-page";
     }
 }

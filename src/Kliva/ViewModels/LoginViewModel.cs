@@ -1,5 +1,8 @@
-﻿using Cimbalino.Toolkit.Services;
+﻿using System;
+using Windows.System;
+using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
+using Kliva.Models;
 using Kliva.Services;
 using Kliva.Services.Interfaces;
 using Kliva.Views;
@@ -11,15 +14,17 @@ namespace Kliva.ViewModels
         private IStravaService _stravaService;
         private IMessageBoxService _messageBoxService;
 
-        public RelayCommand LoginCommand { get; private set; }
+        private RelayCommand _loginCommand;
+        public RelayCommand LoginCommand => _loginCommand ?? (_loginCommand = new RelayCommand(async () => await _stravaService.GetAuthorizationCode()));
+
+        private RelayCommand _newAccountCommand;
+        public RelayCommand NewAccountCommand => _newAccountCommand ?? (_newAccountCommand = new RelayCommand(async () => await Launcher.LaunchUriAsync(new Uri(Constants.STRAVA_NEW_ACCOUNT))));
 
         public LoginViewModel(INavigationService navigationService, IMessageBoxService messageBoxService, IStravaService stravaService) : base(navigationService)
         {
             _stravaService = stravaService;
             _messageBoxService = messageBoxService;
             _stravaService.StatusEvent += OnStravaStatusEvent;
-
-            this.LoginCommand = new RelayCommand(async () => await _stravaService.GetAuthorizationCode());
         }
 
         private async void OnStravaStatusEvent(object sender, Services.StravaServiceEventArgs e)
