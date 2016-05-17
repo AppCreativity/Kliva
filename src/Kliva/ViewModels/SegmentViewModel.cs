@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
@@ -20,6 +19,8 @@ namespace Kliva.ViewModels
 
         private string _currentSegmentId;
 
+        public Segment Segment { get; set; }
+
         private SegmentEffort _segmentEffort;
         public SegmentEffort SegmentEffort
         {
@@ -31,7 +32,7 @@ namespace Kliva.ViewModels
         public RelayCommand ViewLoadedCommand => _viewLoadedCommand ?? (_viewLoadedCommand = new RelayCommand(() => ViewLoaded()));
 
         private RelayCommand _mapCommand;
-        public RelayCommand MapCommand => _mapCommand ?? (_mapCommand = new RelayCommand(() => NavigationService.Navigate<MapPage>(SegmentEffort.Segment?.Map)));
+        public RelayCommand MapCommand => _mapCommand ?? (_mapCommand = new RelayCommand(() => NavigationService.Navigate<MapPage>(Segment?.Map)));
 
         public SegmentViewModel(INavigationService navigationService, IStravaService stravaService) : base(navigationService)
         {
@@ -58,14 +59,16 @@ namespace Kliva.ViewModels
                 //TODO: Glenn - We need Segment Effort for analytics! So move analytics groups to SegmentEffortClass
                 SegmentEffort = await _stravaService.GetSegmentEffortAsync(currentParameter);
                 //TODO: Glenn - We need to retrieve the actual segment too, for extra data ( like MAP ) - Look how we can combine/merge this with SegmentEffort.Segment
-                Segment segment = await _stravaService.GetSegmentAsync(SegmentEffort.Segment.Id.ToString());
+                Segment = await _stravaService.GetSegmentAsync(SegmentEffort.Segment.Id.ToString());
 
                 ServiceLocator.Current.GetInstance<IMessenger>()
-                    .Send<PolylineMessage>(segment.Map.GeoPositions.Any()
-                        ? new PolylineMessage(segment.Map.GeoPositions)
+                    .Send<PolylineMessage>(Segment.Map.GeoPositions.Any()
+                        ? new PolylineMessage(Segment.Map.GeoPositions)
                         : new PolylineMessage(new List<BasicGeoposition>()), Tokens.SegmentPolylineMessage);
             }
         }
+
+        
 
         private void ClearProperties()
         {
