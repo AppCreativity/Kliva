@@ -83,7 +83,8 @@
                         <AppBarButton Icon="Like"
                                       Visibility="{x:Bind ViewModel.HasKudoed, Mode=OneWay, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
                                       Command="{x:Bind ViewModel.KudosCommand}"/>
-                        <AppBarButton Icon="Message" />
+                        <AppBarButton Icon="Message"
+                                      Command="{x:Bind ViewModel.CommandCommand}"/>
                     </StackPanel>
                 </CommandBar.Content>
             </CommandBar>

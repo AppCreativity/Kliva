@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
@@ -8,6 +9,7 @@ using Windows.UI.Xaml.Controls;
 using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using Kliva.Controls;
 using Kliva.Messages;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
@@ -82,13 +84,16 @@ namespace Kliva.ViewModels
         private RelayCommand _kudosCommand;
         public RelayCommand KudosCommand => _kudosCommand ?? (_kudosCommand = new RelayCommand(async () => await OnKudos()));
 
+        private RelayCommand _commandCommand;
+        public RelayCommand CommandCommand => _commandCommand ?? (_commandCommand = new RelayCommand(async () => await OnComment()));
+
         private RelayCommand _mapCommand;
         public RelayCommand MapCommand => _mapCommand ?? (_mapCommand = new RelayCommand(() => NavigationService.Navigate<MapPage>(SelectedActivity?.Map)));
 
         private RelayCommand<ItemClickEventArgs> _athleteTappedCommand;
         public RelayCommand<ItemClickEventArgs> AthleteTappedCommand => _athleteTappedCommand ?? (_athleteTappedCommand = new RelayCommand<ItemClickEventArgs>(OnAthleteTapped));
 
-        private RelayCommand<ItemClickEventArgs> _segmentTappedCommand;
+        private RelayCommand<ItemClickEventArgs> _segmentTappedCommand;        
         public RelayCommand<ItemClickEventArgs> SegmentTappedCommand => _segmentTappedCommand ?? (_segmentTappedCommand = new RelayCommand<ItemClickEventArgs>(OnSegmentTapped));
 
         public ActivityDetailViewModel(INavigationService navigationService, IStravaService stravaService) : base(navigationService)
@@ -152,6 +157,19 @@ namespace Kliva.ViewModels
             await _stravaService.GiveKudosAsync(SelectedActivity.Id.ToString());
             await LoadActivityDetails(SelectedActivity.Id.ToString());
             ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage>(new PivotMessage(Pivots.Kudos, true, true));
+        }
+
+        private async Task OnComment()
+        {
+            CommentContentDialog dialog = new CommentContentDialog();
+            ContentDialogResult result = await dialog.ShowAsync();
+
+            if (result == ContentDialogResult.Primary)
+            {
+                var t = dialog.Description;
+
+                ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage>(new PivotMessage(Pivots.Comments, true, true));
+            }
         }
     }
 }
