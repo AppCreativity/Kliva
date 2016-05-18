@@ -15,6 +15,7 @@ namespace Kliva.Services.Interfaces
         Task GiveKudosAsync(string activityId);
 
         Task<List<Comment>> GetCommentsAsync(string activityId);
+        Task PostComment(string activityId, string text);
 
         Task<List<Photo>> GetPhotosAsync(string activityId);
 

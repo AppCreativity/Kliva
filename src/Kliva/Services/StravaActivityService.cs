@@ -5,6 +5,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Kliva.Services.Performance;
 
@@ -343,6 +344,25 @@ namespace Kliva.Services
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Post a comment on the specified activity.
+        /// </summary>
+        /// <param name="activityId">The Strava ID of the activity you want to comment.</param>
+        /// <param name="text">The text that will be posted.</param>
+        public async Task PostComment(string activityId, string text)
+        {
+            try
+            {
+                var accessToken = await _settingsService.GetStoredStravaAccessTokenAsync();
+                string postUrl = $"{Endpoints.Activity}/{activityId}/comments?text={WebUtility.UrlEncode(text)}&access_token={accessToken}";
+                await _stravaWebClient.SendPostAsync(new Uri(postUrl));
+            }
+            catch (Exception)
+            {
+                //TODO: Glenn - Use logger to log errors ( Google )
+            }
         }
 
         /// <summary>

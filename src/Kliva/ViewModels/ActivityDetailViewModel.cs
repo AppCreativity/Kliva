@@ -164,10 +164,10 @@ namespace Kliva.ViewModels
             CommentContentDialog dialog = new CommentContentDialog();
             ContentDialogResult result = await dialog.ShowAsync();
 
-            if (result == ContentDialogResult.Primary)
+            if (result == ContentDialogResult.Primary && !string.IsNullOrEmpty(dialog.Description))
             {
-                var t = dialog.Description;
-
+                await _stravaService.PostComment(SelectedActivity.Id.ToString(), dialog.Description);
+                await LoadActivityDetails(SelectedActivity.Id.ToString());
                 ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage>(new PivotMessage(Pivots.Comments, true, true));
             }
         }
