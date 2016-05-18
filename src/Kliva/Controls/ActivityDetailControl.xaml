@@ -126,7 +126,7 @@
                             <core:EventTriggerBehavior EventName="ItemClick">
                                 <core:InvokeCommandAction Command="{x:Bind ViewModel.SegmentTappedCommand}" />
                             </core:EventTriggerBehavior>
-                        </interactivity:Interaction.Behaviors>                        
+                        </interactivity:Interaction.Behaviors>
                     </ListView>
                 </PivotItem>
                 <PivotItem x:Name="KudosPivot" Tag="Kudos">
