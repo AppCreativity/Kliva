@@ -84,7 +84,7 @@
                                       Visibility="{x:Bind ViewModel.HasKudoed, Mode=OneWay, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
                                       Command="{x:Bind ViewModel.KudosCommand}"/>
                         <AppBarButton Icon="Message"
-                                      Command="{x:Bind ViewModel.CommandCommand}"/>
+                                      Command="{x:Bind ViewModel.CommentCommand}"/>
                     </StackPanel>
                 </CommandBar.Content>
             </CommandBar>

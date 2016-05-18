@@ -5,6 +5,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
+using Windows.Foundation;
+using Windows.Graphics.Display;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml.Controls;
 using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
@@ -84,8 +87,8 @@ namespace Kliva.ViewModels
         private RelayCommand _kudosCommand;
         public RelayCommand KudosCommand => _kudosCommand ?? (_kudosCommand = new RelayCommand(async () => await OnKudos()));
 
-        private RelayCommand _commandCommand;
-        public RelayCommand CommandCommand => _commandCommand ?? (_commandCommand = new RelayCommand(async () => await OnComment()));
+        private RelayCommand _commentCommand;
+        public RelayCommand CommentCommand => _commentCommand ?? (_commentCommand = new RelayCommand(async () => await OnComment()));
 
         private RelayCommand _mapCommand;
         public RelayCommand MapCommand => _mapCommand ?? (_mapCommand = new RelayCommand(() => NavigationService.Navigate<MapPage>(SelectedActivity?.Map)));
@@ -162,6 +165,18 @@ namespace Kliva.ViewModels
         private async Task OnComment()
         {
             CommentContentDialog dialog = new CommentContentDialog();
+            var bounds = ApplicationView.GetForCurrentView().VisibleBounds;
+            var scaleFactor = DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel;
+            var size = new Size(bounds.Width * scaleFactor, bounds.Height * scaleFactor);
+
+            if (size.Width > 1000.0)
+            {
+                dialog.MinWidth = 500;
+                dialog.MinHeight = 250;
+            }
+            else
+                dialog.MinWidth = dialog.MinHeight = 300;
+
             ContentDialogResult result = await dialog.ShowAsync();
 
             if (result == ContentDialogResult.Primary && !string.IsNullOrEmpty(dialog.Description))

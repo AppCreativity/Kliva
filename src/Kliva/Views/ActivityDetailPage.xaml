@@ -25,6 +25,7 @@
                           Label="comment"
                           Icon="Message"
                           Foreground="White"
+                          Command="{x:Bind ViewModel.CommentCommand}"
                           />
         </CommandBar>
     </Page.BottomAppBar>
