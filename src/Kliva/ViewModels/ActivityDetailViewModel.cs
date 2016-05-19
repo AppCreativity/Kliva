@@ -1,13 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
+using Windows.Foundation;
+using Windows.Graphics.Display;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml.Controls;
 using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using Kliva.Controls;
 using Kliva.Messages;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
@@ -82,13 +87,16 @@ namespace Kliva.ViewModels
         private RelayCommand _kudosCommand;
         public RelayCommand KudosCommand => _kudosCommand ?? (_kudosCommand = new RelayCommand(async () => await OnKudos()));
 
+        private RelayCommand _commentCommand;
+        public RelayCommand CommentCommand => _commentCommand ?? (_commentCommand = new RelayCommand(async () => await OnComment()));
+
         private RelayCommand _mapCommand;
         public RelayCommand MapCommand => _mapCommand ?? (_mapCommand = new RelayCommand(() => NavigationService.Navigate<MapPage>(SelectedActivity?.Map)));
 
         private RelayCommand<ItemClickEventArgs> _athleteTappedCommand;
         public RelayCommand<ItemClickEventArgs> AthleteTappedCommand => _athleteTappedCommand ?? (_athleteTappedCommand = new RelayCommand<ItemClickEventArgs>(OnAthleteTapped));
 
-        private RelayCommand<ItemClickEventArgs> _segmentTappedCommand;
+        private RelayCommand<ItemClickEventArgs> _segmentTappedCommand;        
         public RelayCommand<ItemClickEventArgs> SegmentTappedCommand => _segmentTappedCommand ?? (_segmentTappedCommand = new RelayCommand<ItemClickEventArgs>(OnSegmentTapped));
 
         public ActivityDetailViewModel(INavigationService navigationService, IStravaService stravaService) : base(navigationService)
@@ -152,6 +160,31 @@ namespace Kliva.ViewModels
             await _stravaService.GiveKudosAsync(SelectedActivity.Id.ToString());
             await LoadActivityDetails(SelectedActivity.Id.ToString());
             ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage>(new PivotMessage(Pivots.Kudos, true, true));
+        }
+
+        private async Task OnComment()
+        {
+            CommentContentDialog dialog = new CommentContentDialog();
+            var bounds = ApplicationView.GetForCurrentView().VisibleBounds;
+            var scaleFactor = DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel;
+            var size = new Size(bounds.Width * scaleFactor, bounds.Height * scaleFactor);
+
+            if (size.Width > 1000.0)
+            {
+                dialog.MinWidth = 500;
+                dialog.MinHeight = 250;
+            }
+            else
+                dialog.MinWidth = dialog.MinHeight = 300;
+
+            ContentDialogResult result = await dialog.ShowAsync();
+
+            if (result == ContentDialogResult.Primary && !string.IsNullOrEmpty(dialog.Description))
+            {
+                await _stravaService.PostComment(SelectedActivity.Id.ToString(), dialog.Description);
+                await LoadActivityDetails(SelectedActivity.Id.ToString());
+                ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage>(new PivotMessage(Pivots.Comments, true, true));
+            }
         }
     }
 }

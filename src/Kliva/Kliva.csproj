@@ -115,6 +115,9 @@
     <Compile Include="Controls\ClubFeedControl.xaml.cs">
       <DependentUpon>ClubFeedControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CommentContentDialog.xaml.cs">
+      <DependentUpon>CommentContentDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\GoogleImageDependencyObject.cs" />
     <Compile Include="Controls\IconPivotHeader.xaml.cs">
       <DependentUpon>IconPivotHeader.xaml</DependentUpon>
@@ -291,6 +294,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ClubFeedControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\CommentContentDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

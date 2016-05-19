@@ -1,0 +1,25 @@
+﻿<ContentDialog x:Class="Kliva.Controls.CommentContentDialog"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:local="using:Kliva.Controls"
+               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+               mc:Ignorable="d"
+               Title="Add comment"
+               PrimaryButtonText="Ok"
+               SecondaryButtonText="Cancel"
+               PrimaryButtonClick="OnContentDialogPrimaryButtonClick"
+               SecondaryButtonClick="OnContentDialogSecondaryButtonClick">
+
+    <RelativePanel>
+        <TextBox x:Name="DescriptionTextBox"
+                 AcceptsReturn="True"
+                 TextWrapping="Wrap"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 PlaceholderText="Enter comment..."
+                 MaxHeight="480" MinHeight="150"
+                 Margin="0,10,0,0"
+                 RelativePanel.AlignLeftWithPanel="True"
+                 RelativePanel.AlignRightWithPanel="True" />
+    </RelativePanel>
+</ContentDialog>

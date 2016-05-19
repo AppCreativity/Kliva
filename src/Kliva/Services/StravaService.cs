@@ -254,6 +254,11 @@ namespace Kliva.Services
             return StravaActivityService.GiveKudosAsync(activityId);
         }
 
+        public Task PostComment(string activityId, string text)
+        {
+            return StravaActivityService.PostComment(activityId, text);
+        }
+
         public Task<List<ClubSummary>> GetClubsAsync()
         {
             return StravaClubService.GetClubsAsync();
