@@ -12,9 +12,9 @@ namespace Kliva.Models
             _stravaService = stravaService;
         }
 
-        protected override async Task<string> FetchData(int page, int pageSize)
+        protected override Task<string> FetchData(int page, int pageSize)
         {
-            return await _stravaService.GetMyActivityDataAsync(page, pageSize);
+            return _stravaService.GetMyActivityDataAsync(page, pageSize);
         }
     }
 }

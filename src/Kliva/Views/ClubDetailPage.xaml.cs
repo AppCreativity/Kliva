@@ -1,7 +1,4 @@
-﻿using Windows.UI.Xaml.Controls;
-using Kliva.ViewModels;
-
-namespace Kliva.Views
+﻿namespace Kliva.Views
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.

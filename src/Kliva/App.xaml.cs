@@ -1,6 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Threading;
 using Kliva.Controls;
-using Kliva.Services;
 using Kliva.Services.Interfaces;
 using Kliva.Views;
 using Microsoft.Practices.ServiceLocation;

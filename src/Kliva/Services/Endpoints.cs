@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Kliva.Services
+﻿namespace Kliva.Services
 {
     /// <summary>
     /// This static class contains the Strava API endpoint Urls.

@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using Windows.Globalization.NumberFormatting;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
-using Windows.Storage.Search;
 using GalaSoft.MvvmLight.Threading;
 using Kliva.Services;
 

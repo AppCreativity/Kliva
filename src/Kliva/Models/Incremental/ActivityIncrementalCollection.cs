@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Kliva.Services;
 using Kliva.Services.Interfaces;
 using Microsoft.Practices.ServiceLocation;
 

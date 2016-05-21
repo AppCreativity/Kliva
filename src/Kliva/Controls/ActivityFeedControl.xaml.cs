@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Linq;
+﻿using System.Linq;
 using Windows.UI.Xaml;
 using Kliva.ViewModels.Interfaces;
 using Windows.UI.Xaml.Controls;

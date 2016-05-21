@@ -1,5 +1,4 @@
-﻿using System;
-using Kliva.Models;
+﻿using Kliva.Models;
 using Kliva.Services.Interfaces;
 using Windows.ApplicationModel;
 

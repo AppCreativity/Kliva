@@ -1,5 +1,4 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
-using Kliva.Models;
 
 namespace Kliva.Messages
 {

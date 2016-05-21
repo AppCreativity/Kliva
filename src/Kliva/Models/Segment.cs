@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using Newtonsoft.Json;
 
 namespace Kliva.Models
