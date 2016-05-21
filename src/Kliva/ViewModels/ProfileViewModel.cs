@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
@@ -29,6 +30,13 @@ namespace Kliva.ViewModels
         {
             get { return _athlete; }
             set { Set(() => Athlete, ref _athlete, value); }
+        }
+
+        private bool _authenticatedUser = false;
+        public bool AuthenticatedUser
+        {
+            get { return _authenticatedUser; }
+            set { Set(() => AuthenticatedUser, ref _authenticatedUser, value); }
         }
 
         private ObservableCollection<AthleteSummary> _followers = new ObservableCollection<AthleteSummary>();
@@ -86,10 +94,14 @@ namespace Kliva.ViewModels
             ClearProperties();
             
             string currentParameter = (string)NavigationService.CurrentParameter;
-            bool authenticatedUser = string.IsNullOrEmpty(currentParameter);
-            if (authenticatedUser)
-            {
-                Athlete = await _stravaService.GetAthleteAsync();
+
+            //Could be we are starting the profile page with a athlete id that is the actual current authenticated athlete!
+            //So we need to verify this!
+            Athlete = await _stravaService.GetAthleteAsync();
+            AuthenticatedUser = string.IsNullOrEmpty(currentParameter) || currentParameter.Equals(Athlete.Id.ToString(), StringComparison.OrdinalIgnoreCase);
+
+            if (AuthenticatedUser)
+            {                
                 await GetStarredSegmentsAsync();
             }
             else
@@ -104,15 +116,15 @@ namespace Kliva.ViewModels
 
                 _currentAthleteId = Athlete.Id.ToString();
 
-                tasks.Add(GetFollowersAsync(_currentAthleteId, authenticatedUser));
-                tasks.Add(GetFriendsAsync(_currentAthleteId, authenticatedUser));
+                tasks.Add(GetFollowersAsync(_currentAthleteId, AuthenticatedUser));
+                tasks.Add(GetFriendsAsync(_currentAthleteId, AuthenticatedUser));
                 if(!string.IsNullOrEmpty(currentParameter))
                     tasks.Add(GetMutualFriendsAsync(_currentAthleteId));
                 tasks.Add(GetKomsAsync(_currentAthleteId));
 
                 await Task.WhenAll(tasks);
             }
-        }
+        }        
 
         private void ClearProperties()
         {

@@ -23,6 +23,15 @@
         Photos
     }
 
+    public enum ProfilePivots
+    {
+        Friends,
+        Followers,
+        MutualFriends,
+        Koms,
+        StarredSegments
+    }
+
     public enum DistanceUnitType
     {
         Kilometres,
