@@ -9,6 +9,7 @@
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     NavigationCacheMode="Disabled"
     mc:Ignorable="d"
+    Loaded="OnProfilePageLoaded"
     DataContext="{Binding Profile, Source={StaticResource Locator}}">
 
     <interactivity:Interaction.Behaviors>

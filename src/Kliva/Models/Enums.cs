@@ -14,7 +14,7 @@
         Mobile
     }
 
-    public enum Pivots
+    public enum ActivityPivots
     {
         Statistics,
         Kudos,

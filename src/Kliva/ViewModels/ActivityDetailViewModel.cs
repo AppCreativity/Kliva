@@ -145,8 +145,8 @@ namespace Kliva.ViewModels
                 HasKudoed = athlete.Id == SelectedActivity.Athlete.Id || SelectedActivity.HasKudoed;
 
                 //TODO: Glenn - Why oh why are we not yet able to show/hide PivotItems through Visibility bindable
-                ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage>(new PivotMessage(Pivots.Segments, HasSegments));
-                ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage>(new PivotMessage(Pivots.Photos, HasPhotos));
+                ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage<ActivityPivots>>(new PivotMessage<ActivityPivots>(ActivityPivots.Segments, HasSegments), Tokens.ActivityPivotMessage);
+                ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage<ActivityPivots>>(new PivotMessage<ActivityPivots>(ActivityPivots.Photos, HasPhotos), Tokens.ActivityPivotMessage);
 
                 ServiceLocator.Current.GetInstance<IMessenger>()
                     .Send<PolylineMessage>(!string.IsNullOrEmpty(activity?.Map.SummaryPolyline)
@@ -159,7 +159,7 @@ namespace Kliva.ViewModels
         {
             await _stravaService.GiveKudosAsync(SelectedActivity.Id.ToString());
             await LoadActivityDetails(SelectedActivity.Id.ToString());
-            ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage>(new PivotMessage(Pivots.Kudos, true, true));
+            ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage<ActivityPivots>>(new PivotMessage<ActivityPivots>(ActivityPivots.Kudos, true, true), Tokens.ActivityPivotMessage);
         }
 
         private async Task OnComment()
@@ -183,7 +183,7 @@ namespace Kliva.ViewModels
             {
                 await _stravaService.PostComment(SelectedActivity.Id.ToString(), dialog.Description);
                 await LoadActivityDetails(SelectedActivity.Id.ToString());
-                ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage>(new PivotMessage(Pivots.Comments, true, true));
+                ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage<ActivityPivots>>(new PivotMessage<ActivityPivots>(ActivityPivots.Comments, true, true));
             }
         }
     }

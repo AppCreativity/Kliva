@@ -3,13 +3,13 @@ using Kliva.Models;
 
 namespace Kliva.Messages
 {
-    public class PivotMessage : MessageBase
+    public class PivotMessage<T> : MessageBase
     {
-        public Pivots Pivot { get; set; }
+        public T Pivot { get; set; }
         public bool Visible { get; set; }
         public bool? Show { get; set; }
 
-        public PivotMessage(Pivots pivot, bool visible, bool? show = null)
+        public PivotMessage(T pivot, bool visible, bool? show = null)
         {
             Pivot = pivot;
             Visible = visible;
