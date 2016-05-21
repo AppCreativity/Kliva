@@ -5,9 +5,12 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
+using Kliva.Messages;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
+using Microsoft.Practices.ServiceLocation;
 
 namespace Kliva.ViewModels
 {
@@ -99,6 +102,7 @@ namespace Kliva.ViewModels
             //So we need to verify this!
             Athlete = await _stravaService.GetAthleteAsync();
             AuthenticatedUser = string.IsNullOrEmpty(currentParameter) || currentParameter.Equals(Athlete.Id.ToString(), StringComparison.OrdinalIgnoreCase);
+            ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage<ProfilePivots>>(new PivotMessage<ProfilePivots>(ProfilePivots.MutualFriends, !AuthenticatedUser), Tokens.ProfilePivotMessage);
 
             if (AuthenticatedUser)
             {                
