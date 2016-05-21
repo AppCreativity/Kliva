@@ -23,7 +23,7 @@ namespace Kliva.Controls
         //public IStravaViewModel ViewModel => DataContext as IStravaViewModel;
         public ActivityDetailViewModel ViewModel => DataContext as ActivityDetailViewModel;
 
-        private readonly Dictionary<Pivots, Tuple<int, PivotItem>> _pivotDictionary = new Dictionary<Pivots, Tuple<int, PivotItem>>();
+        private readonly Dictionary<ActivityPivots, Tuple<int, PivotItem>> _pivotDictionary = new Dictionary<ActivityPivots, Tuple<int, PivotItem>>();
 
         public ActivityDetailControl()
         {
@@ -32,10 +32,10 @@ namespace Kliva.Controls
             //DataContextChanged += (sender, arg) => this.Bindings.Update();
 
             ServiceLocator.Current.GetInstance<IMessenger>().Register<PolylineMessage>(this, Tokens.ActivityPolylineMessage, async message => await DrawPolyline(message.Geopositions));
-            ServiceLocator.Current.GetInstance<IMessenger>().Register<PivotMessage>(this, AdjustPivots);
+            ServiceLocator.Current.GetInstance<IMessenger>().Register<PivotMessage<ActivityPivots>>(this, Tokens.ActivityPivotMessage, AdjustPivots);
         }
 
-        private void AdjustPivots(PivotMessage message)
+        private void AdjustPivots(PivotMessage<ActivityPivots> message)
         {
             foreach (PivotItem item in ActivityPivot.Items.ToList())
             {
@@ -113,7 +113,7 @@ namespace Kliva.Controls
             int pivotIndex = 0;
             foreach (PivotItem item in ActivityPivot.Items.ToList())
             {
-                _pivotDictionary.Add(Enum<Pivots>.Parse((string) item.Tag), Tuple.Create(pivotIndex, item));
+                _pivotDictionary.Add(Enum<ActivityPivots>.Parse((string) item.Tag), Tuple.Create(pivotIndex, item));
                 ++pivotIndex;
             }
         }

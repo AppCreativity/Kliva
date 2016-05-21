@@ -1,12 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
+using Kliva.Messages;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
+using Microsoft.Practices.ServiceLocation;
 
 namespace Kliva.ViewModels
 {
@@ -29,6 +33,13 @@ namespace Kliva.ViewModels
         {
             get { return _athlete; }
             set { Set(() => Athlete, ref _athlete, value); }
+        }
+
+        private bool _authenticatedUser = false;
+        public bool AuthenticatedUser
+        {
+            get { return _authenticatedUser; }
+            set { Set(() => AuthenticatedUser, ref _authenticatedUser, value); }
         }
 
         private ObservableCollection<AthleteSummary> _followers = new ObservableCollection<AthleteSummary>();
@@ -86,10 +97,15 @@ namespace Kliva.ViewModels
             ClearProperties();
             
             string currentParameter = (string)NavigationService.CurrentParameter;
-            bool authenticatedUser = string.IsNullOrEmpty(currentParameter);
-            if (authenticatedUser)
-            {
-                Athlete = await _stravaService.GetAthleteAsync();
+
+            //Could be we are starting the profile page with a athlete id that is the actual current authenticated athlete!
+            //So we need to verify this!
+            Athlete = await _stravaService.GetAthleteAsync();
+            AuthenticatedUser = string.IsNullOrEmpty(currentParameter) || currentParameter.Equals(Athlete.Id.ToString(), StringComparison.OrdinalIgnoreCase);
+            ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage<ProfilePivots>>(new PivotMessage<ProfilePivots>(ProfilePivots.MutualFriends, !AuthenticatedUser), Tokens.ProfilePivotMessage);
+
+            if (AuthenticatedUser)
+            {                
                 await GetStarredSegmentsAsync();
             }
             else
@@ -104,15 +120,15 @@ namespace Kliva.ViewModels
 
                 _currentAthleteId = Athlete.Id.ToString();
 
-                tasks.Add(GetFollowersAsync(_currentAthleteId, authenticatedUser));
-                tasks.Add(GetFriendsAsync(_currentAthleteId, authenticatedUser));
+                tasks.Add(GetFollowersAsync(_currentAthleteId, AuthenticatedUser));
+                tasks.Add(GetFriendsAsync(_currentAthleteId, AuthenticatedUser));
                 if(!string.IsNullOrEmpty(currentParameter))
                     tasks.Add(GetMutualFriendsAsync(_currentAthleteId));
                 tasks.Add(GetKomsAsync(_currentAthleteId));
 
                 await Task.WhenAll(tasks);
             }
-        }
+        }        
 
         private void ClearProperties()
         {

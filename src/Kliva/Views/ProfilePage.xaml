@@ -9,6 +9,7 @@
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     NavigationCacheMode="Disabled"
     mc:Ignorable="d"
+    Loaded="OnProfilePageLoaded"
     DataContext="{Binding Profile, Source={StaticResource Locator}}">
 
     <interactivity:Interaction.Behaviors>
@@ -72,8 +73,10 @@
                     <ListView ItemsSource="{x:Bind ViewModel.Followers, Mode=OneWay}"
                               ItemTemplate="{StaticResource KudosListItemTemplate}" />
                 </PivotItem>
-                <PivotItem Tag="MutualFriends"
-                           Header="both following">
+                <PivotItem x:Name="MutualFriendsPivot" Tag="MutualFriends"
+                           Header="both following"
+                           x:DeferLoadStrategy="Lazy"
+                           Visibility="{x:Bind ViewModel.AuthenticatedUser, Mode=OneWay, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
                     <ListView ItemsSource="{x:Bind ViewModel.BothFollowing, Mode=OneWay}"
                               ItemTemplate="{StaticResource KudosListItemTemplate}" />
                 </PivotItem>

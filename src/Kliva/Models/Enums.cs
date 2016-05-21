@@ -14,13 +14,22 @@
         Mobile
     }
 
-    public enum Pivots
+    public enum ActivityPivots
     {
         Statistics,
         Kudos,
         Comments,
         Segments,
         Photos
+    }
+
+    public enum ProfilePivots
+    {
+        Friends,
+        Followers,
+        MutualFriends,
+        Koms,
+        StarredSegments
     }
 
     public enum DistanceUnitType
