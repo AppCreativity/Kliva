@@ -79,6 +79,13 @@ namespace Kliva.ViewModels
             set { Set(() => HasKudoed, ref _hasKudoed, value); }
         }
 
+        private bool _isEditEnabled = false;
+        public bool IsEditEnabled
+        {
+            get { return _isEditEnabled; }
+            set { Set(() => IsEditEnabled, ref _isEditEnabled, value); }
+        }
+
         public int KudosCount => SelectedActivity?.KudosCount ?? 0;
         public int CommentCount => SelectedActivity?.CommentCount ?? 0;
         public int PhotoCount => SelectedActivity?.TotalPhotoCount ?? 0;
@@ -92,11 +99,14 @@ namespace Kliva.ViewModels
         private RelayCommand _mapCommand;
         public RelayCommand MapCommand => _mapCommand ?? (_mapCommand = new RelayCommand(() => NavigationService.Navigate<MapPage>(SelectedActivity?.Map)));
 
+        private RelayCommand _editCommand;
+        public RelayCommand EditCommand => _editCommand ?? (_editCommand = new RelayCommand(async () => await OnEdit()));
+
         private RelayCommand<ItemClickEventArgs> _athleteTappedCommand;
         public RelayCommand<ItemClickEventArgs> AthleteTappedCommand => _athleteTappedCommand ?? (_athleteTappedCommand = new RelayCommand<ItemClickEventArgs>(OnAthleteTapped));
 
         private RelayCommand<ItemClickEventArgs> _segmentTappedCommand;        
-        public RelayCommand<ItemClickEventArgs> SegmentTappedCommand => _segmentTappedCommand ?? (_segmentTappedCommand = new RelayCommand<ItemClickEventArgs>(OnSegmentTapped));
+        public RelayCommand<ItemClickEventArgs> SegmentTappedCommand => _segmentTappedCommand ?? (_segmentTappedCommand = new RelayCommand<ItemClickEventArgs>(OnSegmentTapped));        
 
         public ActivityDetailViewModel(INavigationService navigationService, IStravaService stravaService) : base(navigationService)
         {
@@ -142,6 +152,7 @@ namespace Kliva.ViewModels
                 //But we do get the photo count, so we also need to verify the current user vs the one from the activity
                 HasPhotos = athlete.Id == SelectedActivity.Athlete.Id && SelectedActivity.TotalPhotoCount > 0;
                 HasKudoed = athlete.Id == SelectedActivity.Athlete.Id || SelectedActivity.HasKudoed;
+                IsEditEnabled = athlete.Id == SelectedActivity.Athlete.Id;
 
                 //TODO: Glenn - Why oh why are we not yet able to show/hide PivotItems through Visibility bindable
                 ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage<ActivityPivots>>(new PivotMessage<ActivityPivots>(ActivityPivots.Segments, HasSegments), Tokens.ActivityPivotMessage);
@@ -184,6 +195,11 @@ namespace Kliva.ViewModels
                 await LoadActivityDetails(SelectedActivity.Id.ToString());
                 ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage<ActivityPivots>>(new PivotMessage<ActivityPivots>(ActivityPivots.Comments, true, true));
             }
+        }
+
+        private async Task OnEdit()
+        {
+            
         }
     }
 }
