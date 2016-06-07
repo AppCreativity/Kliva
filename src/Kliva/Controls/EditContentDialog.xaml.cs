@@ -16,6 +16,7 @@ namespace Kliva.Controls
 
         private void OnContentDialogPrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
+            ActivityName = ActivityNameTextBox.Text;
         }
 
         private void OnContentDialogSecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)

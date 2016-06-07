@@ -195,9 +195,10 @@ namespace Kliva.ViewModels
 
             ContentDialogResult result = await dialog.ShowAsync();
 
-            if (result == ContentDialogResult.Primary && !string.IsNullOrEmpty(dialog.ActivityName))
+            if (result == ContentDialogResult.Primary && !string.IsNullOrEmpty(dialog.ActivityName) && !SelectedActivity.Name.Equals(dialog.ActivityName, StringComparison.OrdinalIgnoreCase))
             {
-                
+                await _stravaService.PutUpdate(SelectedActivity.Id.ToString(), dialog.ActivityName);
+                await LoadActivityDetails(SelectedActivity.Id.ToString());
             }
         }
     }

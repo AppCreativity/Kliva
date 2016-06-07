@@ -42,6 +42,8 @@ namespace Kliva.Services.Interfaces
 
         Task PostComment(string activityId, string text);
 
+        Task PutUpdate(string activityId, string name);
+
         Task<List<ClubSummary>> GetClubsAsync();
         Task<Club> GetClubAsync(string id);
 

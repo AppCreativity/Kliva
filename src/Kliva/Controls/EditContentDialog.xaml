@@ -12,7 +12,7 @@
                SecondaryButtonClick="OnContentDialogSecondaryButtonClick">
 
     <RelativePanel>
-        <TextBox x:Name="DescriptionTextBox"
+        <TextBox x:Name="ActivityNameTextBox"
                  AcceptsReturn="True"
                  TextWrapping="Wrap"
                  ScrollViewer.VerticalScrollBarVisibility="Auto"
