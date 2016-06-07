@@ -433,6 +433,8 @@
                                 <AdaptiveTrigger MinWindowWidth="320" />
                             </VisualState.StateTriggers>
                             <VisualState.Setters>
+                                <!-- TODO: Glenn - This is not 100% correct! Because small view on a non Windows 10 Mobile device would also need 15 margin Right because of the 'fat' scrollbar, on WP10 scrollbar design in 'small' -->
+                                <Setter Target="ClubListItemPanel.Padding" Value="10,0,10,10" />
                                 <Setter Target="ClubProfilePicture.Style" Value="{StaticResource ProfileEllipseMobile}" />
                             </VisualState.Setters>
                         </VisualState>
@@ -441,12 +443,13 @@
                                 <AdaptiveTrigger MinWindowWidth="720" />
                             </VisualState.StateTriggers>
                             <VisualState.Setters>
+                                <Setter Target="ClubListItemPanel.Padding" Value="10,0,15,10" />
                                 <Setter Target="ClubProfilePicture.Style" Value="{StaticResource ProfileEllipseDesktop}" />
                             </VisualState.Setters>
                         </VisualState>
                     </VisualStateGroup>
                 </VisualStateManager.VisualStateGroups>
-                <RelativePanel Margin="0,0,0,10">
+                <RelativePanel x:Name="ClubListItemPanel">
                     <Ellipse x:Name="ClubProfilePicture"
                              Margin="0,5,0,5"
                              RelativePanel.AlignLeftWithPanel="True">
@@ -478,6 +481,8 @@
                                 <AdaptiveTrigger MinWindowWidth="320" />
                             </VisualState.StateTriggers>
                             <VisualState.Setters>
+                                <!-- TODO: Glenn - This is not 100% correct! Because small view on a non Windows 10 Mobile device would also need 15 margin Right because of the 'fat' scrollbar, on WP10 scrollbar design in 'small' -->
+                                <Setter Target="ClubMembersListItemPanel.Padding" Value="10,0,10,10" />
                                 <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseMobile}" />
                             </VisualState.Setters>
                         </VisualState>
@@ -486,12 +491,13 @@
                                 <AdaptiveTrigger MinWindowWidth="720" />
                             </VisualState.StateTriggers>
                             <VisualState.Setters>
+                                <Setter Target="ClubMembersListItemPanel.Padding" Value="10,0,15,10" />
                                 <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseDesktop}" />
                             </VisualState.Setters>
                         </VisualState>
                     </VisualStateGroup>
                 </VisualStateManager.VisualStateGroups>
-                <RelativePanel>
+                <RelativePanel x:Name="ClubMembersListItemPanel">
                     <Ellipse x:Name="AthleteProfilePicture"
                              Margin="0,5,0,5"
                              RelativePanel.AlignLeftWithPanel="True">

@@ -50,17 +50,20 @@ namespace Kliva.ViewModels
             get { return _selectedClub; }
             set
             {
-                if (Set(() => SelectedClub, ref _selectedClub, value) && value != null)
+                if (value != null)
                 {
-                    {
-                        switch (Enum<AppTarget>.Parse(CurrentState.Name))
-                        {
-                            case AppTarget.Mobile:
-                                NavigationService.Navigate<ClubDetailPage>();
-                                break;
-                        }
+                    bool valueSet = Set(() => SelectedClub, ref _selectedClub, value);
 
-                        MessengerInstance.Send<ClubSummaryMessage>(new ClubSummaryMessage(_selectedClub));
+                    switch (Enum<AppTarget>.Parse(CurrentState.Name))
+                    {
+                        case AppTarget.Mobile:
+                            NavigationService.Navigate<ClubDetailPage>();
+                            MessengerInstance.Send<ClubSummaryMessage>(new ClubSummaryMessage(_selectedClub));
+                            break;
+                        default:
+                            if(valueSet)
+                                MessengerInstance.Send<ClubSummaryMessage>(new ClubSummaryMessage(_selectedClub));
+                            break;
                     }
                 }
             }
