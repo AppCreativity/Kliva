@@ -118,6 +118,9 @@
     <Compile Include="Controls\CommentContentDialog.xaml.cs">
       <DependentUpon>CommentContentDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\EditContentDialog.xaml.cs">
+      <DependentUpon>EditContentDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\GoogleImageDependencyObject.cs" />
     <Compile Include="Controls\IconPivotHeader.xaml.cs">
       <DependentUpon>IconPivotHeader.xaml</DependentUpon>
@@ -134,6 +137,7 @@
     <Compile Include="Converters\SecondsToTimeStringConverter.cs" />
     <Compile Include="Converters\SpeedUnitToStringConverter.cs" />
     <Compile Include="Converters\XBindItemCastingConverter.cs" />
+    <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Helpers\Converters.cs" />
     <Compile Include="Helpers\DateTimeFormatHelper.cs" />
@@ -298,6 +302,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\CommentContentDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\EditContentDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -12,6 +12,7 @@ using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Kliva.Controls;
+using Kliva.Extensions;
 using Kliva.Messages;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
@@ -175,17 +176,7 @@ namespace Kliva.ViewModels
         private async Task OnComment()
         {
             CommentContentDialog dialog = new CommentContentDialog();
-            var bounds = ApplicationView.GetForCurrentView().VisibleBounds;
-            var scaleFactor = DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel;
-            var size = new Size(bounds.Width * scaleFactor, bounds.Height * scaleFactor);
-
-            if (size.Width > 1000.0)
-            {
-                dialog.MinWidth = 500;
-                dialog.MinHeight = 250;
-            }
-            else
-                dialog.MinWidth = dialog.MinHeight = 300;
+            dialog.AdjustSize();
 
             ContentDialogResult result = await dialog.ShowAsync();
 
@@ -199,7 +190,15 @@ namespace Kliva.ViewModels
 
         private async Task OnEdit()
         {
-            
+            EditContentDialog dialog = new EditContentDialog(SelectedActivity.Name);
+            dialog.AdjustSize();
+
+            ContentDialogResult result = await dialog.ShowAsync();
+
+            if (result == ContentDialogResult.Primary && !string.IsNullOrEmpty(dialog.ActivityName))
+            {
+                
+            }
         }
     }
 }
