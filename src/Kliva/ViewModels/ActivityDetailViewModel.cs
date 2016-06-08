@@ -121,6 +121,7 @@ namespace Kliva.ViewModels
             Comments.Clear();
             RelatedAthletes.Clear();
 
+            //TODO: Glenn - Why aren't we receiving private activities?
             var activity = await _stravaService.GetActivityAsync(activityId, true);
             var athlete = await _stravaService.GetAthleteAsync();
 
@@ -190,14 +191,14 @@ namespace Kliva.ViewModels
 
         private async Task OnEdit()
         {
-            EditContentDialog dialog = new EditContentDialog(SelectedActivity.Name, SelectedActivity.IsCommute);
+            EditContentDialog dialog = new EditContentDialog(SelectedActivity.Name, SelectedActivity.IsCommute, SelectedActivity.IsPrivate);
             dialog.AdjustSize();
 
             ContentDialogResult result = await dialog.ShowAsync();
 
             if (result == ContentDialogResult.Primary && !string.IsNullOrEmpty(dialog.ActivityName))
             {
-                await _stravaService.PutUpdate(SelectedActivity.Id.ToString(), dialog.ActivityName, dialog.ActivityCommute);
+                await _stravaService.PutUpdate(SelectedActivity.Id.ToString(), dialog.ActivityName, dialog.ActivityCommute, dialog.ActivityPrivate);
                 await LoadActivityDetails(SelectedActivity.Id.ToString());
             }
         }

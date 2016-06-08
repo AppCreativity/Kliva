@@ -28,5 +28,11 @@
                       Margin="0,10,0,0"
                       RelativePanel.AlignLeftWith="ActivityNameTextBox"
                       RelativePanel.Below="ActivityNameTextBox" />
+        <ToggleSwitch x:Name="ActivityPrivateToggle"
+                      Header="private"
+                      IsOn="{Binding ActivityPrivate}"
+                      Margin="0,10,0,0"
+                      RelativePanel.AlignLeftWith="ActivityNameTextBox"
+                      RelativePanel.Below="ActivityCommuteToggle" />
     </RelativePanel>
 </ContentDialog>

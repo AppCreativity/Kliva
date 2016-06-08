@@ -259,9 +259,9 @@ namespace Kliva.Services
             return StravaActivityService.PostComment(activityId, text);
         }
 
-        public Task PutUpdate(string activityId, string name, bool commute)
+        public Task PutUpdate(string activityId, string name, bool commute, bool isPrivate)
         {
-            return StravaActivityService.PutUpdate(activityId, name, commute);
+            return StravaActivityService.PutUpdate(activityId, name, commute, isPrivate);
         }
 
         public Task<List<ClubSummary>> GetClubsAsync()
