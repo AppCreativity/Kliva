@@ -190,14 +190,14 @@ namespace Kliva.ViewModels
 
         private async Task OnEdit()
         {
-            EditContentDialog dialog = new EditContentDialog(SelectedActivity.Name);
+            EditContentDialog dialog = new EditContentDialog(SelectedActivity.Name, SelectedActivity.IsCommute);
             dialog.AdjustSize();
 
             ContentDialogResult result = await dialog.ShowAsync();
 
-            if (result == ContentDialogResult.Primary && !string.IsNullOrEmpty(dialog.ActivityName) && !SelectedActivity.Name.Equals(dialog.ActivityName, StringComparison.OrdinalIgnoreCase))
+            if (result == ContentDialogResult.Primary && !string.IsNullOrEmpty(dialog.ActivityName))
             {
-                await _stravaService.PutUpdate(SelectedActivity.Id.ToString(), dialog.ActivityName);
+                await _stravaService.PutUpdate(SelectedActivity.Id.ToString(), dialog.ActivityName, dialog.ActivityCommute);
                 await LoadActivityDetails(SelectedActivity.Id.ToString());
             }
         }

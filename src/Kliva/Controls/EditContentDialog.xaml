@@ -20,6 +20,13 @@
                  Text="{Binding ActivityName}"
                  Margin="0,10,0,0"
                  RelativePanel.AlignLeftWithPanel="True"
-                 RelativePanel.AlignRightWithPanel="True" />
+                 RelativePanel.AlignRightWithPanel="True"
+                 Header="name"/>
+        <ToggleSwitch x:Name="ActivityCommuteToggle"
+                      Header="commute"
+                      IsOn="{Binding ActivityCommute}"
+                      Margin="0,10,0,0"
+                      RelativePanel.AlignLeftWith="ActivityNameTextBox"
+                      RelativePanel.Below="ActivityNameTextBox" />
     </RelativePanel>
 </ContentDialog>
