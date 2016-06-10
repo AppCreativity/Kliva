@@ -17,6 +17,8 @@ namespace Kliva.Services.Interfaces
         Task<List<Comment>> GetCommentsAsync(string activityId);
         Task PostComment(string activityId, string text);
 
+        Task PutUpdate(string activityId, string name, bool commute, bool isPrivate, string gearID);
+
         Task<List<Photo>> GetPhotosAsync(string activityId);
 
         Task<string> GetFriendActivityDataAsync(int page, int pageSize);

@@ -19,14 +19,20 @@
                           Icon="Like"
                           Foreground="White"
                           Visibility="{x:Bind ViewModel.HasKudoed, Mode=OneWay, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
-                          Command="{x:Bind ViewModel.KudosCommand}"
-                          />
+                          Command="{x:Bind ViewModel.KudosCommand}"/>
+            
             <AppBarButton x:Name="AppBarComment"
                           Label="comment"
                           Icon="Message"
                           Foreground="White"
-                          Command="{x:Bind ViewModel.CommentCommand}"
-                          />
+                          Command="{x:Bind ViewModel.CommentCommand}"/>
+            
+            <AppBarButton x:Name="AppBarEdit"
+                          Label="edit"
+                          Icon="Edit"
+                          Foreground="White"
+                          Visibility="{x:Bind ViewModel.IsEditEnabled, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
+                          Command="{x:Bind ViewModel.EditCommand}"/>
         </CommandBar>
     </Page.BottomAppBar>
 

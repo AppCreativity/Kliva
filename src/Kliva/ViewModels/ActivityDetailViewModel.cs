@@ -12,6 +12,7 @@ using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Kliva.Controls;
+using Kliva.Extensions;
 using Kliva.Messages;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
@@ -23,6 +24,7 @@ namespace Kliva.ViewModels
     public class ActivityDetailViewModel : KlivaBaseViewModel
     {
         private readonly IStravaService _stravaService;
+        private Athlete _athlete;
 
         private Activity _selectedActivity;
         public Activity SelectedActivity
@@ -79,6 +81,13 @@ namespace Kliva.ViewModels
             set { Set(() => HasKudoed, ref _hasKudoed, value); }
         }
 
+        private bool _isEditEnabled = false;
+        public bool IsEditEnabled
+        {
+            get { return _isEditEnabled; }
+            set { Set(() => IsEditEnabled, ref _isEditEnabled, value); }
+        }
+
         public int KudosCount => SelectedActivity?.KudosCount ?? 0;
         public int CommentCount => SelectedActivity?.CommentCount ?? 0;
         public int PhotoCount => SelectedActivity?.TotalPhotoCount ?? 0;
@@ -92,11 +101,14 @@ namespace Kliva.ViewModels
         private RelayCommand _mapCommand;
         public RelayCommand MapCommand => _mapCommand ?? (_mapCommand = new RelayCommand(() => NavigationService.Navigate<MapPage>(SelectedActivity?.Map)));
 
+        private RelayCommand _editCommand;
+        public RelayCommand EditCommand => _editCommand ?? (_editCommand = new RelayCommand(async () => await OnEdit()));
+
         private RelayCommand<ItemClickEventArgs> _athleteTappedCommand;
         public RelayCommand<ItemClickEventArgs> AthleteTappedCommand => _athleteTappedCommand ?? (_athleteTappedCommand = new RelayCommand<ItemClickEventArgs>(OnAthleteTapped));
 
         private RelayCommand<ItemClickEventArgs> _segmentTappedCommand;        
-        public RelayCommand<ItemClickEventArgs> SegmentTappedCommand => _segmentTappedCommand ?? (_segmentTappedCommand = new RelayCommand<ItemClickEventArgs>(OnSegmentTapped));
+        public RelayCommand<ItemClickEventArgs> SegmentTappedCommand => _segmentTappedCommand ?? (_segmentTappedCommand = new RelayCommand<ItemClickEventArgs>(OnSegmentTapped));        
 
         public ActivityDetailViewModel(INavigationService navigationService, IStravaService stravaService) : base(navigationService)
         {
@@ -110,8 +122,9 @@ namespace Kliva.ViewModels
             Comments.Clear();
             RelatedAthletes.Clear();
 
+            //TODO: Glenn - Why aren't we receiving private activities?
             var activity = await _stravaService.GetActivityAsync(activityId, true);
-            var athlete = await _stravaService.GetAthleteAsync();
+            _athlete = await _stravaService.GetAthleteAsync();
 
             if (activity != null)
             {
@@ -140,8 +153,9 @@ namespace Kliva.ViewModels
 
                 //Currently the Public API of Strava will not give us the Photo links for 'other' athletes then the one logged in
                 //But we do get the photo count, so we also need to verify the current user vs the one from the activity
-                HasPhotos = athlete.Id == SelectedActivity.Athlete.Id && SelectedActivity.TotalPhotoCount > 0;
-                HasKudoed = athlete.Id == SelectedActivity.Athlete.Id || SelectedActivity.HasKudoed;
+                HasPhotos = _athlete.Id == SelectedActivity.Athlete.Id && SelectedActivity.TotalPhotoCount > 0;
+                HasKudoed = _athlete.Id == SelectedActivity.Athlete.Id || SelectedActivity.HasKudoed;
+                IsEditEnabled = _athlete.Id == SelectedActivity.Athlete.Id;
 
                 //TODO: Glenn - Why oh why are we not yet able to show/hide PivotItems through Visibility bindable
                 ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage<ActivityPivots>>(new PivotMessage<ActivityPivots>(ActivityPivots.Segments, HasSegments), Tokens.ActivityPivotMessage);
@@ -164,17 +178,7 @@ namespace Kliva.ViewModels
         private async Task OnComment()
         {
             CommentContentDialog dialog = new CommentContentDialog();
-            var bounds = ApplicationView.GetForCurrentView().VisibleBounds;
-            var scaleFactor = DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel;
-            var size = new Size(bounds.Width * scaleFactor, bounds.Height * scaleFactor);
-
-            if (size.Width > 1000.0)
-            {
-                dialog.MinWidth = 500;
-                dialog.MinHeight = 250;
-            }
-            else
-                dialog.MinWidth = dialog.MinHeight = 300;
+            dialog.AdjustSize();
 
             ContentDialogResult result = await dialog.ShowAsync();
 
@@ -183,6 +187,33 @@ namespace Kliva.ViewModels
                 await _stravaService.PostComment(SelectedActivity.Id.ToString(), dialog.Description);
                 await LoadActivityDetails(SelectedActivity.Id.ToString());
                 ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage<ActivityPivots>>(new PivotMessage<ActivityPivots>(ActivityPivots.Comments, true, true));
+            }
+        }
+
+        private async Task OnEdit()
+        {
+            List<GearSummary> gear = null;
+
+            switch (SelectedActivity.Type)
+            {
+                case ActivityType.Ride:
+                case ActivityType.EBikeRide:
+                    gear = _athlete.Bikes.Cast<GearSummary>().ToList();
+                    break;
+                case ActivityType.Run:
+                    gear = _athlete.Shoes.Cast<GearSummary>().ToList();
+                    break;
+            }
+
+            EditContentDialog dialog = new EditContentDialog(SelectedActivity.Name, SelectedActivity.IsCommute, SelectedActivity.IsPrivate, gear);
+            dialog.AdjustSize();
+
+            ContentDialogResult result = await dialog.ShowAsync();
+
+            if (result == ContentDialogResult.Primary && !string.IsNullOrEmpty(dialog.ActivityName))
+            {
+                await _stravaService.PutUpdate(SelectedActivity.Id.ToString(), dialog.ActivityName, dialog.ActivityCommute, dialog.ActivityPrivate, dialog.SelectedGear.GearID);
+                await LoadActivityDetails(SelectedActivity.Id.ToString());
             }
         }
     }
