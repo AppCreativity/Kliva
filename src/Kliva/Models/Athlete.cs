@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Kliva.Models
 {
@@ -52,20 +53,20 @@ namespace Kliva.Models
         /// <summary>
         /// A list of the athlete's bikes.
         /// </summary>
-        //[JsonProperty("bikes")]
-        //public List<Bike> Bikes { get; set; }
+        [JsonProperty("bikes")]
+        public List<Bike> Bikes { get; set; }
 
         /// <summary>
         /// A list of the athlete's shoes.
         /// </summary>
-        //[JsonProperty("shoes")]
-        //public List<Shoes> Shoes { get; set; }
+        [JsonProperty("shoes")]
+        public List<Shoes> Shoes { get; set; }
 
         /// <summary>
         /// A list of the athlete's clubs.
         /// </summary>
-        //[JsonProperty("clubs")]
-        //public List<Club> Clubs { get; set; }
+        [JsonProperty("clubs")]
+        public List<Club> Clubs { get; set; }
 
         /// <summary>
         /// athlete’s default sport type: 0 = cyclist, 1 = runner

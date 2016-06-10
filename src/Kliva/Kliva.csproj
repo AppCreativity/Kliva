@@ -152,7 +152,9 @@
     <Compile Include="Messages\PivotMessage.cs" />
     <Compile Include="Models\AccessToken.cs" />
     <Compile Include="Models\Activity.cs" />
+    <Compile Include="Models\Bike.cs" />
     <Compile Include="Models\Converters\AthleteJsonConverter.cs" />
+    <Compile Include="Models\GearSummary.cs" />
     <Compile Include="Models\Incremental\ActivityIncrementalCollection.cs" />
     <Compile Include="Models\ActivityMeta.cs" />
     <Compile Include="Models\ActivitySummary.cs" />
@@ -183,6 +185,7 @@
     <Compile Include="Models\SegmentEffort.cs" />
     <Compile Include="Models\SegmentSummary.cs" />
     <Compile Include="Models\Settings.cs" />
+    <Compile Include="Models\Shoes.cs" />
     <Compile Include="Models\StatisticsDetail.cs" />
     <Compile Include="Models\StravaIdentityConstants.cs" />
     <Compile Include="Models\Tokens.cs" />

@@ -371,12 +371,17 @@ namespace Kliva.Services
         /// <param name="activityId">The Strava ID of the activity you want to edit.</param>
         /// <param name="name"></param>
         /// <returns></returns>
-        public async Task PutUpdate(string activityId, string name, bool commute, bool isPrivate)
+        public async Task PutUpdate(string activityId, string name, bool commute, bool isPrivate, string gearID)
         {
             try
             {
                 var accessToken = await _settingsService.GetStoredStravaAccessTokenAsync();
-                string postUrl = $"{Endpoints.Activity}/{activityId}?name={WebUtility.UrlEncode(name)}&commute={WebUtility.UrlEncode(commute.ToString().ToLower())}&private={WebUtility.UrlEncode(isPrivate.ToString().ToLower())}&access_token={accessToken}";
+                string postUrl = $"{Endpoints.Activity}/{activityId}?name={WebUtility.UrlEncode(name)}&commute={WebUtility.UrlEncode(commute.ToString().ToLower())}&private={WebUtility.UrlEncode(isPrivate.ToString().ToLower())}";
+                if (!string.IsNullOrEmpty(gearID))
+                    postUrl += $"&gear_id={WebUtility.UrlEncode(gearID)}";
+
+                postUrl += $"&access_token={accessToken}";
+
                 await _stravaWebClient.SendPutAsync(new Uri(postUrl));
             }
             catch (Exception ex)

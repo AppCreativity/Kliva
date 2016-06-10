@@ -24,6 +24,7 @@ namespace Kliva.ViewModels
     public class ActivityDetailViewModel : KlivaBaseViewModel
     {
         private readonly IStravaService _stravaService;
+        private Athlete _athlete;
 
         private Activity _selectedActivity;
         public Activity SelectedActivity
@@ -123,7 +124,7 @@ namespace Kliva.ViewModels
 
             //TODO: Glenn - Why aren't we receiving private activities?
             var activity = await _stravaService.GetActivityAsync(activityId, true);
-            var athlete = await _stravaService.GetAthleteAsync();
+            _athlete = await _stravaService.GetAthleteAsync();
 
             if (activity != null)
             {
@@ -152,9 +153,9 @@ namespace Kliva.ViewModels
 
                 //Currently the Public API of Strava will not give us the Photo links for 'other' athletes then the one logged in
                 //But we do get the photo count, so we also need to verify the current user vs the one from the activity
-                HasPhotos = athlete.Id == SelectedActivity.Athlete.Id && SelectedActivity.TotalPhotoCount > 0;
-                HasKudoed = athlete.Id == SelectedActivity.Athlete.Id || SelectedActivity.HasKudoed;
-                IsEditEnabled = athlete.Id == SelectedActivity.Athlete.Id;
+                HasPhotos = _athlete.Id == SelectedActivity.Athlete.Id && SelectedActivity.TotalPhotoCount > 0;
+                HasKudoed = _athlete.Id == SelectedActivity.Athlete.Id || SelectedActivity.HasKudoed;
+                IsEditEnabled = _athlete.Id == SelectedActivity.Athlete.Id;
 
                 //TODO: Glenn - Why oh why are we not yet able to show/hide PivotItems through Visibility bindable
                 ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage<ActivityPivots>>(new PivotMessage<ActivityPivots>(ActivityPivots.Segments, HasSegments), Tokens.ActivityPivotMessage);
@@ -191,14 +192,27 @@ namespace Kliva.ViewModels
 
         private async Task OnEdit()
         {
-            EditContentDialog dialog = new EditContentDialog(SelectedActivity.Name, SelectedActivity.IsCommute, SelectedActivity.IsPrivate);
+            List<GearSummary> gear = null;
+
+            switch (SelectedActivity.Type)
+            {
+                case ActivityType.Ride:
+                case ActivityType.EBikeRide:
+                    gear = _athlete.Bikes.Cast<GearSummary>().ToList();
+                    break;
+                case ActivityType.Run:
+                    gear = _athlete.Shoes.Cast<GearSummary>().ToList();
+                    break;
+            }
+
+            EditContentDialog dialog = new EditContentDialog(SelectedActivity.Name, SelectedActivity.IsCommute, SelectedActivity.IsPrivate, gear);
             dialog.AdjustSize();
 
             ContentDialogResult result = await dialog.ShowAsync();
 
             if (result == ContentDialogResult.Primary && !string.IsNullOrEmpty(dialog.ActivityName))
             {
-                await _stravaService.PutUpdate(SelectedActivity.Id.ToString(), dialog.ActivityName, dialog.ActivityCommute, dialog.ActivityPrivate);
+                await _stravaService.PutUpdate(SelectedActivity.Id.ToString(), dialog.ActivityName, dialog.ActivityCommute, dialog.ActivityPrivate, dialog.SelectedGear.GearID);
                 await LoadActivityDetails(SelectedActivity.Id.ToString());
             }
         }
