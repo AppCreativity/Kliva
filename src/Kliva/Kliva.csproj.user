@@ -2,10 +2,11 @@
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DeviceId>90F4E8F4-EC5F-4B64-B2E8-6EDE6F813BD3</DeviceId>
-    <UseEmulator>false</UseEmulator>
+    <UseEmulator>true</UseEmulator>
     <RemoteDebugMachine>DepSurface</RemoteDebugMachine>
     <AuthenticationMode>Windows</AuthenticationMode>
     <RemoteDebugEnabled>false</RemoteDebugEnabled>
+    <UseSimulator>false</UseSimulator>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DeviceId>30F105C9-681E-420b-A277-7C086EAD8A4E</DeviceId>

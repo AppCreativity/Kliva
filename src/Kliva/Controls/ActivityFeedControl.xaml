@@ -78,6 +78,8 @@
                   Loaded="OnActivityListLoaded"                  
                   HorizontalContentAlignment="Stretch" />
 
+        <Image x:Name="RefreshIcon" Width="48" Height="48" Source="ms-appx:///Assets/crank.png" VerticalAlignment="Top" />
+        
         <Button x:Name="GoToTopButton"
                 HorizontalAlignment="Right" VerticalAlignment="Bottom"
                 Click="OnGoToTopButtonClick"

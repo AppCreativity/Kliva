@@ -1,6 +1,9 @@
-﻿using Kliva.ViewModels.Interfaces;
+﻿using Windows.UI.Composition;
+using Kliva.ViewModels.Interfaces;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Hosting;
+using GalaSoft.MvvmLight.Ioc;
 
 namespace Kliva.Views
 {
