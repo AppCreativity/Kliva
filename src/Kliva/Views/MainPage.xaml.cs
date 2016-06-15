@@ -1,6 +1,10 @@
-﻿using Kliva.ViewModels.Interfaces;
+﻿using System.Linq;
+using Kliva.ViewModels.Interfaces;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
+using Cimbalino.Toolkit.Extensions;
+using Kliva.Controls;
 
 namespace Kliva.Views
 {
@@ -27,6 +31,33 @@ namespace Kliva.Views
         {
             // We are only guaranteed to have the updated VisualState in Loaded
             UpdateVisualState(VisualStateGroup.CurrentState);
+        }
+
+        /// <summary>
+        /// Set menu flyout width equal to the container it's in, in our case the ListColumn ( the first column of the grid )
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <remarks>
+        /// Not sure why, but we can't do this in XAML?
+        /// MenuFlyout.MenuFlyoutPresenterStyle
+        ///     Style TargetType = "MenuFlyoutPresenter"
+        ///         Setter Property="MinWidth" Value="{Binding ElementName=ListColumn, Path=ActualWidth}"
+        ///     Style
+        /// MenuFlyout.MenuFlyoutPresenterStyle
+        /// </remarks>
+        private void OnFilterFlyoutOpened(object sender, object e)
+        {
+            MenuFlyout menuFlyout = sender as MenuFlyout;
+            Style style = new Style { TargetType = typeof(MenuFlyoutPresenter) };
+            style.Setters.Add(new Setter(MinWidthProperty, ListColumn.ActualWidth));
+
+            //TODO: Glenn - Can't we just grab : {ThemeResource SplitViewCompactPaneThemeLength}
+            SplitView splitView = ((KlivaApplicationFrame) this.Parent).GetVisualDescendents<SplitView>().FirstOrDefault();
+            if(splitView.DisplayMode != SplitViewDisplayMode.Inline)
+                style.Setters.Add(new Setter(MarginProperty, new Thickness(splitView.CompactPaneLength,0,0,0)));
+
+            menuFlyout.MenuFlyoutPresenterStyle = style;
         }
     }
 }

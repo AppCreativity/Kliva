@@ -60,7 +60,7 @@
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>
-    
+
     <Grid x:Name="LayoutRoot" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -100,7 +100,7 @@
                        Text="activities"/>
         </StackPanel>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" x:Name="MainGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition x:Name="ListColumn" />
                 <ColumnDefinition x:Name="ListItemColumn" />
@@ -119,7 +119,7 @@
                     Grid.Row="0"
                     Grid.Column="0">
                 <Button.Flyout>
-                    <MenuFlyout x:Name="FilterFlyout">
+                    <MenuFlyout x:Name="FilterFlyout" Opened="OnFilterFlyoutOpened">
                         <MenuFlyoutItem Text="all activities" Command="{Binding FilterCommand}" CommandParameter="all" />
                         <MenuFlyoutItem Text="my activities" Command="{Binding FilterCommand}" CommandParameter="my" />
                         <MenuFlyoutItem Text="friends' activities" Command="{Binding FilterCommand}" CommandParameter="followers" />
