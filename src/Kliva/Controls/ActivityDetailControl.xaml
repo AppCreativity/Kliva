@@ -162,7 +162,16 @@
                     <GridView x:Name="ActivityPhotosGrid"
                               Margin="10,0,0,0"
                               ItemsSource="{x:Bind ViewModel.SelectedActivity.AllPhotos, Mode=OneWay}"
-                              ItemTemplate="{StaticResource PhotosGridItemTemplate}"/>
+                              ItemTemplate="{StaticResource PhotosGridItemTemplate}">
+                        <GridView.ItemContainerStyle>
+                            <Style TargetType="GridViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                                <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                                <Setter Property="VerticalAlignment" Value="Stretch" />
+                            </Style>
+                        </GridView.ItemContainerStyle>
+                    </GridView>
                 </PivotItem>
             </Pivot>
 

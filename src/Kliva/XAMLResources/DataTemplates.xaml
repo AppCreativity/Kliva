@@ -328,7 +328,7 @@
                         </VisualState>
                     </VisualStateGroup>
                 </VisualStateManager.VisualStateGroups>
-                <RelativePanel x:Name="KudosListItemPanel" Padding="10,0,10,10">
+                <RelativePanel x:Name="KudosListItemPanel" Padding="8,0,8,10">
                     <Ellipse x:Name="AthleteProfilePicture"
                              Margin="0,5,0,5"
                              RelativePanel.AlignHorizontalCenterWithPanel="True">
