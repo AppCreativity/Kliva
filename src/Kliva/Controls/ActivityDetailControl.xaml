@@ -32,7 +32,7 @@
                         <Setter Target="ActivityName.Background" Value="{StaticResource KlivaMainBrush}"/>
                         <Setter Target="ActivityNameTextBlock.Style" Value="{StaticResource ActivityNameTextBlockMobile}" />
                         <Setter Target="StatisticsGrid.MinItemWidth" Value="200" />
-                        <Setter Target="StatisticsGrid.MinItemHeight" Value="70" />
+                        <Setter Target="StatisticsGrid.MinItemHeight" Value="68" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="Desktop">
@@ -105,15 +105,8 @@
                     <local:AdaptiveGridView x:Name="StatisticsGrid"
                                             ItemsSource="{x:Bind ViewModel.SelectedActivity.Statistics, Mode=OneWay}"
                                             ItemTemplate="{StaticResource StatisticsListItemTemplate}"
-                                            SelectionMode="None">
-                        <local:AdaptiveGridView.ItemContainerStyle>
-                            <Style TargetType="GridViewItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                <Setter Property="HorizontalAlignment" Value="Stretch" />
-                                <Setter Property="VerticalContentAlignment" Value="Stretch" />
-                                <Setter Property="VerticalAlignment" Value="Stretch" />
-                            </Style>
-                        </local:AdaptiveGridView.ItemContainerStyle>
+                                            SelectionMode="None"
+                                            ItemContainerStyle="{StaticResource NonTiltGridViewItemStyle}">
                     </local:AdaptiveGridView>
                 </PivotItem>
                 <PivotItem x:Name="SegmentsPivot" Tag="Segments"
