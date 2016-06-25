@@ -132,7 +132,7 @@
                         <local:IconPivotHeader Label="{x:Bind ViewModel.KudosCount, Converter={StaticResource AddAmountToStringConverter}, ConverterParameter=kudos, Mode=OneWay}"
                                                Glyph="&#xE8E1;" />
                     </PivotItem.Header>
-                    <ListView x:Name="ActivityKudosList"
+                    <GridView x:Name="ActivityKudosList"
                               ItemsSource="{x:Bind ViewModel.Kudos, Mode=OneWay}"
                               ItemTemplate="{StaticResource KudosListItemTemplate}"
                               IsItemClickEnabled="True">
@@ -141,7 +141,7 @@
                                 <core:InvokeCommandAction Command="{x:Bind ViewModel.AthleteTappedCommand}" />
                             </core:EventTriggerBehavior>
                         </interactivity:Interaction.Behaviors>
-                    </ListView>
+                    </GridView>
                 </PivotItem>
                 <PivotItem x:Name="CommentsPivot" Tag="Comments">
                     <PivotItem.Header>
