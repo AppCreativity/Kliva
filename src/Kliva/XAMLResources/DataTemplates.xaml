@@ -316,6 +316,7 @@
                             </VisualState.StateTriggers>
                             <VisualState.Setters>
                                 <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseMobile}" />
+                                <Setter Target="KudosListItemPanel.Width" Value="80" />
                             </VisualState.Setters>
                         </VisualState>
                         <VisualState x:Name="Desktop">
@@ -324,6 +325,7 @@
                             </VisualState.StateTriggers>
                             <VisualState.Setters>
                                 <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseDesktop}" />
+                                <Setter Target="KudosListItemPanel.Width" Value="120" />
                             </VisualState.Setters>
                         </VisualState>
                     </VisualStateGroup>
