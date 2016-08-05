@@ -75,7 +75,7 @@
                         <Border x:Name="ActivityImage" CornerRadius="50"
                                 Margin="-18,0,0,5"
                                 Background="{StaticResource KlivaDarkBrush}"
-                                BorderBrush="White" BorderThickness="2"
+                                BorderBrush="White" BorderThickness="1.5"
                                 RelativePanel.RightOf="AthleteProfilePicture"
                                 RelativePanel.AlignBottomWithPanel="True">
                             <TextBlock x:Name="ActivityImageIcon" Style="{StaticResource PaneIconMaterialTextBlock}"
@@ -315,8 +315,6 @@
                                 <AdaptiveTrigger MinWindowWidth="320" />
                             </VisualState.StateTriggers>
                             <VisualState.Setters>
-                                <!-- TODO: Glenn - This is not 100% correct! Because small view on a non Windows 10 Mobile device would also need 15 margin Right because of the 'fat' scrollbar, on WP10 scrollbar design in 'small' -->
-                                <Setter Target="KudosListItemPanel.Padding" Value="10,0,10,10" />
                                 <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseMobile}" />
                             </VisualState.Setters>
                         </VisualState>
@@ -325,16 +323,15 @@
                                 <AdaptiveTrigger MinWindowWidth="720" />
                             </VisualState.StateTriggers>
                             <VisualState.Setters>
-                                <Setter Target="KudosListItemPanel.Padding" Value="10,0,15,10" />
                                 <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseDesktop}" />
                             </VisualState.Setters>
                         </VisualState>
                     </VisualStateGroup>
                 </VisualStateManager.VisualStateGroups>
-                <RelativePanel x:Name="KudosListItemPanel">
+                <RelativePanel x:Name="KudosListItemPanel" Padding="8,0,8,10">
                     <Ellipse x:Name="AthleteProfilePicture"
                              Margin="0,5,0,5"
-                             RelativePanel.AlignLeftWithPanel="True">
+                             RelativePanel.AlignHorizontalCenterWithPanel="True">
                         <Ellipse.Fill>
                             <ImageBrush Stretch="UniformToFill" ImageSource="{x:Bind ProfileMediumFormatted, Mode=OneWay}" />
                         </Ellipse.Fill>
@@ -343,10 +340,11 @@
                     <TextBlock x:Name="ActivityAthleteName"
                                Text="{x:Bind FullName, Mode=OneWay}"
                                Style="{StaticResource BaseTextBlock}"
-                               Margin="10,0,0,0"
+                               Margin="0,0,0,0"
                                FontSize="14"
-                               RelativePanel.RightOf="AthleteProfilePicture"
-                               RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                               TextTrimming="CharacterEllipsis"
+                               RelativePanel.Below="AthleteProfilePicture"
+                               RelativePanel.AlignHorizontalCenterWithPanel="True"/>
                 </RelativePanel>
             </Grid>
         </UserControl>

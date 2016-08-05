@@ -32,7 +32,7 @@
                         <Setter Target="ActivityName.Background" Value="{StaticResource KlivaMainBrush}"/>
                         <Setter Target="ActivityNameTextBlock.Style" Value="{StaticResource ActivityNameTextBlockMobile}" />
                         <Setter Target="StatisticsGrid.MinItemWidth" Value="200" />
-                        <Setter Target="StatisticsGrid.MinItemHeight" Value="70" />
+                        <Setter Target="StatisticsGrid.MinItemHeight" Value="68" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="Desktop">
@@ -105,15 +105,8 @@
                     <local:AdaptiveGridView x:Name="StatisticsGrid"
                                             ItemsSource="{x:Bind ViewModel.SelectedActivity.Statistics, Mode=OneWay}"
                                             ItemTemplate="{StaticResource StatisticsListItemTemplate}"
-                                            SelectionMode="None">
-                        <local:AdaptiveGridView.ItemContainerStyle>
-                            <Style TargetType="GridViewItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                <Setter Property="HorizontalAlignment" Value="Stretch" />
-                                <Setter Property="VerticalContentAlignment" Value="Stretch" />
-                                <Setter Property="VerticalAlignment" Value="Stretch" />
-                            </Style>
-                        </local:AdaptiveGridView.ItemContainerStyle>
+                                            SelectionMode="None"
+                                            ItemContainerStyle="{StaticResource NonTiltGridViewItemStyle}">
                     </local:AdaptiveGridView>
                 </PivotItem>
                 <PivotItem x:Name="SegmentsPivot" Tag="Segments"
@@ -139,7 +132,7 @@
                         <local:IconPivotHeader Label="{x:Bind ViewModel.KudosCount, Converter={StaticResource AddAmountToStringConverter}, ConverterParameter=kudos, Mode=OneWay}"
                                                Glyph="&#xE8E1;" />
                     </PivotItem.Header>
-                    <ListView x:Name="ActivityKudosList"
+                    <GridView x:Name="ActivityKudosList"
                               ItemsSource="{x:Bind ViewModel.Kudos, Mode=OneWay}"
                               ItemTemplate="{StaticResource KudosListItemTemplate}"
                               IsItemClickEnabled="True">
@@ -148,7 +141,7 @@
                                 <core:InvokeCommandAction Command="{x:Bind ViewModel.AthleteTappedCommand}" />
                             </core:EventTriggerBehavior>
                         </interactivity:Interaction.Behaviors>
-                    </ListView>
+                    </GridView>
                 </PivotItem>
                 <PivotItem x:Name="CommentsPivot" Tag="Comments">
                     <PivotItem.Header>
@@ -169,7 +162,16 @@
                     <GridView x:Name="ActivityPhotosGrid"
                               Margin="10,0,0,0"
                               ItemsSource="{x:Bind ViewModel.SelectedActivity.AllPhotos, Mode=OneWay}"
-                              ItemTemplate="{StaticResource PhotosGridItemTemplate}"/>
+                              ItemTemplate="{StaticResource PhotosGridItemTemplate}">
+                        <GridView.ItemContainerStyle>
+                            <Style TargetType="GridViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                                <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                                <Setter Property="VerticalAlignment" Value="Stretch" />
+                            </Style>
+                        </GridView.ItemContainerStyle>
+                    </GridView>
                 </PivotItem>
             </Pivot>
 
