@@ -47,7 +47,16 @@ namespace Kliva.Controls
         {
             this.InitializeComponent();
 
+            InitializeCompositor();
+
             DataContextChanged += (sender, args) => this.Bindings.Update();
+        }
+
+        private void InitializeCompositor()
+        {
+            // get the compositor
+
+            _compositor = ElementCompositionPreview.GetElementVisual(this).Compositor;
         }
 
         private void OnActivityListLoaded(object sender, RoutedEventArgs e)
@@ -269,6 +278,89 @@ namespace Kliva.Controls
         private void ActivityList_ItemClick(object sender, ItemClickEventArgs e)
         {
             ViewModel.ActivityInvoked((ActivitySummary)e.ClickedItem);
+        }
+
+        // To hook up per-item staggering animations we need to hook the render pipeline of the list
+
+        private void ActivityList_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            int index = args.ItemIndex;
+            var root = args.ItemContainer.ContentTemplateRoot as UserControl;
+            var item = args.Item as ActivitySummary;
+
+            // Don't run an entrance animation if we're in recycling
+            if (!args.InRecycleQueue)
+            {
+                args.ItemContainer.Loaded += ItemContainer_Loaded;
+            }
+
+            #region Other Performance Optimizations for Deferred items
+            // Collapse the BottomPanel if we're using a recycled container that had it before
+            if (args.InRecycleQueue && item.OtherAthleteCount > 0)
+            {
+                var bottomPanel = root.FindName("BottomPanel") as RelativePanel;
+                bottomPanel.Visibility = Visibility.Collapsed;
+            }
+
+            // If we have related athletes, then undefer the BottomPanel and show it
+            if (args.InRecycleQueue == false && item.OtherAthleteCount > 0)
+            {
+                // undefer the bottom panel and show it
+                var bottomPanel = root.FindName("BottomPanel") as RelativePanel;
+                bottomPanel.Visibility = Visibility.Visible;
+            }
+            #endregion
+
+            args.Handled = true;
+        }
+
+        private void ItemContainer_Loaded(object sender, RoutedEventArgs e)
+        {
+            var itemsPanel = (ItemsStackPanel)ActivityList.ItemsPanelRoot;
+            var itemContainer = (ListViewItem)sender;
+            var itemIndex = ActivityList.IndexFromContainer(itemContainer);
+
+            var uc = itemContainer.ContentTemplateRoot as UserControl;
+            var childPanel = uc.FindName("ActivityListItemPanel") as RelativePanel;
+
+            // Don't animate if we're not in the visible viewport
+            if (itemIndex >= itemsPanel.FirstVisibleIndex && itemIndex <= itemsPanel.LastVisibleIndex)
+            {
+                var itemVisual = ElementCompositionPreview.GetElementVisual(uc);
+
+                float width = (float)childPanel.RenderSize.Width;
+                float height = (float)childPanel.RenderSize.Height;
+                itemVisual.Size = new Vector2(width, height);
+                itemVisual.CenterPoint = new Vector3(width / 2, height / 2, 0f);
+                itemVisual.Scale = new Vector3(1, 1, 1); // new Vector3(0.25f, 0.25f, 0);
+                itemVisual.Opacity = 0f;
+                itemVisual.Offset = new Vector3(0, 100, 0);
+
+                // Create KeyFrameAnimations
+                KeyFrameAnimation offsetAnimation = _compositor.CreateScalarKeyFrameAnimation();
+                offsetAnimation.InsertExpressionKeyFrame(1f, "0");
+                offsetAnimation.Duration = TimeSpan.FromMilliseconds(1250);
+                offsetAnimation.DelayTime = TimeSpan.FromMilliseconds(itemIndex * 100);
+
+                Vector3KeyFrameAnimation scaleAnimation = _compositor.CreateVector3KeyFrameAnimation();
+                scaleAnimation.InsertKeyFrame(0, new Vector3(1f, 1f, 0f));
+                scaleAnimation.InsertKeyFrame(0.1f, new Vector3(0.05f, 0.05f, 0.05f));
+                scaleAnimation.InsertKeyFrame(1f, new Vector3(1f, 1f, 0f));
+                scaleAnimation.Duration = TimeSpan.FromMilliseconds(1000);
+                scaleAnimation.DelayTime = TimeSpan.FromMilliseconds(itemIndex * 100);
+
+                KeyFrameAnimation fadeAnimation = _compositor.CreateScalarKeyFrameAnimation();
+                fadeAnimation.InsertExpressionKeyFrame(1f, "1");
+                fadeAnimation.Duration = TimeSpan.FromMilliseconds(500);
+                fadeAnimation.DelayTime = TimeSpan.FromMilliseconds(itemIndex * 100);
+
+                // Start animations
+                itemVisual.StartAnimation("Offset.Y", offsetAnimation);
+                itemVisual.StartAnimation("Scale", scaleAnimation);
+                itemVisual.StartAnimation("Opacity", fadeAnimation);
+            }
+
+            itemContainer.Loaded -= ItemContainer_Loaded;
         }
     }
 }
