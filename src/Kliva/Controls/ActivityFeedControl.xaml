@@ -73,6 +73,7 @@
                   ItemsSource="{x:Bind ViewModel.ActivityIncrementalCollection, Mode=OneWay}"
                   SelectedItem="{x:Bind ViewModel.SelectedActivity, Mode=OneWay, Converter={StaticResource XBindItemCastingConverter}}"
                   SelectionChanged="ActivityList_SelectionChanged"
+                  ContainerContentChanging="ActivityList_ContainerContentChanging"
                   ItemClick="ActivityList_ItemClick"
                   ItemTemplate="{StaticResource ActivityListItemDataTemplate}"
                   Loaded="OnActivityListLoaded"                  
