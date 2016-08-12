@@ -46,17 +46,7 @@ namespace Kliva.Controls
         public ActivityFeedControl()
         {
             this.InitializeComponent();
-
-            InitializeCompositor();
-
             DataContextChanged += (sender, args) => this.Bindings.Update();
-        }
-
-        private void InitializeCompositor()
-        {
-            // get the compositor
-
-            _compositor = ElementCompositionPreview.GetElementVisual(this).Compositor;
         }
 
         private void OnActivityListLoaded(object sender, RoutedEventArgs e)
@@ -337,19 +327,19 @@ namespace Kliva.Controls
                 itemVisual.Offset = new Vector3(0, 100, 0);
 
                 // Create KeyFrameAnimations
-                KeyFrameAnimation offsetAnimation = _compositor.CreateScalarKeyFrameAnimation();
+                KeyFrameAnimation offsetAnimation = Compositor.CreateScalarKeyFrameAnimation();
                 offsetAnimation.InsertExpressionKeyFrame(1f, "0");
                 offsetAnimation.Duration = TimeSpan.FromMilliseconds(1250);
                 offsetAnimation.DelayTime = TimeSpan.FromMilliseconds(itemIndex * 100);
 
-                Vector3KeyFrameAnimation scaleAnimation = _compositor.CreateVector3KeyFrameAnimation();
+                Vector3KeyFrameAnimation scaleAnimation = Compositor.CreateVector3KeyFrameAnimation();
                 scaleAnimation.InsertKeyFrame(0, new Vector3(1f, 1f, 0f));
                 scaleAnimation.InsertKeyFrame(0.1f, new Vector3(0.05f, 0.05f, 0.05f));
                 scaleAnimation.InsertKeyFrame(1f, new Vector3(1f, 1f, 0f));
                 scaleAnimation.Duration = TimeSpan.FromMilliseconds(1000);
                 scaleAnimation.DelayTime = TimeSpan.FromMilliseconds(itemIndex * 100);
 
-                KeyFrameAnimation fadeAnimation = _compositor.CreateScalarKeyFrameAnimation();
+                KeyFrameAnimation fadeAnimation = Compositor.CreateScalarKeyFrameAnimation();
                 fadeAnimation.InsertExpressionKeyFrame(1f, "1");
                 fadeAnimation.Duration = TimeSpan.FromMilliseconds(500);
                 fadeAnimation.DelayTime = TimeSpan.FromMilliseconds(itemIndex * 100);
