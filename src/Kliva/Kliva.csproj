@@ -19,6 +19,7 @@
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>Kliva_TemporaryKey.pfx</PackageCertificateKeyFile>
     <ApplicationInsightsResourceId>/subscriptions/bd17d255-ce08-4eb3-af5f-c4dc190f2a45/resourcegroups/Default-ApplicationInsights-CentralUS/providers/microsoft.insights/components/Kliva</ApplicationInsightsResourceId>
+    <PackageCertificateThumbprint>BADFB4A9609AF1B96C2AB6411B61D09BDA024F67</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
