@@ -32,6 +32,8 @@
                                 <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseMobile}" />
                                 <Setter Target="ActivityImage.Style" Value="{StaticResource ActivityImageBorderMobile}"/>
                                 <Setter Target="ActivityImageIcon.FontSize" Value="12" />
+                                <Setter Target="ActivityAthleteName.FontSize" Value="12" />
+                                <Setter Target="ActivityStart.FontSize" Value="12" />
                                 <!-- TODO: Glenn - This is not 100% correct! Because small view on a non Windows 10 Mobile device would also need 15 margin Right because of the 'fat' scrollbar, on WP10 scrollbar design in 'small' -->
                                 <Setter Target="ActivityListItemPanel.Padding" Value="10,10,10,10" />
                             </VisualState.Setters>
@@ -44,6 +46,8 @@
                                 <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseDesktop}" />
                                 <Setter Target="ActivityImage.Style" Value="{StaticResource ActivityImageBorderDesktop}"/>
                                 <Setter Target="ActivityImageIcon.FontSize" Value="14" />
+                                <Setter Target="ActivityAthleteName.FontSize" Value="14" />
+                                <Setter Target="ActivityStart.FontSize" Value="14" />
                                 <Setter Target="ActivityListItemPanel.Padding" Value="10,10,15,10" />
                             </VisualState.Setters>
                         </VisualState>
@@ -98,7 +102,6 @@
                                        Margin="0,0,0,2.5"                                       
                                        Text="{x:Bind Athlete.FullName, Mode=OneWay}"
                                        Style="{StaticResource CharacterTrimmingTextBlock}"
-                                       FontSize="14"
                                        RelativePanel.Below="ActivityName" RelativePanel.LeftOf="ActivityStart" RelativePanel.AlignLeftWithPanel="True" />
                             
                             <TextBlock x:Name="ActivityStart"
@@ -106,7 +109,6 @@
                                        Text="{x:Bind StartDate, Mode=OneWay, Converter={StaticResource RelativeTimeConverter}}"
                                        Style="{StaticResource BaseTextBlock}"
                                        HorizontalAlignment="Right"
-                                       FontSize="14"                                       
                                        RelativePanel.Below="ActivityName"  RelativePanel.AlignRightWithPanel="True" />
 
                             <Grid x:Name="ActivityHighlightsGrid"
