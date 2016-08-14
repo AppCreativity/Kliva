@@ -90,24 +90,24 @@
                             <TextBlock x:Name="ActivityName"
                                        Margin="0,0,0,2.5"
                                        Text="{x:Bind Name, Mode=OneWay}"
-                                       Style="{StaticResource TrimmingTextBlock}"
+                                       Style="{StaticResource WordTrimmingTextBlock}"
                                        FontFamily="{StaticResource OpenSansFontSemibold}"
                                        RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" />
 
                             <TextBlock x:Name="ActivityAthleteName"
-                                       Margin="0,0,0,2.5"
+                                       Margin="0,0,0,2.5"                                       
                                        Text="{x:Bind Athlete.FullName, Mode=OneWay}"
-                                       Style="{StaticResource BaseTextBlock}"
+                                       Style="{StaticResource CharacterTrimmingTextBlock}"
                                        FontSize="14"
-                                       RelativePanel.Below="ActivityName" RelativePanel.AlignLeftWithPanel="True" />
+                                       RelativePanel.Below="ActivityName" RelativePanel.LeftOf="ActivityStart" RelativePanel.AlignLeftWithPanel="True" />
                             
                             <TextBlock x:Name="ActivityStart"
                                        Margin="0,0,0,2.5"
                                        Text="{x:Bind StartDate, Mode=OneWay, Converter={StaticResource RelativeTimeConverter}}"
                                        Style="{StaticResource BaseTextBlock}"
-                                       FontSize="14"
                                        HorizontalAlignment="Right"
-                                       RelativePanel.Below="ActivityName" RelativePanel.RightOf="ActivityAthleteName" RelativePanel.AlignRightWithPanel="True" />
+                                       FontSize="14"                                       
+                                       RelativePanel.Below="ActivityName"  RelativePanel.AlignRightWithPanel="True" />
 
                             <Grid x:Name="ActivityHighlightsGrid"
                                   RelativePanel.Below="ActivityAthleteName"
@@ -225,7 +225,7 @@
                                Grid.Column="0">
                     <TextBlock x:Name="SegmentName"
                                Text="{x:Bind Name}"
-                               Style="{StaticResource TrimmingTextBlock}"
+                               Style="{StaticResource WordTrimmingTextBlock}"
                                FontSize="14"
                                RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" />
                     <TextBlock x:Name="SegmentDistance"
@@ -290,7 +290,7 @@
                 </VisualStateManager.VisualStateGroups>
                 <TextBlock x:Name="SegmentName"
                             Text="{x:Bind Name}"
-                            Style="{StaticResource TrimmingTextBlock}"
+                            Style="{StaticResource WordTrimmingTextBlock}"
                             FontSize="14"
                             RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" />
                 <TextBlock x:Name="SegmentDistance"

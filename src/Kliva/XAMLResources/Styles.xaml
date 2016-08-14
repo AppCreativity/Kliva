@@ -38,8 +38,12 @@
         <Setter Property="FontFamily" Value="{StaticResource OpenSansFontLight}" />
     </Style>
 
-    <Style x:Key="TrimmingTextBlock" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}">
+    <Style x:Key="WordTrimmingTextBlock" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}">
         <Setter Property="TextTrimming" Value="WordEllipsis" />
+    </Style>
+
+    <Style x:Key="CharacterTrimmingTextBlock" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}">
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
     </Style>
 
     <Style x:Key="BaseWhiteTextBlock" BasedOn="{StaticResource BaseTextBlock}"
