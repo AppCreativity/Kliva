@@ -237,6 +237,8 @@ namespace Kliva.Controls
 
         private void ScrollToTop()
         {
+            //TODO: Glenn - New method with Win10 ChangeView does almost the same, but we can't handle the animation function and timing
+            //_scrollViewer?.ChangeView(null, 0, null);
             _scrollViewer?.ScrollToVerticalOffsetWithAnimation(0);
         }
 
