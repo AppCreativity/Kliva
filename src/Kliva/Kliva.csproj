@@ -143,7 +143,6 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Helpers\Converters.cs" />
     <Compile Include="Helpers\DateTimeFormatHelper.cs" />
-    <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\PolylineConverter.cs" />
     <Compile Include="Extensions\ScrollViewerExtensions.cs" />
     <Compile Include="Helpers\UnitConverter.cs" />

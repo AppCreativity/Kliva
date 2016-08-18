@@ -11,6 +11,7 @@ using Windows.Globalization.NumberFormatting;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
 using GalaSoft.MvvmLight.Threading;
+using Kliva.Extensions;
 using Kliva.Services;
 
 namespace Kliva.ViewModels

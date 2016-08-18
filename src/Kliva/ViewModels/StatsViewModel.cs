@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cimbalino.Toolkit.Services;
+using Kliva.Extensions;
 using Kliva.Helpers;
 using Kliva.Models;
 using Kliva.Services.Interfaces;

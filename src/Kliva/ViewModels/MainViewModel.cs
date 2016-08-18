@@ -7,6 +7,7 @@ using Kliva.ViewModels.Interfaces;
 using Kliva.Views;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
+using Kliva.Extensions;
 using Kliva.Helpers;
 
 namespace Kliva.ViewModels
