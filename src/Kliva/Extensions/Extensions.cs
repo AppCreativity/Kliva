@@ -36,7 +36,7 @@ namespace Kliva.Extensions
         }
     }
 
-    public static class Extensions
+    public static class ContentDialogExtensions
     {
         public static void AdjustSize(this ContentDialog dialog)
         {
