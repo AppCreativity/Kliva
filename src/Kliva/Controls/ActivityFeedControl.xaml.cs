@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Hosting;
 using Windows.UI.Xaml.Media;
 using Cimbalino.Toolkit.Extensions;
-using Kliva.Helpers;
+using Kliva.Extensions;
 using Kliva.Models;
 using Kliva.ViewModels;
 using Microsoft.Practices.ServiceLocation;

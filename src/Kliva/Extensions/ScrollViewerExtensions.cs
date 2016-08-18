@@ -6,7 +6,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media.Animation;
 
-namespace Kliva.Helpers
+namespace Kliva.Extensions
 {
     /// <summary>
     /// Extension methods for the ScrollViewer class.
