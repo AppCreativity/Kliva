@@ -22,12 +22,23 @@ namespace Kliva.ViewModels
             }
         }
 
+        event EventHandler<NavigationServiceNavigationEventArgs> INavigationService.Navigated
+        {
+            add { throw new NotImplementedException(); }
+            remove { throw new NotImplementedException(); }
+        }
+
         public object CurrentParameter
         {
             get
             {
                 throw new NotImplementedException();
             }
+        }
+
+        public void ClearBackstack()
+        {
+            throw new NotImplementedException();
         }
 
         public void RegisterFrame(object frame)

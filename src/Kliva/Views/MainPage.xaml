@@ -23,6 +23,15 @@
         <CommandBar x:Name="BottomAppBar" Background="{StaticResource KlivaMainBrush}"
                     Visibility="Collapsed"
                     Foreground="White">
+            <AppBarButton x:Name="AppBarRecord"
+                          Label="record"
+                          Foreground="White"
+                          Command="{Binding RecordCommand}">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xE1D2;"
+                              FontFamily="Segoe MDL2 Assets" />
+                </AppBarButton.Icon>
+            </AppBarButton>
             <AppBarButton x:Name="AppBarStats"
                           Label="statistics"
                           Foreground="White"

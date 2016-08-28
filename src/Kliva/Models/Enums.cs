@@ -8,6 +8,12 @@
         Friends // Following
     }
 
+    public enum ActivityRecording
+    {
+        Cycling,
+        Running
+    }
+
     public enum AppTarget
     {
         Desktop,

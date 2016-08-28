@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using Windows.Foundation;
 using Windows.Graphics.Display;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Maps;
 
 namespace Kliva.Extensions
 {
@@ -51,6 +54,21 @@ namespace Kliva.Extensions
             }
             else
                 dialog.MinWidth = dialog.MinHeight = 300;
+        }
+    }
+
+    public static class MapControlExtensions
+    {
+        public static void ClearMap<T>(this MapControl map, MapElement element = null) where T : MapElement
+        {
+            if (element == null)
+            {
+                List<MapElement> mapElements = map.MapElements.Where(item => item is T).ToList();
+                foreach (var item in mapElements)
+                    map.MapElements.Remove(item);
+            }
+            else
+                map.MapElements.Remove(element);
         }
     }
 }

@@ -419,6 +419,9 @@ namespace Kliva.Models
                         case ActivityType.Snowboard:
                             _typeImage = "";
                             break;
+                        case ActivityType.Swim:
+                            _typeImage = "";
+                            break;
                         default:
                             _typeImage = "";
                             break;                            
