@@ -18,11 +18,36 @@
     </interactivity:Interaction.Behaviors>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <RelativePanel>
+        <RelativePanel x:Name="ContentPanel">
             <maps:MapControl x:Name="TrackingMap"
                              ZoomLevel="5"                             
-                             RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
-                             RelativePanel.AlignBottomWithPanel="True"/>
+                             RelativePanel.AlignTopWithPanel="True"
+                             RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                             RelativePanel.Above="ActivityButton"/>
+            
+            <Button x:Name="ActivityButton"
+                    Style="{StaticResource EmptyButtonStyle}"
+                    Foreground="{StaticResource KlivaMainBrush}"
+                    Content="{Binding ActivityText}"
+                    FontFamily="{StaticResource OpenSansFontLight}"
+                    Margin="10,5,0,10"
+                    RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                    RelativePanel.Above="RecordButton"
+                    Grid.Row="0">
+                <Button.Flyout>
+                    <MenuFlyout x:Name="FilterFlyout" Opened="OnActivityFlyoutOpened">
+                        <MenuFlyoutItem Text="Cycling" Command="{Binding ActivityCommand}" CommandParameter="Cycling" />
+                        <MenuFlyoutItem Text="Running" Command="{Binding ActivityCommand}" CommandParameter="Running" />
+                    </MenuFlyout>
+                </Button.Flyout>
+            </Button>
+
+            <Button x:Name="RecordButton"
+                    RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                    RelativePanel.AlignBottomWithPanel="True"
+                    Width="{Binding ActualWidth, ElementName=ContentPanel, Mode=OneWay}"
+                    Content="start tracking"
+                    Style="{StaticResource KlivaButtonMobile}" />
         </RelativePanel>
     </Grid>
 </Page>

@@ -2,6 +2,7 @@
 using Windows.Devices.Geolocation;
 using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
+using Kliva.Extensions;
 using Kliva.Models;
 
 namespace Kliva.ViewModels
@@ -10,6 +11,13 @@ namespace Kliva.ViewModels
     {
         private bool _loading;
         private readonly ILocationService _locationService;
+
+        private string _activityText;
+        public string ActivityText
+        {
+            get { return _activityText; }
+            set { Set(() => ActivityText, ref _activityText, value); }
+        }
 
         private Geopoint _currentLocation;
         public Geopoint CurrentLocation
@@ -20,6 +28,13 @@ namespace Kliva.ViewModels
 
         private RelayCommand _viewLoadedCommand;
         public RelayCommand ViewLoadedCommand => _viewLoadedCommand ?? (_viewLoadedCommand = new RelayCommand(async () => await ViewLoaded()));
+
+        private RelayCommand<string> _activityCommand;
+        public RelayCommand<string> ActivityCommand => _activityCommand ?? (_activityCommand = new RelayCommand<string>((item) =>
+        {
+            ActivityRecording recordingActivity = Enum<ActivityRecording>.Parse(item);
+            ActivityText = recordingActivity.ToString();
+        }));
 
         public RecordViewModel(INavigationService navigationService, ILocationService locationService) : base(navigationService)
         {
@@ -32,6 +47,9 @@ namespace Kliva.ViewModels
         private async Task ViewLoaded()
         {
             _loading = true;
+
+            //TODO: Glenn - refactor to settings option
+            ActivityText = ActivityRecording.Cycling.ToString();
 
             //TODO: Glenn - Better the GPS tracking based on sport type and during activity
             /*
