@@ -77,6 +77,9 @@ namespace Kliva.ViewModels
         private RelayCommand _viewLoadedCommand;
         public RelayCommand ViewLoadedCommand => _viewLoadedCommand ?? (_viewLoadedCommand = new RelayCommand(ViewLoaded));
 
+        private RelayCommand _recordCommand;
+        public RelayCommand RecordCommand => _recordCommand ?? (_recordCommand = new RelayCommand(() => NavigationService.Navigate<RecordPage>()));
+
         //TODO: Glenn - We hooked this up twice, once in SidePaneViewModel and once in MainViewModel because of difference in UI on desktop ( sidebar ) and mobile ( bottom appbar )
         private RelayCommand _statisticsCommand;
         public RelayCommand StatisticsCommand => _statisticsCommand ?? (_statisticsCommand = new RelayCommand(() => NavigationService.Navigate<StatsPage>()));
