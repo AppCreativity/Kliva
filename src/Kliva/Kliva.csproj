@@ -93,6 +93,7 @@
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
     <Content Include="Assets\crank.png" />
+    <Content Include="Assets\CurrentPosition.png" />
     <Content Include="Assets\End.png" />
     <Content Include="Assets\Fonts\OpenSans-Bold.ttf" />
     <Content Include="Assets\Fonts\OpenSans-Light.ttf" />
@@ -220,6 +221,7 @@
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ProfileViewModel.cs" />
+    <Compile Include="ViewModels\RecordViewModel.cs" />
     <Compile Include="ViewModels\SegmentViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\SidePaneViewModel.cs" />

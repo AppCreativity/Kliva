@@ -5,9 +5,24 @@
     xmlns:local="using:Kliva.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    mc:Ignorable="d"
+    DataContext="{Binding Record, Source={StaticResource Locator}}">
+
+    <interactivity:Interaction.Behaviors>
+        <core:EventTriggerBehavior EventName="Loaded">
+            <core:InvokeCommandAction Command="{Binding ViewLoadedCommand}" />
+        </core:EventTriggerBehavior>
+    </interactivity:Interaction.Behaviors>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+        <RelativePanel>
+            <maps:MapControl x:Name="TrackingMap"
+                             ZoomLevel="5"                             
+                             RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                             RelativePanel.AlignBottomWithPanel="True"/>
+        </RelativePanel>
     </Grid>
 </Page>
