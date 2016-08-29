@@ -1,7 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Windows.ApplicationModel.ExtendedExecution;
 using Windows.Devices.Geolocation;
+using Windows.UI.Core;
 using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Threading;
 using Kliva.Extensions;
 using Kliva.Models;
 
@@ -10,6 +15,8 @@ namespace Kliva.ViewModels
     public class RecordViewModel : KlivaBaseViewModel
     {
         private bool _loading;
+        private ExtendedExecutionSession _extendedExecutionSession;
+        private Timer _periodicTimer = null;
         private readonly ILocationService _locationService;
 
         private string _activityText;
@@ -36,13 +43,19 @@ namespace Kliva.ViewModels
             ActivityText = recordingActivity.ToString();
         }));
 
+        private RelayCommand _recordCommand;
+
+        public RelayCommand RecordCommand => _recordCommand ?? (_recordCommand = new RelayCommand(async () => await Recording()));
+
         public RecordViewModel(INavigationService navigationService, ILocationService locationService) : base(navigationService)
         {
             _locationService = locationService;
-
-            //Set the default interval to 3 seconds
-            _locationService.ReportInterval = 3000;
+            //_locationService.StatusChanged += OnLocationServiceStatusChanged;
         }
+
+        //private void OnLocationServiceStatusChanged(object sender, LocationServiceStatusChangedEventArgs e)
+        //{
+        //}
 
         private async Task ViewLoaded()
         {
@@ -88,6 +101,84 @@ namespace Kliva.ViewModels
             }
 
             _loading = false;
+        }
+
+        private void ClearExtendedExecution()
+        {
+            if (_extendedExecutionSession != null)
+            {
+                _extendedExecutionSession.Revoked -= OnExtendedExecutionSessionRevoked;
+                _extendedExecutionSession.Dispose();
+                _extendedExecutionSession = null;
+            }
+        }
+
+        private void EndExtendedExecution()
+        {
+            ClearExtendedExecution();
+        }
+
+        private async Task Recording()
+        {
+            //The previous Extended Execution must be closed before a new one can be requested
+            //TODO: Glenn - we normally have to call this clear method when navigating away from the screen!
+            ClearExtendedExecution();
+            ExtendedExecutionSession newSession = new ExtendedExecutionSession
+            {
+                Reason = ExtendedExecutionReason.LocationTracking,
+                Description = "Tracking your location"
+            };
+
+            newSession.Revoked += OnExtendedExecutionSessionRevoked;
+            ExtendedExecutionResult result = await newSession.RequestExtensionAsync();
+            switch (result)
+            {
+                case ExtendedExecutionResult.Allowed:
+                    //TODO: Glenn - start location tracking!
+                    _periodicTimer = new Timer(OnTimer, _locationService, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2.2));
+                    break;
+                default:
+                case ExtendedExecutionResult.Denied:
+                    newSession.Dispose();
+                    break;
+            }
+        }
+
+        private async void OnExtendedExecutionSessionRevoked(object sender, ExtendedExecutionRevokedEventArgs args)
+        {
+            await DispatcherHelper.RunAsync(() =>
+            {
+                switch (args.Reason)
+                {
+                    case ExtendedExecutionRevokedReason.Resumed:
+                        //rootPage.NotifyUser("Extended execution revoked due to returning to foreground.", NotifyType.StatusMessage);
+                        break;
+                    case ExtendedExecutionRevokedReason.SystemPolicy:
+                        //rootPage.NotifyUser("Extended execution revoked due to system policy.", NotifyType.StatusMessage);                    
+                        break;
+                }
+                EndExtendedExecution();
+            });
+        }
+
+        private async void OnTimer(object state)
+        {
+            await DispatcherHelper.RunAsync(async () =>
+            {
+                var locatorService = (ILocationService)state;
+                if (locatorService != null)
+                {
+                    var position = await _locationService.GetPositionAsync();
+                    if (!position.IsUnknown)
+                    {
+                        CurrentLocation = new Geopoint(new BasicGeoposition()
+                        {
+                            Latitude = position.Latitude,
+                            Longitude = position.Longitude
+                        });
+                    }
+                }
+            });
         }
     }
 }

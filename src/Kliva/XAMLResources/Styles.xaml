@@ -929,6 +929,7 @@
 
     <Style x:Key="EmptyButtonStyle" TargetType="ButtonBase">
         <Setter Property="Background" Value="Transparent" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Padding" Value="0" />
         <Setter Property="MinWidth" Value="0" />

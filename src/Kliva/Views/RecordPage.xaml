@@ -30,7 +30,10 @@
                     Foreground="{StaticResource KlivaMainBrush}"
                     Content="{Binding ActivityText}"
                     FontFamily="{StaticResource OpenSansFontLight}"
-                    Margin="10,5,0,10"
+                    HorizontalAlignment="Left"
+                    Width="{Binding ActualWidth, ElementName=ContentPanel, Mode=OneWay}"
+                    Padding="10,0,0,0"
+                    Margin="0,0,0,5"
                     RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
                     RelativePanel.Above="RecordButton"
                     Grid.Row="0">
@@ -43,6 +46,7 @@
             </Button>
 
             <Button x:Name="RecordButton"
+                    Command="{x:Bind ViewModel.RecordCommand}"
                     RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
                     RelativePanel.AlignBottomWithPanel="True"
                     Width="{Binding ActualWidth, ElementName=ContentPanel, Mode=OneWay}"
