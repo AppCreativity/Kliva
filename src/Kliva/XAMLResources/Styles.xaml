@@ -115,11 +115,14 @@
         <Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}" />
     </Style>
 
-    <Style x:Key="KlivaButtonMobile" TargetType="Button">
-        <Setter Property="Background" Value="{StaticResource KlivaDarkBrush}" />
+    <Style x:Key="DefaultButtonMobile" TargetType="Button">
         <Setter Property="Foreground" Value="White" />
         <Setter Property="FontFamily" Value="{StaticResource OpenSansFontLight}" />
         <Setter Property="FontSize" Value="18" />
+    </Style>
+
+    <Style x:Key="KlivaButtonMobile" BasedOn="{StaticResource DefaultButtonMobile}" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource KlivaDarkBrush}" />
     </Style>
 
     <Style x:Key="KlivaButtonDesktop" TargetType="Button">

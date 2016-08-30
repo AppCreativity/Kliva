@@ -35,7 +35,7 @@ namespace Kliva.Views
             if (e.PropertyName.Equals(nameof(ViewModel.CurrentLocation), StringComparison.OrdinalIgnoreCase))
             {
                 TrackingMap.ClearMap<MapIcon>();
-                
+
                 _currentLocation.Location = TrackingMap.Center = ViewModel.CurrentLocation;
                 TrackingMap.ZoomLevel = 16.0;
                 TrackingMap.MapElements.Add(_currentLocation);

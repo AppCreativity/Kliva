@@ -124,6 +124,8 @@
                     Foreground="{StaticResource KlivaMainBrush}"
                     Content="{Binding FilterText}"
                     FontFamily="{StaticResource OpenSansFontLight}"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Left"
                     Margin="10,5,0,10"
                     Grid.Row="0"
                     Grid.Column="0">

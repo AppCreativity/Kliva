@@ -30,13 +30,12 @@
                     Foreground="{StaticResource KlivaMainBrush}"
                     Content="{Binding ActivityText}"
                     FontFamily="{StaticResource OpenSansFontLight}"
-                    HorizontalAlignment="Left"
-                    Width="{Binding ActualWidth, ElementName=ContentPanel, Mode=OneWay}"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Left"
                     Padding="10,0,0,0"
                     Margin="0,0,0,5"
                     RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
-                    RelativePanel.Above="RecordButton"
-                    Grid.Row="0">
+                    RelativePanel.Above="RecordButton">
                 <Button.Flyout>
                     <MenuFlyout x:Name="FilterFlyout" Opened="OnActivityFlyoutOpened">
                         <MenuFlyoutItem Text="Cycling" Command="{Binding ActivityCommand}" CommandParameter="Cycling" />
@@ -49,9 +48,29 @@
                     Command="{x:Bind ViewModel.RecordCommand}"
                     RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
                     RelativePanel.AlignBottomWithPanel="True"
-                    Width="{Binding ActualWidth, ElementName=ContentPanel, Mode=OneWay}"
+                    HorizontalAlignment="Stretch"
                     Content="start tracking"
                     Style="{StaticResource KlivaButtonMobile}" />
+
+            <Grid Visibility="Collapsed"
+                  RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                  RelativePanel.AlignBottomWithPanel="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition x:Name="LeftColumn" Width="*" />
+                    <ColumnDefinition x:Name="RightColumn" Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="PauzeButton"
+                        Content="pauze"
+                        Style="{StaticResource KlivaButtonMobile}"
+                        HorizontalAlignment="Stretch"
+                        Grid.Column="0" />
+                <Button x:Name="StopButton"
+                        Content="stop"
+                        Style="{StaticResource KlivaButtonMobile}"
+                        HorizontalAlignment="Stretch"
+                        Grid.Column="1" />                
+            </Grid>
         </RelativePanel>
     </Grid>
 </Page>
