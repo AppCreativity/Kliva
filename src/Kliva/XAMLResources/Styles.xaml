@@ -21,6 +21,9 @@
     <Color x:Key="KlivaDarkColor">#b65033</Color>
     <SolidColorBrush x:Key="KlivaDarkBrush" Color="{StaticResource KlivaDarkColor}" />
 
+    <Color x:Key="KlivaLocationColor">#52B266</Color>
+    <SolidColorBrush x:Key="KlivaLocationBrush" Color="{StaticResource KlivaLocationColor}" />
+
     <Color x:Key="SeperatorColor">LightGray</Color>
     <SolidColorBrush x:Key="SeperatorBrush" Color="{StaticResource SeperatorColor}" />
 
@@ -115,9 +118,12 @@
         <Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}" />
     </Style>
 
-    <Style x:Key="DefaultButtonMobile" TargetType="Button">
+    <Style x:Key="DefaultButton" TargetType="Button">
         <Setter Property="Foreground" Value="White" />
         <Setter Property="FontFamily" Value="{StaticResource OpenSansFontLight}" />
+    </Style>
+    
+    <Style x:Key="DefaultButtonMobile" BasedOn="{StaticResource DefaultButton}" TargetType="Button">
         <Setter Property="FontSize" Value="18" />
     </Style>
 
@@ -125,11 +131,12 @@
         <Setter Property="Background" Value="{StaticResource KlivaDarkBrush}" />
     </Style>
 
-    <Style x:Key="KlivaButtonDesktop" TargetType="Button">
-        <Setter Property="Background" Value="{StaticResource KlivaDarkBrush}" />
-        <Setter Property="Foreground" Value="White" />
-        <Setter Property="FontFamily" Value="{StaticResource OpenSansFontLight}" />
+    <Style x:Key="DefaultButtonDesktop" BasedOn="{StaticResource DefaultButton}" TargetType="Button">
         <Setter Property="FontSize" Value="22" />
+    </Style>
+
+    <Style x:Key="KlivaButtonDesktop" BasedOn="{StaticResource DefaultButton}" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource KlivaDarkBrush}" />
     </Style>
 
     <Style x:Key="ProfileEllipseDesktop" TargetType="Ellipse">

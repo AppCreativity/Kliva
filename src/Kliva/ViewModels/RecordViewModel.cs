@@ -33,6 +33,13 @@ namespace Kliva.ViewModels
             set { Set(() => CurrentLocation, ref _currentLocation, value); }
         }
 
+        private bool _isRecording = false;
+        public bool IsRecording
+        {
+            get { return _isRecording; }
+            set { Set(() => IsRecording, ref _isRecording, value); }
+        }
+
         private RelayCommand _viewLoadedCommand;
         public RelayCommand ViewLoadedCommand => _viewLoadedCommand ?? (_viewLoadedCommand = new RelayCommand(async () => await ViewLoaded()));
 
@@ -115,6 +122,7 @@ namespace Kliva.ViewModels
 
         private void EndExtendedExecution()
         {
+            IsRecording = false;
             ClearExtendedExecution();
         }
 
@@ -135,6 +143,7 @@ namespace Kliva.ViewModels
             {
                 case ExtendedExecutionResult.Allowed:
                     //TODO: Glenn - start location tracking!
+                    IsRecording = true;
                     _periodicTimer = new Timer(OnTimer, _locationService, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2.2));
                     break;
                 default:
