@@ -61,8 +61,8 @@
                         <ColumnDefinition x:Name="RightColumn" Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Button x:Name="PauzeButton"
-                            Content="pauze"
+                    <Button x:Name="PauseButton"
+                            Content="pause"
                             Style="{StaticResource DefaultButtonMobile}"
                             Background="{StaticResource KlivaLocationBrush}"
                             HorizontalAlignment="Stretch"
