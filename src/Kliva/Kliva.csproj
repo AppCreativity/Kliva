@@ -193,6 +193,8 @@
     <Compile Include="Models\Tokens.cs" />
     <Compile Include="Models\Usage.cs" />
     <Compile Include="Services\ApplicationInfoService.cs" />
+    <Compile Include="Services\GPXService.cs" />
+    <Compile Include="Services\Interfaces\IGPXService.cs" />
     <Compile Include="Services\IOService.cs" />
     <Compile Include="Services\LocalCacheService.cs" />
     <Compile Include="Services\Endpoints.cs" />

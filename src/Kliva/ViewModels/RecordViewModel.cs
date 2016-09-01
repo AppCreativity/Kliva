@@ -3,21 +3,25 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.ExtendedExecution;
 using Windows.Devices.Geolocation;
+using Windows.System.Threading;
 using Windows.UI.Core;
 using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Threading;
 using Kliva.Extensions;
 using Kliva.Models;
+using Kliva.Services.Interfaces;
 
 namespace Kliva.ViewModels
 {
     public class RecordViewModel : KlivaBaseViewModel
     {
-        private bool _loading;
+        private bool _loading = false;
+
         private ExtendedExecutionSession _extendedExecutionSession;
         private Timer _periodicTimer = null;
         private readonly ILocationService _locationService;
+        private readonly IGPXService _gpxService;
 
         private string _activityText;
         public string ActivityText
@@ -40,6 +44,13 @@ namespace Kliva.ViewModels
             set { Set(() => IsRecording, ref _isRecording, value); }
         }
 
+        private bool _isPaused = false;
+        public bool IsPaused
+        {
+            get { return _isPaused; }
+            set { Set(() => IsPaused, ref _isPaused, value); }
+        }
+
         private RelayCommand _viewLoadedCommand;
         public RelayCommand ViewLoadedCommand => _viewLoadedCommand ?? (_viewLoadedCommand = new RelayCommand(async () => await ViewLoaded()));
 
@@ -51,12 +62,15 @@ namespace Kliva.ViewModels
         }));
 
         private RelayCommand _recordCommand;
-
         public RelayCommand RecordCommand => _recordCommand ?? (_recordCommand = new RelayCommand(async () => await Recording()));
 
-        public RecordViewModel(INavigationService navigationService, ILocationService locationService) : base(navigationService)
+        private RelayCommand _pauseCommand;        
+        public RelayCommand PauseCommand => _pauseCommand ?? (_pauseCommand = new RelayCommand(() => IsPaused = !IsPaused));
+
+        public RecordViewModel(INavigationService navigationService, ILocationService locationService, IGPXService gpxService) : base(navigationService)
         {
-            _locationService = locationService;
+            _gpxService = gpxService;
+            _locationService = locationService;            
             //_locationService.StatusChanged += OnLocationServiceStatusChanged;
         }
 
@@ -144,6 +158,8 @@ namespace Kliva.ViewModels
                 case ExtendedExecutionResult.Allowed:
                     //TODO: Glenn - start location tracking!
                     IsRecording = true;
+                    await _gpxService.InitGPXDocument();
+                    await _gpxService.EndGPXDocument();
                     _periodicTimer = new Timer(OnTimer, _locationService, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2.2));
                     break;
                 default:
@@ -175,7 +191,7 @@ namespace Kliva.ViewModels
             await DispatcherHelper.RunAsync(async () =>
             {
                 var locatorService = (ILocationService)state;
-                if (locatorService != null)
+                if (locatorService != null && !IsPaused)
                 {
                     var position = await _locationService.GetPositionAsync();
                     if (!position.IsUnknown)

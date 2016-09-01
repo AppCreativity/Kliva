@@ -45,7 +45,8 @@ namespace Kliva.ViewModels
             SimpleIoc.Default.Register<IStravaAthleteService, StravaAthleteService>();
             SimpleIoc.Default.Register<IStravaClubService, StravaClubService>();
             SimpleIoc.Default.Register<IStravaSegmentService, StravaSegmentService>();
-            SimpleIoc.Default.Register<ILocationService, LocationService>();            
+            SimpleIoc.Default.Register<ILocationService, LocationService>();
+            SimpleIoc.Default.Register<IGPXService, GPXService>();
 
             Register<IOService>();
 
