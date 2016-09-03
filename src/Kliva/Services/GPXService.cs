@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
@@ -23,7 +24,7 @@ namespace Kliva.Services
             //TODO: Glenn - What folder do we use? LocalFolder or TempFolder?
             //TODO: Glenn - What file name?
             //TODO: Glenn - What with file cleanup? Or retry?
-            StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync("Text.gpx");
+            StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync("Text.gpx", CreationCollisionOption.ReplaceExisting);
             using (IRandomAccessStream writeStream = await file.OpenAsync(FileAccessMode.ReadWrite))
             {
                 Stream writerStream = writeStream.AsStreamForWrite();
@@ -33,6 +34,10 @@ namespace Kliva.Services
                 _xmlWriter.WriteStartElement("gpx", "http://www.topografix.com/GPX/1/1");
                 _xmlWriter.WriteAttributeString("version", "1.1");
                 _xmlWriter.WriteAttributeString("creator", "Kliva"); //TODO: Glenn - Add some version number? Check other GPX files to see what is given?
+
+                WriteMetaData();
+                WriteBeginTrack();
+                WriteBeginTrackSegment();
 
                 //_xmlWriter.Flush();
                 await _xmlWriter.FlushAsync();
@@ -45,6 +50,35 @@ namespace Kliva.Services
 
         public async Task EndGPXDocument()
         {
+        }
+
+        private void WriteMetaData()
+        {
+            _xmlWriter.WriteStartElement("metadata");
+            _xmlWriter.WriteElementString("time", DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'", CultureInfo.InvariantCulture));
+            _xmlWriter.WriteEndElement();
+        }
+
+        private void WriteBeginTrack()
+        {
+            _xmlWriter.WriteStartElement("trk");
+            //TODO: Glenn - Come up with a good name! Location reference, hour reference?
+            _xmlWriter.WriteElementString("name", "Kliva recorded track");
+        }
+
+        private void WriteBeginTrackSegment()
+        {
+            _xmlWriter.WriteStartElement("trkseg"); 
+        }
+
+        private void WriteEndTrackSegment()
+        {
+            _xmlWriter.WriteEndElement();
+        }
+
+        private void WriteEndTrack()
+        {
+            _xmlWriter.WriteEndElement();
         }
     }
 }
