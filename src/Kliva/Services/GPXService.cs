@@ -3,6 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Linq;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Kliva.Services.Interfaces;
@@ -11,10 +12,39 @@ namespace Kliva.Services
 {
     public class GPXService : IGPXService
     {
+        private XDocument _gpxDocument;        
+
+        public Task InitGPXDocument()
+        {
+            var namespaceTopografix = XNamespace.Get("http://www.topografix.com/GPX/1/1");
+
+            _gpxDocument = new XDocument(
+                new XDeclaration("1.0", "UTF-8", null),
+                    new XElement(namespaceTopografix + "gpx",
+                        new XAttribute("creator", "kliva"),
+                        new XAttribute("version", "1.1")));
+
+            return Task.CompletedTask;
+        }
+
+        public async Task EndGPXDocument()
+        {
+            StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync("Text.gpx", CreationCollisionOption.ReplaceExisting);
+            using (IRandomAccessStream writeStream = await file.OpenAsync(FileAccessMode.ReadWrite))
+            {
+                Stream writerStream = writeStream.AsStreamForWrite();
+                _gpxDocument.Save(writerStream);
+                await writerStream.FlushAsync();
+            }
+        }
+    }
+
+    public class GPXService2 : IGPXService
+    {
         private XmlWriter _xmlWriter;
         private readonly XmlWriterSettings _xmlWriterSettings;        
 
-        public GPXService()
+        public GPXService2()
         {
             _xmlWriterSettings = new XmlWriterSettings() { Indent = true, Async = true };
         }
