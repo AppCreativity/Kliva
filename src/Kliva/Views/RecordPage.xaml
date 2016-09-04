@@ -63,12 +63,14 @@
 
                     <Button x:Name="PauseButton"
                             Content="pause"
+                            Command="{x:Bind ViewModel.PauseCommand}"
                             Style="{StaticResource DefaultButtonMobile}"
                             Background="{StaticResource KlivaLocationBrush}"
                             HorizontalAlignment="Stretch"
                             Grid.Column="0" />
                     <Button x:Name="StopButton"
                             Content="stop"
+                            Command="{x:Bind ViewModel.StopCommand}"
                             Style="{StaticResource KlivaButtonMobile}"
                             HorizontalAlignment="Stretch"
                             Grid.Column="1" />

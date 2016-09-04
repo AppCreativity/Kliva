@@ -46,6 +46,17 @@ namespace Kliva.Services
             }
         }
 
+        public async Task WriteGPXLocation(double latitude, double longitude)
+        {
+            var gpxTrack = _gpxDocument.Root.Elements(_nsTopografix + "trk").FirstOrDefault();
+            var gpxTrackSegment = gpxTrack.Elements(_nsTopografix + "trkseg").FirstOrDefault();
+            gpxTrackSegment.Add(
+                new XElement(_nsTopografix + "trkpt",
+                    new XAttribute("lat", latitude.ToString(CultureInfo.InvariantCulture)),
+                    new XAttribute("lon", longitude.ToString(CultureInfo.InvariantCulture)),
+                        new XElement(_nsTopografix + "time", DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'", CultureInfo.InvariantCulture))));            
+        }
+
         private void WriteMetaData()
         {
             _gpxDocument.Root.Add(

@@ -6,5 +6,6 @@ namespace Kliva.Services.Interfaces
     {
         Task InitGPXDocument();
         Task EndGPXDocument();
+        Task WriteGPXLocation(double latitude, double longitude);
     }
 }

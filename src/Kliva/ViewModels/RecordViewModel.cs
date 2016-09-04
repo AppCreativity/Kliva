@@ -67,6 +67,9 @@ namespace Kliva.ViewModels
         private RelayCommand _pauseCommand;        
         public RelayCommand PauseCommand => _pauseCommand ?? (_pauseCommand = new RelayCommand(() => IsPaused = !IsPaused));
 
+        private RelayCommand _stopCommand;
+        public RelayCommand StopCommand => _stopCommand ?? (_stopCommand = new RelayCommand(async () => await StopRecording()));
+
         public RecordViewModel(INavigationService navigationService, ILocationService locationService, IGPXService gpxService) : base(navigationService)
         {
             _gpxService = gpxService;
@@ -108,7 +111,7 @@ namespace Kliva.ViewModels
                 case LocationServiceRequestResult.Allowed:
                     var position = await _locationService.GetPositionAsync(LocationServiceAccuracy.High);
                     if (!position.IsUnknown)
-                    {
+                    {                        
                         CurrentLocation = new Geopoint(new BasicGeoposition()
                         {
                             Latitude = position.Latitude,
@@ -137,6 +140,7 @@ namespace Kliva.ViewModels
         private void EndExtendedExecution()
         {
             IsRecording = false;
+            _periodicTimer?.Dispose();
             ClearExtendedExecution();
         }
 
@@ -158,8 +162,7 @@ namespace Kliva.ViewModels
                 case ExtendedExecutionResult.Allowed:
                     //TODO: Glenn - start location tracking!
                     IsRecording = true;
-                    await _gpxService.InitGPXDocument();
-                    await _gpxService.EndGPXDocument();
+                    await _gpxService.InitGPXDocument();                    
                     _periodicTimer = new Timer(OnTimer, _locationService, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2.2));
                     break;
                 default:
@@ -167,6 +170,14 @@ namespace Kliva.ViewModels
                     newSession.Dispose();
                     break;
             }
+        }
+
+        private async Task StopRecording()
+        {
+            //TODO: Glenn - Check if service is recording?
+            await _gpxService.EndGPXDocument();            
+
+            EndExtendedExecution();            
         }
 
         private async void OnExtendedExecutionSessionRevoked(object sender, ExtendedExecutionRevokedEventArgs args)
@@ -196,6 +207,7 @@ namespace Kliva.ViewModels
                     var position = await _locationService.GetPositionAsync();
                     if (!position.IsUnknown)
                     {
+                        await _gpxService.WriteGPXLocation(position.Latitude, position.Longitude);
                         CurrentLocation = new Geopoint(new BasicGeoposition()
                         {
                             Latitude = position.Latitude,
