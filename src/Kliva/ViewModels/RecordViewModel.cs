@@ -20,6 +20,7 @@ namespace Kliva.ViewModels
 
         private ExtendedExecutionSession _extendedExecutionSession;
         private Timer _periodicTimer = null;
+        private bool _canRecord = false;
         private readonly ILocationService _locationService;
         private readonly IGPXService _gpxService;
 
@@ -62,7 +63,7 @@ namespace Kliva.ViewModels
         }));
 
         private RelayCommand _recordCommand;
-        public RelayCommand RecordCommand => _recordCommand ?? (_recordCommand = new RelayCommand(async () => await Recording()));
+        public RelayCommand RecordCommand => _recordCommand ?? (_recordCommand = new RelayCommand(async () => await Recording(), () => _canRecord));
 
         private RelayCommand _pauseCommand;        
         public RelayCommand PauseCommand => _pauseCommand ?? (_pauseCommand = new RelayCommand(() => IsPaused = !IsPaused));
@@ -111,7 +112,9 @@ namespace Kliva.ViewModels
                 case LocationServiceRequestResult.Allowed:
                     var position = await _locationService.GetPositionAsync(LocationServiceAccuracy.High);
                     if (!position.IsUnknown)
-                    {                        
+                    {
+                        _canRecord = true;
+                        RecordCommand.RaiseCanExecuteChanged();
                         CurrentLocation = new Geopoint(new BasicGeoposition()
                         {
                             Latitude = position.Latitude,
