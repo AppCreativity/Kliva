@@ -8,8 +8,15 @@
     xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:converters="using:Kliva.Converters"
     mc:Ignorable="d"
     DataContext="{Binding Record, Source={StaticResource Locator}}">
+    
+    <Page.Resources>
+        <converters:ActivityTrackingToVisibilityConverter x:Key="ActivityTrackingToVisibilityConverter" />
+        <converters:InverseActivityTrackingToVisibilityConverter x:Key="InverseActivityTrackingToVisibilityConverter" />
+        <converters:ActivityTrackingToTextConverter x:Key="ActivityTrackingToTextConverter" />
+    </Page.Resources>
 
     <interactivity:Interaction.Behaviors>
         <core:EventTriggerBehavior EventName="Loaded">
@@ -46,13 +53,15 @@
             <Grid x:Name="RecordActionsGrid"
                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
                   RelativePanel.AlignBottomWithPanel="True">
-                <Button x:Name="RecordButton"                        
-                        Command="{x:Bind ViewModel.RecordCommand}"                        
+                <Button x:Name="RecordButton"
+                        Visibility="{x:Bind ViewModel.RecordStatus, Mode=OneWay, Converter={StaticResource ActivityTrackingToVisibilityConverter}, ConverterParameter='Paused'}"
+                        Content="{x:Bind ViewModel.RecordStatus, Mode=OneWay, Converter={StaticResource ActivityTrackingToTextConverter}}"
+                        Command="{x:Bind ViewModel.RecordCommand}"
                         HorizontalAlignment="Stretch"
-                        Content="{x:Bind ViewModel.RecordStatus}"
                         Style="{StaticResource KlivaButtonMobile}" />
 
-                <Grid RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                <Grid Visibility="{x:Bind ViewModel.RecordStatus, Mode=OneWay, Converter={StaticResource InverseActivityTrackingToVisibilityConverter}, ConverterParameter='Paused'}"
+                      RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
                       RelativePanel.AlignBottomWithPanel="True">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition x:Name="LeftColumn" Width="*" />
@@ -61,12 +70,14 @@
 
                     <Button x:Name="ResumeButton"
                             Content="resume"
+                            Command="{x:Bind ViewModel.ResumeCommand}"
                             Style="{StaticResource DefaultButtonMobile}"
                             Background="{StaticResource KlivaLocationBrush}"
                             HorizontalAlignment="Stretch"
                             Grid.Column="0" />
                     <Button x:Name="FinishButton"
                             Content="finish"
+                            Command="{x:Bind ViewModel.StopCommand}"
                             Style="{StaticResource KlivaButtonMobile}"
                             HorizontalAlignment="Stretch"
                             Grid.Column="1" />

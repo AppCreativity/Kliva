@@ -58,6 +58,9 @@ namespace Kliva.ViewModels
         private RelayCommand _recordCommand;
         public RelayCommand RecordCommand => _recordCommand ?? (_recordCommand = new RelayCommand(async () => await Recording(), () => _canRecord));
 
+        private RelayCommand _resumeCommand;
+        public RelayCommand ResumeCommand => _resumeCommand ?? (_resumeCommand = new RelayCommand(() => RecordStatus = ActivityTracking.Recording));
+
         private RelayCommand _stopCommand;
         public RelayCommand StopCommand => _stopCommand ?? (_stopCommand = new RelayCommand(async () => await StopRecording()));
 
@@ -170,6 +173,7 @@ namespace Kliva.ViewModels
                     }
                     break;
                 case ActivityTracking.Recording:
+                    RecordStatus = ActivityTracking.Paused;
                     break;
             }
 
