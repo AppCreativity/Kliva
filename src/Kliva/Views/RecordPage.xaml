@@ -46,31 +46,27 @@
             <Grid x:Name="RecordActionsGrid"
                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
                   RelativePanel.AlignBottomWithPanel="True">
-                <Button x:Name="RecordButton"
-                        Visibility="{x:Bind ViewModel.IsRecording, Converter={StaticResource InverseBooleanToVisibilityConverter}, Mode=OneWay}"
+                <Button x:Name="RecordButton"                        
                         Command="{x:Bind ViewModel.RecordCommand}"                        
                         HorizontalAlignment="Stretch"
-                        Content="start tracking"
+                        Content="{x:Bind ViewModel.RecordStatus}"
                         Style="{StaticResource KlivaButtonMobile}" />
 
-                <Grid Visibility="{x:Bind ViewModel.IsRecording, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}"
-                      RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                <Grid RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
                       RelativePanel.AlignBottomWithPanel="True">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition x:Name="LeftColumn" Width="*" />
                         <ColumnDefinition x:Name="RightColumn" Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Button x:Name="PauseButton"
-                            Content="pause"
-                            Command="{x:Bind ViewModel.PauseCommand}"
+                    <Button x:Name="ResumeButton"
+                            Content="resume"
                             Style="{StaticResource DefaultButtonMobile}"
                             Background="{StaticResource KlivaLocationBrush}"
                             HorizontalAlignment="Stretch"
                             Grid.Column="0" />
-                    <Button x:Name="StopButton"
-                            Content="stop"
-                            Command="{x:Bind ViewModel.StopCommand}"
+                    <Button x:Name="FinishButton"
+                            Content="finish"
                             Style="{StaticResource KlivaButtonMobile}"
                             HorizontalAlignment="Stretch"
                             Grid.Column="1" />

@@ -1,5 +1,14 @@
-﻿namespace Kliva.Models
+﻿using System;
+
+namespace Kliva.Models
 {
+    public enum ActivityTracking
+    {
+        Idle,
+        Recording,
+        Paused
+    }
+
     public enum ActivityFeedFilter
     {
         All,

@@ -38,18 +38,11 @@ namespace Kliva.ViewModels
             set { Set(() => CurrentLocation, ref _currentLocation, value); }
         }
 
-        private bool _isRecording = false;
-        public bool IsRecording
+        private ActivityTracking _recordStatus = ActivityTracking.Idle;
+        public ActivityTracking RecordStatus
         {
-            get { return _isRecording; }
-            set { Set(() => IsRecording, ref _isRecording, value); }
-        }
-
-        private bool _isPaused = false;
-        public bool IsPaused
-        {
-            get { return _isPaused; }
-            set { Set(() => IsPaused, ref _isPaused, value); }
+            get { return _recordStatus; }
+            set { Set(() => RecordStatus, ref _recordStatus, value); }
         }
 
         private RelayCommand _viewLoadedCommand;
@@ -64,9 +57,6 @@ namespace Kliva.ViewModels
 
         private RelayCommand _recordCommand;
         public RelayCommand RecordCommand => _recordCommand ?? (_recordCommand = new RelayCommand(async () => await Recording(), () => _canRecord));
-
-        private RelayCommand _pauseCommand;        
-        public RelayCommand PauseCommand => _pauseCommand ?? (_pauseCommand = new RelayCommand(() => IsPaused = !IsPaused));
 
         private RelayCommand _stopCommand;
         public RelayCommand StopCommand => _stopCommand ?? (_stopCommand = new RelayCommand(async () => await StopRecording()));
@@ -87,7 +77,7 @@ namespace Kliva.ViewModels
             _loading = true;
 
             //TODO: Glenn - refactor to settings option
-            ActivityText = ActivityRecording.Cycling.ToString();
+            ActivityText = ActivityRecording.Cycling.ToString();            
 
             //TODO: Glenn - Better the GPS tracking based on sport type and during activity
             /*
@@ -142,37 +132,47 @@ namespace Kliva.ViewModels
 
         private void EndExtendedExecution()
         {
-            IsRecording = false;
+            //TODO: Glenn - do we need to set it back to idle? Or do we need an extra Finished state?
+            RecordStatus = ActivityTracking.Idle;
             _periodicTimer?.Dispose();
             ClearExtendedExecution();
         }
 
         private async Task Recording()
         {
-            //The previous Extended Execution must be closed before a new one can be requested
-            //TODO: Glenn - we normally have to call this clear method when navigating away from the screen!
-            ClearExtendedExecution();
-            ExtendedExecutionSession newSession = new ExtendedExecutionSession
+            switch (RecordStatus)
             {
-                Reason = ExtendedExecutionReason.LocationTracking,
-                Description = "Tracking your location"
-            };
+                case ActivityTracking.Idle:
+                    //The previous Extended Execution must be closed before a new one can be requested
+                    //TODO: Glenn - we normally have to call this clear method when navigating away from the screen!
+                    ClearExtendedExecution();
+                    ExtendedExecutionSession newSession = new ExtendedExecutionSession
+                    {
+                        Reason = ExtendedExecutionReason.LocationTracking,
+                        Description = "Kliva - location tracking"
+                    };
 
-            newSession.Revoked += OnExtendedExecutionSessionRevoked;
-            ExtendedExecutionResult result = await newSession.RequestExtensionAsync();
-            switch (result)
-            {
-                case ExtendedExecutionResult.Allowed:
-                    //TODO: Glenn - start location tracking!
-                    IsRecording = true;
-                    await _gpxService.InitGPXDocument();                    
-                    _periodicTimer = new Timer(OnTimer, _locationService, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2.2));
+                    newSession.Revoked += OnExtendedExecutionSessionRevoked;
+                    ExtendedExecutionResult result = await newSession.RequestExtensionAsync();
+                    switch (result)
+                    {
+                        case ExtendedExecutionResult.Allowed:
+                            //TODO: Glenn - start location tracking!
+                            RecordStatus = ActivityTracking.Recording;
+                            await _gpxService.InitGPXDocument();
+                            _periodicTimer = new Timer(OnTimer, _locationService, TimeSpan.FromSeconds(1),
+                                TimeSpan.FromSeconds(2.2));
+                            break;
+                        default:
+                        case ExtendedExecutionResult.Denied:
+                            newSession.Dispose();
+                            break;
+                    }
                     break;
-                default:
-                case ExtendedExecutionResult.Denied:
-                    newSession.Dispose();
+                case ActivityTracking.Recording:
                     break;
             }
+
         }
 
         private async Task StopRecording()
@@ -180,7 +180,7 @@ namespace Kliva.ViewModels
             //TODO: Glenn - Check if service is recording?
             await _gpxService.EndGPXDocument();            
 
-            EndExtendedExecution();            
+            EndExtendedExecution();
         }
 
         private async void OnExtendedExecutionSessionRevoked(object sender, ExtendedExecutionRevokedEventArgs args)
@@ -205,7 +205,7 @@ namespace Kliva.ViewModels
             await DispatcherHelper.RunAsync(async () =>
             {
                 var locatorService = (ILocationService)state;
-                if (locatorService != null && !IsPaused)
+                if (locatorService != null && RecordStatus == ActivityTracking.Recording)
                 {
                     var position = await _locationService.GetPositionAsync();
                     if (!position.IsUnknown)
