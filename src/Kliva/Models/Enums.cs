@@ -6,7 +6,8 @@ namespace Kliva.Models
     {
         Idle,
         Recording,
-        Paused
+        Paused,
+        Finished
     }
 
     public enum ActivityFeedFilter

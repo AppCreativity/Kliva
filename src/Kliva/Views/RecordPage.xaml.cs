@@ -6,6 +6,7 @@ using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Maps;
+using Windows.UI.Xaml.Navigation;
 using Cimbalino.Toolkit.Extensions;
 using Kliva.Controls;
 using Kliva.Extensions;
@@ -28,6 +29,12 @@ namespace Kliva.Views
             _currentLocation.ZIndex = 0;
 
             ViewModel.PropertyChanged += OnViewModelPropertyChanged;
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            ViewModel.Cleanup();
+            base.OnNavigatedFrom(e);
         }
 
         private void OnViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

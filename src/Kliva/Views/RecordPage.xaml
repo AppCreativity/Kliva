@@ -33,6 +33,7 @@
                              RelativePanel.Above="ActivityButton"/>
             
             <Button x:Name="ActivityButton"
+                    Visibility="{x:Bind ViewModel.RecordStatus, Mode=OneWay, Converter={StaticResource ActivityTrackingToVisibilityConverter}, ConverterParameter='Finished'}"
                     Style="{StaticResource EmptyButtonStyle}"
                     Foreground="{StaticResource KlivaMainBrush}"
                     Content="{Binding ActivityText}"
@@ -51,6 +52,7 @@
                 </Button.Flyout>
             </Button>
             <Grid x:Name="RecordActionsGrid"
+                  Visibility="{x:Bind ViewModel.RecordStatus, Mode=OneWay, Converter={StaticResource ActivityTrackingToVisibilityConverter}, ConverterParameter='Finished'}"
                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
                   RelativePanel.AlignBottomWithPanel="True">
                 <Button x:Name="RecordButton"
@@ -82,6 +84,15 @@
                             HorizontalAlignment="Stretch"
                             Grid.Column="1" />
                 </Grid>
+            </Grid>
+            <Grid x:Name="SaveActionsGrid"
+                  Visibility="{x:Bind ViewModel.RecordStatus, Mode=OneWay, Converter={StaticResource InverseActivityTrackingToVisibilityConverter}, ConverterParameter='Finished'}"
+                  RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                  RelativePanel.AlignBottomWithPanel="True">
+                <Button x:Name="SaveButton"
+                        Content="save"
+                        HorizontalAlignment="Stretch"
+                        Style="{StaticResource KlivaButtonMobile}" />
             </Grid>
         </RelativePanel>
     </Grid>

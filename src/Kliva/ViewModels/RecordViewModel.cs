@@ -67,8 +67,14 @@ namespace Kliva.ViewModels
         public RecordViewModel(INavigationService navigationService, ILocationService locationService, IGPXService gpxService) : base(navigationService)
         {
             _gpxService = gpxService;
-            _locationService = locationService;            
+            _locationService = locationService;
             //_locationService.StatusChanged += OnLocationServiceStatusChanged;
+        }
+
+        public override void Cleanup()
+        {
+            RecordStatus = ActivityTracking.Idle;
+            base.Cleanup();
         }
 
         //private void OnLocationServiceStatusChanged(object sender, LocationServiceStatusChangedEventArgs e)
@@ -135,8 +141,7 @@ namespace Kliva.ViewModels
 
         private void EndExtendedExecution()
         {
-            //TODO: Glenn - do we need to set it back to idle? Or do we need an extra Finished state?
-            RecordStatus = ActivityTracking.Idle;
+            RecordStatus = ActivityTracking.Finished;
             _periodicTimer?.Dispose();
             ClearExtendedExecution();
         }
@@ -223,6 +228,6 @@ namespace Kliva.ViewModels
                     }
                 }
             });
-        }
+        }        
     }
 }
