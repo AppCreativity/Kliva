@@ -440,6 +440,10 @@ namespace Kliva.Services
             return data;
         }
 
+        public async Task UploadActivityAsync(string gpxFilePath, ActivityType activityType, bool commute)
+        {
+        }
+
         public async Task<List<ActivitySummary>> HydrateActivityData(string data)
         {
             var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitTypeAsync();

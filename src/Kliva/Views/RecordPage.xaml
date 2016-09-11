@@ -113,6 +113,7 @@
                     <Button x:Name="SaveButton"
                             Content="save"
                             HorizontalAlignment="Stretch"
+                            Command="{x:Bind ViewModel.SaveCommand}"
                             Style="{StaticResource KlivaButtonMobile}"
                             RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
                             RelativePanel.Below="ActivityName" />

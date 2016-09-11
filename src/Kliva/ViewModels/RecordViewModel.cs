@@ -71,6 +71,9 @@ namespace Kliva.ViewModels
         private RelayCommand _stopCommand;
         public RelayCommand StopCommand => _stopCommand ?? (_stopCommand = new RelayCommand(async () => await StopRecording()));
 
+        private RelayCommand _saveCommand;
+        public RelayCommand SaveCommand => _saveCommand ?? (_saveCommand = new RelayCommand(async () => await SaveActivity()));
+
         public RecordViewModel(INavigationService navigationService, ILocationService locationService, IGPXService gpxService) : base(navigationService)
         {
             _gpxService = gpxService;
@@ -197,6 +200,11 @@ namespace Kliva.ViewModels
             await _gpxService.EndGPXDocument();            
 
             EndExtendedExecution();
+        }
+
+        private async Task SaveActivity()
+        {
+            
         }
 
         private async void OnExtendedExecutionSessionRevoked(object sender, ExtendedExecutionRevokedEventArgs args)
