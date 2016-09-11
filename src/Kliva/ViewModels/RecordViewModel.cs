@@ -21,7 +21,9 @@ namespace Kliva.ViewModels
         private ExtendedExecutionSession _extendedExecutionSession;
         private Timer _periodicTimer = null;
         private bool _canRecord = false;
+        private string _gpxFile;
         private readonly ILocationService _locationService;
+        private readonly IStravaService _stravaService;
         private readonly IGPXService _gpxService;
 
         private string _activityText;
@@ -74,16 +76,18 @@ namespace Kliva.ViewModels
         private RelayCommand _saveCommand;
         public RelayCommand SaveCommand => _saveCommand ?? (_saveCommand = new RelayCommand(async () => await SaveActivity()));
 
-        public RecordViewModel(INavigationService navigationService, ILocationService locationService, IGPXService gpxService) : base(navigationService)
+        public RecordViewModel(INavigationService navigationService, ILocationService locationService, IGPXService gpxService, IStravaService stravaService) : base(navigationService)
         {
             _gpxService = gpxService;
             _locationService = locationService;
+            _stravaService = stravaService;
             //_locationService.StatusChanged += OnLocationServiceStatusChanged;
         }
 
         public override void Cleanup()
         {
             RecordStatus = ActivityTracking.Idle;
+            _gpxFile = string.Empty;        
             base.Cleanup();
         }
 
@@ -197,14 +201,21 @@ namespace Kliva.ViewModels
         private async Task StopRecording()
         {
             //TODO: Glenn - Check if service is recording?
-            await _gpxService.EndGPXDocument();            
+            _gpxFile = await _gpxService.EndGPXDocument();            
 
             EndExtendedExecution();
         }
 
         private async Task SaveActivity()
         {
-            
+            //TODO: Glenn - add more screen options to save
+            await _stravaService.UploadActivityAsync(
+                _gpxFile,
+                Enum<ActivityRecording>.Parse(ActivityText) == ActivityRecording.Cycling ? ActivityType.Ride : ActivityType.Run,
+                ActivityName,
+                false,
+                false
+                );
         }
 
         private async void OnExtendedExecutionSessionRevoked(object sender, ExtendedExecutionRevokedEventArgs args)

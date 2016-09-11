@@ -80,6 +80,6 @@
         /// <summary>
         /// Url to the endpoint used for uploads.
         /// </summary>
-        public const string Uploads = "https://www.strava.com/api/v3/uploads/";
+        public const string Uploads = "https://www.strava.com/api/v3/uploads";
     }
 }

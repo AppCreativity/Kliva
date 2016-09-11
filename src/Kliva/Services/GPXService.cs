@@ -31,7 +31,7 @@ namespace Kliva.Services
             return Task.CompletedTask;
         }
 
-        public async Task EndGPXDocument()
+        public async Task<string> EndGPXDocument()
         {
             //TODO: Glenn - What folder do we use? LocalFolder or TempFolder?
             //TODO: Glenn - What file name?
@@ -44,6 +44,8 @@ namespace Kliva.Services
                 _gpxDocument.Save(writerStream);
                 await writerStream.FlushAsync();
             }
+
+            return file.Path;
         }
 
         public async Task WriteGPXLocation(double latitude, double longitude)

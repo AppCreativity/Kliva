@@ -23,6 +23,9 @@ namespace Kliva.Services.Interfaces
 
         Task<string> GetFriendActivityDataAsync(int page, int pageSize);
         Task<string> GetMyActivityDataAsync(int page, int pageSize);
+
+        Task UploadActivityAsync(string gpxFilePath, ActivityType activityType, string name, bool commute, bool isPrivate);
+
         Task<List<ActivitySummary>> HydrateActivityData(string data);
     }
 }

@@ -2,6 +2,7 @@
 using Kliva.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -75,6 +76,37 @@ namespace Kliva.Services
             }
 
             using (HttpResponseMessage response = await StravaHttpClient.PostAsync(uri, null))
+            {
+                if (response != null)
+                {
+                    AsyncResponseReceived?.Invoke(null, new AsyncResponseReceivedEventArgs(response));
+
+                    CheckStravaApiUsage(response);
+
+                    _lastResponseCode = response.StatusCode;
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        return await response.Content.ReadAsStringAsync();
+                    }
+                }
+            }
+
+            return string.Empty;
+        }
+
+        public async Task<string> SendPostAsync(Uri uri, string fileName)
+        {
+            if (uri == null)
+                throw new ArgumentException("Parameter uri must not be null. Please commit a valid Uri object.");
+
+            if(string.IsNullOrEmpty(fileName))
+                throw new ArgumentException("Please provide a valid file name");
+
+            FileInfo info = new FileInfo(fileName);
+            MultipartFormDataContent content = new MultipartFormDataContent();
+            content.Add(new ByteArrayContent(File.ReadAllBytes(info.FullName)), "file", info.Name);
+
+            using (HttpResponseMessage response = await StravaHttpClient.PostAsync(uri, content))
             {
                 if (response != null)
                 {

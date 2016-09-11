@@ -5,7 +5,7 @@ namespace Kliva.Services.Interfaces
     public interface IGPXService
     {
         Task InitGPXDocument();
-        Task EndGPXDocument();
+        Task<string> EndGPXDocument();
         Task WriteGPXLocation(double latitude, double longitude);
     }
 }

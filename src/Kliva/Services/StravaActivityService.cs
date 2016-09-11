@@ -375,8 +375,11 @@ namespace Kliva.Services
         {
             try
             {
+                int commuteAsInt = commute ? 1 : 0;
+                int isPrivateAsInt = isPrivate ? 1 : 0;
+
                 var accessToken = await _settingsService.GetStoredStravaAccessTokenAsync();
-                string postUrl = $"{Endpoints.Activity}/{activityId}?name={WebUtility.UrlEncode(name)}&commute={WebUtility.UrlEncode(commute.ToString().ToLower())}&private={WebUtility.UrlEncode(isPrivate.ToString().ToLower())}";
+                string postUrl = $"{Endpoints.Activity}/{activityId}?name={WebUtility.UrlEncode(name)}&commute={commuteAsInt}&private={isPrivateAsInt}";
                 if (!string.IsNullOrEmpty(gearID))
                     postUrl += $"&gear_id={WebUtility.UrlEncode(gearID)}";
 
@@ -440,8 +443,28 @@ namespace Kliva.Services
             return data;
         }
 
-        public async Task UploadActivityAsync(string gpxFilePath, ActivityType activityType, bool commute)
+        public async Task UploadActivityAsync(string gpxFilePath, ActivityType activityType, string name, bool commute = false, bool isPrivate = false)
         {
+            try
+            {
+                int commuteAsInt = commute ? 1 : 0;
+                int isPrivateAsInt = isPrivate ? 1 : 0;
+
+                var accessToken = await _settingsService.GetStoredStravaAccessTokenAsync();
+                string postUrl = $"{Endpoints.Uploads}?data_type=gpx&activity_type={WebUtility.UrlEncode(activityType.ToString().ToLower())}&commute={commuteAsInt}&private={isPrivateAsInt}";
+
+                if(!string.IsNullOrEmpty(name))
+                    postUrl += $"&name={WebUtility.UrlEncode(name)}";
+
+                postUrl += $"&access_token={accessToken}";
+
+                await _stravaWebClient.SendPostAsync(new Uri(postUrl), gpxFilePath);
+            }
+            catch (Exception ex)
+            {
+                //TODO: Glenn - Use logger to log errors ( Google )
+                var t = ex.Message;
+            }
         }
 
         public async Task<List<ActivitySummary>> HydrateActivityData(string data)
