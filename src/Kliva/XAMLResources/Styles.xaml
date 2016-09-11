@@ -4,7 +4,8 @@
     xmlns:controls="using:Kliva.Controls"
     xmlns:cimbalinoconverters="using:Cimbalino.Toolkit.Converters"
     xmlns:local="using:Kliva.XAMLResources"
-    xmlns:converters="using:Kliva.Converters">
+    xmlns:converters="using:Kliva.Converters"
+    xmlns:system="using:System">
 
     <cimbalinoconverters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <cimbalinoconverters:BooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" InvertValue="True" />

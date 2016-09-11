@@ -23,8 +23,21 @@
             <core:InvokeCommandAction Command="{Binding ViewLoadedCommand}" />
         </core:EventTriggerBehavior>
     </interactivity:Interaction.Behaviors>
-
+    
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <!-- Use of state triggers instead of converter with visibility? https://github.com/dotMorten/WindowsStateTriggers/blob/master/src/TestApp/Samples/IsTrueFalseSample.xaml -->
+        <!--<VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState x:Name="FinishedState">
+                    <VisualState.StateTriggers>
+                        <StateTrigger IsActive="{x:Bind }" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>-->
+        
         <RelativePanel x:Name="ContentPanel">
             <maps:MapControl x:Name="TrackingMap"
                              ZoomLevel="5"                             
@@ -86,13 +99,24 @@
                 </Grid>
             </Grid>
             <Grid x:Name="SaveActionsGrid"
+                  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
                   Visibility="{x:Bind ViewModel.RecordStatus, Mode=OneWay, Converter={StaticResource InverseActivityTrackingToVisibilityConverter}, ConverterParameter='Finished'}"
                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
                   RelativePanel.AlignBottomWithPanel="True">
-                <Button x:Name="SaveButton"
-                        Content="save"
-                        HorizontalAlignment="Stretch"
-                        Style="{StaticResource KlivaButtonMobile}" />
+                <RelativePanel>
+                    <TextBox x:Name="ActivityName"
+                             Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                             PlaceholderText="Activity name"
+                             Text="{x:Bind ViewModel.ActivityName, Mode=TwoWay}"
+                             RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
+
+                    <Button x:Name="SaveButton"
+                            Content="save"
+                            HorizontalAlignment="Stretch"
+                            Style="{StaticResource KlivaButtonMobile}"
+                            RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                            RelativePanel.Below="ActivityName" />
+                </RelativePanel>
             </Grid>
         </RelativePanel>
     </Grid>

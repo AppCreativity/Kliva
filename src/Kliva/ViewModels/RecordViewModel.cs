@@ -38,6 +38,13 @@ namespace Kliva.ViewModels
             set { Set(() => CurrentLocation, ref _currentLocation, value); }
         }
 
+        private string _activityName;
+        public string ActivityName
+        {
+            get { return _activityName; }
+            set { Set(() => ActivityName, ref _activityName, value); }
+        }
+
         private ActivityTracking _recordStatus = ActivityTracking.Idle;
         public ActivityTracking RecordStatus
         {
