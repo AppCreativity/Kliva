@@ -22,6 +22,8 @@
     <Color x:Key="KlivaDarkColor">#b65033</Color>
     <SolidColorBrush x:Key="KlivaDarkBrush" Color="{StaticResource KlivaDarkColor}" />
 
+    <SolidColorBrush x:Key="LoadingBackground" Opacity="0.65" Color="{StaticResource KlivaDarkColor}" />
+
     <Color x:Key="KlivaLocationColor">#52B266</Color>
     <SolidColorBrush x:Key="KlivaLocationBrush" Color="{StaticResource KlivaLocationColor}" />
 
@@ -1205,6 +1207,19 @@
                     <Grid HorizontalAlignment="Stretch"
                           VerticalAlignment="Stretch"
                           DataContext="{Binding SidePane, Source={StaticResource Locator}}">
+
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="Loading">
+                                    <VisualState.Setters>
+                                        <Setter Target="LoadingGrid.Visibility" Value="Visible" />
+                                        <Setter Target="LoadingControl.IsLoading" Value="True" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
                         <SplitView x:Name="SidePane"
                                    DisplayMode="{Binding DisplayMode, Mode=TwoWay}"
                                    OpenPaneLength="{ThemeResource SplitViewOpenPaneThemeLength}"
@@ -1223,6 +1238,10 @@
                                                 VerticalAlignment="Stretch" />
                             </SplitView.Content>
                         </SplitView>
+
+                        <Grid x:Name="LoadingGrid" Visibility="Collapsed" Background="{StaticResource LoadingBackground}">
+                            <controls:LoadingControl x:Name="LoadingControl" IsLoading="False" />
+                        </Grid>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

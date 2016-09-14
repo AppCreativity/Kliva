@@ -129,6 +129,9 @@
       <DependentUpon>IconPivotHeader.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\KlivaApplicationFrame.cs" />
+    <Compile Include="Controls\LoadingControl.xaml.cs">
+      <DependentUpon>LoadingControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\MenuItemTemplateSelector.cs" />
     <Compile Include="Controls\SidePaneControl.xaml.cs">
       <DependentUpon>SidePaneControl.xaml</DependentUpon>
@@ -323,6 +326,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\IconPivotHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\LoadingControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -142,6 +142,8 @@ namespace Kliva.ViewModels
         private async Task ClearMaps()
         {
             var mapFiles = await GetMapFiles();
+            IsBusy = true;
+
             foreach (StorageFile mapFile in mapFiles)
             {
                 try
@@ -155,6 +157,8 @@ namespace Kliva.ViewModels
             }
 
             await this.GetMapSizes();
+
+            IsBusy = false;
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Windows.System;
 using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
+using Kliva.Controls;
 using Kliva.Models;
 using Kliva.Services;
 using Kliva.Services.Interfaces;
@@ -15,7 +17,11 @@ namespace Kliva.ViewModels
         private IMessageBoxService _messageBoxService;
 
         private RelayCommand _loginCommand;
-        public RelayCommand LoginCommand => _loginCommand ?? (_loginCommand = new RelayCommand(async () => await _stravaService.GetAuthorizationCode()));
+        public RelayCommand LoginCommand => _loginCommand ?? (_loginCommand = new RelayCommand(async () =>
+        {
+            IsBusy = true;
+            await _stravaService.GetAuthorizationCode();
+        }));
 
         private RelayCommand _newAccountCommand;
         public RelayCommand NewAccountCommand => _newAccountCommand ?? (_newAccountCommand = new RelayCommand(async () => await Launcher.LaunchUriAsync(new Uri(Constants.STRAVA_NEW_ACCOUNT))));
@@ -32,16 +38,16 @@ namespace Kliva.ViewModels
             switch (e.Status)
             {
                 case StravaServiceStatus.Success:
-                    _stravaService.StatusEvent -= OnStravaStatusEvent;
+                    _stravaService.StatusEvent -= OnStravaStatusEvent;                    
 
                     //Remove the current 'login page' back entry and navigate to the main page
                     NavigationService.Navigate<MainPage>();
-                    NavigationService.RemoveBackEntry();
+                    NavigationService.RemoveBackEntry();                    
 
-                    this.IsBusy = false;
+                    IsBusy = false;
                     break;
                 case StravaServiceStatus.Failed:
-                    this.IsBusy = false;
+                    IsBusy = false;
 
                     //TODO: Glenn - Add more text value through resources
                     await _messageBoxService.ShowAsync("Something happend...", "Error");

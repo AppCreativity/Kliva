@@ -1,6 +1,7 @@
 ﻿using Windows.UI.Xaml.Controls;
 using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight;
+using Kliva.Controls;
 using Kliva.Models;
 using Kliva.Views;
 
@@ -14,7 +15,11 @@ namespace Kliva.ViewModels
         public bool IsBusy
         {
             get { return _isBusy; }
-            set { Set<bool>(() => IsBusy, ref _isBusy, value); }
+            set
+            {
+                if(Set<bool>(() => IsBusy, ref _isBusy, value))
+                    LoadingControl.SetLoading(IsBusy);
+            }
         }
 
         public KlivaBaseViewModel(INavigationService navigationService)

@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.Security.Authentication.Web;
 using GalaSoft.MvvmLight.Threading;
+using Kliva.Controls;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
 using Microsoft.Practices.ServiceLocation;
@@ -152,7 +153,8 @@ namespace Kliva.Services
 
             try
             {
-                WebAuthenticationResult webAuthenticationResult = await WebAuthenticationBroker.AuthenticateAsync(WebAuthenticationOptions.None, new Uri(authenticationURL), new Uri(Constants.STRAVA_AUTHORITY_REDIRECT_URL));
+                WebAuthenticationResult webAuthenticationResult = await WebAuthenticationBroker.AuthenticateAsync(WebAuthenticationOptions.None, new Uri(authenticationURL), new Uri(Constants.STRAVA_AUTHORITY_REDIRECT_URL));                
+
                 if (webAuthenticationResult.ResponseStatus == WebAuthenticationStatus.Success)
                 {
                     var responseData = webAuthenticationResult.ResponseData;

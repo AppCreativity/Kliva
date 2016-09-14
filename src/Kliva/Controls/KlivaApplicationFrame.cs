@@ -1,5 +1,7 @@
-﻿using Kliva.ViewModels;
+﻿using Windows.UI.Xaml;
+using Kliva.ViewModels;
 using Windows.UI.Xaml.Controls;
+using Microsoft.Xaml.Interactions.Core;
 
 namespace Kliva.Controls
 {
@@ -8,6 +10,11 @@ namespace Kliva.Controls
         public KlivaApplicationFrame()
         {
             Navigated += OnNavigated;
+        }
+
+        public void ShowLoading(bool isLoading)
+        {
+            VisualStateManager.GoToState(this, isLoading ? "Loading" : "Normal", true);
         }
 
         private void OnNavigated(object sender, Windows.UI.Xaml.Navigation.NavigationEventArgs e)
