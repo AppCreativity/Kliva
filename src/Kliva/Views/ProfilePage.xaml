@@ -23,6 +23,32 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState x:Name="Mobile">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="320" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockMobile}" />
+                        <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseDesktop}" />
+                        <Setter Target="AthleteFullNameTextBlock.Style" Value="{ThemeResource ProfileNameStyleMobile}" />
+                        <Setter Target="AthleteCityTextBlock.Style" Value="{ThemeResource ProfileLocationStyleMobile}" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Desktop">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="720" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockDesktopWithSideBar}" />
+                        <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseLarge}" />
+                        <Setter Target="AthleteFullNameTextBlock.Style" Value="{ThemeResource ProfileNameStyleDesktop}" />
+                        <Setter Target="AthleteCityTextBlock.Style" Value="{ThemeResource ProfileLocationStyleDesktop}" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
 
         <StackPanel x:Name="TitlePanel"
                     Grid.Row="0"
@@ -42,8 +68,8 @@
                            RelativePanel.AlignTopWithPanel="True" 
                            RelativePanel.AlignLeftWithPanel="True"
                            RelativePanel.AlignRightWithPanel="True">
-                <Ellipse x:Name="AthleteProfilePicture" 
-                         Style="{StaticResource ProfileEllipseLarge}"
+                <Ellipse x:Name="AthleteProfilePicture"
+                         Margin="10"
                          RelativePanel.AlignTopWithPanel="True" 
                          RelativePanel.AlignLeftWithPanel="True">
                     <Ellipse.Fill>
@@ -51,15 +77,13 @@
                     </Ellipse.Fill>
                 </Ellipse>
 
-                <StackPanel Margin="19,0"
+                <StackPanel Margin="10,0"
                             RelativePanel.RightOf="AthleteProfilePicture"
                             RelativePanel.AlignVerticalCenterWith="AthleteProfilePicture">
-                    <TextBlock Text="{x:Bind ViewModel.Athlete.FullName, Mode=OneWay}"
-                               Style="{ThemeResource ProfileNameStyle}" />
-                    <TextBlock Text="{x:Bind ViewModel.Athlete.CityFormatted, Mode=OneWay}"
-                               Style="{ThemeResource ProfileLocationStyle}" />
+                    <TextBlock x:Name="AthleteFullNameTextBlock" Text="{x:Bind ViewModel.Athlete.FullName, Mode=OneWay}" />
+                    <TextBlock x:Name="AthleteCityTextBlock" Text="{x:Bind ViewModel.Athlete.CityFormatted, Mode=OneWay}" />
                 </StackPanel>
-                
+
             </RelativePanel>
 
             <Pivot x:Name="ProfilePivot"
@@ -90,26 +114,5 @@
                 </PivotItem>
             </Pivot>
         </Grid>
-
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="VisualStateGroup">
-                <VisualState x:Name="Mobile">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="320" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockMobile}" />
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState x:Name="Desktop">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="720" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockDesktopWithSideBar}" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
     </Grid>
 </Page>
