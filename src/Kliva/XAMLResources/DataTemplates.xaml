@@ -102,30 +102,29 @@
                                        Margin="0,0,0,2.5"                                       
                                        Text="{x:Bind Athlete.FullName, Mode=OneWay}"
                                        Style="{StaticResource CharacterTrimmingTextBlock}"
-                                       RelativePanel.Below="ActivityName" RelativePanel.LeftOf="ActivityStart" RelativePanel.AlignLeftWithPanel="True" />
+                                       RelativePanel.Below="ActivityName" RelativePanel.AlignLeftWithPanel="True" />
                             
+                            <!-- TODO: Glenn - Why is the activity start text not bottom alligned with athlete name?? -->
                             <TextBlock x:Name="ActivityStart"
                                        Margin="0,0,0,2.5"
                                        Text="{x:Bind StartDate, Mode=OneWay, Converter={StaticResource RelativeTimeConverter}}"                                       
                                        HorizontalAlignment="Right"
-                                       RelativePanel.Below="ActivityName"  RelativePanel.AlignRightWithPanel="True" />
+                                       RelativePanel.Below="ActivityName" RelativePanel.RightOf="ActivityAthleteName" RelativePanel.AlignRightWithPanel="True" />
 
-                            <Grid x:Name="ActivityHighlightsGrid"
-                                  RelativePanel.Below="ActivityAthleteName"
-                                  RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
+                            <TextBlock x:Name="ActivityDistance"
+                                        Style="{StaticResource BaseTextBlock}"
+                                        FontSize="12"
+                                        RelativePanel.Below="ActivityAthleteName"
+                                        RelativePanel.AlignLeftWithPanel="True">
+                                <Run Text="{x:Bind DistanceFormatted, Mode=OneWay}" />
+                                <Run Text="{x:Bind DistanceUnit, Mode=OneWay, Converter={StaticResource DistanceUnitToStringConverter}}"/>
+                            </TextBlock>
 
-                                <TextBlock x:Name="ActivityDistance"
-                                           Style="{StaticResource BaseTextBlock}"
-                                           FontSize="12"
-                                           Grid.Column="0">
-                                    <Run Text="{x:Bind DistanceFormatted, Mode=OneWay}" />
-                                    <Run Text="{x:Bind DistanceUnit, Mode=OneWay, Converter={StaticResource DistanceUnitToStringConverter}}"/>
-                                </TextBlock>
-                            </Grid>
-                        </RelativePanel>
+                        <!-- TODO: Glenn - How to top allign with distance?? -->
+                        <!--<FontIcon x:Name="KudosIcon" HorizontalAlignment="Center" Margin="0,10,0,0" Glyph="&#xE8E1;" FontSize="14"
+                                  RelativePanel.Below="ActivityAthleteName" RelativePanel.RightOf="ActivityDistance"
+                                  RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWith="ActivityDistance"/>-->
+                    </RelativePanel>
                     </RelativePanel>
 
                     <RelativePanel x:Name="BottomPanel"
