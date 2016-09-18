@@ -33,9 +33,9 @@
                                 <Setter Target="ActivityImage.Style" Value="{StaticResource ActivityImageBorderMobile}"/>
                                 <Setter Target="ActivityImageIcon.FontSize" Value="12" />
                                 <Setter Target="ActivityAthleteName.FontSize" Value="12" />
-                                <Setter Target="ActivityStart.FontSize" Value="12" />
                                 <!-- TODO: Glenn - This is not 100% correct! Because small view on a non Windows 10 Mobile device would also need 15 margin Right because of the 'fat' scrollbar, on WP10 scrollbar design in 'small' -->
                                 <Setter Target="ActivityListItemPanel.Padding" Value="10,10,10,10" />
+                                <Setter Target="ActivityStart.Style" Value="{StaticResource StartTextBlockMobile}" />
                             </VisualState.Setters>
                         </VisualState>
                         <VisualState x:Name="Desktop">
@@ -47,8 +47,8 @@
                                 <Setter Target="ActivityImage.Style" Value="{StaticResource ActivityImageBorderDesktop}"/>
                                 <Setter Target="ActivityImageIcon.FontSize" Value="14" />
                                 <Setter Target="ActivityAthleteName.FontSize" Value="14" />
-                                <Setter Target="ActivityStart.FontSize" Value="14" />
                                 <Setter Target="ActivityListItemPanel.Padding" Value="10,10,15,10" />
+                                <Setter Target="ActivityStart.Style" Value="{StaticResource StartTextBlockDesktop}" />
                             </VisualState.Setters>
                         </VisualState>
                     </VisualStateGroup>
@@ -106,8 +106,7 @@
                             
                             <TextBlock x:Name="ActivityStart"
                                        Margin="0,0,0,2.5"
-                                       Text="{x:Bind StartDate, Mode=OneWay, Converter={StaticResource RelativeTimeConverter}}"
-                                       Style="{StaticResource BaseTextBlock}"
+                                       Text="{x:Bind StartDate, Mode=OneWay, Converter={StaticResource RelativeTimeConverter}}"                                       
                                        HorizontalAlignment="Right"
                                        RelativePanel.Below="ActivityName"  RelativePanel.AlignRightWithPanel="True" />
 

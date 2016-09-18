@@ -71,6 +71,25 @@
            TargetType="TextBlock">
         <Setter Property="Margin" Value="60,0,0,10" />
     </Style>
+    
+    <Style x:Name="StartTextBlock" BasedOn="{StaticResource BaseTextBlock}"
+           TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource SubTextBrush}" />
+    </Style>
+
+    <Style x:Name="StartTextBlockMobile" BasedOn="{StaticResource BaseTextBlock}"
+           TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource SubTextBrush}" />
+        <Setter Property="FontFamily" Value="{StaticResource OpenSansFontSemibold}" />
+        <Setter Property="FontSize" Value="10"></Setter>
+    </Style>
+
+    <Style x:Name="StartTextBlockDesktop" BasedOn="{StaticResource BaseTextBlock}"
+           TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource SubTextBrush}" />
+        <Setter Property="FontFamily" Value="{StaticResource OpenSansFontSemibold}" />
+        <Setter Property="FontSize" Value="12"></Setter>
+    </Style>
 
     <Style x:Key="TitleTextBlockDesktopWithSideBar" BasedOn="{StaticResource TitleTextBlock}"
            TargetType="TextBlock">
