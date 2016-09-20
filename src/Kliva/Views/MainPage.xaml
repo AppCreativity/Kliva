@@ -122,11 +122,11 @@
             <Button x:Name="FilterButton"
                     Style="{StaticResource EmptyButtonStyle}"
                     Foreground="{StaticResource KlivaMainBrush}"
-                    Content="{Binding FilterText}"
-                    FontFamily="{StaticResource OpenSansFontLight}"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Left"
-                    Margin="10,5,0,10"
+                    Margin="10,0,0,0" Height="48"
+                    VerticalContentAlignment="Bottom"
+                    Padding="0 0 0 5"
                     Grid.Row="0"
                     Grid.Column="0">
                 <Button.Flyout>
@@ -136,6 +136,10 @@
                         <MenuFlyoutItem Text="friends' activities" Command="{Binding FilterCommand}" CommandParameter="followers" />
                     </MenuFlyout>
                 </Button.Flyout>
+                <TextBlock>
+                    <Run Text="{Binding FilterText}" FontFamily="{StaticResource OpenSansFontLight}"/>
+                    <Run Text="  " FontFamily="Segoe UI Symbol" />
+                </TextBlock>
             </Button>
 
             <klivacontrols:ActivityFeedControl x:Name="ActivityFeed"

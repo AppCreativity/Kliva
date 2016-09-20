@@ -281,6 +281,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Brooks.jpg" />
+    <Content Include="Assets\KlivaLogo.png" />
     <Content Include="Assets\Merckx_1920.jpg" />
     <Content Include="Assets\Square44x44Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-16_altform-unplated.png" />
