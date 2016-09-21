@@ -33,6 +33,7 @@
                         <Setter Target="ActivityNameTextBlock.Style" Value="{StaticResource ActivityNameTextBlockMobile}" />
                         <Setter Target="StatisticsGrid.MinItemWidth" Value="200" />
                         <Setter Target="StatisticsGrid.MinItemHeight" Value="68" />
+                        <Setter Target="ActivityNameTextBlock.Margin" Value="10,0,10,5" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="Desktop">
@@ -57,7 +58,7 @@
                 <TextBlock x:Name="ActivityNameTextBlock"
                            Text="{x:Bind ViewModel.SelectedActivity.Name, Mode=OneWay}"
                            TextWrapping="WrapWholeWords" MaxLines="2"
-                           Margin="10,0,10,5" />
+                           Margin="0,16,10,5" />
             </Border>
             <maps:MapControl x:Name="ActivityMap"
                              RelativePanel.Below="ActivityName"
@@ -195,5 +196,14 @@
             </ListView>
 
         </RelativePanel>
+        <Grid VerticalAlignment="Stretch" 
+              HorizontalAlignment="Stretch" 
+              Background="White"
+              Visibility="{x:Bind  ViewModel.SelectedActivity, Mode=OneWay, Converter={StaticResource InverseVisibilityConverter}}">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Image Source="ms-appx:///Assets/KlivaLogo.png" VerticalAlignment="Center" Stretch="None" />
+                <TextBlock Text="Select an Activity in the Activity Feed to view its details." Style="{StaticResource BaseTextBlock}" />
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>
