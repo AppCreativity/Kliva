@@ -98,7 +98,7 @@
                         <Setter Target="ListColumn.Width" Value="*" />
                         <Setter Target="ListItemColumn.Width" Value="1.8*" />
                         <Setter Target="FilterButton.Height" Value="48" />
-                        <Setter Target="FilterButton.Margin" Value="10 0 0 0" />
+                        <Setter Target="FilterButton.Margin" Value="10,0,0,0" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -126,7 +126,7 @@
                     Foreground="{StaticResource KlivaMainBrush}"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Left"
-                    Margin="10 5 0 10"
+                    Margin="10,5,0,10"
                     Grid.Row="0"
                     Grid.Column="0">
                 <Button.Flyout>

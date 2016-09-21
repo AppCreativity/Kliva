@@ -56,7 +56,7 @@ namespace Kliva.Views
             //TODO: Convert.ToInt32((Application.Current.Resources["SplitViewCompactPaneThemeLength"] as double?).Value)
             SplitView splitView = ((KlivaApplicationFrame) this.Parent).GetVisualDescendents<SplitView>().FirstOrDefault();
             if(splitView.DisplayMode != SplitViewDisplayMode.Inline)
-                style.Setters.Add(new Setter(MarginProperty, new Thickness(splitView.CompactPaneLength,0,0,0)));
+                style.Setters.Add(new Setter(MarginProperty, new Thickness(-5,-5,0,0))); //don't know exactly where this 'magic' margin of 5px comes from
 
             menuFlyout.MenuFlyoutPresenterStyle = style;
         }
