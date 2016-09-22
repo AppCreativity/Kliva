@@ -218,7 +218,10 @@ namespace Kliva.Services
 
                 string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
 
-                return Unmarshaller<Stats>.Unmarshal(json);
+                Stats stats = Unmarshaller<Stats>.Unmarshal(json);
+                StravaService.SetMetricUnits(stats, defaultDistanceUnitType);
+
+                return stats;
             }
             catch (Exception)
             {

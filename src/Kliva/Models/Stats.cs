@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Kliva.Helpers;
+using Newtonsoft.Json;
 
 namespace Kliva.Models
 {
@@ -233,19 +234,19 @@ namespace Kliva.Models
     /// <summary>
     /// This class contains all statistics of an athlete.
     /// </summary>
-    public class Stats
+    public partial class Stats : BaseClass
     {
         /// <summary>
         /// The distance of your biggest ride.
         /// </summary>
         [JsonProperty("biggest_ride_distance")]
-        public double BiggestRideDistance { get; set; }
+        public float BiggestRideDistance { get; set; }
 
         /// <summary>
         /// The most elevation gain in a single ride.
         /// </summary>
         [JsonProperty("biggest_climb_elevation_gain")]
-        public double BiggestClimbElevationGain { get; set; }
+        public float BiggestClimbElevationGain { get; set; }
 
         /// <summary>
         /// Statistics about your recent rides.
@@ -282,5 +283,57 @@ namespace Kliva.Models
         /// </summary>
         [JsonProperty("all_run_totals")]
         public AllRunTotals RunTotals { get; set; }
+    }
+
+    /// <summary>
+    /// Separated added fields from original response class!
+    /// </summary>
+    public partial class Stats
+    {
+        private DistanceUnitType _distanceUnit;
+        public DistanceUnitType DistanceUnit
+        {
+            get { return _distanceUnit; }
+            set
+            {
+                Set(() => DistanceUnit, ref _distanceUnit, value);
+                RaisePropertyChanged(() => BiggestRideDistanceFormatted);
+                RaisePropertyChanged(() => BiggestClimbElevationGainFormatted);
+
+                //TODO: Glenn - do we need to 'recalculate' other values?
+            }
+        }
+
+        public string BiggestRideDistanceFormatted
+        {
+            get
+            {
+                switch (DistanceUnit)
+                {
+                    case DistanceUnitType.Kilometres:
+                        return UnitConverter.ConvertDistance(BiggestRideDistance, DistanceUnitType.Metres, DistanceUnitType.Kilometres).ToString("F1");
+                    case DistanceUnitType.Miles:
+                        return UnitConverter.ConvertDistance(BiggestRideDistance, DistanceUnitType.Metres, DistanceUnitType.Miles).ToString("F1");
+                }
+
+                return null;
+            }
+        }
+
+        public string BiggestClimbElevationGainFormatted
+        {
+            get
+            {
+                switch (DistanceUnit)
+                {
+                    case DistanceUnitType.Kilometres:
+                        return UnitConverter.ConvertDistance(BiggestClimbElevationGain, DistanceUnitType.Metres, DistanceUnitType.Metres).ToString("F1");
+                    case DistanceUnitType.Miles:
+                        return UnitConverter.ConvertDistance(BiggestClimbElevationGain, DistanceUnitType.Metres, DistanceUnitType.Miles).ToString("F1");
+                }
+
+                return null;
+            }
+        }
     }
 }

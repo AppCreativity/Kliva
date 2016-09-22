@@ -123,6 +123,12 @@ namespace Kliva.Services
         }
 
         //TODO: Glenn - Should we set these at some BaseClass?
+        public static void SetMetricUnits(Stats stats, DistanceUnitType distanceUnitType)
+        {
+            stats.DistanceUnit = distanceUnitType;
+        }
+
+        //TODO: Glenn - Should we set these at some BaseClass?
         public static void SetMetricUnits(SegmentSummary segment, DistanceUnitType distanceUnitType)
         {
             segment.DistanceUnit = distanceUnitType;
