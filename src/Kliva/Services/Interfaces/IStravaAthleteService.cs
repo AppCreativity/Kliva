@@ -14,6 +14,7 @@ namespace Kliva.Services.Interfaces
         Task<IEnumerable<AthleteSummary>> GetFriendsAsync(string athleteId, bool authenticatedUser = true);
         Task<IEnumerable<AthleteSummary>> GetMutualFriendsAsync(string athleteId);
         Task<IEnumerable<SegmentEffort>> GetKomsAsync(string athleteId);
+        Task<Stats> GetStatsAsync(string athleteId);
 
         AthleteSummary ConsolidateWithCache(AthleteMeta athlete);
     }

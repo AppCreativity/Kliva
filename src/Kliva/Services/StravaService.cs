@@ -207,6 +207,11 @@ namespace Kliva.Services
             return StravaAthleteService.GetKomsAsync(athleteId);
         }
 
+        public Task<Stats> GetStatsAsync(string athleteId)
+        {
+            return StravaAthleteService.GetStatsAsync(athleteId);
+        }
+
         public async Task<Activity> GetActivityAsync(string id, bool includeEfforts)
         {
             //TODO: Glenn - kick of tasks in Task.Run List<Task>

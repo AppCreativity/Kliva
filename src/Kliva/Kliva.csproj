@@ -194,6 +194,7 @@
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Models\Shoes.cs" />
     <Compile Include="Models\StatisticsDetail.cs" />
+    <Compile Include="Models\Stats.cs" />
     <Compile Include="Models\StravaIdentityConstants.cs" />
     <Compile Include="Models\Tokens.cs" />
     <Compile Include="Models\Usage.cs" />
