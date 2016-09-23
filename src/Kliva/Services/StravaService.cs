@@ -109,9 +109,7 @@ namespace Kliva.Services
         //TODO: Glenn - Should we set these at some BaseClass?
         public static void SetMetricUnits(ActivitySummary activity, DistanceUnitType distanceUnitType)
         {
-            activity.DistanceUnit = distanceUnitType;
-            activity.SpeedUnit = activity.DistanceUnit == DistanceUnitType.Kilometres ? SpeedUnit.KilometresPerHour : SpeedUnit.MilesPerHour;
-            activity.ElevationUnit = activity.DistanceUnit == DistanceUnitType.Kilometres ? DistanceUnitType.Metres : DistanceUnitType.Feet;
+            activity.MeasurementUnit = distanceUnitType;
         }
 
         //TODO: Glenn - Should we set these at some BaseClass?

@@ -432,42 +432,32 @@ namespace Kliva.Models
             }
         }
 
-        private DistanceUnitType _distanceUnit;
-        public DistanceUnitType DistanceUnit
+        DistanceUnitType _MeasurementUnit;
+        public DistanceUnitType MeasurementUnit
         {
-            get { return _distanceUnit; }
+            get
+            {
+                return _MeasurementUnit;
+            }
             set
             {
-                Set(() => DistanceUnit, ref _distanceUnit, value);
-                DistanceUserMeasurementUnit = new UserMeasurementUnitMetric(Distance, DistanceUnitType.Metres, DistanceUnit);
-
-                //TODO: Glenn - do we need to 'recalculate' other values?
+                _MeasurementUnit = value;
+                SetUserMeasurementUnits();
             }
         }
 
-        private SpeedUnit _speedUnit;
-        public SpeedUnit SpeedUnit
+        private void SetUserMeasurementUnits()
         {
-            get { return _speedUnit; }
-            set
-            {
-                Set(() => SpeedUnit, ref _speedUnit, value);
-                AverageSpeedUserMeasurementUnit = new UserMeasurementUnitMetric(AverageSpeed, SpeedUnit.MetresPerSecond, SpeedUnit);
-                MaxSpeedUserMeasurementUnit = new UserMeasurementUnitMetric(MaxSpeed, SpeedUnit.MetresPerSecond, SpeedUnit);
+            bool IsMetric = MeasurementUnit == DistanceUnitType.Kilometres || MeasurementUnit == DistanceUnitType.Metres;
+            var elevationDistanceUnitType = IsMetric ? DistanceUnitType.Metres : DistanceUnitType.Feet;
+            var speedUnit = IsMetric  ? SpeedUnit.KilometresPerHour : SpeedUnit.MilesPerHour;
+            var distanceUnitType = IsMetric ? DistanceUnitType.Kilometres : DistanceUnitType.Miles;
 
-                //TODO: Glenn - do we need to 'recalculate' other values?
-            }
-        }
 
-        private DistanceUnitType _elevationUnit;
-        public DistanceUnitType ElevationUnit
-        {
-            get { return _elevationUnit; }
-            set
-            {
-                Set(() => ElevationUnit, ref _elevationUnit, value);
-                ElevationGainUserMeasurementUnit = new UserMeasurementUnitMetric(ElevationGain, DistanceUnitType.Metres, ElevationUnit);
-            }
+            ElevationGainUserMeasurementUnit = new UserMeasurementUnitMetric(ElevationGain, DistanceUnitType.Metres, elevationDistanceUnitType);
+            AverageSpeedUserMeasurementUnit = new UserMeasurementUnitMetric(AverageSpeed, SpeedUnit.MetresPerSecond, speedUnit);
+            MaxSpeedUserMeasurementUnit = new UserMeasurementUnitMetric(MaxSpeed, SpeedUnit.MetresPerSecond, speedUnit);
+            DistanceUserMeasurementUnit = new UserMeasurementUnitMetric(Distance, DistanceUnitType.Metres, distanceUnitType);
         }
 
         public UserMeasurementUnitMetric DistanceUserMeasurementUnit

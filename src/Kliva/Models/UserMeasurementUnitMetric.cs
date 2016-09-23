@@ -77,7 +77,7 @@ namespace Kliva.Models
 
         private void OnMeasureUnitChangedMessge(MeasureUnitChangedMessage msg)
         {
-            if(msg.NewValue == DistanceUnitType.Kilometres || msg.NewValue == DistanceUnitType.Metres)
+            if (msg.NewValue == DistanceUnitType.Kilometres || msg.NewValue == DistanceUnitType.Metres)
             {
                 //The user selected metrics as preferred measure unit
                 if (userSelectedDistanceUnitType.HasValue)
