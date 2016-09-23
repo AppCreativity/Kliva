@@ -118,6 +118,12 @@ namespace Kliva.ViewModels
 
         private async Task LoadActivityDetails(string activityId)
         {
+            //We need to unload (remove the PropertyChanged event handler) from the 
+            //UserMeasurementUnitStatisticsDetail items to avoid memory leaks
+            //Not prety, but I don't see a better solution atm
+            SelectedActivity?.Statistics?.Where(a => a is UserMeasurementUnitStatisticsDetail)
+                .Select(a => a as UserMeasurementUnitStatisticsDetail).ToList().ForEach(a => a.Unload());
+
             Kudos.Clear();
             Comments.Clear();
             RelatedAthletes.Clear();
