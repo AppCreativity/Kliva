@@ -93,6 +93,8 @@ namespace Kliva.ViewModels
 
         private async Task LoadAsync()
         {
+            IsBusy = true;
+
             // clear old value // TODO configure ioc to give a new VM per call
             ClearProperties();
             
@@ -128,6 +130,8 @@ namespace Kliva.ViewModels
 
                 await Task.WhenAll(tasks);
             }
+
+            IsBusy = false;
         }        
 
         private void ClearProperties()

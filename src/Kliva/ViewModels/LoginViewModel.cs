@@ -21,6 +21,7 @@ namespace Kliva.ViewModels
         {
             IsBusy = true;
             await _stravaService.GetAuthorizationCode();
+            IsBusy = false;
         }));
 
         private RelayCommand _newAccountCommand;
