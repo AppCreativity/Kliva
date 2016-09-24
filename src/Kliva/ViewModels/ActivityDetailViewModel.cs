@@ -118,6 +118,7 @@ namespace Kliva.ViewModels
             //We need to unload (remove the PropertyChanged event handler) from the 
             //UserMeasurementUnitStatisticsDetail items to avoid memory leaks
             //Not prety, but I don't see a better solution atm
+            //ToDo: maybe use CleanUp in order to unwire eventhandlers?
             SelectedActivity?.Statistics?.Where(a => a is UserMeasurementUnitStatisticsDetail)
                 .Select(a => a as UserMeasurementUnitStatisticsDetail).ToList().ForEach(a => a.Unload());
 
