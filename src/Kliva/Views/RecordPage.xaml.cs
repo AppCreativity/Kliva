@@ -46,9 +46,6 @@ namespace Kliva.Views
         {
             if (e.PropertyName.Equals(nameof(ViewModel.CurrentLocation), StringComparison.OrdinalIgnoreCase))
             {
-                //ToDo PiNi: only do this the first time?
-                //and add button to re-center map?
-                //==> To discuss with team
                 CenterMap();
 
                 UpdateMapElements();
@@ -79,7 +76,6 @@ namespace Kliva.Views
         private void CenterMap()
         {
             TrackingMap.Center = ViewModel.CurrentLocation;
-            TrackingMap.ZoomLevel = 16.0;
         }
 
         /// <summary>
