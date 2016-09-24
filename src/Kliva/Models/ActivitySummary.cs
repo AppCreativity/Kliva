@@ -432,16 +432,16 @@ namespace Kliva.Models
             }
         }
 
-        DistanceUnitType _MeasurementUnit;
+        DistanceUnitType _measurementUnit;
         public DistanceUnitType MeasurementUnit
         {
             get
             {
-                return _MeasurementUnit;
+                return _measurementUnit;
             }
             set
             {
-                _MeasurementUnit = value;
+                _measurementUnit = value;
                 SetUserMeasurementUnits();
             }
         }
