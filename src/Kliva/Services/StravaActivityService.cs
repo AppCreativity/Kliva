@@ -103,7 +103,6 @@ namespace Kliva.Services
                 Sort = 0,
                 Icon = "",
                 DisplayDescription = "average speed",
-               // DisplayValue = $"{activity.AverageSpeedFormatted} {Helpers.Converters.SpeedConverter.Convert(activity.SpeedUnit, typeof(SpeedUnit), null, string.Empty)}",
                 Group = speed
             };
 
@@ -112,7 +111,6 @@ namespace Kliva.Services
                 Sort = 1,
                 Icon = "",
                 DisplayDescription = "max speed",
-               // DisplayValue = $"{activity.MaxSpeedFormatted} {Helpers.Converters.SpeedConverter.Convert(activity.SpeedUnit, typeof(SpeedUnit), null, string.Empty)}",
                 Group = speed
             };
 
@@ -132,7 +130,6 @@ namespace Kliva.Services
                 Sort = 0,
                 Icon = "",
                 DisplayDescription = "elevation gain",
-               // DisplayValue = $"{activity.ElevationGainFormatted} {Helpers.Converters.DistanceConverter.Convert(activity.ElevationUnit, typeof(DistanceUnitType), null, string.Empty)}",
                 Group = elevation
             };
 
