@@ -205,7 +205,30 @@ namespace Kliva.Services
             }
 
             return null;
+        }
 
+        public async Task<Stats> GetStatsAsync(string athleteId)
+        {
+            try
+            {
+                var accessToken = await _settingsService.GetStoredStravaAccessTokenAsync();
+                var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitTypeAsync();
+
+                string getUrl = $"{string.Format(Endpoints.Stats, athleteId)}?access_token={accessToken}";
+
+                string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
+
+                Stats stats = Unmarshaller<Stats>.Unmarshal(json);
+                StravaService.SetMetricUnits(stats, defaultDistanceUnitType);
+
+                return stats;
+            }
+            catch (Exception)
+            {
+                //TODO: Glenn - Use logger to log errors ( Google )
+            }
+
+            return null;
         }
 
         public AthleteSummary ConsolidateWithCache(AthleteMeta athlete)

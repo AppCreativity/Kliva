@@ -58,6 +58,10 @@
         /// </summary>
         public const string Koms = "https://www.strava.com/api/v3/athletes/{0}/koms";
         /// <summary>
+        /// Url to the endpoint used for receiving authenticated user statistics
+        /// </summary>
+        public const string Stats = "https://www.strava.com/api/v3/athletes/{0}/stats";
+        /// <summary>
         /// Url to the endpoint used for receiving gear.
         /// </summary>
         public const string Gear = "https://www.strava.com/api/v3/gear";

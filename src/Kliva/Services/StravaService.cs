@@ -121,6 +121,12 @@ namespace Kliva.Services
         }
 
         //TODO: Glenn - Should we set these at some BaseClass?
+        public static void SetMetricUnits(Stats stats, DistanceUnitType distanceUnitType)
+        {
+            stats.DistanceUnit = distanceUnitType;
+        }
+
+        //TODO: Glenn - Should we set these at some BaseClass?
         public static void SetMetricUnits(SegmentSummary segment, DistanceUnitType distanceUnitType)
         {
             segment.DistanceUnit = distanceUnitType;
@@ -203,6 +209,11 @@ namespace Kliva.Services
         public Task<IEnumerable<SegmentEffort>> GetKomsAsync(string athleteId)
         {
             return StravaAthleteService.GetKomsAsync(athleteId);
+        }
+
+        public Task<Stats> GetStatsAsync(string athleteId)
+        {
+            return StravaAthleteService.GetStatsAsync(athleteId);
         }
 
         public async Task<Activity> GetActivityAsync(string id, bool includeEfforts)

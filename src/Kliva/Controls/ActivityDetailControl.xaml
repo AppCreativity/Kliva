@@ -136,6 +136,7 @@
                     <GridView x:Name="ActivityKudosList"
                               ItemsSource="{x:Bind ViewModel.Kudos, Mode=OneWay}"
                               ItemTemplate="{StaticResource KudosListItemTemplate}"
+                              ItemContainerStyle="{StaticResource NonSelectBorderGridViewItemStyle}"
                               IsItemClickEnabled="True">
                         <interactivity:Interaction.Behaviors>
                             <core:EventTriggerBehavior EventName="ItemClick">

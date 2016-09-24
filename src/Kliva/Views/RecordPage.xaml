@@ -40,7 +40,7 @@
         
         <RelativePanel x:Name="ContentPanel">
             <maps:MapControl x:Name="TrackingMap"
-                             ZoomLevel="5"                             
+                             ZoomLevel="16"                             
                              RelativePanel.AlignTopWithPanel="True"
                              RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
                              RelativePanel.Above="ActivityButton"/>

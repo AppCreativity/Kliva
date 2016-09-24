@@ -30,6 +30,7 @@ namespace Kliva.Services.Interfaces
         Task<IEnumerable<AthleteSummary>> GetFriendsAsync(string athleteId, bool authenticatedUser = true);
         Task<IEnumerable<AthleteSummary>> GetMutualFriendsAsync(string athleteId);
         Task<IEnumerable<SegmentEffort>> GetKomsAsync(string athleteId);
+        Task<Stats> GetStatsAsync(string athleteId);
 
         Task<Activity> GetActivityAsync(string id, bool includeEfforts);
         //Task<IEnumerable<ActivitySummary>> GetActivitiesWithAthletesAsync(int page, int perPage, ActivityFeedFilter filter);
