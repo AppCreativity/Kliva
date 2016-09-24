@@ -1,22 +1,24 @@
-﻿using System;
+﻿using Cimbalino.Toolkit.Extensions;
+using Kliva.Controls;
+using Kliva.ViewModels;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Storage.Streams;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Maps;
 using Windows.UI.Xaml.Navigation;
-using Cimbalino.Toolkit.Extensions;
-using Kliva.Controls;
-using Kliva.Extensions;
-using Kliva.ViewModels;
 
 namespace Kliva.Views
 {
     public sealed partial class RecordPage : Page
     {
         private readonly MapIcon _currentLocation = new MapIcon();
+        private readonly MapPolyline _mapPolyline = new MapPolyline();
 
         private RecordViewModel ViewModel => DataContext as RecordViewModel;
 
@@ -27,6 +29,9 @@ namespace Kliva.Views
             _currentLocation.Image = RandomAccessStreamReference.CreateFromUri(new Uri("ms-appx:///Assets/CurrentPosition.png"));
             _currentLocation.NormalizedAnchorPoint = new Point(0.5, 0.5);
             _currentLocation.ZIndex = 0;
+
+            _mapPolyline.StrokeColor = (Color)Application.Current.Resources["KlivaMainColor"];
+            _mapPolyline.StrokeThickness = 3;
 
             ViewModel.PropertyChanged += OnViewModelPropertyChanged;
         }
@@ -41,12 +46,40 @@ namespace Kliva.Views
         {
             if (e.PropertyName.Equals(nameof(ViewModel.CurrentLocation), StringComparison.OrdinalIgnoreCase))
             {
-                TrackingMap.ClearMap<MapIcon>();
+                //ToDo PiNi: only do this the first time?
+                //and add button to re-center map?
+                //==> To discuss with team
+                CenterMap();
 
-                _currentLocation.Location = TrackingMap.Center = ViewModel.CurrentLocation;
-                TrackingMap.ZoomLevel = 16.0;
-                TrackingMap.MapElements.Add(_currentLocation);
+                UpdateMapElements();
+
+                if(!TrackingMap.MapElements.Contains(_currentLocation))
+                    TrackingMap.MapElements.Add(_currentLocation);
+
+                if (!TrackingMap.MapElements.Contains(_mapPolyline))
+                    TrackingMap.MapElements.Add(_mapPolyline);
             }
+        }
+
+        private void UpdateMapElements()
+        {
+            List<BasicGeoposition> positions;
+
+            if(_mapPolyline.Path?.Positions != null)
+                positions = new List<BasicGeoposition>(_mapPolyline.Path.Positions);
+            else
+                positions = new List<BasicGeoposition>();
+
+            positions.Add(ViewModel.CurrentLocation.Position);
+            _mapPolyline.Path = new Geopath(positions);
+
+            _currentLocation.Location = ViewModel.CurrentLocation;
+        }
+
+        private void CenterMap()
+        {
+            TrackingMap.Center = ViewModel.CurrentLocation;
+            TrackingMap.ZoomLevel = 16.0;
         }
 
         /// <summary>
