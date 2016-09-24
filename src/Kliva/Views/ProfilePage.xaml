@@ -91,18 +91,21 @@
                    HorizontalAlignment="Stretch">
                 <PivotItem Header="following" Tag="Friends">
                     <GridView ItemsSource="{x:Bind ViewModel.Friends, Mode=OneWay}"
-                              ItemTemplate="{StaticResource KudosListItemTemplate}" />
+                              ItemTemplate="{StaticResource KudosListItemTemplate}"
+                              ItemContainerStyle="{StaticResource NonSelectBorderGridViewItemStyle}"/>
                 </PivotItem>
                 <PivotItem Header="followers" Tag="Followers">
                     <GridView ItemsSource="{x:Bind ViewModel.Followers, Mode=OneWay}"
-                              ItemTemplate="{StaticResource KudosListItemTemplate}" />
+                              ItemTemplate="{StaticResource KudosListItemTemplate}"
+                              ItemContainerStyle="{StaticResource NonSelectBorderGridViewItemStyle}"/>
                 </PivotItem>
                 <PivotItem x:Name="MutualFriendsPivot" Tag="MutualFriends"
                            Header="both following"
                            x:DeferLoadStrategy="Lazy"
                            Visibility="{x:Bind ViewModel.AuthenticatedUser, Mode=OneWay, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
                     <GridView ItemsSource="{x:Bind ViewModel.BothFollowing, Mode=OneWay}"
-                              ItemTemplate="{StaticResource KudosListItemTemplate}" />
+                              ItemTemplate="{StaticResource KudosListItemTemplate}"
+                              ItemContainerStyle="{StaticResource NonSelectBorderGridViewItemStyle}"/>
                 </PivotItem>
                 <PivotItem Tag="Koms" Header="koms">
                     <ListView ItemsSource="{x:Bind ViewModel.Koms, Mode=OneWay}"
