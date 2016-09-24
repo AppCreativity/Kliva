@@ -34,13 +34,13 @@ namespace Kliva.Models
         public UserMeasurementUnitStatisticsDetail(UserMeasurementUnitMetric metric)
         {
             Metric = metric;
-            Metric.PropertyChanged += Metric_PropertyChanged;
+            Metric.PropertyChanged += OnMetricPropertyChanged;
             base.DisplayValue = metric.FormattedValueWithUnit;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void Metric_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void OnMetricPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if(e.PropertyName == nameof(UserMeasurementUnitMetric.FormattedValueWithUnit))
             {
@@ -66,7 +66,7 @@ namespace Kliva.Models
 
         public void Unload()
         {
-            Metric.PropertyChanged -= Metric_PropertyChanged;
+            Metric.PropertyChanged -= OnMetricPropertyChanged;
         }
     }
 }

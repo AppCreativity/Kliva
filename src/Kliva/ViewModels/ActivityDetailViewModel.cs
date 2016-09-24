@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
-using Windows.Devices.Geolocation;
-using Windows.Foundation;
-using Windows.Graphics.Display;
-using Windows.UI.ViewManagement;
-using Windows.UI.Xaml.Controls;
-using Cimbalino.Toolkit.Services;
+﻿using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Kliva.Controls;
@@ -18,6 +8,13 @@ using Kliva.Models;
 using Kliva.Services.Interfaces;
 using Kliva.Views;
 using Microsoft.Practices.ServiceLocation;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using Windows.Devices.Geolocation;
+using Windows.UI.Xaml.Controls;
 
 namespace Kliva.ViewModels
 {
