@@ -432,106 +432,56 @@ namespace Kliva.Models
             }
         }
 
-        private DistanceUnitType _distanceUnit;
-        public DistanceUnitType DistanceUnit
+        DistanceUnitType _measurementUnit;
+        public DistanceUnitType MeasurementUnit
         {
-            get { return _distanceUnit; }
+            get
+            {
+                return _measurementUnit;
+            }
             set
             {
-                Set(() => DistanceUnit, ref _distanceUnit, value);
-                RaisePropertyChanged(() => DistanceFormatted);
-
-                //TODO: Glenn - do we need to 'recalculate' other values?
+                _measurementUnit = value;
+                SetUserMeasurementUnits();
             }
         }
 
-        private SpeedUnit _speedUnit;
-        public SpeedUnit SpeedUnit
+        private void SetUserMeasurementUnits()
         {
-            get { return _speedUnit; }
-            set
-            {
-                Set(() => SpeedUnit, ref _speedUnit, value);
-                RaisePropertyChanged(() => AverageSpeedFormatted);
-                RaisePropertyChanged(() => MaxSpeedFormatted);
+            bool IsMetric = MeasurementUnit == DistanceUnitType.Kilometres || MeasurementUnit == DistanceUnitType.Metres;
+            var elevationDistanceUnitType = IsMetric ? DistanceUnitType.Metres : DistanceUnitType.Feet;
+            var speedUnit = IsMetric  ? SpeedUnit.KilometresPerHour : SpeedUnit.MilesPerHour;
+            var distanceUnitType = IsMetric ? DistanceUnitType.Kilometres : DistanceUnitType.Miles;
 
-                //TODO: Glenn - do we need to 'recalculate' other values?
-            }
+
+            ElevationGainUserMeasurementUnit = new UserMeasurementUnitMetric(ElevationGain, DistanceUnitType.Metres, elevationDistanceUnitType);
+            AverageSpeedUserMeasurementUnit = new UserMeasurementUnitMetric(AverageSpeed, SpeedUnit.MetresPerSecond, speedUnit);
+            MaxSpeedUserMeasurementUnit = new UserMeasurementUnitMetric(MaxSpeed, SpeedUnit.MetresPerSecond, speedUnit);
+            DistanceUserMeasurementUnit = new UserMeasurementUnitMetric(Distance, DistanceUnitType.Metres, distanceUnitType);
         }
 
-        private DistanceUnitType _elevationUnit;
-        public DistanceUnitType ElevationUnit
+        public UserMeasurementUnitMetric DistanceUserMeasurementUnit
         {
-            get { return _elevationUnit; }
-            set
-            {
-                Set(() => ElevationUnit, ref _elevationUnit, value);
-                RaisePropertyChanged(() => ElevationGainFormatted);
-            }
+            get;
+            private set;
         }
 
-        public string DistanceFormatted
+        public UserMeasurementUnitMetric AverageSpeedUserMeasurementUnit
         {
-            get
-            {
-                switch (DistanceUnit)
-                {
-                    case DistanceUnitType.Kilometres:
-                        return UnitConverter.ConvertDistance(Distance, DistanceUnitType.Metres, DistanceUnitType.Kilometres).ToString("F1");
-                    case DistanceUnitType.Miles:
-                        return UnitConverter.ConvertDistance(Distance, DistanceUnitType.Metres, DistanceUnitType.Miles).ToString("F1");
-                }
-
-                return null;
-            }
+            get;
+            private set;
         }
 
-        public string AverageSpeedFormatted
+        public UserMeasurementUnitMetric MaxSpeedUserMeasurementUnit
         {
-            get
-            {
-                switch (DistanceUnit)
-                {
-                    case DistanceUnitType.Kilometres:
-                        return UnitConverter.ConvertSpeed(AverageSpeed, SpeedUnit.MetresPerSecond, SpeedUnit.KilometresPerHour).ToString("F1");
-                    case DistanceUnitType.Miles:
-                        return UnitConverter.ConvertSpeed(AverageSpeed, SpeedUnit.MetresPerSecond, SpeedUnit.MilesPerHour).ToString("F1");
-                }
-
-                return null;
-            }
+            get;
+            private set;
         }
 
-        public string MaxSpeedFormatted
+        public UserMeasurementUnitMetric ElevationGainUserMeasurementUnit
         {
-            get
-            {
-                switch (DistanceUnit)
-                {
-                    case DistanceUnitType.Kilometres:
-                        return UnitConverter.ConvertSpeed(MaxSpeed, SpeedUnit.MetresPerSecond, SpeedUnit.KilometresPerHour).ToString("F1");
-                    case DistanceUnitType.Miles:
-                        return UnitConverter.ConvertSpeed(MaxSpeed, SpeedUnit.MetresPerSecond, SpeedUnit.MilesPerHour).ToString("F1");
-                }
-
-                return null;
-            }
-        }
-
-        public string ElevationGainFormatted
-        {
-            get
-            {
-                switch(DistanceUnit)
-                {
-                    case DistanceUnitType.Kilometres:
-                        return this.ElevationGain.ToString("F1");
-                    case DistanceUnitType.Miles:
-                        return UnitConverter.ConvertDistance(ElevationGain, DistanceUnitType.Metres, DistanceUnitType.Feet).ToString("F1");
-                }
-
-                return null;
-            }
+            get;
+            private set;
         }
 
         private DateTime _endDate;

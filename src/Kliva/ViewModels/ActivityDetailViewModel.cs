@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
-using Windows.Devices.Geolocation;
-using Windows.Foundation;
-using Windows.Graphics.Display;
-using Windows.UI.ViewManagement;
-using Windows.UI.Xaml.Controls;
-using Cimbalino.Toolkit.Services;
+﻿using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Kliva.Controls;
@@ -18,6 +8,13 @@ using Kliva.Models;
 using Kliva.Services.Interfaces;
 using Kliva.Views;
 using Microsoft.Practices.ServiceLocation;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using Windows.Devices.Geolocation;
+using Windows.UI.Xaml.Controls;
 
 namespace Kliva.ViewModels
 {
@@ -118,6 +115,13 @@ namespace Kliva.ViewModels
 
         private async Task LoadActivityDetails(string activityId)
         {
+            //We need to unload (remove the PropertyChanged event handler) from the 
+            //UserMeasurementUnitStatisticsDetail items to avoid memory leaks
+            //Not prety, but I don't see a better solution atm
+            //ToDo: maybe use CleanUp in order to unwire eventhandlers?
+            SelectedActivity?.Statistics?.Where(a => a is UserMeasurementUnitStatisticsDetail)
+                .Select(a => a as UserMeasurementUnitStatisticsDetail).ToList().ForEach(a => a.Unload());
+
             Kudos.Clear();
             Comments.Clear();
             RelatedAthletes.Clear();

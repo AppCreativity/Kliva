@@ -88,31 +88,29 @@ namespace Kliva.Services
         private static void FillStatistics(Activity activity)
         {
             StatisticsGroup distance = new StatisticsGroup() { Name = "distance", Sort = 0 };
-            StatisticsDetail totalDistance = new StatisticsDetail()
+
+            StatisticsDetail totalDistance = new UserMeasurementUnitStatisticsDetail(activity.DistanceUserMeasurementUnit)
             {
                 Sort = 0,
                 Icon = "",
                 DisplayDescription = "total distance",
-                DisplayValue = $"{activity.DistanceFormatted} {Helpers.Converters.DistanceConverter.Convert(activity.DistanceUnit, typeof(DistanceUnitType), null, string.Empty)}",
                 Group = distance
             };
 
             StatisticsGroup speed = new StatisticsGroup() { Name = "speed", Sort = 1 };
-            StatisticsDetail averageSpeed = new StatisticsDetail()
+            StatisticsDetail averageSpeed = new UserMeasurementUnitStatisticsDetail(activity.AverageSpeedUserMeasurementUnit)
             {
                 Sort = 0,
                 Icon = "",
                 DisplayDescription = "average speed",
-                DisplayValue = $"{activity.AverageSpeedFormatted} {Helpers.Converters.SpeedConverter.Convert(activity.SpeedUnit, typeof(SpeedUnit), null, string.Empty)}",
                 Group = speed
             };
 
-            StatisticsDetail maxSpeed = new StatisticsDetail()
+            StatisticsDetail maxSpeed = new UserMeasurementUnitStatisticsDetail(activity.MaxSpeedUserMeasurementUnit)
             {
                 Sort = 1,
                 Icon = "",
                 DisplayDescription = "max speed",
-                DisplayValue = $"{activity.MaxSpeedFormatted} {Helpers.Converters.SpeedConverter.Convert(activity.SpeedUnit, typeof(SpeedUnit), null, string.Empty)}",
                 Group = speed
             };
 
@@ -127,12 +125,11 @@ namespace Kliva.Services
             };
 
             StatisticsGroup elevation = new StatisticsGroup() { Name = "elevation", Sort = 3 };
-            StatisticsDetail elevationGain = new StatisticsDetail()
+            StatisticsDetail elevationGain = new UserMeasurementUnitStatisticsDetail(activity.ElevationGainUserMeasurementUnit)
             {
                 Sort = 0,
                 Icon = "",
                 DisplayDescription = "elevation gain",
-                DisplayValue = $"{activity.ElevationGainFormatted} {Helpers.Converters.DistanceConverter.Convert(activity.ElevationUnit, typeof(DistanceUnitType), null, string.Empty)}",
                 Group = elevation
             };
 

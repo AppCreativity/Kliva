@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Kliva.Models
 {
@@ -25,5 +26,47 @@ namespace Kliva.Models
         public string DisplayDescription { get; set; }
 
         public string Icon { get; set; }
+    }
+
+    public class UserMeasurementUnitStatisticsDetail : StatisticsDetail, INotifyPropertyChanged
+    {
+        public UserMeasurementUnitMetric Metric { get; private set; }
+        public UserMeasurementUnitStatisticsDetail(UserMeasurementUnitMetric metric)
+        {
+            Metric = metric;
+            Metric.PropertyChanged += OnMetricPropertyChanged;
+            base.DisplayValue = metric.FormattedValueWithUnit;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnMetricPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName == nameof(UserMeasurementUnitMetric.FormattedValueWithUnit))
+            {
+                DisplayValue = Metric.FormattedValueWithUnit;
+            }
+        }
+
+        public new string DisplayValue
+        {
+            get
+            {
+                return base.DisplayValue;
+            }
+            private set
+            {
+                if(DisplayValue != value)
+                {
+                    base.DisplayValue = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DisplayValue)));
+                }
+            }
+        }
+
+        public void Unload()
+        {
+            Metric.PropertyChanged -= OnMetricPropertyChanged;
+        }
     }
 }

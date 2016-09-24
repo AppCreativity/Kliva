@@ -116,9 +116,8 @@
                                         FontSize="12"
                                         RelativePanel.Below="ActivityAthleteName"
                                         RelativePanel.AlignLeftWithPanel="True">
-                                <Run Text="{x:Bind DistanceFormatted, Mode=OneWay}" />
-                                <Run Text="{x:Bind DistanceUnit, Mode=OneWay, Converter={StaticResource DistanceUnitToStringConverter}}"/>
-                            </TextBlock>
+                                <Run Text="{x:Bind DistanceUserMeasurementUnit.FormattedValueWithUnit, Mode=OneWay}" />
+                        </TextBlock>
 
                         <!-- TODO: Glenn - How to top allign with distance?? -->
                         <!--<FontIcon x:Name="KudosIcon" HorizontalAlignment="Center" Margin="0,10,0,0" Glyph="&#xE8E1;" FontSize="14"
@@ -160,9 +159,10 @@
         <RelativePanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
                        BorderThickness="0,1,0,0" BorderBrush="Black"
                        Margin="10,0,10,0">
+            <!--ToDo PiNi: check why only classic binding works (x:Bind => no handler for PropertyChanged)-->
             <TextBlock x:Name="Value"
                        Margin="0,5,0,0"
-                       Text="{x:Bind DisplayValue}"
+                       Text="{Binding DisplayValue, Mode=OneWay}"
                        Style="{StaticResource StatisticsItemValueTextBlock}"
                        RelativePanel.AlignTopWithPanel="True"
                        RelativePanel.AlignLeftWithPanel="True" />

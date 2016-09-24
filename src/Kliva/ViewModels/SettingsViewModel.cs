@@ -13,6 +13,8 @@ using Windows.Storage.FileProperties;
 using GalaSoft.MvvmLight.Threading;
 using Kliva.Extensions;
 using Kliva.Services;
+using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Practices.ServiceLocation;
 
 namespace Kliva.ViewModels
 {
@@ -93,10 +95,16 @@ namespace Kliva.ViewModels
                 return;
 
             if (e.PropertyName.Equals("SelectedMeasurementUnit", StringComparison.OrdinalIgnoreCase))
-                await _settingsService.SetDistanceUnitTypeAsync(Enum<DistanceUnitType>.Parse(SelectedMeasurementUnit));
+            {
+                var newValue = Enum<DistanceUnitType>.Parse(SelectedMeasurementUnit);
+                ServiceLocator.Current.GetInstance<IMessenger>().Send(new Messages.MeasureUnitChangedMessage(newValue));
+                await _settingsService.SetDistanceUnitTypeAsync(newValue);
+            }
 
             else if (e.PropertyName.Equals("SelectedSortType", StringComparison.OrdinalIgnoreCase))
                 await _settingsService.SetActivitySortAsync(Enum<ActivitySort>.Parse(SelectedSortType));
+
+            
         }
 
         private async Task ViewLoaded()
