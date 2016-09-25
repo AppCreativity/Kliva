@@ -21,7 +21,11 @@ namespace Kliva.ViewModels
         {
             IsBusy = true;
             await _stravaService.GetAuthorizationCode();
+            IsBusy = false;
         }));
+
+        private RelayCommand _viewLoadedCommand;
+        public RelayCommand ViewLoadedCommand => _viewLoadedCommand ?? (_viewLoadedCommand = new RelayCommand(ViewLoaded));
 
         private RelayCommand _newAccountCommand;
         public RelayCommand NewAccountCommand => _newAccountCommand ?? (_newAccountCommand = new RelayCommand(async () => await Launcher.LaunchUriAsync(new Uri(Constants.STRAVA_NEW_ACCOUNT))));
@@ -29,9 +33,13 @@ namespace Kliva.ViewModels
         public LoginViewModel(INavigationService navigationService, IMessageBoxService messageBoxService, IStravaService stravaService) : base(navigationService)
         {
             _stravaService = stravaService;
-            _messageBoxService = messageBoxService;
-            _stravaService.StatusEvent += OnStravaStatusEvent;
+            _messageBoxService = messageBoxService;            
         }
+
+        private void ViewLoaded()
+        {
+            _stravaService.StatusEvent += OnStravaStatusEvent;
+        }        
 
         private async void OnStravaStatusEvent(object sender, Services.StravaServiceEventArgs e)
         {
