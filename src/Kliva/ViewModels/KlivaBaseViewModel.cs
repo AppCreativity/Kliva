@@ -1,6 +1,7 @@
 ﻿using Windows.UI.Xaml.Controls;
 using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
 using Kliva.Controls;
 using Kliva.Models;
 using Kliva.Views;
@@ -22,7 +23,11 @@ namespace Kliva.ViewModels
             }
         }
 
-        public KlivaBaseViewModel(INavigationService navigationService)
+        public KlivaBaseViewModel(INavigationService navigationService) : this(navigationService, null)
+        {
+        }
+
+        public KlivaBaseViewModel(INavigationService navigationService, IMessenger messenger) : base(messenger)
         {
             NavigationService = navigationService;
         }

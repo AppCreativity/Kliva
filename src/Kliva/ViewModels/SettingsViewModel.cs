@@ -69,7 +69,7 @@ namespace Kliva.ViewModels
         private RelayCommand _clearMapsCommand;
         public RelayCommand ClearMapsCommand => _clearMapsCommand ?? (_clearMapsCommand = new RelayCommand(async () => await ClearMaps()));
 
-        public SettingsViewModel(INavigationService navigationService, ISettingsService settingsService, IOService ioService) : base(navigationService)
+        public SettingsViewModel(INavigationService navigationService, ISettingsService settingsService, IOService ioService, IMessenger messenger) : base(navigationService, messenger)
         {
             _settingsService = settingsService;
             _ioService = ioService;
@@ -97,7 +97,7 @@ namespace Kliva.ViewModels
             if (e.PropertyName.Equals("SelectedMeasurementUnit", StringComparison.OrdinalIgnoreCase))
             {
                 var newValue = Enum<DistanceUnitType>.Parse(SelectedMeasurementUnit);
-                ServiceLocator.Current.GetInstance<IMessenger>().Send(new Messages.MeasureUnitChangedMessage(newValue));
+                MessengerInstance.Send(new Messages.MeasureUnitChangedMessage(newValue));
                 await _settingsService.SetDistanceUnitTypeAsync(newValue);
             }
 
