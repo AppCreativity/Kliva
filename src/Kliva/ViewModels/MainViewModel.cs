@@ -108,17 +108,20 @@ namespace Kliva.ViewModels
 
         private async Task Logout()
         {
-            //this.IsBusy = true;
+            this.IsBusy = true;
 
             await _settingsService.RemoveStravaAccessTokenAsync();
 
             //Remove the current 'main page' back entry and navigate to the login page
             NavigationService.Navigate<LoginPage>();
-            NavigationService.RemoveBackEntry();
 
-            //this.IsBusy = false;
+            while(NavigationService.CanGoBack)
+                NavigationService.RemoveBackEntry();
+
+            this.IsBusy = false;
         }
 
+        //TODO: Glenn - Can't remember, was this set up as async void for fire and forget reasons?
         private async void ViewLoaded()
         {
             if (!_viewModelLoaded)
