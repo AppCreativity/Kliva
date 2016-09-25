@@ -1,15 +1,15 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Threading;
+using Kliva.Models;
+using Kliva.Models.Interfaces;
+using Kliva.Services.Interfaces;
+using Microsoft.Practices.ServiceLocation;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.Security.Authentication.Web;
-using GalaSoft.MvvmLight.Threading;
-using Kliva.Controls;
-using Kliva.Models;
-using Kliva.Services.Interfaces;
-using Microsoft.Practices.ServiceLocation;
-using Newtonsoft.Json;
 
 namespace Kliva.Services
 {
@@ -106,40 +106,9 @@ namespace Kliva.Services
             return Task.CompletedTask;
         }
 
-        //TODO: Glenn - Should we set these at some BaseClass?
-        public static void SetMetricUnits(ActivitySummary activity, DistanceUnitType distanceUnitType)
+        public static void SetMetricUnits(ISupportUserMeasurementUnits item, DistanceUnitType distanceUnitType)
         {
-            activity.MeasurementUnit = distanceUnitType;
-        }
-
-        //TODO: Glenn - Should we set these at some BaseClass?
-        public static void SetMetricUnits(SegmentEffort segment, DistanceUnitType distanceUnitType)
-        {
-            segment.DistanceUnit = distanceUnitType;
-            segment.SpeedUnit = segment.DistanceUnit == DistanceUnitType.Kilometres ? SpeedUnit.KilometresPerHour : SpeedUnit.MilesPerHour;
-            segment.ElevationUnit = segment.DistanceUnit == DistanceUnitType.Kilometres ? DistanceUnitType.Metres : DistanceUnitType.Feet;
-        }
-
-        //TODO: Glenn - Should we set these at some BaseClass?
-        public static void SetMetricUnits(Stats stats, DistanceUnitType distanceUnitType)
-        {
-            stats.DistanceUnit = distanceUnitType;
-        }
-
-        //TODO: Glenn - Should we set these at some BaseClass?
-        public static void SetMetricUnits(SegmentSummary segment, DistanceUnitType distanceUnitType)
-        {
-            segment.DistanceUnit = distanceUnitType;
-            segment.SpeedUnit = segment.DistanceUnit == DistanceUnitType.Kilometres ? SpeedUnit.KilometresPerHour : SpeedUnit.MilesPerHour;
-            segment.ElevationUnit = segment.DistanceUnit == DistanceUnitType.Kilometres ? DistanceUnitType.Metres : DistanceUnitType.Feet;
-        }
-
-        //TODO: Glenn - Should we set these at some BaseClass?
-        public static void SetMetricUnits(LeaderboardEntry entry, DistanceUnitType distanceUnitType)
-        {
-            entry.DistanceUnit = distanceUnitType;
-            entry.SpeedUnit = entry.DistanceUnit == DistanceUnitType.Kilometres ? SpeedUnit.KilometresPerHour : SpeedUnit.MilesPerHour;
-            entry.ElevationUnit = entry.DistanceUnit == DistanceUnitType.Kilometres ? DistanceUnitType.Metres : DistanceUnitType.Feet;
+            item.SetUserMeasurementUnits(distanceUnitType);
         }
 
         #region Event handlers

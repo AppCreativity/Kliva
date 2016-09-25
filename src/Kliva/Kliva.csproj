@@ -149,6 +149,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Helpers\Converters.cs" />
     <Compile Include="Helpers\DateTimeFormatHelper.cs" />
+    <Compile Include="Helpers\MeasurementHelper.cs" />
     <Compile Include="Helpers\PolylineConverter.cs" />
     <Compile Include="Extensions\ScrollViewerExtensions.cs" />
     <Compile Include="Helpers\UnitConverter.cs" />
@@ -182,6 +183,7 @@
     <Compile Include="Models\Incremental\FriendActivityIncrementalCollection.cs" />
     <Compile Include="Models\Incremental\IKey.cs" />
     <Compile Include="Models\Incremental\MyActivityIncrementalCollection.cs" />
+    <Compile Include="Models\Interfaces\ISupportUserMeasurementUnits.cs" />
     <Compile Include="Models\Leaderboard.cs" />
     <Compile Include="Models\LeaderboardEntry.cs" />
     <Compile Include="Models\Limit.cs" />

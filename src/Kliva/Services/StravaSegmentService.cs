@@ -39,12 +39,11 @@ namespace Kliva.Services
                 Group = current
             };
 
-            StatisticsDetail averageSpeedCurrent = new StatisticsDetail()
+            StatisticsDetail averageSpeedCurrent = new UserMeasurementUnitStatisticsDetail(segmentEffort.AverageSpeedMeasurementUnit)
             {
                 Sort = 1,
                 Icon = "",
                 DisplayDescription = "average speed",
-                DisplayValue = $"{segmentEffort.AverageSpeedFormatted} {Helpers.Converters.SpeedConverter.Convert(segmentEffort.SpeedUnit, typeof(SpeedUnit), null, string.Empty)}",
                 Group = current
             };
 
@@ -201,13 +200,11 @@ namespace Kliva.Services
                         Group = pr
                     };
 
-                    StatisticsDetail averageSpeedPR = new StatisticsDetail()
+                    StatisticsDetail averageSpeedPR = new UserMeasurementUnitStatisticsDetail(segmentEffort.AverageSpeedMeasurementUnit)
                     {
                         Sort = 1,
                         Icon = "",
                         DisplayDescription = "average speed",
-                        DisplayValue =
-                            $"{entry.AverageSpeedFormatted} {Helpers.Converters.SpeedConverter.Convert(segmentEffort.SpeedUnit, typeof (SpeedUnit), null, string.Empty)}",
                         Group = pr
                     };
 

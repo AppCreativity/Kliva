@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using Kliva.Helpers;
 using Newtonsoft.Json;
+using Kliva.Models.Interfaces;
 
 namespace Kliva.Models
 {
@@ -148,7 +149,7 @@ namespace Kliva.Models
     /// <summary>
     /// Separated added fields from original response class!
     /// </summary>
-    public partial class SegmentEffort : BaseClass
+    public partial class SegmentEffort : BaseClass, ISupportUserMeasurementUnits
     {
         /// <summary>
         /// Take Segment distance to allign result with actual Strava website!
@@ -162,76 +163,30 @@ namespace Kliva.Models
             set { Set(() => Statistics, ref _statistics, value); }
         }
 
-        private DistanceUnitType _distanceUnit;
-        public DistanceUnitType DistanceUnit
+        public DistanceUnitType MeasurementUnit
         {
-            get { return _distanceUnit; }
-            set
-            {
-                Set(() => DistanceUnit, ref _distanceUnit, value);
-                RaisePropertyChanged(() => DistanceFormatted);
-
-                //TODO: Glenn - do we need to 'recalculate' other values?
-            }
+            get;
+            private set;
         }
 
-        private SpeedUnit _speedUnit;
-        public SpeedUnit SpeedUnit
+        public void SetUserMeasurementUnits(DistanceUnitType measurementUnit)
         {
-            get { return _speedUnit; }
-            set
-            {
-                Set(() => SpeedUnit, ref _speedUnit, value);
-                RaisePropertyChanged(() => AverageSpeedFormatted);
-                //RaisePropertyChanged(() => MaxSpeedFormatted);
+            MeasurementUnit = measurementUnit;
 
-                //TODO: Glenn - do we need to 'recalculate' other values?
-            }
+            DistanceUserMeasurementUnit = new UserMeasurementUnitMetric(Distance, DistanceUnitType.Metres, MeasurementUnit);
+            AverageSpeedMeasurementUnit = new UserMeasurementUnitMetric(AverageSpeed, SpeedUnit.MetresPerSecond, SpeedUnit.MetresPerSecond);
         }
 
-        private DistanceUnitType _elevationUnit;
-        public DistanceUnitType ElevationUnit
+        public UserMeasurementUnitMetric DistanceUserMeasurementUnit
         {
-            get { return _elevationUnit; }
-            set
-            {
-                Set(() => ElevationUnit, ref _elevationUnit, value);
-                //RaisePropertyChanged(() => ElevationGainFormatted);
-
-                //TODO: Glenn - do we need to 'recalculate' other values?
-            }
+            get;
+            private set;
         }
 
-        public string DistanceFormatted
+        public UserMeasurementUnitMetric AverageSpeedMeasurementUnit
         {
-            get
-            {
-                switch (DistanceUnit)
-                {
-                    case DistanceUnitType.Kilometres:
-                        return UnitConverter.ConvertDistance(Distance, DistanceUnitType.Metres, DistanceUnitType.Kilometres).ToString("F2");
-                    case DistanceUnitType.Miles:
-                        return UnitConverter.ConvertDistance(Distance, DistanceUnitType.Metres, DistanceUnitType.Miles).ToString("F2");
-                }
-
-                return null;
-            }
-        }
-
-        public string AverageSpeedFormatted
-        {
-            get
-            {
-                switch (DistanceUnit)
-                {
-                    case DistanceUnitType.Kilometres:
-                        return UnitConverter.ConvertSpeed(AverageSpeed, SpeedUnit.MetresPerSecond, SpeedUnit.KilometresPerHour).ToString("F1");
-                    case DistanceUnitType.Miles:
-                        return UnitConverter.ConvertSpeed(AverageSpeed, SpeedUnit.MetresPerSecond, SpeedUnit.MilesPerHour).ToString("F1");
-                }
-
-                return null;
-            }
+            get;
+            private set;
         }
     }
 }

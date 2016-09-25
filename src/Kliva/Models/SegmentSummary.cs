@@ -1,6 +1,7 @@
 ﻿using System;
 using Kliva.Helpers;
 using Newtonsoft.Json;
+using Kliva.Models.Interfaces;
 
 namespace Kliva.Models
 {
@@ -127,62 +128,25 @@ namespace Kliva.Models
     /// <summary>
     /// Separated added fields from original response class!
     /// </summary>
-    public partial class SegmentSummary : BaseClass
+    public partial class SegmentSummary : BaseClass, ISupportUserMeasurementUnits
     {
-        private DistanceUnitType _distanceUnit;
-        public DistanceUnitType DistanceUnit
+        public DistanceUnitType MeasurementUnit
         {
-            get { return _distanceUnit; }
-            set
-            {
-                Set(() => DistanceUnit, ref _distanceUnit, value);
-                RaisePropertyChanged(() => DistanceFormatted);
-
-                //TODO: Glenn - do we need to 'recalculate' other values?
-            }
+            get;
+            private set;
         }
 
-        private SpeedUnit _speedUnit;
-        public SpeedUnit SpeedUnit
+        public void SetUserMeasurementUnits(DistanceUnitType measurementUnit)
         {
-            get { return _speedUnit; }
-            set
-            {
-                Set(() => SpeedUnit, ref _speedUnit, value);
-                //RaisePropertyChanged(() => AverageSpeedFormatted);
-                //RaisePropertyChanged(() => MaxSpeedFormatted);
+            MeasurementUnit = measurementUnit;
 
-                //TODO: Glenn - do we need to 'recalculate' other values?
-            }
+            DistanceUserMeasurementUnit = new UserMeasurementUnitMetric(Distance, DistanceUnitType.Metres, MeasurementUnit);
         }
 
-        private DistanceUnitType _elevationUnit;
-        public DistanceUnitType ElevationUnit
+        public UserMeasurementUnitMetric DistanceUserMeasurementUnit
         {
-            get { return _elevationUnit; }
-            set
-            {
-                Set(() => ElevationUnit, ref _elevationUnit, value);
-                //RaisePropertyChanged(() => ElevationGainFormatted);
-
-                //TODO: Glenn - do we need to 'recalculate' other values?
-            }
-        }
-
-        public string DistanceFormatted
-        {
-            get
-            {
-                switch (DistanceUnit)
-                {
-                    case DistanceUnitType.Kilometres:
-                        return UnitConverter.ConvertDistance(Distance, DistanceUnitType.Metres, DistanceUnitType.Kilometres).ToString("F2");
-                    case DistanceUnitType.Miles:
-                        return UnitConverter.ConvertDistance(Distance, DistanceUnitType.Metres, DistanceUnitType.Miles).ToString("F2");
-                }
-
-                return null;
-            }
+            get;
+            private set;
         }
     }
 }

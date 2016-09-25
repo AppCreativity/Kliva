@@ -5,13 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Kliva.Services.Interfaces;
 using Microsoft.Practices.ServiceLocation;
+using Kliva.Models.Interfaces;
 
 namespace Kliva.Models
 {
     /// <summary>
     /// Represents a less detailed version of an activity.
     /// </summary>
-    public partial class ActivitySummary : ActivityMeta
+    public partial class ActivitySummary : ActivityMeta, ISupportUserMeasurementUnits
     {
         /// <summary>
         /// The activity's name.
@@ -432,27 +433,20 @@ namespace Kliva.Models
             }
         }
 
-        DistanceUnitType _measurementUnit;
         public DistanceUnitType MeasurementUnit
         {
-            get
-            {
-                return _measurementUnit;
-            }
-            set
-            {
-                _measurementUnit = value;
-                SetUserMeasurementUnits();
-            }
+            get;
+            private set;
         }
 
-        private void SetUserMeasurementUnits()
+        public void SetUserMeasurementUnits(DistanceUnitType measurementUnit)
         {
-            bool IsMetric = MeasurementUnit == DistanceUnitType.Kilometres || MeasurementUnit == DistanceUnitType.Metres;
-            var elevationDistanceUnitType = IsMetric ? DistanceUnitType.Metres : DistanceUnitType.Feet;
-            var speedUnit = IsMetric  ? SpeedUnit.KilometresPerHour : SpeedUnit.MilesPerHour;
-            var distanceUnitType = IsMetric ? DistanceUnitType.Kilometres : DistanceUnitType.Miles;
+            MeasurementUnit = measurementUnit;
 
+            bool IsMetric = MeasurementHelper.IsMetric(MeasurementUnit);
+            var elevationDistanceUnitType = MeasurementHelper.GetElevationUnitType(IsMetric);
+            var speedUnit = MeasurementHelper.GetSpeedUnit(IsMetric);
+            var distanceUnitType = MeasurementHelper.GetDistanceUnitType(IsMetric);
 
             ElevationGainUserMeasurementUnit = new UserMeasurementUnitMetric(ElevationGain, DistanceUnitType.Metres, elevationDistanceUnitType);
             AverageSpeedUserMeasurementUnit = new UserMeasurementUnitMetric(AverageSpeed, SpeedUnit.MetresPerSecond, speedUnit);
