@@ -297,8 +297,7 @@
                             Style="{StaticResource BaseTextBlock}"
                             FontSize="12"
                             RelativePanel.Below="SegmentName" RelativePanel.AlignLeftWithPanel="True">
-                    <Run Text="{x:Bind DistanceFormatted, Mode=OneWay}" />
-                    <Run Text="{x:Bind DistanceUnit, Mode=OneWay, Converter={StaticResource DistanceUnitToStringConverter}}"/>
+                    <Run Text="{x:Bind DistanceUserMeasurementUnit.FormattedValueWithUnit, Mode=OneWay}" />
                 </TextBlock>
             </RelativePanel>
         </UserControl>

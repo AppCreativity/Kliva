@@ -129,60 +129,29 @@ namespace Kliva.Models
     /// </summary>
     public partial class SegmentSummary : BaseClass
     {
-        private DistanceUnitType _distanceUnit;
-        public DistanceUnitType DistanceUnit
-        {
-            get { return _distanceUnit; }
-            set
-            {
-                Set(() => DistanceUnit, ref _distanceUnit, value);
-                RaisePropertyChanged(() => DistanceFormatted);
-
-                //TODO: Glenn - do we need to 'recalculate' other values?
-            }
-        }
-
-        private SpeedUnit _speedUnit;
-        public SpeedUnit SpeedUnit
-        {
-            get { return _speedUnit; }
-            set
-            {
-                Set(() => SpeedUnit, ref _speedUnit, value);
-                //RaisePropertyChanged(() => AverageSpeedFormatted);
-                //RaisePropertyChanged(() => MaxSpeedFormatted);
-
-                //TODO: Glenn - do we need to 'recalculate' other values?
-            }
-        }
-
-        private DistanceUnitType _elevationUnit;
-        public DistanceUnitType ElevationUnit
-        {
-            get { return _elevationUnit; }
-            set
-            {
-                Set(() => ElevationUnit, ref _elevationUnit, value);
-                //RaisePropertyChanged(() => ElevationGainFormatted);
-
-                //TODO: Glenn - do we need to 'recalculate' other values?
-            }
-        }
-
-        public string DistanceFormatted
+        DistanceUnitType _measurementUnit;
+        public DistanceUnitType MeasurementUnit
         {
             get
             {
-                switch (DistanceUnit)
-                {
-                    case DistanceUnitType.Kilometres:
-                        return UnitConverter.ConvertDistance(Distance, DistanceUnitType.Metres, DistanceUnitType.Kilometres).ToString("F2");
-                    case DistanceUnitType.Miles:
-                        return UnitConverter.ConvertDistance(Distance, DistanceUnitType.Metres, DistanceUnitType.Miles).ToString("F2");
-                }
-
-                return null;
+                return _measurementUnit;
             }
+            set
+            {
+                _measurementUnit = value;
+                SetUserMeasurementUnits();
+            }
+        }
+
+        private void SetUserMeasurementUnits()
+        {
+            DistanceUserMeasurementUnit = new UserMeasurementUnitMetric(Distance, DistanceUnitType.Metres, MeasurementUnit);
+        }
+
+        public UserMeasurementUnitMetric DistanceUserMeasurementUnit
+        {
+            get;
+            private set;
         }
     }
 }
