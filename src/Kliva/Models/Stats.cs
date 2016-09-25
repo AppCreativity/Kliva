@@ -1,4 +1,5 @@
 ﻿using Kliva.Helpers;
+using Kliva.Models.Interfaces;
 using Newtonsoft.Json;
 
 namespace Kliva.Models
@@ -288,52 +289,36 @@ namespace Kliva.Models
     /// <summary>
     /// Separated added fields from original response class!
     /// </summary>
-    public partial class Stats
+    public partial class Stats : ISupportUserMeasurementUnits
     {
-        private DistanceUnitType _distanceUnit;
-        public DistanceUnitType DistanceUnit
+        public DistanceUnitType MeasurementUnit
         {
-            get { return _distanceUnit; }
-            set
-            {
-                Set(() => DistanceUnit, ref _distanceUnit, value);
-                RaisePropertyChanged(() => BiggestRideDistanceFormatted);
-                RaisePropertyChanged(() => BiggestClimbElevationGainFormatted);
-
-                //TODO: Glenn - do we need to 'recalculate' other values?
-            }
+            get;
+            private set;
         }
 
-        public string BiggestRideDistanceFormatted
+        public void SetUserMeasurementUnits(DistanceUnitType measurementUnit)
         {
-            get
-            {
-                switch (DistanceUnit)
-                {
-                    case DistanceUnitType.Kilometres:
-                        return UnitConverter.ConvertDistance(BiggestRideDistance, DistanceUnitType.Metres, DistanceUnitType.Kilometres).ToString("F1");
-                    case DistanceUnitType.Miles:
-                        return UnitConverter.ConvertDistance(BiggestRideDistance, DistanceUnitType.Metres, DistanceUnitType.Miles).ToString("F1");
-                }
+            MeasurementUnit = measurementUnit;
 
-                return null;
-            }
+            bool IsMetric = MeasurementHelper.IsMetric(MeasurementUnit);
+            var elevationDistanceUnitType = MeasurementHelper.GetElevationUnitType(IsMetric);
+            var distanceUnitType = MeasurementHelper.GetDistanceUnitType(IsMetric);
+
+            BiggestRideDistanceUserMeasurementUnit = new UserMeasurementUnitMetric(BiggestRideDistance, DistanceUnitType.Kilometres, distanceUnitType);
+            BiggestClimbElevationGainUserMeasurementUnit = new UserMeasurementUnitMetric(BiggestClimbElevationGain, DistanceUnitType.Metres, elevationDistanceUnitType);
         }
 
-        public string BiggestClimbElevationGainFormatted
+        public UserMeasurementUnitMetric BiggestRideDistanceUserMeasurementUnit
         {
-            get
-            {
-                switch (DistanceUnit)
-                {
-                    case DistanceUnitType.Kilometres:
-                        return UnitConverter.ConvertDistance(BiggestClimbElevationGain, DistanceUnitType.Metres, DistanceUnitType.Metres).ToString("F1");
-                    case DistanceUnitType.Miles:
-                        return UnitConverter.ConvertDistance(BiggestClimbElevationGain, DistanceUnitType.Metres, DistanceUnitType.Miles).ToString("F1");
-                }
+            get;
+            private set;
+        }
 
-                return null;
-            }
+        public UserMeasurementUnitMetric BiggestClimbElevationGainUserMeasurementUnit
+        {
+            get;
+            private set;
         }
     }
 }

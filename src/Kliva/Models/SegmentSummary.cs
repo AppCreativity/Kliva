@@ -1,6 +1,7 @@
 ﻿using System;
 using Kliva.Helpers;
 using Newtonsoft.Json;
+using Kliva.Models.Interfaces;
 
 namespace Kliva.Models
 {
@@ -127,24 +128,18 @@ namespace Kliva.Models
     /// <summary>
     /// Separated added fields from original response class!
     /// </summary>
-    public partial class SegmentSummary : BaseClass
+    public partial class SegmentSummary : BaseClass, ISupportUserMeasurementUnits
     {
-        DistanceUnitType _measurementUnit;
         public DistanceUnitType MeasurementUnit
         {
-            get
-            {
-                return _measurementUnit;
-            }
-            set
-            {
-                _measurementUnit = value;
-                SetUserMeasurementUnits();
-            }
+            get;
+            private set;
         }
 
-        private void SetUserMeasurementUnits()
+        public void SetUserMeasurementUnits(DistanceUnitType measurementUnit)
         {
+            MeasurementUnit = measurementUnit;
+
             DistanceUserMeasurementUnit = new UserMeasurementUnitMetric(Distance, DistanceUnitType.Metres, MeasurementUnit);
         }
 
