@@ -89,7 +89,7 @@ namespace Kliva
             {
                 view.SetPreferredMinSize(new Size(width: 800, height: 600));
                 var titleBar = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar;
-                titleBar.BackgroundColor = titleBar.ButtonBackgroundColor = (Color)App.Current.Resources["KlivaMainColor"];                
+                titleBar.InactiveBackgroundColor = titleBar.BackgroundColor = titleBar.ButtonInactiveBackgroundColor = titleBar.ButtonBackgroundColor = (Color)App.Current.Resources["KlivaMainColor"];                
                 titleBar.ForegroundColor = titleBar.ButtonForegroundColor = Windows.UI.Colors.White;                
             }
 
