@@ -241,13 +241,13 @@ namespace Kliva.Models
         /// The distance of your biggest ride.
         /// </summary>
         [JsonProperty("biggest_ride_distance")]
-        public float BiggestRideDistance { get; set; }
+        public float? BiggestRideDistance { get; set; }
 
         /// <summary>
         /// The most elevation gain in a single ride.
         /// </summary>
         [JsonProperty("biggest_climb_elevation_gain")]
-        public float BiggestClimbElevationGain { get; set; }
+        public float? BiggestClimbElevationGain { get; set; }
 
         /// <summary>
         /// Statistics about your recent rides.
@@ -305,8 +305,8 @@ namespace Kliva.Models
             var elevationDistanceUnitType = MeasurementHelper.GetElevationUnitType(IsMetric);
             var distanceUnitType = MeasurementHelper.GetDistanceUnitType(IsMetric);
 
-            BiggestRideDistanceUserMeasurementUnit = new UserMeasurementUnitMetric(BiggestRideDistance, DistanceUnitType.Kilometres, distanceUnitType);
-            BiggestClimbElevationGainUserMeasurementUnit = new UserMeasurementUnitMetric(BiggestClimbElevationGain, DistanceUnitType.Metres, elevationDistanceUnitType);
+            BiggestRideDistanceUserMeasurementUnit = new UserMeasurementUnitMetric(BiggestRideDistance ?? 0, DistanceUnitType.Kilometres, distanceUnitType);
+            BiggestClimbElevationGainUserMeasurementUnit = new UserMeasurementUnitMetric(BiggestClimbElevationGain ?? 0, DistanceUnitType.Metres, elevationDistanceUnitType);
         }
 
         public UserMeasurementUnitMetric BiggestRideDistanceUserMeasurementUnit

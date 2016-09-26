@@ -223,7 +223,7 @@ namespace Kliva.Services
 
                 return stats;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 //TODO: Glenn - Use logger to log errors ( Google )
             }
