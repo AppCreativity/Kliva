@@ -7,9 +7,11 @@ using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
+using Windows.Foundation.Metadata;
 using Windows.Graphics.Display;
 using Windows.UI;
 using Windows.UI.Composition;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Hosting;
@@ -82,23 +84,26 @@ namespace Kliva
                 rootFrame.Navigate(stravaTokenAvailabe ? typeof(MainPage) : typeof(LoginPage), e.Arguments);
             }
 
-            var view = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
-
             //TODO: Glenn - refactor with actual screen size?
-            if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
+            if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.ApplicationView"))
             {
+                var view = ApplicationView.GetForCurrentView();
                 view.SetPreferredMinSize(new Size(width: 800, height: 600));
-                var titleBar = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar;
-                titleBar.InactiveBackgroundColor = titleBar.BackgroundColor = titleBar.ButtonInactiveBackgroundColor = titleBar.ButtonBackgroundColor = (Color)App.Current.Resources["KlivaMainColor"];                
-                titleBar.ForegroundColor = titleBar.ButtonForegroundColor = Windows.UI.Colors.White;                
+
+                var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+                if (titleBar != null)
+                {
+                    titleBar.InactiveBackgroundColor = titleBar.BackgroundColor = titleBar.ButtonInactiveBackgroundColor = titleBar.ButtonBackgroundColor = (Color) App.Current.Resources["KlivaMainColor"];
+                    titleBar.ForegroundColor = titleBar.ButtonForegroundColor = Colors.White;
+                }
             }
 
-            if (Windows.Foundation.Metadata.ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
+            if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
             {
-                var statusBar = Windows.UI.ViewManagement.StatusBar.GetForCurrentView();
+                var statusBar = StatusBar.GetForCurrentView();
                 statusBar.BackgroundOpacity = 100;
                 statusBar.BackgroundColor = (Color)App.Current.Resources["KlivaMainColor"];
-                statusBar.ForegroundColor = Windows.UI.Colors.White;
+                statusBar.ForegroundColor = Colors.White;
 
                 DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait |
                                                              DisplayOrientations.PortraitFlipped;
