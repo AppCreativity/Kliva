@@ -31,7 +31,7 @@
                           Label="edit"
                           Icon="Edit"
                           Foreground="White"
-                          Visibility="{x:Bind ViewModel.IsEditEnabled, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
+                          Visibility="{x:Bind ViewModel.IsEditEnabled, Mode=OneWay}"
                           Command="{x:Bind ViewModel.EditCommand}"/>
         </CommandBar>
     </Page.BottomAppBar>

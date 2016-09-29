@@ -89,7 +89,7 @@
                         <AppBarButton Icon="Message"
                                       Command="{x:Bind ViewModel.CommentCommand}"/>
                         <AppBarButton Icon="Edit"
-                                      Visibility="{x:Bind ViewModel.IsEditEnabled, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                      Visibility="{x:Bind ViewModel.IsEditEnabled, Mode=OneWay}"
                                       Command="{x:Bind ViewModel.EditCommand}"
                                       />
                     </StackPanel>
@@ -114,7 +114,7 @@
                 </PivotItem>
                 <PivotItem x:Name="SegmentsPivot" Tag="Segments"
                            x:DeferLoadStrategy="Lazy"
-                           Visibility="{x:Bind ViewModel.HasSegments, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                           Visibility="{x:Bind ViewModel.HasSegments, Mode=OneWay}">
                     <PivotItem.Header>
                         <local:IconPivotHeader Label="{x:Bind ViewModel.SelectedActivity.SegmentEffortsCount, Converter={StaticResource AddAmountToStringConverter}, ConverterParameter=segments, Mode=OneWay}"
                                                Glyph="&#xEC1B;" />
@@ -159,7 +159,7 @@
                 </PivotItem>
                 <PivotItem x:Name="PhotosPivot" Tag="Photos"
                            x:DeferLoadStrategy="Lazy"                           
-                           Visibility="{x:Bind ViewModel.HasPhotos, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                           Visibility="{x:Bind ViewModel.HasPhotos, Mode=OneWay}">
                     <PivotItem.Header>
                         <local:IconPivotHeader Label="{x:Bind ViewModel.PhotoCount, Converter={StaticResource AddAmountToStringConverter}, ConverterParameter=photos, Mode=OneWay}"
                                                Glyph="&#xEB9F;" />
