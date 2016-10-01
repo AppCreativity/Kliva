@@ -152,6 +152,7 @@
     <Compile Include="Helpers\MeasurementHelper.cs" />
     <Compile Include="Helpers\PolylineConverter.cs" />
     <Compile Include="Extensions\ScrollViewerExtensions.cs" />
+    <Compile Include="Helpers\StatisticsHelper.cs" />
     <Compile Include="Helpers\UnitConverter.cs" />
     <Compile Include="Helpers\Unmarshaller.cs" />
     <Compile Include="Messages\MeasureUnitChangedMessage.cs" />
