@@ -1,13 +1,15 @@
 ﻿using Kliva.Helpers;
 using Kliva.Models.Interfaces;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System;
 
 namespace Kliva.Models
 {
     /// <summary>
     /// Run totals of the past four weeks.
     /// </summary>
-    public class RecentRunTotals
+    public class StatTotals : ISupportUserMeasurementUnits
     {
         /// <summary>
         /// Number of activities.
@@ -44,192 +46,35 @@ namespace Kliva.Models
         /// </summary>
         [JsonProperty("achievement_count")]
         public int AchievementCount { get; set; }
-    }
 
-    /// <summary>
-    /// This class contains statistics about your recent rides.
-    /// </summary>
-    public class RecentRideTotals
-    {
-        /// <summary>
-        /// The number of rides.
-        /// </summary>
-        [JsonProperty("count")]
-        public int Count { get; set; }
+        public UserMeasurementUnitMetric TotalDistanceUserMeasurementUnit
+        {
+            get;
+            private set;
+        }
 
-        /// <summary>
-        /// The total distance.
-        /// </summary>
-        [JsonProperty("distance")]
-        public double Distance { get; set; }
+        public UserMeasurementUnitMetric ElevationGainUserMeasurementUnit
+        {
+            get;
+            private set;
+        }
 
-        /// <summary>
-        /// The total time moved.
-        /// </summary>
-        [JsonProperty("moving_time")]
-        public int MovingTime { get; set; }
+        public DistanceUnitType MeasurementUnit
+        {
+            get;
+            private set;
+        }
 
-        /// <summary>
-        /// The total time elapsed.
-        /// </summary>
-        [JsonProperty("elapsed_time")]
-        public int ElapsedTime { get; set; }
+        public void SetUserMeasurementUnits(DistanceUnitType measurementUnit)
+        {
+            MeasurementUnit = measurementUnit;
+            bool IsMetric = MeasurementHelper.IsMetric(MeasurementUnit);
+            var elevationDistanceUnitType = MeasurementHelper.GetElevationUnitType(IsMetric);
+            var distanceUnitType = MeasurementHelper.GetDistanceUnitType(IsMetric);
 
-        /// <summary>
-        /// The total elevation gained.
-        /// </summary>
-        [JsonProperty("elevation_gain")]
-        public double ElevationGain { get; set; }
-
-        /// <summary>
-        /// The number of achievements.
-        /// </summary>
-        [JsonProperty("achievement_count")]
-        public int AchievementCount { get; set; }
-    }
-
-    /// <summary>
-    /// This class contains all the statistics for cycling in this year.
-    /// </summary>
-    public class YearToDateRideTotals
-    {
-        /// <summary>
-        /// The number of runs.
-        /// </summary>
-        [JsonProperty("count")]
-        public int Count { get; set; }
-
-        /// <summary>
-        /// The Distance.
-        /// </summary>
-        [JsonProperty("distance")]
-        public int Distance { get; set; }
-
-        /// <summary>
-        /// The total time you were moving.
-        /// </summary>
-        [JsonProperty("moving_time")]
-        public int MovingTime { get; set; }
-
-        /// <summary>
-        /// The total elapsed time.
-        /// </summary>
-        [JsonProperty("elapsed_time")]
-        public int ElapsedTime { get; set; }
-
-        /// <summary>
-        /// The total elevation gain.
-        /// </summary>
-        [JsonProperty("elevation_gain")]
-        public int ElevationGain { get; set; }
-    }
-
-    /// <summary>
-    /// This class contains all the statistics for running in this year.
-    /// </summary>
-    public class YearToDateRunTotals
-    {
-        /// <summary>
-        /// The number of runs.
-        /// </summary>
-        [JsonProperty("count")]
-        public int Count { get; set; }
-
-        /// <summary>
-        /// The Distance.
-        /// </summary>
-        [JsonProperty("distance")]
-        public int Distance { get; set; }
-
-        /// <summary>
-        /// The total time you were moving.
-        /// </summary>
-        [JsonProperty("moving_time")]
-        public int MovingTime { get; set; }
-
-        /// <summary>
-        /// The total elapsed time.
-        /// </summary>
-        [JsonProperty("elapsed_time")]
-        public int ElapsedTime { get; set; }
-
-        /// <summary>
-        /// The total elevation gain.
-        /// </summary>
-        [JsonProperty("elevation_gain")]
-        public int ElevationGain { get; set; }
-    }
-
-    /// <summary>
-    /// This class represents the datra of all your rides.
-    /// </summary>
-    public class AllRideTotals
-    {
-        /// <summary>
-        /// The total count of all your rides.
-        /// </summary>
-        [JsonProperty("count")]
-        public int Count { get; set; }
-
-        /// <summary>
-        /// The cumulative distance of all your rides.
-        /// </summary>
-        [JsonProperty("distance")]
-        public int Distance { get; set; }
-
-        /// <summary>
-        /// The cumulative moving time of all your rides.
-        /// </summary>
-        [JsonProperty("moving_time")]
-        public int MovingTime { get; set; }
-
-        /// <summary>
-        /// The cumulative elapsed time of all your rides.
-        /// </summary>
-        [JsonProperty("elapsed_time")]
-        public int ElapsedTime { get; set; }
-
-        /// <summary>
-        /// The cumulative elevation gain of all your rides.
-        /// </summary>
-        [JsonProperty("elevation_gain")]
-        public int ElevationGain { get; set; }
-    }
-
-    /// <summary>
-    /// This class represents the data of all your runs.
-    /// </summary>
-    public class AllRunTotals
-    {
-        /// <summary>
-        /// The number of total runs.
-        /// </summary>
-        [JsonProperty("count")]
-        public int Count { get; set; }
-
-        /// <summary>
-        /// The cumulative distance of all your runs.
-        /// </summary>
-        [JsonProperty("distance")]
-        public int Distance { get; set; }
-
-        /// <summary>
-        /// The cumulative moving time of all your runs.
-        /// </summary>
-        [JsonProperty("moving_time")]
-        public int MovingTime { get; set; }
-
-        /// <summary>
-        /// The cumulative elapsed time of all your runs.
-        /// </summary>
-        [JsonProperty("elapsed_time")]
-        public int ElapsedTime { get; set; }
-
-        /// <summary>
-        /// The cumulative elevation gain of all your runs.
-        /// </summary>
-        [JsonProperty("elevation_gain")]
-        public int ElevationGain { get; set; }
+            TotalDistanceUserMeasurementUnit = new UserMeasurementUnitMetric((float)Distance, DistanceUnitType.Metres, distanceUnitType);
+            ElevationGainUserMeasurementUnit = new UserMeasurementUnitMetric((float)ElevationGain, DistanceUnitType.Metres, elevationDistanceUnitType);
+        }
     }
 
     /// <summary>
@@ -241,49 +86,49 @@ namespace Kliva.Models
         /// The distance of your biggest ride.
         /// </summary>
         [JsonProperty("biggest_ride_distance")]
-        public float BiggestRideDistance { get; set; }
+        public float? BiggestRideDistance { get; set; }
 
         /// <summary>
         /// The most elevation gain in a single ride.
         /// </summary>
         [JsonProperty("biggest_climb_elevation_gain")]
-        public float BiggestClimbElevationGain { get; set; }
+        public float? BiggestClimbElevationGain { get; set; }
 
         /// <summary>
         /// Statistics about your recent rides.
         /// </summary>
         [JsonProperty("recent_ride_totals")]
-        public RecentRideTotals RecentRideTotals { get; set; }
+        public StatTotals RecentRideTotals { get; set; }
 
         /// <summary>
         /// Statistics about your recent runs.
         /// </summary>
         [JsonProperty("recent_run_totals")]
-        public RecentRunTotals RecentRunTotals { get; set; }
+        public StatTotals RecentRunTotals { get; set; }
 
         /// <summary>
         /// Ride statistics from this year.
         /// </summary>
         [JsonProperty("ytd_ride_totals")]
-        public YearToDateRideTotals YearToDateRideTotals { get; set; }
+        public StatTotals YearToDateRideTotals { get; set; }
 
         /// <summary>
         /// Run statistics from this year.
         /// </summary>
         [JsonProperty("ytd_run_totals")]
-        public YearToDateRunTotals YearToDateRunTotals { get; set; }
+        public StatTotals YearToDateRunTotals { get; set; }
 
         /// <summary>
         /// Total ride statistics.
         /// </summary>
         [JsonProperty("all_ride_totals")]
-        public AllRideTotals RideTotals { get; set; }
+        public StatTotals RideTotals { get; set; }
 
         /// <summary>
         /// Total run statistics.
         /// </summary>
         [JsonProperty("all_run_totals")]
-        public AllRunTotals RunTotals { get; set; }
+        public StatTotals RunTotals { get; set; }
     }
 
     /// <summary>
@@ -305,8 +150,8 @@ namespace Kliva.Models
             var elevationDistanceUnitType = MeasurementHelper.GetElevationUnitType(IsMetric);
             var distanceUnitType = MeasurementHelper.GetDistanceUnitType(IsMetric);
 
-            BiggestRideDistanceUserMeasurementUnit = new UserMeasurementUnitMetric(BiggestRideDistance, DistanceUnitType.Kilometres, distanceUnitType);
-            BiggestClimbElevationGainUserMeasurementUnit = new UserMeasurementUnitMetric(BiggestClimbElevationGain, DistanceUnitType.Metres, elevationDistanceUnitType);
+            BiggestRideDistanceUserMeasurementUnit = new UserMeasurementUnitMetric(BiggestRideDistance ?? 0, DistanceUnitType.Metres, distanceUnitType);
+            BiggestClimbElevationGainUserMeasurementUnit = new UserMeasurementUnitMetric(BiggestClimbElevationGain ?? 0, DistanceUnitType.Metres, elevationDistanceUnitType);
         }
 
         public UserMeasurementUnitMetric BiggestRideDistanceUserMeasurementUnit

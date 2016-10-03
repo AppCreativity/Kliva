@@ -28,6 +28,24 @@ namespace Kliva.ViewModels
         private RelayCommand _viewLoadedCommand;
         public RelayCommand ViewLoadedCommand => _viewLoadedCommand ?? (_viewLoadedCommand = new RelayCommand(async () => await ViewLoaded()));
 
+
+        private List<StatisticsGroup> _runStatistics;
+
+        public List<StatisticsGroup> RunStatistics
+        {
+            get { return _runStatistics; }
+            set { _runStatistics = value; RaisePropertyChanged(); }
+        }
+
+        private List<StatisticsGroup> _rideStatistics;
+
+        public List<StatisticsGroup> RideStatistics
+        {
+            get { return _rideStatistics; }
+            set { _rideStatistics = value; RaisePropertyChanged(); }
+        }
+
+
         public StatsViewModel(INavigationService navigationService, IStravaService stravaService) : base(navigationService)
         {
             //_myActivityIncrementalCollection = new MyActivityIncrementalCollection(stravaService);
@@ -42,9 +60,13 @@ namespace Kliva.ViewModels
             {
                 var athlete = await _stravaService.GetAthleteAsync();
                 var statistics = await _stravaService.GetStatsAsync(athlete.Id.ToString());
+                RunStatistics = StatisticsHelper.GetRunStatistics(statistics);
+                RideStatistics = StatisticsHelper.GetRideStatistics(statistics);
                 _viewModelLoaded = true;
             }
         }
+
+
 
         //private async void OnDataLoaded(object sender, EventArgs e)
         //{

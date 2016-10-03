@@ -183,6 +183,14 @@
         <Setter Property="Stroke" Value="{StaticResource SeperatorBrush}" />
     </Style>
 
+
+    <Style x:Key="StatsSubsectionStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="28" />
+        <Setter Property="FontFamily" Value="{StaticResource OpenSansFontLight}" />
+        <Setter Property="Foreground" Value="{StaticResource KlivaMainBrush}" />
+    </Style>
+    
+    
     <Style x:Key="ProfileNameStyleDesktop" TargetType="TextBlock">
         <Setter Property="FontSize" Value="32" />
         <Setter Property="FontFamily" Value="{StaticResource OpenSansFontSemibold}" />

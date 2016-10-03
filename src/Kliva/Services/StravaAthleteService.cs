@@ -220,10 +220,16 @@ namespace Kliva.Services
 
                 Stats stats = Unmarshaller<Stats>.Unmarshal(json);
                 StravaService.SetMetricUnits(stats, defaultDistanceUnitType);
+                StravaService.SetMetricUnits(stats.RecentRunTotals, defaultDistanceUnitType);
+                StravaService.SetMetricUnits(stats.RunTotals, defaultDistanceUnitType);
+                StravaService.SetMetricUnits(stats.YearToDateRunTotals, defaultDistanceUnitType);
+                StravaService.SetMetricUnits(stats.YearToDateRideTotals, defaultDistanceUnitType);
+                StravaService.SetMetricUnits(stats.RideTotals, defaultDistanceUnitType);
+                StravaService.SetMetricUnits(stats.RecentRideTotals, defaultDistanceUnitType);
 
                 return stats;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 //TODO: Glenn - Use logger to log errors ( Google )
             }
