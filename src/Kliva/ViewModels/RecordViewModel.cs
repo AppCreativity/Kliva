@@ -181,6 +181,7 @@ namespace Kliva.ViewModels
                         case ExtendedExecutionResult.Allowed:
                             //TODO: Glenn - start location tracking!
                             RecordStatus = ActivityTracking.Recording;
+                            _extendedExecutionSession = newSession;
                             await _gpxService.InitGPXDocument();
                             _periodicTimer = new Timer(OnTimer, _locationService, TimeSpan.FromSeconds(1),
                                 TimeSpan.FromSeconds(2.2));
