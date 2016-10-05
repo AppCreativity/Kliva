@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
@@ -15,6 +16,7 @@ namespace Kliva.Services
     {
         private readonly ISettingsService _settingsService;
         private readonly StravaWebClient _stravaWebClient;
+        private StringBuilder _errorMessage = new StringBuilder();
 
         private readonly ETWLogging _perflog;
 
@@ -52,7 +54,12 @@ namespace Kliva.Services
             }
             catch (Exception ex)
             {
-                //TODO: Glenn - Use logger to log errors ( Google )
+#if !DEBUG
+                _errorMessage.Clear();
+                _errorMessage.AppendLine($"StravaAthleteService.GetAthleteFromServiceAsync - athleteId {athleteId}");
+                _errorMessage.AppendLine(ex.Message);
+                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_errorMessage.ToString(), false);
+#endif
             }
 
             return null;
@@ -81,7 +88,7 @@ namespace Kliva.Services
                     Athlete = Unmarshaller<Athlete>.Unmarshal(json);
 
 #if !DEBUG
-                    ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendEvent("API", "Athlete (authenticated)", Athlete.FullName, 0);
+                    ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendEvent("API", "GetAthleteAsync", Athlete.FullName, 0);
 #endif
                     return Athlete;
                 }
