@@ -26,7 +26,13 @@
                           Icon="Message"
                           Foreground="White"
                           Command="{x:Bind ViewModel.CommentCommand}"/>
-            
+
+            <AppBarButton x:Name="AppBarWeb"
+                          Label="strava"
+                          Icon="Globe"
+                          Foreground="White"
+                          Command="{x:Bind ViewModel.StravaCommand}"/>
+
             <AppBarButton x:Name="AppBarEdit"
                           Label="edit"
                           Icon="Edit"

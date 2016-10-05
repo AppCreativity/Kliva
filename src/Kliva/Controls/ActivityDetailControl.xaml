@@ -90,8 +90,9 @@
                                       Command="{x:Bind ViewModel.CommentCommand}"/>
                         <AppBarButton Icon="Edit"
                                       Visibility="{x:Bind ViewModel.IsEditEnabled, Mode=OneWay}"
-                                      Command="{x:Bind ViewModel.EditCommand}"
-                                      />
+                                      Command="{x:Bind ViewModel.EditCommand}" />
+                        <AppBarButton Icon="Globe" 
+                                      Command="{x:Bind ViewModel.StravaCommand}"/>
                     </StackPanel>
                 </CommandBar.Content>
             </CommandBar>

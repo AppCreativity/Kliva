@@ -15,12 +15,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
 using Windows.UI.Xaml.Controls;
+using Kliva.Services;
 
 namespace Kliva.ViewModels
 {
     public class ActivityDetailViewModel : KlivaBaseViewModel
     {
         private readonly IStravaService _stravaService;
+        private readonly ILauncherService _launcherService;
         private Athlete _athlete;
 
         private Activity _selectedActivity;
@@ -101,15 +103,25 @@ namespace Kliva.ViewModels
         private RelayCommand _editCommand;
         public RelayCommand EditCommand => _editCommand ?? (_editCommand = new RelayCommand(async () => await OnEdit()));
 
+        private RelayCommand _stravaCommand;
+        public RelayCommand StravaCommand => _stravaCommand ?? (_stravaCommand = new RelayCommand(async () => await Launch()));
+
+        private async Task Launch()
+        {
+            string activityUri = $"{Endpoints.PublicActivity}/{SelectedActivity.Id}";
+            await _launcherService.LaunchUriAsync(new Uri(activityUri));
+        }
+
         private RelayCommand<ItemClickEventArgs> _athleteTappedCommand;
         public RelayCommand<ItemClickEventArgs> AthleteTappedCommand => _athleteTappedCommand ?? (_athleteTappedCommand = new RelayCommand<ItemClickEventArgs>(OnAthleteTapped));
 
-        private RelayCommand<ItemClickEventArgs> _segmentTappedCommand;        
+        private RelayCommand<ItemClickEventArgs> _segmentTappedCommand;
         public RelayCommand<ItemClickEventArgs> SegmentTappedCommand => _segmentTappedCommand ?? (_segmentTappedCommand = new RelayCommand<ItemClickEventArgs>(OnSegmentTapped));        
 
-        public ActivityDetailViewModel(INavigationService navigationService, IStravaService stravaService) : base(navigationService)
+        public ActivityDetailViewModel(INavigationService navigationService, IStravaService stravaService, ILauncherService launcherService) : base(navigationService)
         {
             _stravaService = stravaService;
+            _launcherService = launcherService;
             MessengerInstance.Register<ActivitySummaryMessage>(this, async item => await LoadActivityDetails(item.ActivitySummary.Id.ToString()));
         }
 
