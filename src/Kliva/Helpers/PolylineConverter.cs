@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Windows.Devices.Geolocation;
+using Kliva.Services.Interfaces;
+using Microsoft.Practices.ServiceLocation;
 
 namespace Kliva.Helpers
 {
@@ -57,10 +60,14 @@ namespace Kliva.Helpers
             }
             catch (Exception ex)
             {
-                //TODO: Glenn - Log exception
+#if DEBUG
+                StringBuilder errorMessage = new StringBuilder();
+                errorMessage.AppendLine($"PolylineConverter.DecodePolylinePoints");
+                errorMessage.AppendLine(ex.Message);
+                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(errorMessage.ToString(), false);
+#endif
             }
-
-            return poly;
+                return poly;
         }
     }
 }

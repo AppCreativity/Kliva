@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
 using Windows.Storage.Streams;
@@ -9,6 +10,7 @@ using Windows.UI.Xaml.Media.Imaging;
 using GalaSoft.MvvmLight.Threading;
 using Kliva.Helpers;
 using Kliva.Services;
+using Kliva.Services.Interfaces;
 using Microsoft.Practices.ServiceLocation;
 using Newtonsoft.Json;
 
@@ -58,6 +60,8 @@ namespace Kliva.Models
     /// </summary>
     public partial class Map : BaseClass
     {
+        private StringBuilder _errorMessage = new StringBuilder();
+
         public Map()
         {
             PropertyChanged += OnMapPropertyChanged;
@@ -93,9 +97,14 @@ namespace Kliva.Models
                                 GoogleImage = bitmap;
                             });
                         }
-                        catch (Exception exception)
+                        catch (Exception ex)
                         {
-                            //TODO: Show exception
+#if !DEBUG
+                            _errorMessage.Clear();
+                            _errorMessage.AppendLine($"Map.OnMapPropertyChanged");
+                            _errorMessage.AppendLine(ex.Message);
+                            ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_errorMessage.ToString(), false);
+#endif
                         }
                     }
                 }
