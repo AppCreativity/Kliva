@@ -7,6 +7,7 @@ using Kliva.Models;
 using Kliva.Services.Interfaces;
 using Kliva.Helpers;
 using Kliva.Services.Performance;
+using Microsoft.Practices.ServiceLocation;
 
 namespace Kliva.Services
 {
@@ -75,10 +76,16 @@ namespace Kliva.Services
                         string getUrl = $"{Endpoints.Athlete}?access_token={accessToken}";
                         json = await _stravaWebClient.GetAsync(new Uri(getUrl));
                         LocalCacheService.PersistCacheData(json, "Athlete");
-                    }
-                    return Athlete = Unmarshaller<Athlete>.Unmarshal(json);
+                    }                    
+
+                    Athlete = Unmarshaller<Athlete>.Unmarshal(json);
+
+#if !DEBUG
+                    ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendEvent("API", "Athlete (authenticated)", Athlete.FullName, 0);
+#endif
+                    return Athlete;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     //TODO: Glenn - Use logger to log errors ( Google )
                 }

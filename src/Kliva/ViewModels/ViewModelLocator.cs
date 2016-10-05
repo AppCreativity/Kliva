@@ -8,6 +8,7 @@ using Windows.ApplicationModel;
 using Windows.UI.Composition;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Hosting;
+using GoogleAnalytics;
 
 namespace Kliva.ViewModels
 {
@@ -47,7 +48,10 @@ namespace Kliva.ViewModels
             SimpleIoc.Default.Register<IStravaSegmentService, StravaSegmentService>();
             SimpleIoc.Default.Register<ILocationService, LocationService>();
             SimpleIoc.Default.Register<IGPXService, GPXService>();
-
+            SimpleIoc.Default.Register<IGoogleAnalyticsService, GoogleAnalyticsService>();
+#if !DEBUG
+            ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker = EasyTracker.GetTracker();
+#endif
             Register<IOService>();
 
             Register<MainViewModel>();

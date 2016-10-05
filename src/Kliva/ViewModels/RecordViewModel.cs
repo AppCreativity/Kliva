@@ -242,7 +242,7 @@ namespace Kliva.ViewModels
                 var locatorService = (ILocationService)state;
                 if (locatorService != null && RecordStatus == ActivityTracking.Recording)
                 {
-                    var position = await _locationService.GetPositionAsync();
+                    var position = await _locationService.GetPositionAsync(LocationServiceAccuracy.Default);
                     if (!position.IsUnknown)
                     {
                         await _gpxService.WriteGPXLocation(position.Latitude, position.Longitude);

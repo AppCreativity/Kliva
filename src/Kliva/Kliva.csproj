@@ -92,6 +92,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Content Include="analytics.xml" />
     <Content Include="Assets\crank.png" />
     <Content Include="Assets\CurrentPosition.png" />
     <Content Include="Assets\End.png" />
@@ -99,6 +100,9 @@
     <Content Include="Assets\Fonts\OpenSans-Light.ttf" />
     <Content Include="Assets\Fonts\OpenSans-Semibold.ttf" />
     <Content Include="Assets\Fonts\materialdesignicons-webfont.ttf" />
+    <None Include="analytics.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
@@ -204,7 +208,9 @@
     <Compile Include="Models\Usage.cs" />
     <Compile Include="Models\UserMeasurementUnitMetric.cs" />
     <Compile Include="Services\ApplicationInfoService.cs" />
+    <Compile Include="Services\GoogleAnalyticsService.cs" />
     <Compile Include="Services\GPXService.cs" />
+    <Compile Include="Services\Interfaces\IGoogleAnalyticsService.cs" />
     <Compile Include="Services\Interfaces\IGPXService.cs" />
     <Compile Include="Services\IOService.cs" />
     <Compile Include="Services\LocalCacheService.cs" />
