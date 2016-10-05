@@ -183,8 +183,7 @@ namespace Kliva.ViewModels
                             RecordStatus = ActivityTracking.Recording;
                             _extendedExecutionSession = newSession;
                             await _gpxService.InitGPXDocument();
-                            _periodicTimer = new Timer(OnTimer, _locationService, TimeSpan.FromSeconds(1),
-                                TimeSpan.FromSeconds(2.2));
+                            _periodicTimer = new Timer(OnTimer, _locationService, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2.2));
                             break;
                         default:
                         case ExtendedExecutionResult.Denied:
