@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using Kliva.Helpers;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
+using Microsoft.Practices.ServiceLocation;
 
 namespace Kliva.Services
 {
@@ -12,6 +14,7 @@ namespace Kliva.Services
     {
         private readonly ISettingsService _settingsService;
         private readonly StravaWebClient _stravaWebClient;
+        private StringBuilder _errorMessage = new StringBuilder();
 
         //TODO: Glenn - When to Invalidate cache?
         private readonly ConcurrentDictionary<string, Task<Club>> _cachedClubTasks = new ConcurrentDictionary<string, Task<Club>>();
@@ -34,7 +37,12 @@ namespace Kliva.Services
             }
             catch (Exception ex)
             {
-                //TODO: Glenn - Use logger to log errors ( Google )
+#if !DEBUG
+                _errorMessage.Clear();
+                _errorMessage.AppendLine($"StravaClubService.GetClubFromServiceAsync - clubId {clubId}");
+                _errorMessage.AppendLine(ex.Message);
+                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_errorMessage.ToString(), false);
+#endif
             }
 
             return null;
@@ -56,7 +64,12 @@ namespace Kliva.Services
             }
             catch (Exception ex)
             {
-                //TODO: Glenn - Use logger to log errors ( Google )
+#if !DEBUG
+                _errorMessage.Clear();
+                _errorMessage.AppendLine($"StravaClubService.GetClubsAsync");
+                _errorMessage.AppendLine(ex.Message);
+                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_errorMessage.ToString(), false);
+#endif
             }
 
             return null;
@@ -89,7 +102,12 @@ namespace Kliva.Services
             }
             catch (Exception ex)
             {
-                //TODO: Glenn - Use logger to log errors ( Google )
+#if !DEBUG
+                _errorMessage.Clear();
+                _errorMessage.AppendLine($"StravaClubService.GetClubMembersAsync - clubId {clubId}");
+                _errorMessage.AppendLine(ex.Message);
+                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_errorMessage.ToString(), false);
+#endif
             }
 
             return null;
