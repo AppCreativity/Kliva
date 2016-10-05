@@ -94,7 +94,12 @@ namespace Kliva.Services
                 }
                 catch (Exception ex)
                 {
-                    //TODO: Glenn - Use logger to log errors ( Google )
+#if !DEBUG
+                _errorMessage.Clear();
+                _errorMessage.AppendLine($"StravaAthleteService.GetAthleteAsync");
+                _errorMessage.AppendLine(ex.Message);
+                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_errorMessage.ToString(), false);
+#endif
                 }
             }
             _perflog.GetAthleteAsync(true);
@@ -143,9 +148,14 @@ namespace Kliva.Services
 
                 return Unmarshaller<IEnumerable<AthleteSummary>>.Unmarshal(json);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //TODO: Glenn - Use logger to log errors ( Google )
+#if !DEBUG
+                _errorMessage.Clear();
+                _errorMessage.AppendLine($"StravaAthleteService.GetFollowersAsync - athleteId {athleteId} - authenticatedUser {authenticatedUser}");
+                _errorMessage.AppendLine(ex.Message);
+                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_errorMessage.ToString(), false);
+#endif
             }
 
             return null;
@@ -167,9 +177,14 @@ namespace Kliva.Services
 
                 return Unmarshaller<IEnumerable<AthleteSummary>>.Unmarshal(json);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //TODO: Glenn - Use logger to log errors ( Google )
+#if !DEBUG
+                _errorMessage.Clear();
+                _errorMessage.AppendLine($"StravaAthleteService.GetFriendsAsync - athleteId {athleteId} - authenticatedUser {authenticatedUser}");
+                _errorMessage.AppendLine(ex.Message);
+                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_errorMessage.ToString(), false);
+#endif
             }
 
             return null;
@@ -187,12 +202,17 @@ namespace Kliva.Services
 
                 return Unmarshaller<IEnumerable<AthleteSummary>>.Unmarshal(json);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //TODO: Glenn - Use logger to log errors ( Google )
+#if !DEBUG
+                _errorMessage.Clear();
+                _errorMessage.AppendLine($"StravaAthleteService.GetMutualFriendsAsync - athleteId {athleteId}");
+                _errorMessage.AppendLine(ex.Message);
+                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_errorMessage.ToString(), false);
+#endif
             }
 
-            return null;
+                return null;
 
         }
 
@@ -213,9 +233,14 @@ namespace Kliva.Services
                     return segment;
                 }).ToList();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //TODO: Glenn - Use logger to log errors ( Google )
+#if !DEBUG
+                _errorMessage.Clear();
+                _errorMessage.AppendLine($"StravaAthleteService.GetKomsAsync - athleteId {athleteId}");
+                _errorMessage.AppendLine(ex.Message);
+                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_errorMessage.ToString(), false);
+#endif
             }
 
             return null;
@@ -245,7 +270,12 @@ namespace Kliva.Services
             }
             catch (Exception ex)
             {
-                //TODO: Glenn - Use logger to log errors ( Google )
+#if !DEBUG
+                _errorMessage.Clear();
+                _errorMessage.AppendLine($"StravaAthleteService.GetStatsAsync - athleteId {athleteId}");
+                _errorMessage.AppendLine(ex.Message);
+                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_errorMessage.ToString(), false);
+#endif
             }
 
             return null;
