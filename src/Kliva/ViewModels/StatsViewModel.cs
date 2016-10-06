@@ -58,11 +58,13 @@ namespace Kliva.ViewModels
         {
             if (!_viewModelLoaded)
             {
+                IsBusy = true;
                 var athlete = await _stravaService.GetAthleteAsync();
                 var statistics = await _stravaService.GetStatsAsync(athlete.Id.ToString());
                 RunStatistics = StatisticsHelper.GetRunStatistics(statistics);
                 RideStatistics = StatisticsHelper.GetRideStatistics(statistics);
                 _viewModelLoaded = true;
+                IsBusy = false;
             }
         }
 
