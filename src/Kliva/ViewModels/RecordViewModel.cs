@@ -2,7 +2,6 @@
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Threading;
 using Kliva.Extensions;
-using Kliva.Helpers;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
 using Kliva.Views;
@@ -25,6 +24,7 @@ namespace Kliva.ViewModels
         private readonly ILocationService _locationService;
         private readonly IStravaService _stravaService;
         private readonly IGPXService _gpxService;
+        private readonly IMessageBoxService _messageBoxService;
 
         private string _activityText;
         public string ActivityText
@@ -76,11 +76,14 @@ namespace Kliva.ViewModels
         private RelayCommand _saveCommand;
         public RelayCommand SaveCommand => _saveCommand ?? (_saveCommand = new RelayCommand(async () => await SaveActivity()));
 
-        public RecordViewModel(INavigationService navigationService, ILocationService locationService, IGPXService gpxService, IStravaService stravaService) : base(navigationService)
+        public RecordViewModel(INavigationService navigationService, 
+            ILocationService locationService, IGPXService gpxService,
+            IStravaService stravaService, IMessageBoxService messageBoxService) : base(navigationService)
         {
             _gpxService = gpxService;
             _locationService = locationService;
             _stravaService = stravaService;
+            _messageBoxService = messageBoxService;
             //_locationService.StatusChanged += OnLocationServiceStatusChanged;
         }
 
@@ -231,12 +234,12 @@ namespace Kliva.ViewModels
 
             if (isCreatedSuccessfully)
             {
-                await DialogHelper.TellUserAsync("Activity created", $"Activity '{ActivityName}' was created successfuly!", "OK");
+                await _messageBoxService.ShowAsync($"Activity '{ActivityName}' was created successfuly!", "Activity created");
                 NavigationService.Navigate<MainPage>();
             }
             else
             {
-                await DialogHelper.TellUserAsync("Something went wrong", $"Something went wrong while saving activity '{ActivityName}'.\nPlease try again.", "OK");
+                await _messageBoxService.ShowAsync($"Something went wrong while saving activity '{ActivityName}'.\nPlease try again.", "Something went wrong");
             }
         }
 
