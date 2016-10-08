@@ -1,16 +1,15 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Windows.ApplicationModel.ExtendedExecution;
-using Windows.Devices.Geolocation;
-using Windows.System.Threading;
-using Windows.UI.Core;
-using Cimbalino.Toolkit.Services;
+﻿using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Threading;
 using Kliva.Extensions;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
+using Kliva.Views;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Windows.ApplicationModel.ExtendedExecution;
+using Windows.Devices.Geolocation;
 
 namespace Kliva.ViewModels
 {
@@ -25,6 +24,7 @@ namespace Kliva.ViewModels
         private readonly ILocationService _locationService;
         private readonly IStravaService _stravaService;
         private readonly IGPXService _gpxService;
+        private readonly IMessageBoxService _messageBoxService;
 
         private string _activityText;
         public string ActivityText
@@ -76,11 +76,14 @@ namespace Kliva.ViewModels
         private RelayCommand _saveCommand;
         public RelayCommand SaveCommand => _saveCommand ?? (_saveCommand = new RelayCommand(async () => await SaveActivity()));
 
-        public RecordViewModel(INavigationService navigationService, ILocationService locationService, IGPXService gpxService, IStravaService stravaService) : base(navigationService)
+        public RecordViewModel(INavigationService navigationService, 
+            ILocationService locationService, IGPXService gpxService,
+            IStravaService stravaService, IMessageBoxService messageBoxService) : base(navigationService)
         {
             _gpxService = gpxService;
             _locationService = locationService;
             _stravaService = stravaService;
+            _messageBoxService = messageBoxService;
             //_locationService.StatusChanged += OnLocationServiceStatusChanged;
         }
 
@@ -208,14 +211,36 @@ namespace Kliva.ViewModels
 
         private async Task SaveActivity()
         {
-            //TODO: Glenn - add more screen options to save
-            await _stravaService.UploadActivityAsync(
-                _gpxFile,
-                Enum<ActivityRecording>.Parse(ActivityText) == ActivityRecording.Cycling ? ActivityType.Ride : ActivityType.Run,
-                ActivityName,
-                false,
-                false
-                );
+            bool isCreatedSuccessfully = true;
+            try
+            {
+                IsBusy = true;
+                //TODO: Glenn - add more screen options to save
+                await _stravaService.UploadActivityAsync(
+                    _gpxFile,
+                    Enum<ActivityRecording>.Parse(ActivityText) == ActivityRecording.Cycling ? ActivityType.Ride : ActivityType.Run,
+                    ActivityName,
+                    false,
+                    false);
+            }
+            catch (Exception)
+            {
+                isCreatedSuccessfully = false;
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+            if (isCreatedSuccessfully)
+            {
+                await _messageBoxService.ShowAsync($"Activity '{ActivityName}' was created successfuly!", "Activity created");
+                NavigationService.Navigate<MainPage>();
+            }
+            else
+            {
+                await _messageBoxService.ShowAsync($"Something went wrong while saving activity '{ActivityName}'.\nPlease try again.", "Something went wrong");
+            }
         }
 
         private async void OnExtendedExecutionSessionRevoked(object sender, ExtendedExecutionRevokedEventArgs args)
