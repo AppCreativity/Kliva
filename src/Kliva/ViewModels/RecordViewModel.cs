@@ -11,6 +11,8 @@ using GalaSoft.MvvmLight.Threading;
 using Kliva.Extensions;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
+using Kliva.Views;
+using Kliva.Helpers;
 
 namespace Kliva.ViewModels
 {
@@ -208,14 +210,36 @@ namespace Kliva.ViewModels
 
         private async Task SaveActivity()
         {
-            //TODO: Glenn - add more screen options to save
-            await _stravaService.UploadActivityAsync(
-                _gpxFile,
-                Enum<ActivityRecording>.Parse(ActivityText) == ActivityRecording.Cycling ? ActivityType.Ride : ActivityType.Run,
-                ActivityName,
-                false,
-                false
-                );
+            bool createdSuccessfuly = true;
+            try
+            {
+                IsBusy = true;
+                //TODO: Glenn - add more screen options to save
+                await _stravaService.UploadActivityAsync(
+                    _gpxFile,
+                    Enum<ActivityRecording>.Parse(ActivityText) == ActivityRecording.Cycling ? ActivityType.Ride : ActivityType.Run,
+                    ActivityName,
+                    false,
+                    false);
+            }
+            catch (Exception)
+            {
+                createdSuccessfuly = false;
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+            if (createdSuccessfuly)
+            {
+                await DialogHelper.TellUserAsync("Activity created", $"Activity '{ActivityName}' was created successfuly!", "OK");
+                NavigationService.Navigate<MainPage>();
+            }
+            else
+            {
+                await DialogHelper.TellUserAsync("Something went wrong", $"Something went wrong while saving activity '{ActivityName}'.\nPlease try again.", "OK");
+            }
         }
 
         private async void OnExtendedExecutionSessionRevoked(object sender, ExtendedExecutionRevokedEventArgs args)
