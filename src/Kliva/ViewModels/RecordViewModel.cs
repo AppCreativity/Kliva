@@ -1,18 +1,16 @@
-﻿using System;
+﻿using Cimbalino.Toolkit.Services;
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Threading;
+using Kliva.Extensions;
+using Kliva.Helpers;
+using Kliva.Models;
+using Kliva.Services.Interfaces;
+using Kliva.Views;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.ExtendedExecution;
 using Windows.Devices.Geolocation;
-using Windows.System.Threading;
-using Windows.UI.Core;
-using Cimbalino.Toolkit.Services;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Threading;
-using Kliva.Extensions;
-using Kliva.Models;
-using Kliva.Services.Interfaces;
-using Kliva.Views;
-using Kliva.Helpers;
 
 namespace Kliva.ViewModels
 {
@@ -210,7 +208,7 @@ namespace Kliva.ViewModels
 
         private async Task SaveActivity()
         {
-            bool createdSuccessfuly = true;
+            bool isCreatedSuccessfully = true;
             try
             {
                 IsBusy = true;
@@ -224,14 +222,14 @@ namespace Kliva.ViewModels
             }
             catch (Exception)
             {
-                createdSuccessfuly = false;
+                isCreatedSuccessfully = false;
             }
             finally
             {
                 IsBusy = false;
             }
 
-            if (createdSuccessfuly)
+            if (isCreatedSuccessfully)
             {
                 await DialogHelper.TellUserAsync("Activity created", $"Activity '{ActivityName}' was created successfuly!", "OK");
                 NavigationService.Navigate<MainPage>();
