@@ -16,8 +16,8 @@ namespace Kliva.Services
     public class StravaActivityService : IStravaActivityService
     {
         private readonly ISettingsService _settingsService;
+        private readonly ILogService _logService;
         private readonly StravaWebClient _stravaWebClient;
-        private StringBuilder _errorMessage = new StringBuilder();
 
         private readonly ETWLogging _perflog;
 
@@ -25,11 +25,12 @@ namespace Kliva.Services
         private readonly ConcurrentDictionary<string, Task<List<Photo>>> _cachedPhotosTasks = new ConcurrentDictionary<string, Task<List<Photo>>>();
 
         //TODO: Glenn - When to Invalidate cache?
-        private readonly ConcurrentDictionary<string, Task<IList<ActivitySummary>>> _cachedRelatedActivitiesTasks = new ConcurrentDictionary<string, Task<IList<ActivitySummary>>>();
+        private readonly ConcurrentDictionary<string, Task<IList<ActivitySummary>>> _cachedRelatedActivitiesTasks = new ConcurrentDictionary<string, Task<IList<ActivitySummary>>>();        
 
-        public StravaActivityService(ISettingsService settingsService, StravaWebClient stravaWebClient)
+        public StravaActivityService(ISettingsService settingsService, ILogService logService, StravaWebClient stravaWebClient)
         {
             _settingsService = settingsService;
+            _logService = logService;
             _stravaWebClient = stravaWebClient;
 
             _perflog = ETWLogging.Log;
@@ -54,10 +55,9 @@ namespace Kliva.Services
             catch (Exception ex)
             {
 #if !DEBUG
-                _errorMessage.Clear();
-                _errorMessage.AppendLine($"StravaActivityService.GetPhotosFromServiceAsync - activityId {activityId}");
-                _errorMessage.AppendLine(ex.Message);
-                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_errorMessage.ToString(), false);
+                string title = $"StravaActivityService.GetPhotosFromServiceAsync - activityId {activityId}";
+                string body = ex.Message;
+                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_logService.Log(title, body), false);
 #endif
             }
 
@@ -88,10 +88,9 @@ namespace Kliva.Services
             catch (Exception ex)
             {
 #if !DEBUG
-                _errorMessage.Clear();
-                _errorMessage.AppendLine($"StravaActivityService.GetRelatedActivitiesFromServiceAsync - activityId {activityId}");
-                _errorMessage.AppendLine(ex.Message);
-                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_errorMessage.ToString(), false);
+                string title = $"StravaActivityService.GetRelatedActivitiesFromServiceAsync - activityId {activityId}";
+                string body = ex.Message;
+                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_logService.Log(title, body), false);
 #endif
             }
 
@@ -157,15 +156,20 @@ namespace Kliva.Services
                 FillStatistics(activity);
 
                 _perflog.GetActivityAsync(true, id, includeEfforts);
+
+#if !DEBUG
+                string activityUri = $"{Endpoints.PublicActivity}/{id}";
+                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendEvent("API", "GetActivityAsync", activityUri, 0);
+#endif
+
                 return activity;
             }
             catch (Exception ex)
             {
-#if !DEBUG
-                _errorMessage.Clear();
-                _errorMessage.AppendLine($"StravaActivityService.GetActivityAsync - id {id} - includeEfforts {includeEfforts}");
-                _errorMessage.AppendLine(ex.Message);
-                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_errorMessage.ToString(), false);
+#if !DEBUG                
+                string title = $"StravaActivityService.GetActivityAsync - id {id} - includeEfforts {includeEfforts}";
+                string body = ex.Message;
+                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_logService.Log(title, body), false);
 #endif
             }
 
@@ -201,10 +205,9 @@ namespace Kliva.Services
             catch (Exception ex)
             {
 #if !DEBUG
-                _errorMessage.Clear();
-                _errorMessage.AppendLine($"StravaActivityService.GetActivitiesAsync - page {page} - perPage {perPage}");
-                _errorMessage.AppendLine(ex.Message);
-                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_errorMessage.ToString(), false);
+                string title = $"StravaActivityService.GetActivitiesAsync - page {page} - perPage {perPage}";
+                string body = ex.Message;
+                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_logService.Log(title, body), false);
 #endif
             }
 
@@ -240,10 +243,9 @@ namespace Kliva.Services
             catch (Exception ex)
             {
 #if !DEBUG
-                _errorMessage.Clear();
-                _errorMessage.AppendLine($"StravaActivityService.GetFollowersActivitiesAsync - page {page} - perPage {perPage}");
-                _errorMessage.AppendLine(ex.Message);
-                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_errorMessage.ToString(), false);
+                string title = $"StravaActivityService.GetFollowersActivitiesAsync - page {page} - perPage {perPage}";
+                string body = ex.Message;
+                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_logService.Log(title, body), false);
 #endif
             }
 
@@ -277,10 +279,9 @@ namespace Kliva.Services
             catch (Exception ex)
             {
 #if !DEBUG
-                _errorMessage.Clear();
-                _errorMessage.AppendLine($"StravaActivityService.GetKudosAsync - activityId {activityId}");
-                _errorMessage.AppendLine(ex.Message);
-                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_errorMessage.ToString(), false);
+                string title = $"StravaActivityService.GetKudosAsync - activityId {activityId}";
+                string body = ex.Message;
+                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_logService.Log(title, body), false);
 #endif
             }
 
@@ -303,10 +304,9 @@ namespace Kliva.Services
             catch (Exception ex)
             {
 #if !DEBUG
-                _errorMessage.Clear();
-                _errorMessage.AppendLine($"StravaActivityService.GiveKudosAsync - activityId {activityId}");
-                _errorMessage.AppendLine(ex.Message);
-                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_errorMessage.ToString(), false);
+                string title = $"StravaActivityService.GiveKudosAsync - activityId {activityId}";
+                string body = ex.Message;
+                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_logService.Log(title, body), false);
 #endif
             }
         }
@@ -330,10 +330,9 @@ namespace Kliva.Services
             catch (Exception ex)
             {
 #if !DEBUG
-                _errorMessage.Clear();
-                _errorMessage.AppendLine($"StravaActivityService.GetCommentsAsync - activityId {activityId}");
-                _errorMessage.AppendLine(ex.Message);
-                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_errorMessage.ToString(), false);
+                string title = $"StravaActivityService.GetCommentsAsync - activityId {activityId}";
+                string body = ex.Message;
+                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_logService.Log(title, body), false);
 #endif
             }
 
@@ -356,10 +355,9 @@ namespace Kliva.Services
             catch (Exception ex)
             {
 #if !DEBUG
-                _errorMessage.Clear();
-                _errorMessage.AppendLine($"StravaActivityService.PostComment - activityId {activityId} - text {text}");
-                _errorMessage.AppendLine(ex.Message);
-                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_errorMessage.ToString(), false);
+                string title = $"StravaActivityService.PostComment - activityId {activityId} - text {text}";
+                string body = ex.Message;
+                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_logService.Log(title, body), false);
 #endif
             }
         }
@@ -389,10 +387,9 @@ namespace Kliva.Services
             catch (Exception ex)
             {
 #if !DEBUG
-                _errorMessage.Clear();
-                _errorMessage.AppendLine($"StravaActivityService.PutUpdate - activityId {activityId} - name {name} - commute {commute} - isPrivate {isPrivate} - gearID {gearID}");
-                _errorMessage.AppendLine(ex.Message);
-                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_errorMessage.ToString(), false);
+                string title = $"StravaActivityService.PutUpdate - activityId {activityId} - name {name} - commute {commute} - isPrivate {isPrivate} - gearID {gearID}";
+                string body = ex.Message;
+                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_logService.Log(title, body), false);
 #endif
             }
         }
@@ -423,10 +420,9 @@ namespace Kliva.Services
             catch (Exception ex)
             {
 #if !DEBUG
-                _errorMessage.Clear();
-                _errorMessage.AppendLine($"StravaActivityService.GetFriendActivityDataAsync - page {page} - perPage {perPage}");
-                _errorMessage.AppendLine(ex.Message);
-                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_errorMessage.ToString(), false);
+                string title = $"StravaActivityService.GetFriendActivityDataAsync - page {page} - perPage {perPage}";
+                string body = ex.Message;
+                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_logService.Log(title, body), false);
 #endif
             }
 
@@ -447,10 +443,9 @@ namespace Kliva.Services
             catch (Exception ex)
             {
 #if !DEBUG
-                _errorMessage.Clear();
-                _errorMessage.AppendLine($"StravaActivityService.GetMyActivityDataAsync - page {page} - perPage {perPage}");
-                _errorMessage.AppendLine(ex.Message);
-                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_errorMessage.ToString(), false);
+                string title = $"StravaActivityService.GetMyActivityDataAsync - page {page} - perPage {perPage}";
+                string body = ex.Message;
+                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_logService.Log(title, body), false);
 #endif
             }
             return data;
@@ -476,10 +471,9 @@ namespace Kliva.Services
             catch (Exception ex)
             {
 #if !DEBUG
-                _errorMessage.Clear();
-                _errorMessage.AppendLine($"StravaActivityService.UploadActivityAsync - gpxFilePath {gpxFilePath} - activityType {activityType.ToString()} - name {name} - commute {commute} - isPrivate {isPrivate}");
-                _errorMessage.AppendLine(ex.Message);
-                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_errorMessage.ToString(), false);
+                string title = $"StravaActivityService.UploadActivityAsync - gpxFilePath {gpxFilePath} - activityType {activityType.ToString()} - name {name} - commute {commute} - isPrivate {isPrivate}";
+                string body = ex.Message;
+                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_logService.Log(title, body), false);
 #endif
             }
         }

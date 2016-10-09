@@ -6,6 +6,7 @@
     public static class Endpoints
     {
         public const string PublicActivity = "https://www.strava.com/activities";
+        public const string PublicAthlete = "https://www.strava.com/athletes";
 
         /// <summary>
         /// Url to the Activity endpoint used for the currently authenticated athlete.

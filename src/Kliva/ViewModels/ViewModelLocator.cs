@@ -49,6 +49,8 @@ namespace Kliva.ViewModels
             SimpleIoc.Default.Register<ILocationService, LocationService>();
             SimpleIoc.Default.Register<ILauncherService, LauncherService>();
             SimpleIoc.Default.Register<IGPXService, GPXService>();
+            SimpleIoc.Default.Register<ILogService, LogService>();
+
             SimpleIoc.Default.Register<IGoogleAnalyticsService, GoogleAnalyticsService>();
 #if !DEBUG
             ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker = EasyTracker.GetTracker();
