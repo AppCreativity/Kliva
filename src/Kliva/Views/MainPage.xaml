@@ -125,8 +125,7 @@
             <Button x:Name="FilterButton"
                     Style="{StaticResource EmptyButtonStyle}"
                     Foreground="{StaticResource KlivaMainBrush}"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Left"                    
+                    HorizontalAlignment="Stretch"          
                     Grid.Row="0"
                     Grid.Column="0">
                 <Button.Flyout>
