@@ -149,8 +149,9 @@ namespace Kliva.ViewModels
 
         private async Task ClearMaps()
         {
-            var mapFiles = await GetMapFiles();
             IsBusy = true;
+
+            var mapFiles = await GetMapFiles();            
 
             foreach (StorageFile mapFile in mapFiles)
             {
