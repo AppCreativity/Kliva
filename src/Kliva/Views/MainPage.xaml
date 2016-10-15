@@ -86,6 +86,7 @@
                         <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockMobile}" />
                         <Setter Target="ListColumn.Width" Value="*" />
                         <Setter Target="ListItemColumn.Width" Value="0" />
+                        <Setter Target="FilterButton.Margin" Value="10,5,0,10" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="Desktop">
@@ -97,7 +98,7 @@
                         <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockDesktopWithSideBar}" />
                         <Setter Target="ListColumn.Width" Value="*" />
                         <Setter Target="ListItemColumn.Width" Value="1.8*" />
-                        <Setter Target="FilterButton.Height" Value="48" />
+                        <Setter Target="FilterButton.Height" Value="45" />
                         <Setter Target="FilterButton.Margin" Value="10,0,0,0" />
                     </VisualState.Setters>
                 </VisualState>
@@ -125,8 +126,7 @@
                     Style="{StaticResource EmptyButtonStyle}"
                     Foreground="{StaticResource KlivaMainBrush}"
                     HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Left"
-                    Margin="10,5,0,10"
+                    HorizontalContentAlignment="Left"                    
                     Grid.Row="0"
                     Grid.Column="0">
                 <Button.Flyout>

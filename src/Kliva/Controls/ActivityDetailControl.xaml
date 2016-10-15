@@ -28,12 +28,11 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="ActivityDetailCommandBar.Visibility" Value="Collapsed" />
-                        <Setter Target="ActivityMap.Height" Value="185" />
                         <Setter Target="ActivityName.Background" Value="{StaticResource KlivaMainBrush}"/>
                         <Setter Target="ActivityNameTextBlock.Style" Value="{StaticResource ActivityNameTextBlockMobile}" />
+                        <Setter Target="ActivityNameTextBlock.Margin" Value="10,0,10,5" />
                         <Setter Target="StatisticsGrid.MinItemWidth" Value="200" />
                         <Setter Target="StatisticsGrid.MinItemHeight" Value="68" />
-                        <Setter Target="ActivityNameTextBlock.Margin" Value="10,0,10,5" />
                         <!--<Setter Target="EmptyGrid.Visibility" Value="Collapsed" />-->
                     </VisualState.Setters>
                 </VisualState>
@@ -43,10 +42,10 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="ActivityDetailCommandBar.Visibility" Value="Visible" />
-                        <Setter Target="ActivityMap.Height" Value="300" />
                         <Setter Target="ActivityName.Background" Value="Transparent"/>
                         <Setter Target="ActivityNameTextBlock.Foreground" Value="{StaticResource KlivaMainBrush}"/>
                         <Setter Target="ActivityNameTextBlock.Style" Value="{StaticResource ActivityNameTextBlockDesktop}" />
+                        <Setter Target="ActivityNameTextBlock.Margin" Value="0,10,10,5" />
                         <Setter Target="StatisticsGrid.MinItemWidth" Value="200" />
                         <Setter Target="StatisticsGrid.MinItemHeight" Value="100" />
                         <!--<Setter Target="EmptyGrid.Visibility" Value="{x:Bind ViewModel.SelectedActivity, Mode=OneWay, Converter={StaticResource InverseVisibilityConverter}}" />-->
@@ -54,19 +53,68 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        <RelativePanel>
-            <Border x:Name="ActivityName"                    
-                    RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" >
+        
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="2*" />
+            </Grid.RowDefinitions>
+
+            <Border x:Name="ActivityName"
+                    Grid.Row="0">
                 <TextBlock x:Name="ActivityNameTextBlock"
                            Text="{x:Bind ViewModel.SelectedActivity.Name, Mode=OneWay}"
-                           TextWrapping="WrapWholeWords" MaxLines="2"
-                           Margin="0,16,10,5" />
+                           TextWrapping="WrapWholeWords" MaxLines="2" />
             </Border>
+
             <maps:MapControl x:Name="ActivityMap"
+                             VerticalContentAlignment="Stretch"
+                             Grid.Row="1"/>
+
+            <ListView x:Name="RelatedAthletesList"
+                      ItemsSource="{x:Bind ViewModel.RelatedAthletes}"
+                      Style="{StaticResource HorizontalListViewStyle}"
+                      Margin="5,5,0,0"
+                      SelectionMode="None"
+                      HorizontalAlignment="Left" VerticalAlignment="Top"
+                      Grid.Row="1">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Ellipse Style="{StaticResource ProfileEllipseTiny}"
+                                 Margin="0,0,5,0">
+                            <Ellipse.Fill>
+                                <ImageBrush Stretch="Uniform" ImageSource="{Binding ProfileMediumFormatted}" />
+                            </Ellipse.Fill>
+                        </Ellipse>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <Button x:Name="ExpandMapButton"
+                    x:DeferLoadStrategy="Lazy"                    
+                    Margin="0,0,0,0"
+                    Command="{x:Bind ViewModel.MapCommand}"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                    Grid.Row="1">
+                <TextBlock Text=""
+                           Style="{StaticResource PaneIconMaterialTextBlock}"
+                           Foreground="Black"/>
+            </Button>
+        </Grid>
+        
+        <RelativePanel Visibility="Collapsed">
+            <Border x:Name="ActivityName_"                    
+                    RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" >
+                <TextBlock x:Name="ActivityNameTextBlock_"
+                           Text="{x:Bind ViewModel.SelectedActivity.Name, Mode=OneWay}"
+                           TextWrapping="WrapWholeWords" MaxLines="2" />
+            </Border>
+            <maps:MapControl x:Name="ActivityMap_"
                              RelativePanel.Below="ActivityName"
                              RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
 
-            <Button x:Name="ExpandMapButton"
+            <Button x:Name="ExpandMapButton_"
                     x:DeferLoadStrategy="Lazy"
                     Margin="0,0,0,0"
                     RelativePanel.AlignBottomWith="ActivityMap"
@@ -181,7 +229,7 @@
                 </PivotItem>
             </Pivot>
 
-            <ListView x:Name="RelatedAthletesList"
+            <ListView x:Name="RelatedAthletesList_"
                       ItemsSource="{x:Bind ViewModel.RelatedAthletes}"
                       Style="{StaticResource HorizontalListViewStyle}"
                       Margin="5,5,0,0"
