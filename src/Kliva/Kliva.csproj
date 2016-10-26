@@ -103,6 +103,7 @@
     <None Include="analytics.xsd">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="AppInfo.json" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
@@ -116,6 +117,9 @@
       <DependentUpon>ActivityFeedControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\AdaptiveGridView.cs" />
+    <Compile Include="Controls\AppInfoDialog.xaml.cs">
+      <DependentUpon>AppInfoDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ClubDetailControl.xaml.cs">
       <DependentUpon>ClubDetailControl.xaml</DependentUpon>
     </Compile>
@@ -188,6 +192,7 @@
     <Compile Include="Models\Incremental\FriendActivityIncrementalCollection.cs" />
     <Compile Include="Models\Incremental\IKey.cs" />
     <Compile Include="Models\Incremental\MyActivityIncrementalCollection.cs" />
+    <Compile Include="Models\Info.cs" />
     <Compile Include="Models\Interfaces\ISupportUserMeasurementUnits.cs" />
     <Compile Include="Models\Leaderboard.cs" />
     <Compile Include="Models\LeaderboardEntry.cs" />
@@ -321,6 +326,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\ActivityFeedControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\AppInfoDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

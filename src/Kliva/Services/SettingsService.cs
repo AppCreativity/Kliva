@@ -8,12 +8,10 @@ namespace Kliva.Services
 {
     public class SettingsService : ApplicationInfoService, ISettingsService
     {
-        private readonly IStorageService _storageService;
         private Settings _settings;
 
-        public SettingsService(IStorageService storageService)
+        public SettingsService(IStorageService storageService) : base(storageService)
         {
-            _storageService = storageService;
         }
 
         public async Task SetStravaAccessTokenAsync(string stravaAccessToken)
