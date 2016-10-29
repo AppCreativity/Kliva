@@ -6,7 +6,7 @@ namespace Kliva.Models
 {
     public class ApplicationInfo
     {
-        public string VersionAsString { get; set; }
+        public string VersionAsString { private get; set; }
         public string GeneralInfo { get; set; }
         public List<string> Features { get; set; }
         public List<string> BugFixes { get; set; }

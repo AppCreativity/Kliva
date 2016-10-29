@@ -135,9 +135,7 @@ namespace Kliva.ViewModels
             if (!_viewModelLoaded)
             {
                 AppInfoDialog appInfo = new AppInfoDialog();
-                await appInfo.ShowAsync();
-
-                var t = await _settingsService.GetAppInfoAsync();
+                await appInfo.ShowAsync();                
 
                 ActivityFeedFilter filter = await _settingsService.GetStoredActivityFeedFilterAsync();
 

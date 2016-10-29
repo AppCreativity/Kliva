@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
@@ -26,9 +27,9 @@ namespace Kliva.Services
             try
             {
                 string appInfo = await _storageService.Package.ReadAllTextAsync("AppInfo.json");
-                var t = JsonConvert.DeserializeObject<List<ApplicationInfo>>(appInfo);
+                List<ApplicationInfo> appInfoList = JsonConvert.DeserializeObject<List<ApplicationInfo>>(appInfo);
 
-                return null;
+                return appInfoList.OrderByDescending(item => item.Version).ToList();
             }
             catch (Exception)
             {

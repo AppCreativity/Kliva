@@ -82,12 +82,62 @@
             </interactivity:Interaction.Behaviors>
 
             <PivotItem x:Name="NewPivot" Header="what's new">
+                <RelativePanel Margin="10,0">
+                    <TextBlock x:Name="CurrentVersionTextBlock" Style="{StaticResource BaseTextBlock}">
+                        <Bold>                            
+                            <Run FontSize="18" Text="{x:Bind ViewModel.CurrentVersion.Version, Mode=OneWay}" Foreground="{StaticResource KlivaDarkBrush}"/>
+                        </Bold>
+                        <LineBreak />
+                        <Run Text="version" FontSize="12" Foreground="{StaticResource SubTextBrush}"/>                        
+                    </TextBlock>
+                    
+                    <TextBlock x:Name="GeneralInfoTextBlock"
+                               Style="{StaticResource BaseTextBlock}"
+                               Padding="0,10,0,0"
+                               RelativePanel.Below="CurrentVersionTextBlock">
+                        <Run Text="{x:Bind ViewModel.CurrentVersion.GeneralInfo, Mode=OneWay}" />
+                    </TextBlock>
 
+                    <Grid RelativePanel.Below="GeneralInfoTextBlock"
+                          RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="2.5*" />
+                        </Grid.RowDefinitions>
+
+                        <ListView x:Name="FeaturesListView"
+                                    Margin="0,20,0,0"
+                                    ItemsSource="{x:Bind ViewModel.CurrentVersion.Features, Mode=OneWay}"
+                                    ItemTemplate="{StaticResource WhatsNewListItemDataTemplate}"
+                                    MaxHeight="240"
+                                    Grid.Row="0">
+                            <ListView.Header>
+                                <Grid BorderBrush="{ThemeResource AppBarItemPointerOverBackgroundThemeBrush}" BorderThickness="0,0,0,1">
+                                    <TextBlock Text="Features" Padding="0,0,0,5" />
+                                </Grid>
+                            </ListView.Header>
+                        </ListView>
+
+                        <ListView x:Name="BugFixesListView"
+                                Margin="0,20,0,0"
+                                ItemsSource="{x:Bind ViewModel.CurrentVersion.BugFixes, Mode=OneWay}"
+                                ItemTemplate="{StaticResource WhatsNewListItemDataTemplate}"
+                                MaxHeight="500"
+                                Grid.Row="1">
+                            <ListView.Header>
+                                <Grid BorderBrush="{ThemeResource AppBarItemPointerOverBackgroundThemeBrush}" BorderThickness="0,0,0,1" Margin="0,0,0,5">
+                                    <TextBlock Text="Bug fixes" Padding="0,0,0,5" />
+                                </Grid>
+                            </ListView.Header>
+                        </ListView>
+                    </Grid>
+                </RelativePanel>
             </PivotItem>
             <PivotItem x:Name="GeneralPivot"
                        Header="general">
                 <RelativePanel Margin="10,0">
                     <TextBlock x:Name="MeasurementUnitTextBlock" Text="measurement unit"
+                               FontFamily="{StaticResource OpenSansFontLight}"
                                RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True"/>
                     <ComboBox x:Name="MeasurementUnitsCombobox"
                               HorizontalContentAlignment="Stretch"
@@ -99,6 +149,7 @@
                               RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
 
                     <TextBlock x:Name="SortTypeTextBlock" Text="activity sort *" Margin="0,10,0,0"
+                               FontFamily="{StaticResource OpenSansFontLight}"
                                RelativePanel.Below="MeasurementUnitsCombobox" RelativePanel.AlignLeftWithPanel="True"/>
                     <ComboBox x:Name="SortTypeCombobox"
                               HorizontalContentAlignment="Stretch"
@@ -122,7 +173,7 @@
             <PivotItem x:Name="CachePivot"
                        Header="data cache">
                 <StackPanel Margin="10,0,10,0">
-                    <TextBlock TextWrapping="WrapWholeWords">
+                    <TextBlock TextWrapping="WrapWholeWords" FontFamily="{StaticResource OpenSansFontLight}">
                         <Run Text="The app will cache the downloaded activity maps to minimize mobile data traffic." />
                         <LineBreak />
                         <Run Text="So once a map is downloaded and available in the cache, we will no longer request it from the internet." />
