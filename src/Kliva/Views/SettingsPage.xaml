@@ -109,7 +109,6 @@
                                     Margin="0,20,0,0"
                                     ItemsSource="{x:Bind ViewModel.CurrentVersion.Features, Mode=OneWay}"
                                     ItemTemplate="{StaticResource WhatsNewListItemDataTemplate}"
-                                    MaxHeight="240"
                                     Grid.Row="0">
                             <ListView.Header>
                                 <Grid BorderBrush="{ThemeResource AppBarItemPointerOverBackgroundThemeBrush}" BorderThickness="0,0,0,1">
@@ -122,7 +121,6 @@
                                 Margin="0,20,0,0"
                                 ItemsSource="{x:Bind ViewModel.CurrentVersion.BugFixes, Mode=OneWay}"
                                 ItemTemplate="{StaticResource WhatsNewListItemDataTemplate}"
-                                MaxHeight="500"
                                 Grid.Row="1">
                             <ListView.Header>
                                 <Grid BorderBrush="{ThemeResource AppBarItemPointerOverBackgroundThemeBrush}" BorderThickness="0,0,0,1" Margin="0,0,0,5">
@@ -198,7 +196,8 @@
             </PivotItem>
             <PivotItem x:Name="AboutPivot"
                        Header="about">
-                <RichTextBlock VerticalAlignment="Top" Margin="10,0,10,0" FontFamily="{StaticResource OpenSansFontLight}">
+                <ScrollViewer>
+                    <RichTextBlock VerticalAlignment="Top" Margin="10,0,10,0" FontFamily="{StaticResource OpenSansFontLight}">
                     <Paragraph>
                         <Bold>
                             <Run FontSize="18" Text="{x:Bind ViewModel.AppVersion}" Foreground="{StaticResource KlivaDarkBrush}"/>
@@ -234,6 +233,7 @@
                         </Bold>
                     </Paragraph>
                 </RichTextBlock>
+                </ScrollViewer>
             </PivotItem>
         </Pivot>
     </Grid>
