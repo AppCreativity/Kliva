@@ -134,8 +134,9 @@ namespace Kliva.ViewModels
         {
             if (!_viewModelLoaded)
             {
-                AppInfoDialog appInfo = new AppInfoDialog();
-                await appInfo.ShowAsync();                
+                //TODO: Glenn - Check loaded version with saved version in Settings, if different show what's new dialog and overwrite settings field
+                //AppInfoDialog appInfo = new AppInfoDialog();
+                //await appInfo.ShowAsync();
 
                 ActivityFeedFilter filter = await _settingsService.GetStoredActivityFeedFilterAsync();
 
