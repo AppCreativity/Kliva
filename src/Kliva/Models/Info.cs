@@ -1,15 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Windows.ApplicationModel;
+using Kliva.Helpers;
 
 namespace Kliva.Models
 {
+    public class InfoOverviewItem
+    {
+        public string Header { get; set; }
+        public ObservableCollection<string> Items { get; set; }
+    }
+
     public class ApplicationInfo
     {
         public string VersionAsString { private get; set; }
         public string GeneralInfo { get; set; }
         public List<string> Features { get; set; }
         public List<string> BugFixes { get; set; }
+
+        public ObservableCollection<InfoOverviewItem> OverviewItems { get; set; } = new ObservableCollection<InfoOverviewItem>();
 
         public AppVersion Version
         {

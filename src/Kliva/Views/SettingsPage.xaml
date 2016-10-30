@@ -29,6 +29,13 @@
                           />
         </CommandBar>
     </Page.BottomAppBar>
+    
+    <Page.Resources>
+        <CollectionViewSource x:Name="GroupedAppInfoOverviewItems"
+                              Source="{x:Bind ViewModel.CurrentVersion.OverviewItems, Mode=OneWay}"
+                              IsSourceGrouped="True"
+                              ItemsPath="Items" />
+    </Page.Resources>
 
     <Grid x:Name="LayoutRoot" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
@@ -98,37 +105,16 @@
                         <Run Text="{x:Bind ViewModel.CurrentVersion.GeneralInfo, Mode=OneWay}" />
                     </TextBlock>
 
-                    <Grid RelativePanel.Below="GeneralInfoTextBlock"
+                    <ListView x:Name="AppInfoOverviewItemsList"
+                              ItemsSource="{Binding Source={StaticResource GroupedAppInfoOverviewItems}}"
+                              ItemTemplate="{StaticResource WhatsNewListItemDataTemplate}"
+                              SelectionMode="None"
+                              RelativePanel.Below="GeneralInfoTextBlock"
                           RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="2.5*" />
-                        </Grid.RowDefinitions>
-
-                        <ListView x:Name="FeaturesListView"
-                                    Margin="0,20,0,0"
-                                    ItemsSource="{x:Bind ViewModel.CurrentVersion.Features, Mode=OneWay}"
-                                    ItemTemplate="{StaticResource WhatsNewListItemDataTemplate}"
-                                    Grid.Row="0">
-                            <ListView.Header>
-                                <Grid BorderBrush="{ThemeResource AppBarItemPointerOverBackgroundThemeBrush}" BorderThickness="0,0,0,1">
-                                    <TextBlock Text="Features" Padding="0,0,0,5" />
-                                </Grid>
-                            </ListView.Header>
-                        </ListView>
-
-                        <ListView x:Name="BugFixesListView"
-                                Margin="0,20,0,0"
-                                ItemsSource="{x:Bind ViewModel.CurrentVersion.BugFixes, Mode=OneWay}"
-                                ItemTemplate="{StaticResource WhatsNewListItemDataTemplate}"
-                                Grid.Row="1">
-                            <ListView.Header>
-                                <Grid BorderBrush="{ThemeResource AppBarItemPointerOverBackgroundThemeBrush}" BorderThickness="0,0,0,1" Margin="0,0,0,5">
-                                    <TextBlock Text="Bug fixes" Padding="0,0,0,5" />
-                                </Grid>
-                            </ListView.Header>
-                        </ListView>
-                    </Grid>
+                        <ListView.GroupStyle>
+                            <GroupStyle HeaderTemplate="{StaticResource WhatsNewGroupHeaderTemplate}" />
+                        </ListView.GroupStyle>
+                    </ListView>
                 </RelativePanel>
             </PivotItem>
             <PivotItem x:Name="GeneralPivot"

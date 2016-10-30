@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Windows.Globalization.NumberFormatting;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
+using Cimbalino.Toolkit.Helpers;
 using GalaSoft.MvvmLight.Threading;
 using Kliva.Extensions;
 using Kliva.Services;
@@ -127,6 +128,19 @@ namespace Kliva.ViewModels
 
             var appInfoList = await _settingsService.GetAppInfoAsync();
             CurrentVersion = appInfoList.FirstOrDefault();
+            //TODO: Glenn - refactor initialization in settings service? While converting json to class?
+            InfoOverviewItem features = new InfoOverviewItem()
+            {
+                Header = "Features",
+                Items = new ObservableCollection<string>(CurrentVersion.Features)
+            };
+            InfoOverviewItem bugFixes = new InfoOverviewItem()
+            {
+                Header = "Bug fixes",
+                Items = new ObservableCollection<string>(CurrentVersion.BugFixes)
+            };
+            CurrentVersion.OverviewItems.Add(features);
+            CurrentVersion.OverviewItems.Add(bugFixes);
 
             await Task.Run(GetMapSizes);
 
