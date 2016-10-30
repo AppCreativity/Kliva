@@ -186,7 +186,7 @@
                                    RelativePanel.Below="ActivityDistance" 
                                    RelativePanel.AlignRightWithPanel="True"
                                    Style="{StaticResource BaseTextBlock}" 
-                                   Text="{x:Bind AchievementCount, Mode=OneWay}" />
+                                   Text="{x:Bind KudosCount, Mode=OneWay}" />
                 </RelativePanel>
             </RelativePanel>
         </UserControl>
