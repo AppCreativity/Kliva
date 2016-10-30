@@ -29,6 +29,13 @@
                           />
         </CommandBar>
     </Page.BottomAppBar>
+    
+    <Page.Resources>
+        <CollectionViewSource x:Name="GroupedAppInfoOverviewItems"
+                              Source="{x:Bind ViewModel.CurrentVersion.OverviewItems, Mode=OneWay}"
+                              IsSourceGrouped="True"
+                              ItemsPath="Items" />
+    </Page.Resources>
 
     <Grid x:Name="LayoutRoot" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
@@ -82,12 +89,39 @@
             </interactivity:Interaction.Behaviors>
 
             <PivotItem x:Name="NewPivot" Header="what's new">
+                <RelativePanel Margin="10,0">
+                    <TextBlock x:Name="CurrentVersionTextBlock" Style="{StaticResource BaseTextBlock}">
+                        <Bold>                            
+                            <Run FontSize="18" Text="{x:Bind ViewModel.CurrentVersion.Version, Mode=OneWay}" Foreground="{StaticResource KlivaDarkBrush}"/>
+                        </Bold>
+                        <LineBreak />
+                        <Run Text="version" FontSize="12" Foreground="{StaticResource SubTextBrush}"/>                        
+                    </TextBlock>
+                    
+                    <TextBlock x:Name="GeneralInfoTextBlock"
+                               Style="{StaticResource BaseTextBlock}"
+                               Padding="0,10,0,0"
+                               RelativePanel.Below="CurrentVersionTextBlock">
+                        <Run Text="{x:Bind ViewModel.CurrentVersion.GeneralInfo, Mode=OneWay}" />
+                    </TextBlock>
 
+                    <ListView x:Name="AppInfoOverviewItemsList"
+                              ItemsSource="{Binding Source={StaticResource GroupedAppInfoOverviewItems}}"
+                              ItemTemplate="{StaticResource WhatsNewListItemDataTemplate}"
+                              SelectionMode="None"
+                              RelativePanel.Below="GeneralInfoTextBlock"
+                          RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+                        <ListView.GroupStyle>
+                            <GroupStyle HeaderTemplate="{StaticResource WhatsNewGroupHeaderTemplate}" />
+                        </ListView.GroupStyle>
+                    </ListView>
+                </RelativePanel>
             </PivotItem>
             <PivotItem x:Name="GeneralPivot"
                        Header="general">
                 <RelativePanel Margin="10,0">
                     <TextBlock x:Name="MeasurementUnitTextBlock" Text="measurement unit"
+                               FontFamily="{StaticResource OpenSansFontLight}"
                                RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True"/>
                     <ComboBox x:Name="MeasurementUnitsCombobox"
                               HorizontalContentAlignment="Stretch"
@@ -99,6 +133,7 @@
                               RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
 
                     <TextBlock x:Name="SortTypeTextBlock" Text="activity sort *" Margin="0,10,0,0"
+                               FontFamily="{StaticResource OpenSansFontLight}"
                                RelativePanel.Below="MeasurementUnitsCombobox" RelativePanel.AlignLeftWithPanel="True"/>
                     <ComboBox x:Name="SortTypeCombobox"
                               HorizontalContentAlignment="Stretch"
@@ -122,7 +157,7 @@
             <PivotItem x:Name="CachePivot"
                        Header="data cache">
                 <StackPanel Margin="10,0,10,0">
-                    <TextBlock TextWrapping="WrapWholeWords">
+                    <TextBlock TextWrapping="WrapWholeWords" FontFamily="{StaticResource OpenSansFontLight}">
                         <Run Text="The app will cache the downloaded activity maps to minimize mobile data traffic." />
                         <LineBreak />
                         <Run Text="So once a map is downloaded and available in the cache, we will no longer request it from the internet." />
@@ -147,7 +182,8 @@
             </PivotItem>
             <PivotItem x:Name="AboutPivot"
                        Header="about">
-                <RichTextBlock VerticalAlignment="Top" Margin="10,0,10,0" FontFamily="{StaticResource OpenSansFontLight}">
+                <ScrollViewer>
+                    <RichTextBlock VerticalAlignment="Top" Margin="10,0,10,0" FontFamily="{StaticResource OpenSansFontLight}">
                     <Paragraph>
                         <Bold>
                             <Run FontSize="18" Text="{x:Bind ViewModel.AppVersion}" Foreground="{StaticResource KlivaDarkBrush}"/>
@@ -183,6 +219,7 @@
                         </Bold>
                     </Paragraph>
                 </RichTextBlock>
+                </ScrollViewer>
             </PivotItem>
         </Pivot>
     </Grid>

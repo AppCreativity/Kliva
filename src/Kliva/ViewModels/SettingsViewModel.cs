@@ -6,10 +6,12 @@ using Kliva.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.Globalization.NumberFormatting;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
+using Cimbalino.Toolkit.Helpers;
 using GalaSoft.MvvmLight.Threading;
 using Kliva.Extensions;
 using Kliva.Services;
@@ -63,6 +65,13 @@ namespace Kliva.ViewModels
             set { Set(() => MapSizes, ref _mapSizes, value); }
         }
 
+        private ApplicationInfo _currentVersion;
+        public ApplicationInfo CurrentVersion
+        {
+            get { return _currentVersion; }
+            set { Set(() => CurrentVersion, ref _currentVersion, value); }
+        }
+
         private RelayCommand _viewLoadedCommand;
         public RelayCommand ViewLoadedCommand => _viewLoadedCommand ?? (_viewLoadedCommand = new RelayCommand(async () => await ViewLoaded()));
 
@@ -79,7 +88,7 @@ namespace Kliva.ViewModels
             IncrementNumberRounder rounder = new IncrementNumberRounder();
             rounder.Increment = 0.01;
             rounder.RoundingAlgorithm = RoundingAlgorithm.RoundHalfUp;
-            _decimalFormat.NumberRounder = rounder;
+            _decimalFormat.NumberRounder = rounder;            
 
             //TODO: Glenn - Translate enums!
             MeasurementUnits.Add(DistanceUnitType.Kilometres.ToString());
@@ -116,6 +125,22 @@ namespace Kliva.ViewModels
 
             ActivitySort activitySort = await _settingsService.GetStoredActivitySortAsync();
             SelectedSortType = activitySort.ToString();
+
+            var appInfoList = await _settingsService.GetAppInfoAsync();
+            CurrentVersion = appInfoList.FirstOrDefault();
+            //TODO: Glenn - refactor initialization in settings service? While converting json to class?
+            InfoOverviewItem features = new InfoOverviewItem()
+            {
+                Header = "Features",
+                Items = new ObservableCollection<string>(CurrentVersion.Features)
+            };
+            InfoOverviewItem bugFixes = new InfoOverviewItem()
+            {
+                Header = "Bug fixes",
+                Items = new ObservableCollection<string>(CurrentVersion.BugFixes)
+            };
+            CurrentVersion.OverviewItems.Add(features);
+            CurrentVersion.OverviewItems.Add(bugFixes);
 
             await Task.Run(GetMapSizes);
 

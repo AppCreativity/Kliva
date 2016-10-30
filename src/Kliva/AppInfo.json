@@ -1,0 +1,37 @@
+[
+  {
+    "VersionAsString": "0.0.1.0",
+    "GeneralInfo": "First release of our UWP version of Kliva!",
+    "Features": [
+      "First beta for recording activities",
+      "General overview of all activities from people you follow and your own"
+    ],
+    "BugFixes": null
+  },
+  {
+    "VersionAsString": "0.0.2.0",
+    "GeneralInfo": "Small update release with some bug fixes",
+    "Features": [
+      "Overall improvement",
+      "Overall improvement",
+      "Overall improvement",
+      "Overall improvement",
+      "Overall improvement",
+      "Overall improvement"
+    ],
+    "BugFixes": [
+      "Wrong size of what's new dialog",
+      "Wrong activity date formatting",
+      "Selecting activity has no effect",
+      "Selecting activity has no effect",
+      "Selecting activity has no effect",
+      "Selecting activity has no effect",
+      "Selecting activity has no effect",
+      "Selecting activity has no effect",
+      "Selecting activity has no effect",
+      "Selecting activity has no effect",
+      "Selecting activity has no effect",
+      "Selecting activity has no effect"
+    ]
+  }
+]

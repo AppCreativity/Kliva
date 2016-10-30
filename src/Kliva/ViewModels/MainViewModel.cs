@@ -1,4 +1,6 @@
-﻿using Cimbalino.Toolkit.Services;
+﻿using System;
+using System.Collections.Generic;
+using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
 using Kliva.Messages;
 using Kliva.Models;
@@ -7,8 +9,12 @@ using Kliva.ViewModels.Interfaces;
 using Kliva.Views;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
+using Kliva.Controls;
 using Kliva.Extensions;
 using Kliva.Helpers;
+using Kliva.Services;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Kliva.ViewModels
 {
@@ -16,6 +22,7 @@ namespace Kliva.ViewModels
     {
         private readonly ISettingsService _settingsService;
         private readonly IStravaService _stravaService;
+        private readonly IOService _ioService;
 
         private bool _viewModelLoaded = false;
 
@@ -94,10 +101,11 @@ namespace Kliva.ViewModels
         private RelayCommand _settingsCommand;
         public RelayCommand SettingsCommand => _settingsCommand ?? (_settingsCommand = new RelayCommand(() => NavigationService.Navigate<SettingsPage>()));
 
-        public MainViewModel(INavigationService navigationService, ISettingsService settingsService, IStravaService stravaService) : base(navigationService)
+        public MainViewModel(INavigationService navigationService, ISettingsService settingsService, IStravaService stravaService, IOService ioService) : base(navigationService)
         {
             _settingsService = settingsService;
             _stravaService = stravaService;
+            _ioService = ioService;
         }
 
         public void ActivityInvoked(ActivitySummary selectedActivity)
@@ -126,6 +134,10 @@ namespace Kliva.ViewModels
         {
             if (!_viewModelLoaded)
             {
+                //TODO: Glenn - Check loaded version with saved version in Settings, if different show what's new dialog and overwrite settings field
+                //AppInfoDialog appInfo = new AppInfoDialog();
+                //await appInfo.ShowAsync();
+
                 ActivityFeedFilter filter = await _settingsService.GetStoredActivityFeedFilterAsync();
 
                 var athlete = await _stravaService.GetAthleteAsync();

@@ -54,7 +54,7 @@ namespace Kliva.Models
 
         public override string ToString()
         {
-            return string.Format("v{0}.{1}.{2}", this.Major, this.Minor, this.Patch);
+            return $"v{Major}.{Minor}.{Patch}";
         }
     }
 }

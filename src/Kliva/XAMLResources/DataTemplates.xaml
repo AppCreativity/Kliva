@@ -540,4 +540,15 @@
         </StackPanel>
     </DataTemplate>
 
+    <DataTemplate x:Key="WhatsNewListItemDataTemplate">
+        <TextBlock Text="{Binding}" TextWrapping="Wrap"
+                   Style="{StaticResource BaseTextBlock}"
+                   Padding="0,5,10,5" />
+    </DataTemplate>
+    
+    <DataTemplate x:Key="WhatsNewGroupHeaderTemplate"
+                  x:DataType="models:InfoOverviewItem">
+        <TextBlock Text="{x:Bind Header}" />
+    </DataTemplate>
+
 </ResourceDictionary>
