@@ -20,9 +20,9 @@
                   x:DataType="models:ActivitySummary">
         <!-- UserControl needed for visual state manager -->
         <UserControl>
-            <RelativePanel x:Name="ActivityListItemPanel"
+          <RelativePanel x:Name="ActivityListItemPanel"
                                Margin="0">
-                <VisualStateManager.VisualStateGroups>
+                 <VisualStateManager.VisualStateGroups>
                     <VisualStateGroup x:Name="VisualStateGroup">
                         <VisualState x:Name="Mobile">
                             <VisualState.StateTriggers>
@@ -56,96 +56,139 @@
                 <RelativePanel.Background>
                     <ImageBrush ImageSource="{x:Bind Map.GoogleImage, Mode=OneWay}" Stretch="UniformToFill" Opacity="0.2" />
                 </RelativePanel.Background>
-                    <interactivity:Interaction.Behaviors>
+                     <interactivity:Interaction.Behaviors>
                         <core:DataTriggerBehavior Binding="{x:Bind OtherAthleteCount, Mode=OneWay}" ComparisonCondition="GreaterThan" Value="0">
-                            <core:ChangePropertyAction TargetObject="{Binding ElementName=BottomPanel}" PropertyName="Visibility" Value="Visible"/>
-                        </core:DataTriggerBehavior>
-                        <core:DataTriggerBehavior Binding="{x:Bind OtherAthleteCount, Mode=OneWay}" ComparisonCondition="LessThanOrEqual" Value="0">
-                            <core:ChangePropertyAction TargetObject="{Binding ElementName=BottomPanel}" PropertyName="Visibility" Value="Collapsed"/>
-                        </core:DataTriggerBehavior>
-                    </interactivity:Interaction.Behaviors>
+                        <core:ChangePropertyAction TargetObject="{Binding ElementName=AthleteCountPanel}" PropertyName="Visibility" Value="Visible"/>
+                    </core:DataTriggerBehavior>
+                            <core:DataTriggerBehavior Binding="{x:Bind OtherAthleteCount, Mode=OneWay}" ComparisonCondition="LessThanOrEqual" Value="0">
+                        <core:ChangePropertyAction TargetObject="{Binding ElementName=AthleteCountPanel}" PropertyName="Visibility" Value="Collapsed"/>
+                    </core:DataTriggerBehavior>
 
-                    <RelativePanel x:Name="TopPanel"
-                                   RelativePanel.AlignTopWithPanel="True"
-                                   RelativePanel.AlignLeftWithPanel="True"
-                                   RelativePanel.AlignRightWithPanel="True">
-                        <Ellipse x:Name="AthleteProfilePicture"
+                    <core:DataTriggerBehavior Binding="{x:Bind AchievementCount, Mode=OneWay}" ComparisonCondition="GreaterThan" Value="0">
+                        <core:ChangePropertyAction TargetObject="{Binding ElementName=AchievementPanel}" PropertyName="Visibility" Value="Visible"/>
+                    </core:DataTriggerBehavior>
+                    <core:DataTriggerBehavior Binding="{x:Bind AchievementCount, Mode=OneWay}" ComparisonCondition="LessThanOrEqual" Value="0">
+                        <core:ChangePropertyAction TargetObject="{Binding ElementName=AchievementPanel}" PropertyName="Visibility" Value="Collapsed"/>
+                    </core:DataTriggerBehavior>
+                </interactivity:Interaction.Behaviors>
+
+                    <Ellipse x:Name="AthleteProfilePicture"
                                  RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
-                            <Ellipse.Fill>
-                                <ImageBrush Stretch="UniformToFill" ImageSource="{x:Bind Athlete.ProfileMediumFormatted, Mode=OneWay}" />
-                            </Ellipse.Fill>
-                        </Ellipse>
+                        <Ellipse.Fill>
+                            <ImageBrush Stretch="UniformToFill" ImageSource="{x:Bind Athlete.ProfileMediumFormatted, Mode=OneWay}" />
+                        </Ellipse.Fill>
+                    </Ellipse>
 
-                        <Border x:Name="ActivityImage" CornerRadius="50"
+                    <Border x:Name="ActivityImage" CornerRadius="50"
                                 Margin="-18,0,0,5"
                                 Background="{StaticResource KlivaDarkBrush}"
                                 BorderBrush="White" BorderThickness="1.5"
                                 RelativePanel.RightOf="AthleteProfilePicture"
                                 RelativePanel.AlignBottomWithPanel="True">
-                            <TextBlock x:Name="ActivityImageIcon" Style="{StaticResource PaneIconMaterialTextBlock}"
+                        <TextBlock x:Name="ActivityImageIcon" Style="{StaticResource PaneIconMaterialTextBlock}"
                                        Text="{x:Bind TypeImage, Mode=OneWay}"/>
-                        </Border>
+                    </Border>
 
-                        <RelativePanel x:Name="ActivityHighlightsPanel"
+                <RelativePanel x:Name="ActivityHighlightsPanel"
                                        Margin="15,0,0,0"                                       
                                        RelativePanel.RightOf="ActivityImage"
                                        RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True"
                                        RelativePanel.AlignRightWithPanel="True">
-                            <TextBlock x:Name="ActivityName"
+
+                    <TextBlock x:Name="ActivityName"
                                        Margin="0,0,0,2.5"
                                        Text="{x:Bind Name, Mode=OneWay}"
                                        Style="{StaticResource WordTrimmingTextBlock}"
                                        FontFamily="{StaticResource OpenSansFontSemibold}"
                                        RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" />
 
-                            <TextBlock x:Name="ActivityAthleteName"
+                    <TextBlock x:Name="ActivityAthleteName"
                                        Margin="0,0,0,2.5"                                       
                                        Text="{x:Bind Athlete.FullName, Mode=OneWay}"
                                        Style="{StaticResource CharacterTrimmingTextBlock}"
                                        RelativePanel.Below="ActivityName" RelativePanel.AlignLeftWithPanel="True" />
-                            
-                            <!-- TODO: Glenn - Why is the activity start text not bottom alligned with athlete name?? -->
-                            <TextBlock x:Name="ActivityStart"
+
+                    <TextBlock x:Name="ActivityStart"
                                        Margin="0,0,0,2.5"
                                        Text="{x:Bind StartDate, Mode=OneWay, Converter={StaticResource RelativeTimeConverter}}"                                       
                                        HorizontalAlignment="Right"
-                                       RelativePanel.Below="ActivityName" RelativePanel.RightOf="ActivityAthleteName" RelativePanel.AlignRightWithPanel="True" />
-
-                            <TextBlock x:Name="ActivityDistance"
+                                       RelativePanel.AlignRightWithPanel="True" 
+                                       RelativePanel.AlignBottomWith="ActivityAthleteName" />
+                    <!--Stats-->
+                    <TextBlock x:Name="ActivityDistance"
                                         Style="{StaticResource BaseTextBlock}"
                                         FontSize="12"
+                                        Margin="0, 4, 8, 0"
                                         RelativePanel.Below="ActivityAthleteName"
-                                        RelativePanel.AlignLeftWithPanel="True">
-                                <Run Text="{x:Bind DistanceUserMeasurementUnit.FormattedValueWithUnit, Mode=OneWay}" />
-                        </TextBlock>
+                                        RelativePanel.AlignLeftWithPanel="True" Text="{x:Bind DistanceUserMeasurementUnit.FormattedValueWithUnit, Mode=OneWay}" />
 
-                        <!-- TODO: Glenn - How to top allign with distance?? -->
-                        <!--<FontIcon x:Name="KudosIcon" HorizontalAlignment="Center" Margin="0,10,0,0" Glyph="&#xE8E1;" FontSize="14"
-                                  RelativePanel.Below="ActivityAthleteName" RelativePanel.RightOf="ActivityDistance"
-                                  RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWith="ActivityDistance"/>-->
-                    </RelativePanel>
+                    <TextBlock x:Name="ActivityElevation"
+                                                Style="{StaticResource BaseTextBlock}"
+                                                FontSize="12"
+                                                Margin="8, 4, 8, 0"
+                                                RelativePanel.RightOf="ActivityDistance"
+                                                RelativePanel.AlignBottomWith="ActivityDistance" Text="{x:Bind ElevationGainUserMeasurementUnit.FormattedValueWithUnit, Mode=OneWay}" />
+
+                    <RelativePanel x:Name="AthleteCountPanel"
+                                   RelativePanel.RightOf="ActivityElevation"
+                                   RelativePanel.AlignVerticalCenterWith="ActivityElevation">
+                    <FontIcon x:Name="AthleteCountIcon"
+                              Glyph="&#xE1E2;"
+                                   FontSize="14" Margin="8, 4, 4, 0"
+                                   RelativePanel.AlignLeftWithPanel="True"
+                                   RelativePanel.AlignVerticalCenterWithPanel="True"/>
+
+                    <TextBlock x:Name="AthleteCount"
+                                   FontSize="12" Margin="4, 4, 8, 0"
+                                   RelativePanel.RightOf="AthleteCountIcon"
+                                   RelativePanel.AlignVerticalCenterWith="AthleteCountIcon"
+                                   Style="{StaticResource BaseTextBlock}"
+                                   Text="{x:Bind OtherAthleteCount, Mode=OneWay}"/>
                     </RelativePanel>
 
-                    <RelativePanel x:Name="BottomPanel"
-                                   RelativePanel.AlignBottomWithPanel="True"
-                                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
-                                   RelativePanel.Below="TopPanel">
-                        <Canvas x:Name="AthleteCountImage"
-                                Width="18" Height="18">
-                            <Path Data="M13,13C11,13 7,14 7,16V18H19V16C19,14 15,13 13,13M19.62,13.16C20.45,13.88 21,14.82 21,16V18H24V16C24,14.46 21.63,13.5 19.62,13.16M13,11A3,3 0 0,0 16,8A3,3 0 0,0 13,5A3,3 0 0,0 10,8A3,3 0 0,0 13,11M18,11A3,3 0 0,0 21,8A3,3 0 0,0 18,5C17.68,5 17.37,5.05 17.08,5.14C17.65,5.95 18,6.94 18,8C18,9.06 17.65,10.04 17.08,10.85C17.37,10.95 17.68,11 18,11M8,10H5V7H3V10H0V12H3V15H5V12H8V10Z"
-                                  Fill="{StaticResource KlivaDarkBrush}" />
-                        </Canvas>
+                    <RelativePanel x:Name="AchievementPanel"
+                                   RelativePanel.RightOf="AthleteCountPanel"
+                                   RelativePanel.AlignVerticalCenterWith="AthleteCountPanel">
+                    <FontIcon x:Name="AchievementIcon"
+                              Glyph="&#xEC1B;"
+                                   FontSize="14" Margin="8, 4, 4, 0"
+                                   RelativePanel.AlignLeftWithPanel="True"
+                                   RelativePanel.AlignVerticalCenterWithPanel="True"/>
 
-                        <TextBlock x:Name="AthleteCount"
-                                   Margin="10,0,0,0"
-                                   RelativePanel.RightOf="AthleteCountImage"
-                                   Text="{x:Bind OtherAthleteCount, Mode=OneWay}"
-                                   FontFamily="{StaticResource OpenSansFontSemibold}"
-                                   Foreground="{StaticResource KlivaDarkBrush}"
-                                   FontSize="14"
-                                   Style="{StaticResource BaseTextBlock}" />
+                    <TextBlock x:Name="AchievementCount"
+                                   FontSize="12" Margin="4, 4, 8, 0"
+                                   RelativePanel.RightOf="AchievementIcon"
+                                   RelativePanel.AlignVerticalCenterWith="AchievementIcon"
+                                   Style="{StaticResource BaseTextBlock}" 
+                                   Text="{x:Bind AchievementCount, Mode=OneWay}"/>
                     </RelativePanel>
+
+                    <FontIcon x:Name="CommentsIcon" HorizontalAlignment="Center" Margin="0,4,0,0" 
+                                  Glyph="&#xE15F;" FontSize="14"
+                                   RelativePanel.LeftOf="CommentsCount" 
+                                   RelativePanel.AlignVerticalCenterWith="CommentsCount"/>
+
+                    <TextBlock x:Name="CommentsCount"
+                                   FontSize="12" Margin="4, 4, 8, 0"
+                                   RelativePanel.LeftOf="KudosIcon" 
+                                   RelativePanel.AlignVerticalCenterWith="KudosIcon"
+                                   Style="{StaticResource BaseTextBlock}" 
+                                   Text="{x:Bind CommentCount, Mode=OneWay}" />
+
+
+                    <FontIcon x:Name="KudosIcon" HorizontalAlignment="Center" Margin="4,4,0,0" 
+                                  Glyph="&#xE8E1;" FontSize="14"
+                                  RelativePanel.LeftOf="KudosCount" 
+                                  RelativePanel.AlignVerticalCenterWith="KudosCount"/>
+
+                    <TextBlock x:Name="KudosCount"
+                                   FontSize="12" Margin="4, 4, 0, 0"
+                                   RelativePanel.Below="ActivityDistance" 
+                                   RelativePanel.AlignRightWithPanel="True"
+                                   Style="{StaticResource BaseTextBlock}" 
+                                   Text="{x:Bind AchievementCount, Mode=OneWay}" />
                 </RelativePanel>
+            </RelativePanel>
         </UserControl>
     </DataTemplate>
 
