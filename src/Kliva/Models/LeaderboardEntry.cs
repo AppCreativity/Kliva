@@ -136,7 +136,7 @@ namespace Kliva.Models
     {
         public Segment Segment { get; set; }
 
-        public float AverageSpeed => Segment.Distance/ElapsedTime;
+        public float AverageSpeed => Segment?.Distance ?? 0f / ElapsedTime;
 
         public float AverageHeartrateDisplay => AverageHeartrate ?? 0;
 
@@ -150,11 +150,11 @@ namespace Kliva.Models
         {
             MeasurementUnit = measurementUnit;
 
-            bool IsMetric = MeasurementHelper.IsMetric(MeasurementUnit);
-            var speedUnit = MeasurementHelper.GetSpeedUnit(IsMetric);
-            var distanceUnitType = MeasurementHelper.GetDistanceUnitType(IsMetric);
+            bool isMetric = MeasurementHelper.IsMetric(MeasurementUnit);
+            var speedUnit = MeasurementHelper.GetSpeedUnit(isMetric);
+            var distanceUnitType = MeasurementHelper.GetDistanceUnitType(isMetric);
 
-            AverageSpeedUserMeasurementUnit = new UserMeasurementUnitMetric(AverageSpeed, SpeedUnit.MetresPerSecond, speedUnit);
+            AverageSpeedUserMeasurementUnit = new UserMeasurementUnitMetric(AverageSpeed, SpeedUnit.KilometresPerHour, speedUnit);
             DistanceUserMeasurementUnit = new UserMeasurementUnitMetric(Distance, DistanceUnitType.Metres, distanceUnitType);
         }
 
