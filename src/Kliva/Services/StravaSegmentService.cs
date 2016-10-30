@@ -220,7 +220,7 @@ namespace Kliva.Services
                         Group = pr
                     };
 
-                    StatisticsDetail averageSpeedPR = new UserMeasurementUnitStatisticsDetail(segmentEffort.AverageSpeedMeasurementUnit)
+                    StatisticsDetail averageSpeedPR = new UserMeasurementUnitStatisticsDetail(entry.AverageSpeedUserMeasurementUnit)
                     {
                         Sort = 1,
                         Icon = "",
