@@ -207,6 +207,7 @@ namespace Kliva.Services
                 if (entry != null)
                 {
                     //TODO: Glenn - Verify SegmentViewModel - There we also retrieve the corresponding Segment for MAP info, maybe better we do it here in the Service?? ( Merge/Combine )
+                    //TODO: Glenn - each leaderboard entry should need a segment to calculate the averagespeed a
                     entry.Segment = segmentEffort.Segment;
 
                     StatisticsGroup pr = new StatisticsGroup() {Name = "personal record", Sort = 1, Type = StatisticGroupType.PR};

@@ -134,8 +134,19 @@ namespace Kliva.Models
     /// </summary>
     public partial class LeaderboardEntry : BaseClass, ISupportUserMeasurementUnits
     {
-        public Segment Segment { get; set; }
+        private Segment _segment;
 
+        public Segment Segment
+        {
+            get { return _segment; }
+            set
+            {
+                _segment = value;
+                SetUserMeasurementUnits();
+            }
+        }
+
+        //TODO: Glenn - Seems to be something wrong with showing this for personal record vs current effort :/
         public float AverageSpeed => Segment.Distance/ElapsedTime;
 
         public float AverageHeartrateDisplay => AverageHeartrate ?? 0;
@@ -149,13 +160,21 @@ namespace Kliva.Models
         public void SetUserMeasurementUnits(DistanceUnitType measurementUnit)
         {
             MeasurementUnit = measurementUnit;
+            SetUserMeasurementUnits();
+        }
 
+        private void SetUserMeasurementUnits()
+        {
             bool IsMetric = MeasurementHelper.IsMetric(MeasurementUnit);
             var speedUnit = MeasurementHelper.GetSpeedUnit(IsMetric);
             var distanceUnitType = MeasurementHelper.GetDistanceUnitType(IsMetric);
 
-            AverageSpeedUserMeasurementUnit = new UserMeasurementUnitMetric(AverageSpeed, SpeedUnit.MetresPerSecond, speedUnit);
-            DistanceUserMeasurementUnit = new UserMeasurementUnitMetric(Distance, DistanceUnitType.Metres, distanceUnitType);
+            //TODO: Glenn - We can only link up our own Segment to our onw LeaderBoard entry - so don't calculate it for other athletes
+            if (Segment != null)
+            {
+                AverageSpeedUserMeasurementUnit = new UserMeasurementUnitMetric(AverageSpeed, SpeedUnit.MetresPerSecond, speedUnit);
+                DistanceUserMeasurementUnit = new UserMeasurementUnitMetric(Distance, DistanceUnitType.Metres, distanceUnitType);
+            }
         }
 
         public UserMeasurementUnitMetric DistanceUserMeasurementUnit
