@@ -287,19 +287,25 @@ namespace Kliva.Controls
             }
 
             #region Other Performance Optimizations for Deferred items
+
+            //To check: commented the code below out because the BottomPanel doesn't exist anymore
+            //in the new design.
+            //==> Should I write similar logic to display Achievement and Athlete data?
+            //      It seems to work OK with the the DataTriggers that are in place.
+
             // Collapse the BottomPanel if we're using a recycled container that had it before
             if (args.InRecycleQueue && item.OtherAthleteCount > 0)
             {
-                var bottomPanel = root.FindName("BottomPanel") as RelativePanel;
-                bottomPanel.Visibility = Visibility.Collapsed;
+                //var bottomPanel = root.FindName("BottomPanel") as RelativePanel;
+                //bottomPanel.Visibility = Visibility.Collapsed;
             }
 
             // If we have related athletes, then undefer the BottomPanel and show it
             if (args.InRecycleQueue == false && item.OtherAthleteCount > 0)
             {
-                // undefer the bottom panel and show it
-                var bottomPanel = root.FindName("BottomPanel") as RelativePanel;
-                bottomPanel.Visibility = Visibility.Visible;
+                //// undefer the bottom panel and show it
+                //var bottomPanel = root.FindName("BottomPanel") as RelativePanel;
+                //bottomPanel.Visibility = Visibility.Visible;
             }
             #endregion
 
