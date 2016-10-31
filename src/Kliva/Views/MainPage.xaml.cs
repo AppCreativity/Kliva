@@ -2,7 +2,6 @@
 using Kliva.ViewModels.Interfaces;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
 using Cimbalino.Toolkit.Extensions;
 using Kliva.Controls;
 

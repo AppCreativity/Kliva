@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Kliva.Models
+﻿namespace Kliva.Models
 {
     public enum ActivityTracking
     {

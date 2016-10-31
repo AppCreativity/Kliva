@@ -11,7 +11,6 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Maps;
 using GalaSoft.MvvmLight.Messaging;
 using Kliva.Extensions;
-using Kliva.Helpers;
 using Kliva.Messages;
 using Kliva.Models;
 using Kliva.ViewModels;

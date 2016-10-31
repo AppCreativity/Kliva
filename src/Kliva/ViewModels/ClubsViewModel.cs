@@ -6,7 +6,6 @@ using Windows.UI.Xaml;
 using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
 using Kliva.Extensions;
-using Kliva.Helpers;
 using Kliva.Messages;
 using Kliva.Models;
 using Kliva.Services.Interfaces;

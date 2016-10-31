@@ -1,7 +1,6 @@
 ﻿using Windows.UI.Xaml;
 using Kliva.ViewModels;
 using Windows.UI.Xaml.Controls;
-using Microsoft.Xaml.Interactions.Core;
 
 namespace Kliva.Controls
 {

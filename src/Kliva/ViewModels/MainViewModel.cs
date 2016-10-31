@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Cimbalino.Toolkit.Services;
+﻿using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
 using Kliva.Messages;
 using Kliva.Models;
@@ -9,12 +7,8 @@ using Kliva.ViewModels.Interfaces;
 using Kliva.Views;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
-using Kliva.Controls;
 using Kliva.Extensions;
-using Kliva.Helpers;
 using Kliva.Services;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Kliva.ViewModels
 {

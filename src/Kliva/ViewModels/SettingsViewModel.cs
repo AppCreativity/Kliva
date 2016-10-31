@@ -1,6 +1,5 @@
 ﻿using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
-using Kliva.Helpers;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
 using System;
@@ -11,12 +10,10 @@ using System.Threading.Tasks;
 using Windows.Globalization.NumberFormatting;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
-using Cimbalino.Toolkit.Helpers;
 using GalaSoft.MvvmLight.Threading;
 using Kliva.Extensions;
 using Kliva.Services;
 using GalaSoft.MvvmLight.Messaging;
-using Microsoft.Practices.ServiceLocation;
 
 namespace Kliva.ViewModels
 {

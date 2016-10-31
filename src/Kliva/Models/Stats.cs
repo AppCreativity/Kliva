@@ -1,8 +1,6 @@
 ﻿using Kliva.Helpers;
 using Kliva.Models.Interfaces;
 using Newtonsoft.Json;
-using System.Collections.Generic;
-using System;
 
 namespace Kliva.Models
 {

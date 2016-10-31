@@ -11,8 +11,6 @@ using Windows.UI.Xaml.Media;
 using Cimbalino.Toolkit.Extensions;
 using Kliva.Extensions;
 using Kliva.Models;
-using Kliva.ViewModels;
-using Microsoft.Practices.ServiceLocation;
 
 namespace Kliva.Controls
 {

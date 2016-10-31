@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Windows.System;
 using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
-using Kliva.Controls;
 using Kliva.Models;
 using Kliva.Services;
 using Kliva.Services.Interfaces;

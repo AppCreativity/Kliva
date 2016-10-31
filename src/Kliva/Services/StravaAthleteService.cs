@@ -2,13 +2,11 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
 using Kliva.Helpers;
 using Kliva.Services.Performance;
-using Microsoft.Practices.ServiceLocation;
 
 namespace Kliva.Services
 {

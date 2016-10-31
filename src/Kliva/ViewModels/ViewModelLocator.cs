@@ -5,10 +5,6 @@ using Kliva.Services;
 using Kliva.Services.Interfaces;
 using Microsoft.Practices.ServiceLocation;
 using Windows.ApplicationModel;
-using Windows.UI.Composition;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Hosting;
-using GoogleAnalytics;
 
 namespace Kliva.ViewModels
 {

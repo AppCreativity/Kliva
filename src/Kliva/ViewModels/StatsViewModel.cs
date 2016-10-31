@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
-using Kliva.Extensions;
 using Kliva.Helpers;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
