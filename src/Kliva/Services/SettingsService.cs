@@ -86,7 +86,7 @@ namespace Kliva.Services
                 bool settingsExists = await DoesSettingsServiceExistAsync();
                 if (settingsExists)
                 {
-                    string settingsAsString = await _storageService.Local.ReadAllTextAsync(Constants.SETTINGSSTORE);
+                    string settingsAsString = await StorageService.Local.ReadAllTextAsync(Constants.SETTINGSSTORE);
                     _settings = JsonConvert.DeserializeObject<Settings>(settingsAsString);
                 }
                 else if (createIfNotExisting)
@@ -99,12 +99,12 @@ namespace Kliva.Services
         private Task SaveSettingsToStorageAsync()
         {
             string serializedSettings = JsonConvert.SerializeObject(_settings);
-            return _storageService.Local.WriteAllTextAsync(Constants.SETTINGSSTORE, serializedSettings);
+            return StorageService.Local.WriteAllTextAsync(Constants.SETTINGSSTORE, serializedSettings);
         }
 
         private Task<bool> DoesSettingsServiceExistAsync()
         {
-            return _storageService.Local.FileExistsAsync(Constants.SETTINGSSTORE);
+            return StorageService.Local.FileExistsAsync(Constants.SETTINGSSTORE);
         }
     }
 }

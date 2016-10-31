@@ -64,48 +64,48 @@ namespace Kliva.Helpers
 
         public static List<StatisticsGroup> GetRunStatistics(Stats stats)
         {
-            bool IsMetric = MeasurementHelper.IsMetric(stats.MeasurementUnit);
-            var elevationDistanceUnitType = MeasurementHelper.GetElevationUnitType(IsMetric);
-            var distanceUnitType = MeasurementHelper.GetDistanceUnitType(IsMetric);
+            bool isMetric = MeasurementHelper.IsMetric(stats.MeasurementUnit);
+            var elevationDistanceUnitType = MeasurementHelper.GetElevationUnitType(isMetric);
+            var distanceUnitType = MeasurementHelper.GetDistanceUnitType(isMetric);
 
-            var RunStatisticGroups = new List<StatisticsGroup>();
+            var runStatisticGroups = new List<StatisticsGroup>();
 
             StatisticsGroup recent = CreateGroup("recent", 0);
             FillGroup(recent, stats.RecentRunTotals);
-            RunStatisticGroups.Add(recent);
+            runStatisticGroups.Add(recent);
 
             StatisticsGroup year = CreateGroup("year total", 1);
             FillGroup(year, stats.YearToDateRunTotals);
-            RunStatisticGroups.Add(year);
+            runStatisticGroups.Add(year);
 
             StatisticsGroup allTime = CreateGroup("all time total", 2);
             FillGroup(allTime, stats.RunTotals);
-            RunStatisticGroups.Add(allTime);
+            runStatisticGroups.Add(allTime);
             
-            return RunStatisticGroups;
+            return runStatisticGroups;
         }
 
         public static List<StatisticsGroup> GetRideStatistics(Stats stats)
         {
-            bool IsMetric = MeasurementHelper.IsMetric(stats.MeasurementUnit);
-            var elevationDistanceUnitType = MeasurementHelper.GetElevationUnitType(IsMetric);
-            var distanceUnitType = MeasurementHelper.GetDistanceUnitType(IsMetric);
+            bool isMetric = MeasurementHelper.IsMetric(stats.MeasurementUnit);
+            var elevationDistanceUnitType = MeasurementHelper.GetElevationUnitType(isMetric);
+            var distanceUnitType = MeasurementHelper.GetDistanceUnitType(isMetric);
 
-            var RunStatisticGroups = new List<StatisticsGroup>();
+            var runStatisticGroups = new List<StatisticsGroup>();
 
             StatisticsGroup recent = CreateGroup("recent", 0);
             FillGroup(recent, stats.RecentRideTotals);
-            RunStatisticGroups.Add(recent);
+            runStatisticGroups.Add(recent);
 
             StatisticsGroup year = CreateGroup("year total", 1);
             FillGroup(year, stats.YearToDateRideTotals);
-            RunStatisticGroups.Add(year);
+            runStatisticGroups.Add(year);
 
             StatisticsGroup allTime = CreateGroup("all time total", 2);
             FillGroup(allTime, stats.RideTotals);
-            RunStatisticGroups.Add(allTime);
+            runStatisticGroups.Add(allTime);
 
-            return RunStatisticGroups;
+            return runStatisticGroups;
         }
     }
 }

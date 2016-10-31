@@ -34,47 +34,47 @@ namespace Kliva.Helpers
         /// Date and time information used when getting the super short time
         /// pattern. Syncs with the current culture.
         /// </summary>
-        private static DateTimeFormatInfo formatInfo_GetSuperShortTime = null;
+        private static DateTimeFormatInfo _formatInfoGetSuperShortTime;
 
         /// <summary>
         /// Date and time information used when getting the month and day
         /// pattern. Syncs with the current culture.
         /// </summary>
-        private static DateTimeFormatInfo formatInfo_GetMonthAndDay = null;
+        private static DateTimeFormatInfo _formatInfoGetMonthAndDay;
 
         /// <summary>
         /// Date and time information used when getting the short time
         /// pattern. Syncs with the current culture.
         /// </summary>
-        private static DateTimeFormatInfo formatInfo_GetShortTime = null;
+        private static DateTimeFormatInfo _formatInfoGetShortTime;
 
         /// <summary>
         /// Lock object used to delimit a critical region when getting
         /// the super short time pattern.
         /// </summary>
-        private static Object lock_GetSuperShortTime = new Object();
+        private static readonly object LockGetSuperShortTime = new object();
 
         /// <summary>
         /// Lock object used to delimit a critical region when getting
         /// the month and day pattern.
         /// </summary>
-        private static Object lock_GetMonthAndDay = new Object();
+        private static readonly object LockGetMonthAndDay = new object();
 
         /// <summary>
         /// Lock object used to delimit a critical region when getting
         /// the short time pattern.
         /// </summary>
-        private static Object lock_GetShortTime = new Object();
+        private static readonly object LockGetShortTime = new object();
 
         /// <summary>
         /// Regular expression used to get the month and day pattern.
         /// </summary>
-        private static readonly Regex rxMonthAndDay = new Regex("(d{1,2}[^A-Za-z]M{1,3})|(M{1,3}[^A-Za-z]d{1,2})");
+        private static readonly Regex RxMonthAndDay = new Regex("(d{1,2}[^A-Za-z]M{1,3})|(M{1,3}[^A-Za-z]d{1,2})");
 
         /// <summary>
         /// Regular expression used to get the seconds pattern with separator.
         /// </summary>
-        private static readonly Regex rxSeconds = new Regex("([^A-Za-z]s{1,2})");
+        private static readonly Regex RxSeconds = new Regex("([^A-Za-z]s{1,2})");
 
         /// <summary>
         /// Gets the number representing the day of the week from a given
@@ -300,17 +300,17 @@ namespace Kliva.Helpers
         [SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase", Justification = "Metro design guidelines normalize strings to lowercase.")]
         public static string GetSuperShortTime(DateTime dt)
         {
-            if (formatInfo_GetSuperShortTime == null)
+            if (_formatInfoGetSuperShortTime == null)
             {
-                lock (lock_GetSuperShortTime)
+                lock (LockGetSuperShortTime)
                 {
                     StringBuilder result = new StringBuilder(string.Empty);
                     string seconds;
 
-                    formatInfo_GetSuperShortTime = (DateTimeFormatInfo)CultureInfo.CurrentCulture.DateTimeFormat.Clone();
+                    _formatInfoGetSuperShortTime = (DateTimeFormatInfo)CultureInfo.CurrentCulture.DateTimeFormat.Clone();
 
-                    result.Append(formatInfo_GetSuperShortTime.LongTimePattern);
-                    seconds = rxSeconds.Match(result.ToString()).Value;
+                    result.Append(_formatInfoGetSuperShortTime.LongTimePattern);
+                    seconds = RxSeconds.Match(result.ToString()).Value;
                     result.Replace(" ", string.Empty);
                     result.Replace(seconds, string.Empty);
                     if (!(DateTimeFormatHelper.IsCurrentCultureJapanese()
@@ -320,11 +320,11 @@ namespace Kliva.Helpers
                         result.Replace(DoubleMeridiemDesignator, SingleMeridiemDesignator);
                     }
 
-                    formatInfo_GetSuperShortTime.ShortTimePattern = result.ToString();
+                    _formatInfoGetSuperShortTime.ShortTimePattern = result.ToString();
                 }
             }
 
-            return dt.ToString("t", formatInfo_GetSuperShortTime).ToLowerInvariant();
+            return dt.ToString("t", _formatInfoGetSuperShortTime).ToLowerInvariant();
         }
 
         /// <summary>
@@ -336,25 +336,25 @@ namespace Kliva.Helpers
         /// <returns>"05/24" for May 24th when en-US.</returns>
         public static string GetMonthAndDay(DateTime dt)
         {
-            if (formatInfo_GetMonthAndDay == null)
+            if (_formatInfoGetMonthAndDay == null)
             {
-                lock (lock_GetMonthAndDay)
+                lock (LockGetMonthAndDay)
                 {
                     StringBuilder result = new StringBuilder(string.Empty);
 
-                    formatInfo_GetMonthAndDay = (DateTimeFormatInfo)CultureInfo.CurrentCulture.DateTimeFormat.Clone();
+                    _formatInfoGetMonthAndDay = (DateTimeFormatInfo)CultureInfo.CurrentCulture.DateTimeFormat.Clone();
 
-                    result.Append(rxMonthAndDay.Match(formatInfo_GetMonthAndDay.ShortDatePattern).Value);
+                    result.Append(RxMonthAndDay.Match(_formatInfoGetMonthAndDay.ShortDatePattern).Value);
                     if (result.ToString().Contains("."))
                     {
                         result.Append(".");
                     }
 
-                    formatInfo_GetMonthAndDay.ShortDatePattern = result.ToString();
+                    _formatInfoGetMonthAndDay.ShortDatePattern = result.ToString();
                 }
             }
 
-            return dt.ToString("d", formatInfo_GetMonthAndDay);
+            return dt.ToString("d", _formatInfoGetMonthAndDay);
         }
 
         /// <summary>
@@ -382,24 +382,24 @@ namespace Kliva.Helpers
         /// </returns>
         public static string GetShortTime(DateTime dt)
         {
-            if (formatInfo_GetShortTime == null)
+            if (_formatInfoGetShortTime == null)
             {
-                lock (lock_GetShortTime)
+                lock (LockGetShortTime)
                 {
                     StringBuilder result = new StringBuilder(string.Empty);
                     string seconds;
 
-                    formatInfo_GetShortTime = (DateTimeFormatInfo)CultureInfo.CurrentCulture.DateTimeFormat.Clone();
+                    _formatInfoGetShortTime = (DateTimeFormatInfo)CultureInfo.CurrentCulture.DateTimeFormat.Clone();
 
-                    result.Append(formatInfo_GetShortTime.LongTimePattern);
-                    seconds = rxSeconds.Match(result.ToString()).Value;
+                    result.Append(_formatInfoGetShortTime.LongTimePattern);
+                    seconds = RxSeconds.Match(result.ToString()).Value;
                     result.Replace(seconds, string.Empty);
 
-                    formatInfo_GetShortTime.ShortTimePattern = result.ToString();
+                    _formatInfoGetShortTime.ShortTimePattern = result.ToString();
                 }
             }
 
-            return dt.ToString("t", formatInfo_GetShortTime);
+            return dt.ToString("t", _formatInfoGetShortTime);
         }
 
         #endregion

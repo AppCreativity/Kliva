@@ -12,21 +12,21 @@ namespace Kliva.Services
 {
     public class ApplicationInfoService : IApplicationInfoService
     {
-        protected readonly IStorageService _storageService;
+        protected readonly IStorageService StorageService;
 
         private AppVersion _appVersion;
         public AppVersion AppVersion => _appVersion ?? (_appVersion = new AppVersion(Package.Current.Id.Version));
 
         public ApplicationInfoService(IStorageService storageService)
         {
-            _storageService = storageService;
+            StorageService = storageService;
         }
 
         public async Task<List<ApplicationInfo>> GetAppInfoAsync()
         {
             try
             {
-                string appInfo = await _storageService.Package.ReadAllTextAsync("AppInfo.json");
+                string appInfo = await StorageService.Package.ReadAllTextAsync("AppInfo.json");
                 List<ApplicationInfo> appInfoList = JsonConvert.DeserializeObject<List<ApplicationInfo>>(appInfo);
 
                 return appInfoList.OrderByDescending(item => item.Version).ToList();
