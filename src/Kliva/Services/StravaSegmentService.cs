@@ -54,7 +54,7 @@ namespace Kliva.Services
                 Sort = 2,
                 Icon = "",
                 DisplayDescription = "average heart rate",
-                DisplayValue = $"{segmentEffort.AverageHeartrate} bpm",
+                DisplayValue = $"{Math.Round(segmentEffort.AverageHeartrate)} bpm",
                 Group = current
             };
 
@@ -232,7 +232,7 @@ namespace Kliva.Services
                         Sort = 2,
                         Icon = "",
                         DisplayDescription = "average heart rate",
-                        DisplayValue = $"{entry.AverageHeartrateDisplay} bpm",
+                        DisplayValue = $"{Math.Round(entry.AverageHeartrateDisplay)} bpm",
                         Group = pr
                     };
 

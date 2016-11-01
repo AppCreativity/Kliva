@@ -112,7 +112,7 @@ namespace Kliva.Services
                 activity.ElevationGainUserMeasurementUnit).Details[0];
 
             var heartRateGroup = StatisticsHelper.CreateGroup("heart rate", 4, "", "average heart rate",
-                $"{activity.AverageHeartrate} bpm");
+                $"{Math.Round(activity.AverageHeartrate)} bpm");
             StatisticsHelper.CreateDetailForGroup(heartRateGroup, 1, "", "max heart rate",
                 $"{activity.MaxHeartrate} bpm");
 
