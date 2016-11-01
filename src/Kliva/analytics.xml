@@ -6,7 +6,7 @@
   <!--Replace placeholder name with your app name. If you leave this empty your package name (Windows.ApplicationModel.Package.Current.Id.Name) will be used-->
   <appName>Kliva - UWP</appName>
   <!--Replace placeholder version with your app version. If you leave this empty your package version (Windows.ApplicationModel.Package.Current.Id.Version) will be used-->
-  <appVersion>0.0.0.1</appVersion>
+  <appVersion>2.0.0.0</appVersion>
   <!--Optionally supply the application ID-->
   <!--<appId>com.company.app</appId>-->
   <!--Optionally supply the installer ID for this app.-->

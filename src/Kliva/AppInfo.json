@@ -1,37 +1,12 @@
 [
   {
-    "VersionAsString": "0.0.1.0",
-    "GeneralInfo": "First release of our UWP version of Kliva!",
+    "VersionAsString": "2.0.0.0",
+    "GeneralInfo": "Our first release of the UWP version for Kliva!\r\nRebuild from the ground up with a newer design and it is now also be better alligned with the Strava API\r\nFully Open Source up on GitHub ( https://github.com/AppCreativity/Kliva ), please log any issues there and UWP devs who would love to join are more than welcome",
     "Features": [
-      "First beta for recording activities",
-      "General overview of all activities from people you follow and your own"
+      "- UWP version, so it now runs on Win10 mobile, Win10 desktop and will also work with Continuum",
+      "- Added GPS tracking, enabling you to track and upload an activity directly to Strava",
+      "- Several new Strava possibilities in reference to the Kliva Windows Phone app"
     ],
     "BugFixes": null
-  },
-  {
-    "VersionAsString": "0.0.2.0",
-    "GeneralInfo": "Small update release with some bug fixes",
-    "Features": [
-      "Overall improvement",
-      "Overall improvement",
-      "Overall improvement",
-      "Overall improvement",
-      "Overall improvement",
-      "Overall improvement"
-    ],
-    "BugFixes": [
-      "Wrong size of what's new dialog",
-      "Wrong activity date formatting",
-      "Selecting activity has no effect",
-      "Selecting activity has no effect",
-      "Selecting activity has no effect",
-      "Selecting activity has no effect",
-      "Selecting activity has no effect",
-      "Selecting activity has no effect",
-      "Selecting activity has no effect",
-      "Selecting activity has no effect",
-      "Selecting activity has no effect",
-      "Selecting activity has no effect"
-    ]
   }
 ]

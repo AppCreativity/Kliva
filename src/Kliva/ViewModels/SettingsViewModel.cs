@@ -126,18 +126,25 @@ namespace Kliva.ViewModels
             var appInfoList = await _settingsService.GetAppInfoAsync();
             CurrentVersion = appInfoList.FirstOrDefault();
             //TODO: Glenn - refactor initialization in settings service? While converting json to class?
-            InfoOverviewItem features = new InfoOverviewItem()
+            if (CurrentVersion.Features != null)
             {
-                Header = "Features",
-                Items = new ObservableCollection<string>(CurrentVersion.Features)
-            };
-            InfoOverviewItem bugFixes = new InfoOverviewItem()
+                InfoOverviewItem features = new InfoOverviewItem()
+                {
+                    Header = "Features",
+                    Items = new ObservableCollection<string>(CurrentVersion.Features)
+                };
+                CurrentVersion.OverviewItems.Add(features);
+            }
+
+            if (CurrentVersion.BugFixes != null)
             {
-                Header = "Bug fixes",
-                Items = new ObservableCollection<string>(CurrentVersion.BugFixes)
-            };
-            CurrentVersion.OverviewItems.Add(features);
-            CurrentVersion.OverviewItems.Add(bugFixes);
+                InfoOverviewItem bugFixes = new InfoOverviewItem()
+                {
+                    Header = "Bug fixes",
+                    Items = new ObservableCollection<string>(CurrentVersion.BugFixes)
+                };
+                CurrentVersion.OverviewItems.Add(bugFixes);
+            }                      
 
             await Task.Run(GetMapSizes);
 

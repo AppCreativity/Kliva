@@ -100,7 +100,8 @@
                     
                     <TextBlock x:Name="GeneralInfoTextBlock"
                                Style="{StaticResource BaseTextBlock}"
-                               Padding="0,10,0,0"
+                               Padding="0,10,0,5"
+                               TextWrapping="Wrap"
                                RelativePanel.Below="CurrentVersionTextBlock">
                         <Run Text="{x:Bind ViewModel.CurrentVersion.GeneralInfo, Mode=OneWay}" />
                     </TextBlock>
@@ -214,8 +215,7 @@
                             <LineBreak />
                             <Run Text="  - Kurt Alpaerts and Deani Hansen for their help on the Windows Phone 8 app" />
                             <LineBreak />
-                            <LineBreak />
-                            <Run Text="translation thanks to Mark Tepper, Filip Skakun, Scott Lovegrove, Basile Cornet, Javier Suárez Ruiz" />
+                            <Run Text="  - Pieter Nijs, James Clarke, Tim Heuer and Jacob Stern for their great help with this UWP version" />
                         </Bold>
                     </Paragraph>
                 </RichTextBlock>
