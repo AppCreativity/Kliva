@@ -92,25 +92,19 @@ namespace Kliva.ViewModels
         public int PhotoCount => SelectedActivity?.TotalPhotoCount ?? 0;
 
         private RelayCommand _kudosCommand;
-        public RelayCommand KudosCommand => _kudosCommand ?? (_kudosCommand = new RelayCommand(async () => await OnKudos()));
+        public RelayCommand KudosCommand => _kudosCommand ?? (_kudosCommand = new RelayCommand(async () => await OnKudosAsync()));
 
         private RelayCommand _commentCommand;
-        public RelayCommand CommentCommand => _commentCommand ?? (_commentCommand = new RelayCommand(async () => await OnComment()));
+        public RelayCommand CommentCommand => _commentCommand ?? (_commentCommand = new RelayCommand(async () => await OnCommentAsync()));
 
         private RelayCommand _mapCommand;
         public RelayCommand MapCommand => _mapCommand ?? (_mapCommand = new RelayCommand(() => NavigationService.Navigate<MapPage>(SelectedActivity?.Map)));
 
         private RelayCommand _editCommand;
-        public RelayCommand EditCommand => _editCommand ?? (_editCommand = new RelayCommand(async () => await OnEdit()));
+        public RelayCommand EditCommand => _editCommand ?? (_editCommand = new RelayCommand(async () => await OnEditAsync()));
 
         private RelayCommand _stravaCommand;
-        public RelayCommand StravaCommand => _stravaCommand ?? (_stravaCommand = new RelayCommand(async () => await Launch()));
-
-        private async Task Launch()
-        {
-            string activityUri = $"{Endpoints.PublicActivity}/{SelectedActivity.Id}";
-            await _launcherService.LaunchUriAsync(new Uri(activityUri));
-        }
+        public RelayCommand StravaCommand => _stravaCommand ?? (_stravaCommand = new RelayCommand(async () => await LaunchAsync()));
 
         private RelayCommand<ItemClickEventArgs> _athleteTappedCommand;
         public RelayCommand<ItemClickEventArgs> AthleteTappedCommand => _athleteTappedCommand ?? (_athleteTappedCommand = new RelayCommand<ItemClickEventArgs>(OnAthleteTapped));
@@ -184,14 +178,14 @@ namespace Kliva.ViewModels
             }
         }
 
-        private async Task OnKudos()
+        private async Task OnKudosAsync()
         {
             await _stravaService.GiveKudosAsync(SelectedActivity.Id.ToString());
             await LoadActivityDetails(SelectedActivity.Id.ToString());
             ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage<ActivityPivots>>(new PivotMessage<ActivityPivots>(ActivityPivots.Kudos, true, true), Tokens.ActivityPivotMessage);
         }
 
-        private async Task OnComment()
+        private async Task OnCommentAsync()
         {
             CommentContentDialog dialog = new CommentContentDialog();
             dialog.AdjustSize();
@@ -206,7 +200,7 @@ namespace Kliva.ViewModels
             }
         }
 
-        private async Task OnEdit()
+        private async Task OnEditAsync()
         {
             List<GearSummary> gear = null;
 
@@ -231,6 +225,12 @@ namespace Kliva.ViewModels
                 await _stravaService.PutUpdate(SelectedActivity.Id.ToString(), dialog.ActivityName, dialog.ActivityCommute, dialog.ActivityPrivate, dialog.SelectedGear.GearID);
                 await LoadActivityDetails(SelectedActivity.Id.ToString());
             }
+        }
+
+        private Task LaunchAsync()
+        {
+            string activityUri = $"{Endpoints.PublicActivity}/{SelectedActivity.Id}";
+            return _launcherService.LaunchUriAsync(new Uri(activityUri));
         }
     }
 }
