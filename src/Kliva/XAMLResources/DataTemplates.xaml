@@ -271,11 +271,12 @@
                                Style="{StaticResource WordTrimmingTextBlock}"
                                FontSize="14"
                                RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" />
+                    
                     <TextBlock x:Name="SegmentDistance"
                            Style="{StaticResource BaseTextBlock}"
                            FontSize="12"
                            RelativePanel.Below="SegmentName" RelativePanel.AlignLeftWithPanel="True">
-                    <Run Text="{x:Bind DistanceUserMeasurementUnit.FormattedValueWithUnit, Mode=OneWay}" />
+                        <Run Text="{x:Bind DistanceUserMeasurementUnit.FormattedValueWithUnit, Mode=OneWay}" />
                     </TextBlock>
 
                     <TextBlock x:Name="SegmentMovingTime"
@@ -284,6 +285,14 @@
                            FontSize="12"
                            Margin="10,0"
                            RelativePanel.Below="SegmentName" RelativePanel.RightOf="SegmentDistance" />
+
+                    <TextBlock x:Name="SegmentSpeed"
+                           Style="{StaticResource BaseTextBlock}"
+                           FontSize="12"
+                           Margin="10,0"
+                           RelativePanel.Below="SegmentName" RelativePanel.RightOf="SegmentMovingTime">
+                        <Run Text="{x:Bind AverageSpeedMeasurementUnit.FormattedValueWithUnit, Mode=OneWay}" />
+                    </TextBlock>
                 </RelativePanel>
 
                 <TextBlock x:Name="SegmentPersonalRankShield"
