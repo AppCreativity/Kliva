@@ -173,7 +173,7 @@ namespace Kliva.Models
             MeasurementUnit = measurementUnit;
 
             DistanceUserMeasurementUnit = new UserMeasurementUnitMetric(Distance, DistanceUnitType.Metres, MeasurementUnit);
-            AverageSpeedMeasurementUnit = new UserMeasurementUnitMetric(AverageSpeed, SpeedUnit.MetresPerSecond, SpeedUnit.MetresPerSecond);
+            AverageSpeedMeasurementUnit = new UserMeasurementUnitMetric(AverageSpeed, SpeedUnit.MetresPerSecond, SpeedUnit.KilometresPerHour);
         }
 
         public UserMeasurementUnitMetric DistanceUserMeasurementUnit
