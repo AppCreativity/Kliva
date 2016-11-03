@@ -1,11 +1,8 @@
 ﻿<ResourceDictionary x:Class="Kliva.XAMLResources.DataTemplates"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:triggers="using:WindowsStateTriggers"
     xmlns:models="using:Kliva.Models"
-    xmlns:local="using:Kliva.XAMLResources"
     xmlns:controls="using:Kliva.Controls"
-    xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:converters="using:Kliva.Converters">
@@ -271,19 +268,32 @@
                                Style="{StaticResource WordTrimmingTextBlock}"
                                FontSize="14"
                                RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" />
-                    <TextBlock x:Name="SegmentDistance"
-                           Style="{StaticResource BaseTextBlock}"
-                           FontSize="12"
-                           RelativePanel.Below="SegmentName" RelativePanel.AlignLeftWithPanel="True">
-                    <Run Text="{x:Bind DistanceUserMeasurementUnit.FormattedValueWithUnit, Mode=OneWay}" />
-                    </TextBlock>
 
-                    <TextBlock x:Name="SegmentMovingTime"
-                           Text="{x:Bind MovingTime, Mode=OneWay, Converter={StaticResource SecondsToTimeStringConverter}}"
-                           Style="{StaticResource BaseTextBlock}"
-                           FontSize="12"
-                           Margin="10,0"
-                           RelativePanel.Below="SegmentName" RelativePanel.RightOf="SegmentDistance" />
+                    <Grid RelativePanel.Below="SegmentName" RelativePanel.AlignLeftWithPanel="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="65" />
+                            <ColumnDefinition Width="65" />
+                            <ColumnDefinition Width="65" />
+                            <ColumnDefinition Width="65" />
+                        </Grid.ColumnDefinitions>
+                        
+                        <TextBlock Grid.Column="0"
+                               Style="{StaticResource BaseTextBlock}"
+                               FontSize="12">
+                            <Run Text="{x:Bind DistanceUserMeasurementUnit.FormattedValueWithUnit, Mode=OneWay}" />
+                        </TextBlock>
+
+                        <TextBlock Grid.Column="1"
+                               Text="{x:Bind MovingTime, Mode=OneWay, Converter={StaticResource SecondsToTimeStringConverter}}"
+                               Style="{StaticResource BaseTextBlock}"
+                               FontSize="12" />
+
+                        <TextBlock Grid.Column="2"
+                               Style="{StaticResource BaseTextBlock}"
+                               FontSize="12">
+                            <Run Text="{x:Bind AverageSpeedMeasurementUnit.FormattedValueWithUnit, Mode=OneWay}" />
+                        </TextBlock>
+                    </Grid>
                 </RelativePanel>
 
                 <TextBlock x:Name="SegmentPersonalRankShield"
