@@ -213,6 +213,7 @@
     <Compile Include="Models\Usage.cs" />
     <Compile Include="Models\UserMeasurementUnitMetric.cs" />
     <Compile Include="Services\ApplicationInfoService.cs" />
+    <Compile Include="Services\DebugLogService.cs" />
     <Compile Include="Services\GoogleAnalyticsService.cs" />
     <Compile Include="Services\GPXService.cs" />
     <Compile Include="Services\Interfaces\ILogService.cs" />
@@ -229,7 +230,7 @@
     <Compile Include="Services\Interfaces\IStravaClubService.cs" />
     <Compile Include="Services\Interfaces\IStravaSegmentService.cs" />
     <Compile Include="Services\Interfaces\IStravaService.cs" />
-    <Compile Include="Services\LogService.cs" />
+    <Compile Include="Services\GoogleAnalyticsLogService.cs" />
     <Compile Include="Services\Performance\ETWLogging.cs" />
     <Compile Include="Services\StravaActivityService.cs" />
     <Compile Include="Services\SettingsService.cs" />

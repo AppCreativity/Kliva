@@ -6,9 +6,9 @@ using Kliva.Services.Interfaces;
 
 namespace Kliva.Services
 {
-    public class LogService : ILogService
+    public class GoogleAnalyticsLogService : ILogService
     {
-        private readonly StringBuilder _logMessage = new StringBuilder();
+        private readonly IGoogleAnalyticsService _googleAnalyticsService;
 
         public string SystemFamily { get; }
         public string SystemVersion { get; }
@@ -18,8 +18,10 @@ namespace Kliva.Services
         public string DeviceManufacturer { get; }
         public string DeviceModel { get; }
 
-        public LogService()
+        public GoogleAnalyticsLogService(IGoogleAnalyticsService googleAnalyticsService)
         {
+            _googleAnalyticsService = googleAnalyticsService;
+            
             // get the system family name
             AnalyticsVersionInfo ai = AnalyticsInfo.VersionInfo;
             SystemFamily = ai.DeviceFamily;
@@ -50,25 +52,25 @@ namespace Kliva.Services
             DeviceModel = eas.SystemProductName;
         }
 
-        public string Log(string title, string body)
+        public void Log(string title, string body)
         {
-            _logMessage.Clear();
-            _logMessage.AppendLine(title);            
-            AppendDeviceInfo();
-            _logMessage.AppendLine(body);
+            StringBuilder logMessageBuilder = new StringBuilder();
+            logMessageBuilder.AppendLine(title);            
+            AppendDeviceInfo(logMessageBuilder);
+            logMessageBuilder.AppendLine(body);
 
-            return _logMessage.ToString();
+            _googleAnalyticsService.Tracker.SendException(logMessageBuilder.ToString(), false);
         }
 
-        private void AppendDeviceInfo()
+        private void AppendDeviceInfo(StringBuilder logMessageBuilder)
         {
-            _logMessage.AppendLine("****");
+            logMessageBuilder.AppendLine("****");
 
-            _logMessage.AppendLine($"{SystemFamily} - {SystemVersion}");
-            _logMessage.AppendLine($"{ApplicationName} - {ApplicationVersion}");
-            _logMessage.AppendLine($"{DeviceManufacturer} - {DeviceModel}");
+            logMessageBuilder.AppendLine($"{SystemFamily} - {SystemVersion}");
+            logMessageBuilder.AppendLine($"{ApplicationName} - {ApplicationVersion}");
+            logMessageBuilder.AppendLine($"{DeviceManufacturer} - {DeviceModel}");
 
-            _logMessage.AppendLine("****");
+            logMessageBuilder.AppendLine("****");
         }
     }
 }

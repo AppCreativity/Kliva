@@ -2,6 +2,6 @@ namespace Kliva.Services.Interfaces
 {
     public interface ILogService
     {
-        string Log(string title, string body);
+        void Log(string title, string body);
     }
 }

@@ -9,6 +9,7 @@ using Windows.UI.Xaml.Media.Imaging;
 using GalaSoft.MvvmLight.Threading;
 using Kliva.Helpers;
 using Kliva.Services;
+using Kliva.Services.Interfaces;
 using Microsoft.Practices.ServiceLocation;
 using Newtonsoft.Json;
 
@@ -95,12 +96,10 @@ namespace Kliva.Models
                         }
                         catch (Exception ex)
                         {
-#if !DEBUG
-                            string title = $"Map.OnMapPropertyChanged";
+                            string title = "Map.OnMapPropertyChanged";
                             string body = ex.Message;
                             ILogService logService = ServiceLocator.Current.GetInstance<ILogService>();
-                            ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(logService.Log(title, body), false);
-#endif
+                            logService.Log(title, body);
                         }
                     }
                 }
