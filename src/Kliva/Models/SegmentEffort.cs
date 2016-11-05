@@ -105,26 +105,17 @@ namespace Kliva.Models
         /// <summary>
         /// Returns the StartDate-Property as a DateTime object.
         /// </summary>
-        public DateTime DateTimeStart
-        {
-            get { return DateTime.Parse(StartDate); }
-        }
+        public DateTime DateTimeStart => DateTime.Parse(StartDate);
 
         /// <summary>
         /// Returns the moving time as a TimeSpan object rather than an int value.
         /// </summary>
-        public TimeSpan MovingTimeSpan
-        {
-            get { return TimeSpan.FromSeconds(MovingTime); }
-        }
+        public TimeSpan MovingTimeSpan => TimeSpan.FromSeconds(MovingTime);
 
         /// <summary>
         /// Returns the elapsed time as a TimeSpan object rather than an int value.
         /// </summary>
-        public TimeSpan ElapsedTimeSpan
-        {
-            get { return TimeSpan.FromSeconds(ElapsedTime); }
-        }
+        public TimeSpan ElapsedTimeSpan => TimeSpan.FromSeconds(ElapsedTime);
 
         /// <summary>
         /// Distance in meters.

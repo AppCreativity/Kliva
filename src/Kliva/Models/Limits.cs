@@ -20,23 +20,12 @@ namespace Kliva.Models
         /// </summary>
         public static Usage Usage
         {
-            get
-            {
-                if (_usage == null)
-                {
-                    _usage = new Usage(0, 0);
-                }
-
-                return _usage;
-            }
+            get { return _usage ?? (_usage = new Usage(0, 0)); }
             set
             {
                 _usage = value;
 
-                if (UsageChanged != null)
-                {
-                    UsageChanged(null, new UsageChangedEventArgs(value.ShortTerm, value.LongTerm));
-                }
+                UsageChanged?.Invoke(null, new UsageChangedEventArgs(value.ShortTerm, value.LongTerm));
             }
         }
 
@@ -45,15 +34,7 @@ namespace Kliva.Models
         /// </summary>
         public static Limit Limit
         {
-            get
-            {
-                if (_limit == null)
-                {
-                    _limit = new Limit(0, 0);
-                }
-
-                return _limit;
-            }
+            get { return _limit ?? (_limit = new Limit(0, 0)); }
             set
             {
                 _limit = value;

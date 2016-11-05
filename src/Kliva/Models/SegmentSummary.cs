@@ -115,13 +115,13 @@ namespace Kliva.Models
         /// True if this segment is private.
         /// </summary>
         [JsonProperty("private")]
-        public Boolean IsPrivate { get; set; }
+        public bool IsPrivate { get; set; }
 
         /// <summary>
         /// True if the segment is starred by the currently authenticated athlete.
         /// </summary>
         [JsonProperty("starred")]
-        public Boolean IsStarred { get; set; }
+        public bool IsStarred { get; set; }
     }
 
     /// <summary>

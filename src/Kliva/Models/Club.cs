@@ -1,5 +1,4 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace Kliva.Models
 {
@@ -86,7 +85,7 @@ namespace Kliva.Models
         /// True if the club is a private club.
         /// </summary>
         [JsonProperty("private")]
-        public Boolean IsPrivate { get; set; }
+        public bool IsPrivate { get; set; }
 
         /// <summary>
         /// The club's member count.
