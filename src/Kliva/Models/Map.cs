@@ -98,7 +98,7 @@ namespace Kliva.Models
                         {
                             string title = "Map.OnMapPropertyChanged";
                             ILogService logService = ServiceLocator.Current.GetInstance<ILogService>();
-                            logService.Log(title, ex);
+                            logService.LogException(title, ex);
                         }
                     }
                 }

@@ -53,19 +53,19 @@ namespace Kliva.Services
             DeviceModel = eas.SystemProductName;
         }
 
-        public void Log(string title, string body)
+        public void Log(string category, string action, string label)
         {
-            StringBuilder logMessageBuilder = new StringBuilder();
-            logMessageBuilder.AppendLine(title);            
-            AppendDeviceInfo(logMessageBuilder);
-            logMessageBuilder.AppendLine(body);
-
-            _googleAnalyticsService.Tracker.SendException(logMessageBuilder.ToString(), false);
+            _googleAnalyticsService.Tracker.SendEvent(category, action, label, 0);
         }
 
-        public void Log(string title, Exception exception)
+        public void LogException(string title, Exception exception)
         {
-            Log(title, exception.Message);
+            StringBuilder logMessageBuilder = new StringBuilder();
+            logMessageBuilder.AppendLine(title);
+            AppendDeviceInfo(logMessageBuilder);
+            logMessageBuilder.AppendLine(exception.Message);
+
+            _googleAnalyticsService.Tracker.SendException(logMessageBuilder.ToString(), false);
         }
 
         private void AppendDeviceInfo(StringBuilder logMessageBuilder)

@@ -54,7 +54,7 @@ namespace Kliva.Services
             catch (Exception ex)
             {
                 string title = $"StravaAthleteService.GetAthleteFromServiceAsync - athleteId {athleteId}";
-                _logService.Log(title, ex);
+                _logService.LogException(title, ex);
             }
 
             return null;
@@ -82,16 +82,15 @@ namespace Kliva.Services
 
                     Athlete = Unmarshaller<Athlete>.Unmarshal(json);
 
-#if !DEBUG
                     string athleteUri = $"{Endpoints.PublicAthlete}/{Athlete.Id}";
-                    ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendEvent("API", "GetAthleteAsync", athleteUri, 0);
-#endif
+                    _logService.Log("API", "GetAthleteAsync", athleteUri);
+
                     return Athlete;
                 }
                 catch (Exception ex)
                 {
                     string title = "StravaAthleteService.GetAthleteAsync";
-                    _logService.Log(title, ex);
+                    _logService.LogException(title, ex);
                 }
             }
             _perflog.GetAthleteAsync(true);
@@ -143,7 +142,7 @@ namespace Kliva.Services
             catch (Exception ex)
             {
                 string title = $"StravaAthleteService.GetFollowersAsync - athleteId {athleteId} - authenticatedUser {authenticatedUser}";
-                _logService.Log(title, ex);
+                _logService.LogException(title, ex);
             }
 
             return null;
@@ -168,7 +167,7 @@ namespace Kliva.Services
             catch (Exception ex)
             {
                 string title = $"StravaAthleteService.GetFriendsAsync - athleteId {athleteId} - authenticatedUser {authenticatedUser}";
-                _logService.Log(title, ex);
+                _logService.LogException(title, ex);
             }
 
             return null;
@@ -189,7 +188,7 @@ namespace Kliva.Services
             catch (Exception ex)
             {
                 string title = $"StravaAthleteService.GetMutualFriendsAsync - athleteId {athleteId}";
-                _logService.Log(title, ex);
+                _logService.LogException(title, ex);
             }
 
                 return null;
@@ -216,7 +215,7 @@ namespace Kliva.Services
             catch (Exception ex)
             {
                 string title = $"StravaAthleteService.GetKomsAsync - athleteId {athleteId}";
-                _logService.Log(title, ex);
+                _logService.LogException(title, ex);
             }
 
             return null;
@@ -247,7 +246,7 @@ namespace Kliva.Services
             catch (Exception ex)
             {
                 string title = $"StravaAthleteService.GetStatsAsync - athleteId {athleteId}";
-                _logService.Log(title, ex);
+                _logService.LogException(title, ex);
             }
 
             return null;

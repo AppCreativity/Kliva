@@ -6,12 +6,12 @@ namespace Kliva.Services
 {
     public class DebugLogService : ILogService
     {
-        public void Log(string title, string body)
+        public void Log(string category, string action, string label)
         {
-            Debug.WriteLine($"{title} -- {body}");
+            Debug.WriteLine($"Category: {category} - Action: {action} - Label: {label}");
         }
 
-        public void Log(string title, Exception exception)
+        public void LogException(string title, Exception exception)
         {
             Debug.WriteLine($"{title} -- {exception.Message}");
             Debug.WriteLine(exception.StackTrace);

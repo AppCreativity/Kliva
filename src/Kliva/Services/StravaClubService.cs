@@ -36,7 +36,7 @@ namespace Kliva.Services
             catch (Exception ex)
             {
                 string title = $"StravaClubService.GetClubFromServiceAsync - clubId {clubId}";
-                _logService.Log(title, ex);
+                _logService.LogException(title, ex);
             }
 
             return null;
@@ -59,7 +59,7 @@ namespace Kliva.Services
             catch (Exception ex)
             {
                 string title = $"StravaClubService.GetClubsAsync";
-                _logService.Log(title, ex);
+                _logService.LogException(title, ex);
             }
 
             return null;
@@ -93,7 +93,7 @@ namespace Kliva.Services
             catch (Exception ex)
             {
                 string title = $"StravaClubService.GetClubMembersAsync - clubId {clubId}";
-                _logService.Log(title, ex);
+                _logService.LogException(title, ex);
             }
 
             return null;
