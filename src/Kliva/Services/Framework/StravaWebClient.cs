@@ -38,29 +38,12 @@ namespace Kliva.Services
         /// </summary>
         /// <param name="uri">The Uri where the request will be sent.</param>
         /// <returns>The server's response.</returns>
-        public async Task<string> GetAsync(Uri uri)
+        public Task<string> GetAsync(Uri uri)
         {
             if (uri == null)
-            {
                 throw new ArgumentException("Parameter uri must not be null. Please commit a valid Uri object.");
-            }
 
-            using (HttpResponseMessage response = await StravaHttpClient.GetAsync(uri))
-            {
-                if (response != null)
-                {
-                    AsyncResponseReceived?.Invoke(null, new AsyncResponseReceivedEventArgs(response));
-                    CheckStravaApiUsage(response);
-
-                    _lastResponseCode = response.StatusCode;
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        return await response.Content.ReadAsStringAsync();
-                    }
-                }
-            }
-
-            return string.Empty;
+            return HandleStravaApiCallAsync(StravaHttpClient.GetAsync(uri));
         }
 
         /// <summary>
@@ -68,33 +51,15 @@ namespace Kliva.Services
         /// </summary>
         /// <param name="uri">The Uri where the request will be sent.</param>
         /// <returns>The server's response.</returns>
-        public async Task<String> SendPostAsync(Uri uri)
+        public Task<string> SendPostAsync(Uri uri)
         {
             if (uri == null)
-            {
                 throw new ArgumentException("Parameter uri must not be null. Please commit a valid Uri object.");
-            }
 
-            using (HttpResponseMessage response = await StravaHttpClient.PostAsync(uri, null))
-            {
-                if (response != null)
-                {
-                    AsyncResponseReceived?.Invoke(null, new AsyncResponseReceivedEventArgs(response));
-
-                    CheckStravaApiUsage(response);
-
-                    _lastResponseCode = response.StatusCode;
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        return await response.Content.ReadAsStringAsync();
-                    }
-                }
-            }
-
-            return string.Empty;
+            return HandleStravaApiCallAsync(StravaHttpClient.PostAsync(uri, null));
         }
 
-        public async Task<string> SendPostAsync(Uri uri, string fileName)
+        public Task<string> SendPostAsync(Uri uri, string fileName)
         {
             if (uri == null)
                 throw new ArgumentException("Parameter uri must not be null. Please commit a valid Uri object.");
@@ -106,23 +71,7 @@ namespace Kliva.Services
             MultipartFormDataContent content = new MultipartFormDataContent();
             content.Add(new ByteArrayContent(File.ReadAllBytes(info.FullName)), "file", info.Name);
 
-            using (HttpResponseMessage response = await StravaHttpClient.PostAsync(uri, content))
-            {
-                if (response != null)
-                {
-                    AsyncResponseReceived?.Invoke(null, new AsyncResponseReceivedEventArgs(response));
-
-                    CheckStravaApiUsage(response);
-
-                    _lastResponseCode = response.StatusCode;
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        return await response.Content.ReadAsStringAsync();
-                    }
-                }
-            }
-
-            return string.Empty;
+            return HandleStravaApiCallAsync(StravaHttpClient.PostAsync(uri, content));
         }
 
         /// <summary>
@@ -130,30 +79,12 @@ namespace Kliva.Services
         /// </summary>
         /// <param name="uri">The Uri where the request will be sent.</param>
         /// <returns>The server's response.</returns>
-        public async Task<string> SendPutAsync(Uri uri)
+        public Task<string> SendPutAsync(Uri uri)
         {
             if (uri == null)
-            {
                 throw new ArgumentException("Parameter uri must not be null. Please commit a valid Uri object.");
-            }
 
-            using (HttpResponseMessage response = await StravaHttpClient.PutAsync(uri, null))
-            {
-                if (response != null)
-                {
-                    AsyncResponseReceived?.Invoke(null, new AsyncResponseReceivedEventArgs(response));
-
-                    CheckStravaApiUsage(response);
-
-                    _lastResponseCode = response.StatusCode;
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        return await response.Content.ReadAsStringAsync();
-                    }
-                }
-            }
-
-            return string.Empty;
+            return HandleStravaApiCallAsync(StravaHttpClient.PutAsync(uri, null));
         }
 
         /// <summary>
@@ -161,31 +92,12 @@ namespace Kliva.Services
         /// </summary>
         /// <param name="uri">The Uri where the request will be sent.</param>
         /// <returns>The server's response.</returns>
-        public async Task<string> SendDeleteAsync(Uri uri)
+        public Task<string> SendDeleteAsync(Uri uri)
         {
             if (uri == null)
-            {
                 throw new ArgumentException("Parameter uri must not be null. Please commit a valid Uri object.");
-            }
 
-            using (HttpResponseMessage response = await StravaHttpClient.DeleteAsync(uri))
-            {
-
-                if (response != null)
-                {
-                    AsyncResponseReceived?.Invoke(null, new AsyncResponseReceivedEventArgs(response));
-
-                    CheckStravaApiUsage(response);
-
-                    _lastResponseCode = response.StatusCode;
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        return await response.Content.ReadAsStringAsync();
-                    }
-                }
-            }
-
-            return string.Empty;
+            return HandleStravaApiCallAsync(StravaHttpClient.DeleteAsync(uri));
         }
 
         private void InitializeHttpClient()
@@ -224,6 +136,26 @@ namespace Kliva.Services
                 Limits.Limit = new Limit(int.Parse(limit.Value.ElementAt(0).Split(',')[0]),
                     int.Parse(limit.Value.ElementAt(0).Split(',')[1]));
             }
+        }
+
+        private async Task<string> HandleStravaApiCallAsync(Task<HttpResponseMessage> asyncHttpCall)
+        {
+            using (HttpResponseMessage response = await asyncHttpCall)
+            {
+                if (response != null)
+                {
+                    AsyncResponseReceived?.Invoke(null, new AsyncResponseReceivedEventArgs(response));
+                    CheckStravaApiUsage(response);
+
+                    _lastResponseCode = response.StatusCode;
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        return await response.Content.ReadAsStringAsync();
+                    }
+                }
+            }
+
+            return string.Empty;
         }
     }
 }
