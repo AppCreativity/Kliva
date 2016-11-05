@@ -54,8 +54,7 @@ namespace Kliva.Services
             catch (Exception ex)
             {
                 string title = $"StravaActivityService.GetPhotosFromServiceAsync - activityId {activityId}";
-                string body = ex.Message;
-                _logService.Log(title, body);
+                _logService.Log(title, ex);
             }
 
             return null;
@@ -85,8 +84,7 @@ namespace Kliva.Services
             catch (Exception ex)
             {
                 string title = $"StravaActivityService.GetRelatedActivitiesFromServiceAsync - activityId {activityId}";
-                string body = ex.Message;
-                _logService.Log(title, body);
+                _logService.Log(title, ex);
             }
 
             return null;
@@ -162,8 +160,7 @@ namespace Kliva.Services
             catch (Exception ex)
             {
                 string title = $"StravaActivityService.GetActivityAsync - id {id} - includeEfforts {includeEfforts}";
-                string body = ex.Message;
-                _logService.Log(title, body);
+                _logService.Log(title, ex);
             }
 
             return null;
@@ -198,8 +195,7 @@ namespace Kliva.Services
             catch (Exception ex)
             {
                 string title = $"StravaActivityService.GetActivitiesAsync - page {page} - perPage {perPage}";
-                string body = ex.Message;
-                _logService.Log(title, body);
+                _logService.Log(title, ex);
             }
 
             return null;
@@ -234,8 +230,7 @@ namespace Kliva.Services
             catch (Exception ex)
             {
                 string title = $"StravaActivityService.GetFollowersActivitiesAsync - page {page} - perPage {perPage}";
-                string body = ex.Message;
-                _logService.Log(title, body);
+                _logService.Log(title, ex);
             }
 
             return null;
@@ -268,8 +263,7 @@ namespace Kliva.Services
             catch (Exception ex)
             {
                 string title = $"StravaActivityService.GetKudosAsync - activityId {activityId}";
-                string body = ex.Message;
-                _logService.Log(title, body);
+                _logService.Log(title, ex);
             }
 
             return null;
@@ -291,8 +285,7 @@ namespace Kliva.Services
             catch (Exception ex)
             {
                 string title = $"StravaActivityService.GiveKudosAsync - activityId {activityId}";
-                string body = ex.Message;
-                _logService.Log(title, body);
+                _logService.Log(title, ex);
             }
         }
 
@@ -315,8 +308,7 @@ namespace Kliva.Services
             catch (Exception ex)
             {
                 string title = $"StravaActivityService.GetCommentsAsync - activityId {activityId}";
-                string body = ex.Message;
-                _logService.Log(title, body);
+                _logService.Log(title, ex);
             }
 
             return null;
@@ -338,8 +330,7 @@ namespace Kliva.Services
             catch (Exception ex)
             {
                 string title = $"StravaActivityService.PostComment - activityId {activityId} - text {text}";
-                string body = ex.Message;
-                _logService.Log(title, body);
+                _logService.Log(title, ex);
             }
         }
 
@@ -368,8 +359,7 @@ namespace Kliva.Services
             catch (Exception ex)
             {
                 string title = $"StravaActivityService.PutUpdate - activityId {activityId} - name {name} - commute {commute} - isPrivate {isPrivate} - gearID {gearID}";
-                string body = ex.Message;
-                _logService.Log(title, body);
+                _logService.Log(title, ex);
             }
         }
 
@@ -399,8 +389,7 @@ namespace Kliva.Services
             catch (Exception ex)
             {
                 string title = $"StravaActivityService.GetFriendActivityDataAsync - page {page} - perPage {perPage}";
-                string body = ex.Message;
-                _logService.Log(title, body);
+                _logService.Log(title, ex);
             }
 
             _perflog.GetFriendActivityDataAsync(true, page, perPage);
@@ -420,8 +409,7 @@ namespace Kliva.Services
             catch (Exception ex)
             {
                 string title = $"StravaActivityService.GetMyActivityDataAsync - page {page} - perPage {perPage}";
-                string body = ex.Message;
-                _logService.Log(title, body);
+                _logService.Log(title, ex);
             }
             return data;
         }
@@ -446,8 +434,7 @@ namespace Kliva.Services
             catch (Exception ex)
             {
                 string title = $"StravaActivityService.UploadActivityAsync - gpxFilePath {gpxFilePath} - activityType {activityType.ToString()} - name {name} - commute {commute} - isPrivate {isPrivate}";
-                string body = ex.Message;
-                _logService.Log(title, body);
+                _logService.Log(title, ex);
             }
         }
 

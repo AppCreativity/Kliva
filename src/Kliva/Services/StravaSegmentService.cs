@@ -93,8 +93,7 @@ namespace Kliva.Services
             catch (Exception ex)
             {
                 string title = $"StravaSegmentService.GetSegmentFromServiceAsync - segmentId {segmentId}";
-                string body = ex.Message;
-                _logService.Log(title, body);
+                _logService.Log(title, ex);
             }
 
             return null;
@@ -120,8 +119,7 @@ namespace Kliva.Services
             catch (Exception ex)
             {
                 string title = $"StravaSegmentService.GetSegmentEffortFromServiceAsync - segmentEffortId {segmentEffortId}";
-                string body = ex.Message;
-                _logService.Log(title, body);
+                _logService.Log(title, ex);
             }
 
             return null;
@@ -149,8 +147,7 @@ namespace Kliva.Services
             catch (Exception ex)
             {
                 string title = $"StravaSegmentService.GetLeaderBoardFromServiceAsync - segmentId {segmentId}";
-                string body = ex.Message;
-                _logService.Log(title, body);
+                _logService.Log(title, ex);
             }
 
             return null;
@@ -179,8 +176,7 @@ namespace Kliva.Services
             catch (Exception ex)
             {
                 string title = $"StravaSegmentService.GetStarredSegmentsFromServiceAsync - athleteId {athleteId}";
-                string body = ex.Message;
-                _logService.Log(title, body);
+                _logService.Log(title, ex);
             }
 
             return null;
@@ -277,8 +273,7 @@ namespace Kliva.Services
             catch (Exception ex)
             {
                 string title = "StravaSegmentService.GetStarredSegmentsAsync";
-                string body = ex.Message;
-                _logService.Log(title, body);
+                _logService.Log(title, ex);
             }
 
             return null;

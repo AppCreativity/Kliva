@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using Windows.ApplicationModel;
 using Windows.Security.ExchangeActiveSyncProvisioning;
 using Windows.System.Profile;
@@ -60,6 +61,11 @@ namespace Kliva.Services
             logMessageBuilder.AppendLine(body);
 
             _googleAnalyticsService.Tracker.SendException(logMessageBuilder.ToString(), false);
+        }
+
+        public void Log(string title, Exception exception)
+        {
+            Log(title, exception.Message);
         }
 
         private void AppendDeviceInfo(StringBuilder logMessageBuilder)

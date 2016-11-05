@@ -97,9 +97,8 @@ namespace Kliva.Models
                         catch (Exception ex)
                         {
                             string title = "Map.OnMapPropertyChanged";
-                            string body = ex.Message;
                             ILogService logService = ServiceLocator.Current.GetInstance<ILogService>();
-                            logService.Log(title, body);
+                            logService.Log(title, ex);
                         }
                     }
                 }
