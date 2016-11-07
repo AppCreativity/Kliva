@@ -9,6 +9,7 @@ using Windows.UI.Xaml.Media.Imaging;
 using GalaSoft.MvvmLight.Threading;
 using Kliva.Helpers;
 using Kliva.Services;
+using Kliva.Services.Interfaces;
 using Microsoft.Practices.ServiceLocation;
 using Newtonsoft.Json;
 

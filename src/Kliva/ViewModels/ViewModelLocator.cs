@@ -5,6 +5,7 @@ using Kliva.Services;
 using Kliva.Services.Interfaces;
 using Microsoft.Practices.ServiceLocation;
 using Windows.ApplicationModel;
+using GoogleAnalytics;
 
 namespace Kliva.ViewModels
 {

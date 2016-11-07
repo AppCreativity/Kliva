@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Kliva.Helpers;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
+using Microsoft.Practices.ServiceLocation;
 
 namespace Kliva.Services
 {

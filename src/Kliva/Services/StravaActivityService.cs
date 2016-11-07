@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Kliva.Services.Performance;
+using Microsoft.Practices.ServiceLocation;
 
 namespace Kliva.Services
 {

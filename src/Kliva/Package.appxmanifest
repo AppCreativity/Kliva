@@ -4,7 +4,7 @@
   <mp:PhoneIdentity PhoneProductId="d4f50597-5faf-413e-a2bd-7ce8de167b43" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Kliva</DisplayName>
-    <PublisherDisplayName>glenn</PublisherDisplayName>
+    <PublisherDisplayName>AppCreativity</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>
