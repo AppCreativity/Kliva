@@ -66,9 +66,9 @@ namespace Kliva.Models
         public void SetUserMeasurementUnits(DistanceUnitType measurementUnit)
         {
             MeasurementUnit = measurementUnit;
-            bool IsMetric = MeasurementHelper.IsMetric(MeasurementUnit);
-            var elevationDistanceUnitType = MeasurementHelper.GetElevationUnitType(IsMetric);
-            var distanceUnitType = MeasurementHelper.GetDistanceUnitType(IsMetric);
+            bool isMetric = MeasurementHelper.IsMetric(MeasurementUnit);
+            var elevationDistanceUnitType = MeasurementHelper.GetElevationUnitType(isMetric);
+            var distanceUnitType = MeasurementHelper.GetDistanceUnitType(isMetric);
 
             TotalDistanceUserMeasurementUnit = new UserMeasurementUnitMetric((float)Distance, DistanceUnitType.Metres, distanceUnitType);
             ElevationGainUserMeasurementUnit = new UserMeasurementUnitMetric((float)ElevationGain, DistanceUnitType.Metres, elevationDistanceUnitType);
@@ -144,9 +144,9 @@ namespace Kliva.Models
         {
             MeasurementUnit = measurementUnit;
 
-            bool IsMetric = MeasurementHelper.IsMetric(MeasurementUnit);
-            var elevationDistanceUnitType = MeasurementHelper.GetElevationUnitType(IsMetric);
-            var distanceUnitType = MeasurementHelper.GetDistanceUnitType(IsMetric);
+            bool isMetric = MeasurementHelper.IsMetric(MeasurementUnit);
+            var elevationDistanceUnitType = MeasurementHelper.GetElevationUnitType(isMetric);
+            var distanceUnitType = MeasurementHelper.GetDistanceUnitType(isMetric);
 
             BiggestRideDistanceUserMeasurementUnit = new UserMeasurementUnitMetric(BiggestRideDistance ?? 0, DistanceUnitType.Metres, distanceUnitType);
             BiggestClimbElevationGainUserMeasurementUnit = new UserMeasurementUnitMetric(BiggestClimbElevationGain ?? 0, DistanceUnitType.Metres, elevationDistanceUnitType);

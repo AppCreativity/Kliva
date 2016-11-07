@@ -48,7 +48,7 @@ namespace Kliva.Models
         /// True if the segment was marked as hazardous.
         /// </summary>
         [JsonProperty("hazardous")]
-        public Boolean IsHazardous { get; set; }
+        public bool IsHazardous { get; set; }
 
         /// <summary>
         /// The personal record time.

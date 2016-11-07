@@ -105,7 +105,7 @@ namespace Kliva.Models
         {
             get
             {
-                if (!string.IsNullOrEmpty(this.ProfileMedium) && this.ProfileMedium.Contains("http"))
+                if (!string.IsNullOrEmpty(ProfileMedium) && ProfileMedium.Contains("http"))
                     return ProfileMedium;
                 else
                     return Constants.STRAVA_DEFAULT_AVATAR;

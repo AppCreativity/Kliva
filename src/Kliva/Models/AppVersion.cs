@@ -12,10 +12,10 @@ namespace Kliva.Models
 
         public AppVersion(PackageVersion appVersion)
         {
-            this.Major = appVersion.Major;
-            this.Minor = appVersion.Minor;
-            this.Patch = appVersion.Build;
-            this.Iteration = appVersion.Revision;
+            Major = appVersion.Major;
+            Minor = appVersion.Minor;
+            Patch = appVersion.Build;
+            Iteration = appVersion.Revision;
         }
 
         public int CompareTo(object obj)
@@ -24,28 +24,28 @@ namespace Kliva.Models
             {
                 AppVersion toCompare = (AppVersion)obj;
 
-                if (this.Major > toCompare.Major)
+                if (Major > toCompare.Major)
                     return 1;
 
-                if (this.Major < toCompare.Major)
+                if (Major < toCompare.Major)
                     return -1;
 
-                if (this.Minor > toCompare.Minor)
+                if (Minor > toCompare.Minor)
                     return 1;
 
-                if (this.Minor < toCompare.Minor)
+                if (Minor < toCompare.Minor)
                     return -1;
 
-                if (this.Patch > toCompare.Patch)
+                if (Patch > toCompare.Patch)
                     return 1;
 
-                if (this.Patch < toCompare.Patch)
+                if (Patch < toCompare.Patch)
                     return -1;
 
-                if (this.Iteration > toCompare.Iteration)
+                if (Iteration > toCompare.Iteration)
                     return 1;
 
-                if (this.Iteration < toCompare.Iteration)
+                if (Iteration < toCompare.Iteration)
                     return -1;
             }
 

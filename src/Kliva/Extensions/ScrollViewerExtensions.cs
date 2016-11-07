@@ -532,65 +532,35 @@ namespace Kliva.Extensions
 
         #endregion
 
-        #region ScrollToHorizontalOffsetWithAnimation()
-        internal void ScrollToHorizontalOffsetWithAnimation(
-            double offset,
-            TimeSpan duration,
-            EasingFunctionBase easingFunction)
+        internal void ScrollToHorizontalOffsetWithAnimation(double offset, TimeSpan duration, EasingFunctionBase easingFunction)
         {
-            var sb = new Storyboard();
-            var da = new DoubleAnimation();
-            da.EnableDependentAnimation = true;
-            da.From = _scrollViewer.HorizontalOffset;
-            da.To = offset;
-            da.EasingFunction = easingFunction;
-            da.Duration = duration;
-            sb.Children.Add(da);
-            Storyboard.SetTarget(sb, _sliderHorizontal);
-            Storyboard.SetTargetProperty(da, "Value");
-            sb.Begin();
+            CreateAndStartStoryBoard(_sliderHorizontal, duration, easingFunction, _scrollViewer.HorizontalOffset, offset);
         }
-        #endregion
 
-        #region ScrollToVerticalOffsetWithAnimation()
-        internal void ScrollToVerticalOffsetWithAnimation(
-            double offset,
-            TimeSpan duration,
-            EasingFunctionBase easingFunction)
+        internal void ScrollToVerticalOffsetWithAnimation(double offset, TimeSpan duration, EasingFunctionBase easingFunction)
         {
-            var sb = new Storyboard();
-            var da = new DoubleAnimation();
-            da.EnableDependentAnimation = true;
-            da.From = _scrollViewer.VerticalOffset;
-            da.To = offset;
-            da.EasingFunction = easingFunction;
-            da.Duration = duration;
-            sb.Children.Add(da);
-            Storyboard.SetTarget(sb, _sliderVertical);
-            Storyboard.SetTargetProperty(da, "Value");
-            sb.Begin();
+            CreateAndStartStoryBoard(_sliderVertical, duration, easingFunction, _scrollViewer.VerticalOffset, offset);
         }
-        #endregion
 
-        #region ZoomToFactorWithAnimation()
-        internal void ZoomToFactorWithAnimation(
-            double factor,
-            TimeSpan duration,
-            EasingFunctionBase easingFunction)
+        internal void ZoomToFactorWithAnimation(double factor, TimeSpan duration, EasingFunctionBase easingFunction)
         {
-            var sb = new Storyboard();
-            var da = new DoubleAnimation();
-            da.EnableDependentAnimation = true;
-            da.From = _scrollViewer.ZoomFactor;
-            da.To = factor;
-            da.EasingFunction = easingFunction;
-            da.Duration = duration;
-            sb.Children.Add(da);
-            Storyboard.SetTarget(sb, _sliderZoom);
-            Storyboard.SetTargetProperty(da, "Value");
-            sb.Begin();
+            CreateAndStartStoryBoard(_sliderZoom, duration, easingFunction, _scrollViewer.ZoomFactor, factor);
         }
-        #endregion
+
+        private void CreateAndStartStoryBoard(DependencyObject dependencyObject, TimeSpan duration, EasingFunctionBase easingFunction, 
+            double from, double to)
+        {
+            var storyboard = new Storyboard();
+            var doubleAnimation = new DoubleAnimation();
+            doubleAnimation.EnableDependentAnimation = true;
+            doubleAnimation.From = from;
+            doubleAnimation.To = to;
+            doubleAnimation.EasingFunction = easingFunction;
+            doubleAnimation.Duration = duration;
+            storyboard.Children.Add(doubleAnimation);
+            Storyboard.SetTarget(storyboard, dependencyObject);
+            Storyboard.SetTargetProperty(doubleAnimation, "Value");
+            storyboard.Begin();
+        }
     }
-
 }

@@ -18,7 +18,7 @@ namespace Kliva.Models
         /// True if this is the primary gear.
         /// </summary>
         [JsonProperty("primary")]
-        public Boolean IsPrimary { get; set; }
+        public bool IsPrimary { get; set; }
 
         /// <summary>
         /// Gear's name. Athlete entered for bikes, generated from brand and model for shoes

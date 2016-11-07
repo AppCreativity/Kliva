@@ -35,10 +35,7 @@ namespace Kliva.Models
         /// <summary>
         /// The type of the activity.
         /// </summary>
-        public ActivityType Type
-        {
-            get { return (ActivityType)Enum.Parse(typeof(ActivityType), _type); }
-        }
+        public ActivityType Type => (ActivityType)Enum.Parse(typeof(ActivityType), _type);
 
         /// <summary>
         /// The distance travelled.
@@ -332,17 +329,17 @@ namespace Kliva.Models
         [JsonProperty("map")]
         public Map Map { get; set; }
 
-        private AthleteMeta _AthleteMeta;
+        private AthleteMeta _athleteMeta;
         /// <summary>
         /// Meta object of the athlete of this activity.
         /// </summary>
         [JsonProperty("athlete")]
         public AthleteMeta AthleteMeta
         {
-            get { return _AthleteMeta; }
+            get { return _athleteMeta; }
             set
             {
-                _AthleteMeta = value;
+                _athleteMeta = value;
                 ConsolidateWithCache(value);
             }
         }
@@ -401,7 +398,7 @@ namespace Kliva.Models
             {
                 if (string.IsNullOrEmpty(_typeImage))
                 {
-                    switch (this.Type)
+                    switch (Type)
                     {
                         case ActivityType.Ride:
                         case ActivityType.EBikeRide:
@@ -443,10 +440,10 @@ namespace Kliva.Models
         {
             MeasurementUnit = measurementUnit;
 
-            bool IsMetric = MeasurementHelper.IsMetric(MeasurementUnit);
-            var elevationDistanceUnitType = MeasurementHelper.GetElevationUnitType(IsMetric);
-            var speedUnit = MeasurementHelper.GetSpeedUnit(IsMetric);
-            var distanceUnitType = MeasurementHelper.GetDistanceUnitType(IsMetric);
+            bool isMetric = MeasurementHelper.IsMetric(MeasurementUnit);
+            var elevationDistanceUnitType = MeasurementHelper.GetElevationUnitType(isMetric);
+            var speedUnit = MeasurementHelper.GetSpeedUnit(isMetric);
+            var distanceUnitType = MeasurementHelper.GetDistanceUnitType(isMetric);
 
             ElevationGainUserMeasurementUnit = new UserMeasurementUnitMetric(ElevationGain, DistanceUnitType.Metres, elevationDistanceUnitType);
             AverageSpeedUserMeasurementUnit = new UserMeasurementUnitMetric(AverageSpeed, SpeedUnit.MetresPerSecond, speedUnit);
