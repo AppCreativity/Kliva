@@ -1,12 +1,12 @@
 [
   {
     "VersionAsString": "2.0.0.0",
-    "GeneralInfo": "Our first release of the UWP version for Kliva!\r\nRebuild from the ground up with a newer design and it is now also be better alligned with the Strava API\r\nFully Open Source up on GitHub ( https://github.com/AppCreativity/Kliva ), please log any issues there and UWP devs who would love to join are more than welcome",
+    "GeneralInfo": "Our first release of the UWP version for Kliva!\r\nRebuild from the ground up with a newer design and it is now also be better aligned with the Strava API.\r\nFully Open Source up on GitHub ( https://github.com/AppCreativity/Kliva ), please log any issues there and UWP devs who would love to join are more than welcome",
     "Features": [
-      "- UWP version, so it now runs on Win10 mobile, Win10 desktop and will also work with Continuum",
-      "- Added GPS tracking, enabling you to track and upload an activity directly to Strava",
-      "- Added Activity editing, some settings on your own Strava activity are now editable from within the app",
-      "- Several new Strava possibilities in reference to the Kliva Windows Phone app"
+      "- UWP version, so it now runs on Win10 mobile, Win10 desktop and will also work with Continuum.",
+      "- Added GPS tracking, enabling you to track and upload an activity directly to Strava.",
+      "- Added Activity editing, some settings on your own Strava activity are now editable from within the app.",
+      "- Several new Strava possibilities in reference to the Kliva Windows Phone app."
     ],
     "BugFixes": null
   }
