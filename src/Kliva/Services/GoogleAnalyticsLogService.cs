@@ -9,6 +9,7 @@ namespace Kliva.Services
 {
     public class GoogleAnalyticsLogService : ILogService
     {
+        private readonly StringBuilder _logMessageBuilder = new StringBuilder();
         private readonly IGoogleAnalyticsService _googleAnalyticsService;
 
         public string SystemFamily { get; }
@@ -60,23 +61,23 @@ namespace Kliva.Services
 
         public void LogException(string title, Exception exception)
         {
-            StringBuilder logMessageBuilder = new StringBuilder();
-            logMessageBuilder.AppendLine(title);
-            AppendDeviceInfo(logMessageBuilder);
-            logMessageBuilder.AppendLine(exception.Message);
+            _logMessageBuilder.Clear();
+            _logMessageBuilder.AppendLine(title);
+            AppendDeviceInfo();
+            _logMessageBuilder.AppendLine(exception.Message);
 
-            _googleAnalyticsService.Tracker.SendException(logMessageBuilder.ToString(), false);
+            _googleAnalyticsService.Tracker.SendException(_logMessageBuilder.ToString(), false);
         }
 
-        private void AppendDeviceInfo(StringBuilder logMessageBuilder)
+        private void AppendDeviceInfo()
         {
-            logMessageBuilder.AppendLine("****");
+            _logMessageBuilder.AppendLine("****");
 
-            logMessageBuilder.AppendLine($"{SystemFamily} - {SystemVersion}");
-            logMessageBuilder.AppendLine($"{ApplicationName} - {ApplicationVersion}");
-            logMessageBuilder.AppendLine($"{DeviceManufacturer} - {DeviceModel}");
+            _logMessageBuilder.AppendLine($"{SystemFamily} - {SystemVersion}");
+            _logMessageBuilder.AppendLine($"{ApplicationName} - {ApplicationVersion}");
+            _logMessageBuilder.AppendLine($"{DeviceManufacturer} - {DeviceModel}");
 
-            logMessageBuilder.AppendLine("****");
+            _logMessageBuilder.AppendLine("****");
         }
     }
 }
