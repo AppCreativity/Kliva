@@ -54,11 +54,8 @@ namespace Kliva.Services
             }
             catch (Exception ex)
             {
-#if !DEBUG
                 string title = $"StravaAthleteService.GetAthleteFromServiceAsync - athleteId {athleteId}";
-                string body = ex.Message;
-                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_logService.Log(title, body), false);
-#endif
+                _logService.LogException(title, ex);
             }
 
             return null;
@@ -86,19 +83,15 @@ namespace Kliva.Services
 
                     Athlete = Unmarshaller<Athlete>.Unmarshal(json);
 
-#if !DEBUG
                     string athleteUri = $"{Endpoints.PublicAthlete}/{Athlete.Id}";
-                    ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendEvent("API", "GetAthleteAsync", athleteUri, 0);
-#endif
+                    _logService.Log("API", "GetAthleteAsync", athleteUri);
+
                     return Athlete;
                 }
                 catch (Exception ex)
                 {
-#if !DEBUG
-                string title = $"StravaAthleteService.GetAthleteAsync";
-                string body = ex.Message;
-                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_logService.Log(title, body), false);
-#endif
+                    string title = "StravaAthleteService.GetAthleteAsync";
+                    _logService.LogException(title, ex);
                 }
             }
             _perflog.GetAthleteAsync(true);
@@ -149,11 +142,8 @@ namespace Kliva.Services
             }
             catch (Exception ex)
             {
-#if !DEBUG
                 string title = $"StravaAthleteService.GetFollowersAsync - athleteId {athleteId} - authenticatedUser {authenticatedUser}";
-                string body = ex.Message;
-                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_logService.Log(title, body), false);
-#endif
+                _logService.LogException(title, ex);
             }
 
             return null;
@@ -177,11 +167,8 @@ namespace Kliva.Services
             }
             catch (Exception ex)
             {
-#if !DEBUG
                 string title = $"StravaAthleteService.GetFriendsAsync - athleteId {athleteId} - authenticatedUser {authenticatedUser}";
-                string body = ex.Message;
-                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_logService.Log(title, body), false);
-#endif
+                _logService.LogException(title, ex);
             }
 
             return null;
@@ -201,11 +188,8 @@ namespace Kliva.Services
             }
             catch (Exception ex)
             {
-#if !DEBUG
                 string title = $"StravaAthleteService.GetMutualFriendsAsync - athleteId {athleteId}";
-                string body = ex.Message;
-                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_logService.Log(title, body), false);
-#endif
+                _logService.LogException(title, ex);
             }
 
                 return null;
@@ -231,11 +215,8 @@ namespace Kliva.Services
             }
             catch (Exception ex)
             {
-#if !DEBUG
                 string title = $"StravaAthleteService.GetKomsAsync - athleteId {athleteId}";
-                string body = ex.Message;
-                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_logService.Log(title, body), false);
-#endif
+                _logService.LogException(title, ex);
             }
 
             return null;
@@ -265,11 +246,8 @@ namespace Kliva.Services
             }
             catch (Exception ex)
             {
-#if !DEBUG
                 string title = $"StravaAthleteService.GetStatsAsync - athleteId {athleteId}";
-                string body = ex.Message;
-                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_logService.Log(title, body), false);
-#endif
+                _logService.LogException(title, ex);
             }
 
             return null;

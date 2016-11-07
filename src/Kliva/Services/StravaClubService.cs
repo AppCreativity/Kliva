@@ -36,11 +36,8 @@ namespace Kliva.Services
             }
             catch (Exception ex)
             {
-#if !DEBUG
                 string title = $"StravaClubService.GetClubFromServiceAsync - clubId {clubId}";
-                string body = ex.Message;
-                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_logService.Log(title, body), false);
-#endif
+                _logService.LogException(title, ex);
             }
 
             return null;
@@ -62,11 +59,8 @@ namespace Kliva.Services
             }
             catch (Exception ex)
             {
-#if !DEBUG
                 string title = $"StravaClubService.GetClubsAsync";
-                string body = ex.Message;
-                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_logService.Log(title, body), false);
-#endif
+                _logService.LogException(title, ex);
             }
 
             return null;
@@ -99,11 +93,8 @@ namespace Kliva.Services
             }
             catch (Exception ex)
             {
-#if !DEBUG
                 string title = $"StravaClubService.GetClubMembersAsync - clubId {clubId}";
-                string body = ex.Message;
-                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_logService.Log(title, body), false);
-#endif
+                _logService.LogException(title, ex);
             }
 
             return null;

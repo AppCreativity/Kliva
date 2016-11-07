@@ -1,7 +1,10 @@
+using System;
+
 namespace Kliva.Services.Interfaces
 {
     public interface ILogService
     {
-        string Log(string title, string body);
+        void Log(string category, string action, string label);
+        void LogException(string title, Exception exception);
     }
 }

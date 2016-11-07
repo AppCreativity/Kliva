@@ -96,12 +96,9 @@ namespace Kliva.Models
                         }
                         catch (Exception ex)
                         {
-#if !DEBUG
-                            string title = $"Map.OnMapPropertyChanged";
-                            string body = ex.Message;
+                            string title = "Map.OnMapPropertyChanged";
                             ILogService logService = ServiceLocator.Current.GetInstance<ILogService>();
-                            ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(logService.Log(title, body), false);
-#endif
+                            logService.LogException(title, ex);
                         }
                     }
                 }

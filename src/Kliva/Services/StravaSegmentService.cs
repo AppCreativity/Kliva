@@ -93,11 +93,8 @@ namespace Kliva.Services
             }
             catch (Exception ex)
             {
-#if !DEBUG
                 string title = $"StravaSegmentService.GetSegmentFromServiceAsync - segmentId {segmentId}";
-                string body = ex.Message;
-                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_logService.Log(title, body), false);
-#endif
+                _logService.LogException(title, ex);
             }
 
             return null;
@@ -122,11 +119,8 @@ namespace Kliva.Services
             }
             catch (Exception ex)
             {
-#if !DEBUG
                 string title = $"StravaSegmentService.GetSegmentEffortFromServiceAsync - segmentEffortId {segmentEffortId}";
-                string body = ex.Message;
-                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_logService.Log(title, body), false);
-#endif
+                _logService.LogException(title, ex);
             }
 
             return null;
@@ -153,11 +147,8 @@ namespace Kliva.Services
             }
             catch (Exception ex)
             {
-#if !DEBUG
                 string title = $"StravaSegmentService.GetLeaderBoardFromServiceAsync - segmentId {segmentId}";
-                string body = ex.Message;
-                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_logService.Log(title, body), false);
-#endif
+                _logService.LogException(title, ex);
             }
 
             return null;
@@ -185,11 +176,8 @@ namespace Kliva.Services
             }
             catch (Exception ex)
             {
-#if !DEBUG
                 string title = $"StravaSegmentService.GetStarredSegmentsFromServiceAsync - athleteId {athleteId}";
-                string body = ex.Message;
-                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_logService.Log(title, body), false);
-#endif
+                _logService.LogException(title, ex);
             }
 
             return null;
@@ -285,11 +273,8 @@ namespace Kliva.Services
             }
             catch (Exception ex)
             {
-#if !DEBUG
-                string title = $"StravaSegmentService.GetStarredSegmentsAsync";
-                string body = ex.Message;
-                ServiceLocator.Current.GetInstance<IGoogleAnalyticsService>().Tracker.SendException(_logService.Log(title, body), false);
-#endif
+                string title = "StravaSegmentService.GetStarredSegmentsAsync";
+                _logService.LogException(title, ex);
             }
 
             return null;
