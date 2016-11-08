@@ -12,6 +12,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Maps;
 using Windows.UI.Xaml.Navigation;
+using Kliva.Models;
 
 namespace Kliva.Views
 {
@@ -24,7 +25,9 @@ namespace Kliva.Views
 
         public RecordPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
+            TrackingMap.MapServiceToken = StravaIdentityConstants.MAPS_SERVICETOKEN;
+
             //TODO: Glenn - Get a bigger icon?
             _currentLocation.Image = RandomAccessStreamReference.CreateFromUri(new Uri("ms-appx:///Assets/CurrentPosition.png"));
             _currentLocation.NormalizedAnchorPoint = new Point(0.5, 0.5);

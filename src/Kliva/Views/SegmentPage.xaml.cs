@@ -23,7 +23,8 @@ namespace Kliva.Views
 
         public SegmentPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
+            SegmentMap.MapServiceToken = StravaIdentityConstants.MAPS_SERVICETOKEN;
 
             ServiceLocator.Current.GetInstance<IMessenger>().Register<PolylineMessage>(this, Tokens.SegmentPolylineMessage, async message => await DrawPolyline(message.Geopositions));
         }

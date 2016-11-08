@@ -28,6 +28,7 @@ namespace Kliva.Controls
         public ActivityDetailControl()
         {
             this.InitializeComponent();
+            ActivityMap.MapServiceToken = StravaIdentityConstants.MAPS_SERVICETOKEN;
 
             //DataContextChanged += (sender, arg) => this.Bindings.Update();
 
