@@ -9,5 +9,13 @@
       "- Several new Strava possibilities in reference to the Kliva Windows Phone app."
     ],
     "BugFixes": null
+  },
+  {
+    "VersionAsString": "2.0.1.0",
+    "GeneralInfo": null,
+    "Features": null,
+    "BugFixes": [
+      "- Fixing MapServiceToken warning."
+    ]
   }
 ]
