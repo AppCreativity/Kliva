@@ -56,6 +56,12 @@ namespace Kliva.Models
         public int ElapsedTime { get; set; }
 
         /// <summary>
+        /// True if heartrate data is available. You can get the heartrate data using streams.
+        /// </summary>
+        [JsonProperty("has_heartrate")]
+        public bool HasHeartrate { get; set; }
+
+        /// <summary>
         /// The total elevation gain in meters.
         /// </summary>
         [JsonProperty("total_elevation_gain")]
