@@ -17,7 +17,8 @@ namespace Kliva.Views
     {
         public MapPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
+            ActivityMap.MapServiceToken = StravaIdentityConstants.MAPS_SERVICETOKEN;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
