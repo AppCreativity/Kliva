@@ -26,6 +26,7 @@ namespace Kliva.Controls
         }
 
         #region PullToRefresh Member Variables
+
         private const float REFRESH_ICON_MAX_OFFSET_Y = 36.0f;
 
         private CompositionPropertySet _scrollerViewerManipulation;
@@ -332,23 +333,25 @@ namespace Kliva.Controls
                 itemVisual.Opacity = 0f;
                 itemVisual.Offset = new Vector3(0, 100, 0);
 
+                var relativeIndex = itemIndex - itemsPanel.FirstVisibleIndex;
+
                 // Create KeyFrameAnimations
                 KeyFrameAnimation offsetAnimation = Compositor.CreateScalarKeyFrameAnimation();
                 offsetAnimation.InsertExpressionKeyFrame(1f, "0");
                 offsetAnimation.Duration = TimeSpan.FromMilliseconds(1250);
-                offsetAnimation.DelayTime = TimeSpan.FromMilliseconds(itemIndex * 100);
+                offsetAnimation.DelayTime = TimeSpan.FromMilliseconds(relativeIndex * 100);
 
                 Vector3KeyFrameAnimation scaleAnimation = Compositor.CreateVector3KeyFrameAnimation();
                 scaleAnimation.InsertKeyFrame(0, new Vector3(1f, 1f, 0f));
                 scaleAnimation.InsertKeyFrame(0.1f, new Vector3(0.05f, 0.05f, 0.05f));
                 scaleAnimation.InsertKeyFrame(1f, new Vector3(1f, 1f, 0f));
                 scaleAnimation.Duration = TimeSpan.FromMilliseconds(1000);
-                scaleAnimation.DelayTime = TimeSpan.FromMilliseconds(itemIndex * 100);
+                scaleAnimation.DelayTime = TimeSpan.FromMilliseconds(relativeIndex * 100);
 
                 KeyFrameAnimation fadeAnimation = Compositor.CreateScalarKeyFrameAnimation();
                 fadeAnimation.InsertExpressionKeyFrame(1f, "1");
                 fadeAnimation.Duration = TimeSpan.FromMilliseconds(500);
-                fadeAnimation.DelayTime = TimeSpan.FromMilliseconds(itemIndex * 100);
+                fadeAnimation.DelayTime = TimeSpan.FromMilliseconds(relativeIndex * 100);
 
                 // Start animations
                 itemVisual.StartAnimation("Offset.Y", offsetAnimation);
