@@ -5,7 +5,8 @@
     xmlns:controls="using:Kliva.Controls"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
-    xmlns:converters="using:Kliva.Converters">
+    xmlns:converters="using:Kliva.Converters"
+    xmlns:uwpToolkitControls="using:Microsoft.Toolkit.Uwp.UI.Controls">
 
     <converters:DistanceUnitToStringConverter x:Key="DistanceUnitToStringConverter" />
     <converters:SpeedUnitToStringConverter x:Key="SpeedUnitToStringConverter" />
@@ -16,58 +17,73 @@
     <DataTemplate x:Key="ActivityListItemDataTemplate"
                   x:DataType="models:ActivitySummary">
         <!-- UserControl needed for visual state manager -->
-        <UserControl>
-          <RelativePanel x:Name="ActivityListItemPanel"
+        <uwpToolkitControls:SlidableListItem x:Name="SlidableActivityListItem"
+                                             HorizontalAlignment="Stretch"
+                                             MouseSlidingEnabled="True"
+                                             LeftBackground="{StaticResource KlivaMainBrush}"
+                                             LeftIcon="Like"
+                                             LeftLabel="Give Kudos"
+                                             RightBackground="{StaticResource KlivaMainBrush}"
+                                             RightIcon="Comment"
+                                             RightLabel="Comment">
+            <interactivity:Interaction.Behaviors>
+                <core:DataTriggerBehavior Binding="{x:Bind HasKudoed, Mode=OneWay}" ComparisonCondition="Equal" Value="True">
+                    <core:ChangePropertyAction TargetObject="{Binding ElementName=SlidableActivityListItem}" PropertyName="LeftLabel" Value="View Kudos"/>
+                </core:DataTriggerBehavior>
+            </interactivity:Interaction.Behaviors>
+            <UserControl>
+                <RelativePanel x:Name="ActivityListItemPanel"
                                Margin="0">
-                 <VisualStateManager.VisualStateGroups>
-                    <VisualStateGroup x:Name="VisualStateGroup">
-                        <VisualState x:Name="Mobile">
-                            <VisualState.StateTriggers>
-                                <AdaptiveTrigger MinWindowWidth="320" />
-                            </VisualState.StateTriggers>
-                            <VisualState.Setters>
-                                <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseMobile}" />
-                                <Setter Target="ActivityImage.Style" Value="{StaticResource ActivityImageBorderMobile}"/>
-                                <Setter Target="ActivityImageIcon.FontSize" Value="12" />
-                                <Setter Target="ActivityAthleteName.FontSize" Value="12" />
-                                <!-- TODO: Glenn - This is not 100% correct! Because small view on a non Windows 10 Mobile device would also need 15 margin Right because of the 'fat' scrollbar, on WP10 scrollbar design in 'small' -->
-                                <Setter Target="ActivityListItemPanel.Padding" Value="10,10,10,10" />
-                                <Setter Target="ActivityStart.Style" Value="{StaticResource StartTextBlockMobile}" />
-                            </VisualState.Setters>
-                        </VisualState>
-                        <VisualState x:Name="Desktop">
-                            <VisualState.StateTriggers>
-                                <AdaptiveTrigger MinWindowWidth="720" />
-                            </VisualState.StateTriggers>
-                            <VisualState.Setters>
-                                <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseDesktop}" />
-                                <Setter Target="ActivityImage.Style" Value="{StaticResource ActivityImageBorderDesktop}"/>
-                                <Setter Target="ActivityImageIcon.FontSize" Value="14" />
-                                <Setter Target="ActivityAthleteName.FontSize" Value="14" />
-                                <Setter Target="ActivityListItemPanel.Padding" Value="10,10,15,10" />
-                                <Setter Target="ActivityStart.Style" Value="{StaticResource StartTextBlockDesktop}" />
-                            </VisualState.Setters>
-                        </VisualState>
-                    </VisualStateGroup>
-                </VisualStateManager.VisualStateGroups>
-                <RelativePanel.Background>
-                    <ImageBrush ImageSource="{x:Bind Map.GoogleImage, Mode=OneWay}" Stretch="UniformToFill" Opacity="0.2" />
-                </RelativePanel.Background>
-                     <interactivity:Interaction.Behaviors>
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup x:Name="VisualStateGroup">
+                            <VisualState x:Name="Mobile">
+                                <VisualState.StateTriggers>
+                                    <StateTrigger></StateTrigger>
+                                    <AdaptiveTrigger MinWindowWidth="320" />
+                                </VisualState.StateTriggers>
+                                <VisualState.Setters>
+                                    <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseMobile}" />
+                                    <Setter Target="ActivityImage.Style" Value="{StaticResource ActivityImageBorderMobile}"/>
+                                    <Setter Target="ActivityImageIcon.FontSize" Value="12" />
+                                    <Setter Target="ActivityAthleteName.FontSize" Value="12" />
+                                    <!-- TODO: Glenn - This is not 100% correct! Because small view on a non Windows 10 Mobile device would also need 15 margin Right because of the 'fat' scrollbar, on WP10 scrollbar design in 'small' -->
+                                    <Setter Target="ActivityListItemPanel.Padding" Value="10,10,10,10" />
+                                    <Setter Target="ActivityStart.Style" Value="{StaticResource StartTextBlockMobile}" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Desktop">
+                                <VisualState.StateTriggers>
+                                    <AdaptiveTrigger MinWindowWidth="720" />
+                                </VisualState.StateTriggers>
+                                <VisualState.Setters>
+                                    <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseDesktop}" />
+                                    <Setter Target="ActivityImage.Style" Value="{StaticResource ActivityImageBorderDesktop}"/>
+                                    <Setter Target="ActivityImageIcon.FontSize" Value="14" />
+                                    <Setter Target="ActivityAthleteName.FontSize" Value="14" />
+                                    <Setter Target="ActivityListItemPanel.Padding" Value="10,10,15,10" />
+                                    <Setter Target="ActivityStart.Style" Value="{StaticResource StartTextBlockDesktop}" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+                    <RelativePanel.Background>
+                        <ImageBrush ImageSource="{x:Bind Map.GoogleImage, Mode=OneWay}" Stretch="UniformToFill" Opacity="0.2" />
+                    </RelativePanel.Background>
+                    <interactivity:Interaction.Behaviors>
                         <core:DataTriggerBehavior Binding="{x:Bind OtherAthleteCount, Mode=OneWay}" ComparisonCondition="GreaterThan" Value="0">
-                        <core:ChangePropertyAction TargetObject="{Binding ElementName=AthleteCountPanel}" PropertyName="Visibility" Value="Visible"/>
-                    </core:DataTriggerBehavior>
-                            <core:DataTriggerBehavior Binding="{x:Bind OtherAthleteCount, Mode=OneWay}" ComparisonCondition="LessThanOrEqual" Value="0">
-                        <core:ChangePropertyAction TargetObject="{Binding ElementName=AthleteCountPanel}" PropertyName="Visibility" Value="Collapsed"/>
-                    </core:DataTriggerBehavior>
+                            <core:ChangePropertyAction TargetObject="{Binding ElementName=AthleteCountPanel}" PropertyName="Visibility" Value="Visible"/>
+                        </core:DataTriggerBehavior>
+                        <core:DataTriggerBehavior Binding="{x:Bind OtherAthleteCount, Mode=OneWay}" ComparisonCondition="LessThanOrEqual" Value="0">
+                            <core:ChangePropertyAction TargetObject="{Binding ElementName=AthleteCountPanel}" PropertyName="Visibility" Value="Collapsed"/>
+                        </core:DataTriggerBehavior>
 
-                    <core:DataTriggerBehavior Binding="{x:Bind AchievementCount, Mode=OneWay}" ComparisonCondition="GreaterThan" Value="0">
-                        <core:ChangePropertyAction TargetObject="{Binding ElementName=AchievementPanel}" PropertyName="Visibility" Value="Visible"/>
-                    </core:DataTriggerBehavior>
-                    <core:DataTriggerBehavior Binding="{x:Bind AchievementCount, Mode=OneWay}" ComparisonCondition="LessThanOrEqual" Value="0">
-                        <core:ChangePropertyAction TargetObject="{Binding ElementName=AchievementPanel}" PropertyName="Visibility" Value="Collapsed"/>
-                    </core:DataTriggerBehavior>
-                </interactivity:Interaction.Behaviors>
+                        <core:DataTriggerBehavior Binding="{x:Bind AchievementCount, Mode=OneWay}" ComparisonCondition="GreaterThan" Value="0">
+                            <core:ChangePropertyAction TargetObject="{Binding ElementName=AchievementPanel}" PropertyName="Visibility" Value="Visible"/>
+                        </core:DataTriggerBehavior>
+                        <core:DataTriggerBehavior Binding="{x:Bind AchievementCount, Mode=OneWay}" ComparisonCondition="LessThanOrEqual" Value="0">
+                            <core:ChangePropertyAction TargetObject="{Binding ElementName=AchievementPanel}" PropertyName="Visibility" Value="Collapsed"/>
+                        </core:DataTriggerBehavior>
+                    </interactivity:Interaction.Behaviors>
 
                     <Ellipse x:Name="AthleteProfilePicture"
                                  RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
@@ -86,107 +102,107 @@
                                        Text="{x:Bind TypeImage, Mode=OneWay}"/>
                     </Border>
 
-                <RelativePanel x:Name="ActivityHighlightsPanel"
+                    <RelativePanel x:Name="ActivityHighlightsPanel"
                                        Margin="15,0,0,0"                                       
                                        RelativePanel.RightOf="ActivityImage"
                                        RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True"
                                        RelativePanel.AlignRightWithPanel="True">
 
-                    <TextBlock x:Name="ActivityName"
+                        <TextBlock x:Name="ActivityName"
                                        Margin="0,0,0,2.5"
                                        Text="{x:Bind Name, Mode=OneWay}"
                                        Style="{StaticResource WordTrimmingTextBlock}"
                                        FontFamily="{StaticResource OpenSansFontSemibold}"
                                        RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" />
 
-                    <TextBlock x:Name="ActivityAthleteName"
+                        <TextBlock x:Name="ActivityAthleteName"
                                        Margin="0,0,0,2.5"                                       
                                        Text="{x:Bind Athlete.FullName, Mode=OneWay}"
                                        Style="{StaticResource CharacterTrimmingTextBlock}"
                                        RelativePanel.Below="ActivityName" RelativePanel.AlignLeftWithPanel="True" />
 
-                    <TextBlock x:Name="ActivityStart"
+                        <TextBlock x:Name="ActivityStart"
                                        Margin="0,0,0,2.5"
                                        Text="{x:Bind StartDate, Mode=OneWay, Converter={StaticResource RelativeTimeConverter}}"                                       
                                        HorizontalAlignment="Right"
                                        RelativePanel.AlignRightWithPanel="True" 
                                        RelativePanel.AlignBottomWith="ActivityAthleteName" />
-                    <!--Stats-->
-                    <TextBlock x:Name="ActivityDistance"
+                        <!--Stats-->
+                        <TextBlock x:Name="ActivityDistance"
                                         Style="{StaticResource BaseTextBlock}"
                                         FontSize="12"
                                         Margin="0, 4, 8, 0"
                                         RelativePanel.Below="ActivityAthleteName"
                                         RelativePanel.AlignLeftWithPanel="True" Text="{x:Bind DistanceUserMeasurementUnit.FormattedValueWithUnit, Mode=OneWay}" />
 
-                    <TextBlock x:Name="ActivityElevation"
+                        <TextBlock x:Name="ActivityElevation"
                                                 Style="{StaticResource BaseTextBlock}"
                                                 FontSize="12"
                                                 Margin="8, 4, 8, 0"
                                                 RelativePanel.RightOf="ActivityDistance"
                                                 RelativePanel.AlignBottomWith="ActivityDistance" Text="{x:Bind ElevationGainUserMeasurementUnit.FormattedValueWithUnit, Mode=OneWay}" />
 
-                    <RelativePanel x:Name="AthleteCountPanel"
+                        <RelativePanel x:Name="AthleteCountPanel"
                                    RelativePanel.RightOf="ActivityElevation"
                                    RelativePanel.AlignVerticalCenterWith="ActivityElevation">
-                    <FontIcon x:Name="AthleteCountIcon"
+                            <FontIcon x:Name="AthleteCountIcon"
                               Glyph="&#xE1E2;"
                                    FontSize="14" Margin="8, 4, 4, 0"
                                    RelativePanel.AlignLeftWithPanel="True"
                                    RelativePanel.AlignVerticalCenterWithPanel="True"/>
 
-                    <TextBlock x:Name="AthleteCount"
+                            <TextBlock x:Name="AthleteCount"
                                    FontSize="12" Margin="4, 4, 8, 0"
                                    RelativePanel.RightOf="AthleteCountIcon"
                                    RelativePanel.AlignVerticalCenterWith="AthleteCountIcon"
                                    Style="{StaticResource BaseTextBlock}"
                                    Text="{x:Bind OtherAthleteCount, Mode=OneWay}"/>
-                    </RelativePanel>
+                        </RelativePanel>
 
-                    <RelativePanel x:Name="AchievementPanel"
+                        <RelativePanel x:Name="AchievementPanel"
                                    RelativePanel.RightOf="AthleteCountPanel"
                                    RelativePanel.AlignVerticalCenterWith="AthleteCountPanel">
-                    <FontIcon x:Name="AchievementIcon"
+                            <FontIcon x:Name="AchievementIcon"
                               Glyph="&#xEC1B;"
                                    FontSize="14" Margin="8, 4, 4, 0"
                                    RelativePanel.AlignLeftWithPanel="True"
                                    RelativePanel.AlignVerticalCenterWithPanel="True"/>
 
-                    <TextBlock x:Name="AchievementCount"
+                            <TextBlock x:Name="AchievementCount"
                                    FontSize="12" Margin="4, 4, 8, 0"
                                    RelativePanel.RightOf="AchievementIcon"
                                    RelativePanel.AlignVerticalCenterWith="AchievementIcon"
                                    Style="{StaticResource BaseTextBlock}" 
                                    Text="{x:Bind AchievementCount, Mode=OneWay}"/>
-                    </RelativePanel>
+                        </RelativePanel>
 
-                    <FontIcon x:Name="CommentsIcon" HorizontalAlignment="Center" Margin="0,4,0,0" 
+                        <FontIcon x:Name="CommentsIcon" HorizontalAlignment="Center" Margin="0,4,0,0" 
                                   Glyph="&#xE15F;" FontSize="14"
                                    RelativePanel.LeftOf="CommentsCount" 
                                    RelativePanel.AlignVerticalCenterWith="CommentsCount"/>
 
-                    <TextBlock x:Name="CommentsCount"
+                        <TextBlock x:Name="CommentsCount"
                                    FontSize="12" Margin="4, 4, 8, 0"
                                    RelativePanel.LeftOf="KudosIcon" 
                                    RelativePanel.AlignVerticalCenterWith="KudosIcon"
                                    Style="{StaticResource BaseTextBlock}" 
                                    Text="{x:Bind CommentCount, Mode=OneWay}" />
 
-
-                    <FontIcon x:Name="KudosIcon" HorizontalAlignment="Center" Margin="4,4,0,0" 
+                        <FontIcon x:Name="KudosIcon" HorizontalAlignment="Center" Margin="4,4,0,0" 
                                   Glyph="&#xE8E1;" FontSize="14"
                                   RelativePanel.LeftOf="KudosCount" 
                                   RelativePanel.AlignVerticalCenterWith="KudosCount"/>
 
-                    <TextBlock x:Name="KudosCount"
+                        <TextBlock x:Name="KudosCount"
                                    FontSize="12" Margin="4, 4, 0, 0"
                                    RelativePanel.Below="ActivityDistance" 
                                    RelativePanel.AlignRightWithPanel="True"
                                    Style="{StaticResource BaseTextBlock}" 
                                    Text="{x:Bind KudosCount, Mode=OneWay}" />
+                    </RelativePanel>
                 </RelativePanel>
-            </RelativePanel>
-        </UserControl>
+            </UserControl>
+        </uwpToolkitControls:SlidableListItem>
     </DataTemplate>
 
     <DataTemplate x:Key="StatisticsGroupHeaderTemplate"
@@ -605,3 +621,4 @@
     </DataTemplate>
 
 </ResourceDictionary>
+

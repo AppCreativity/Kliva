@@ -317,7 +317,7 @@ namespace Kliva.Controls
             var itemContainer = (ListViewItem)sender;
             var itemIndex = ActivityList.IndexFromContainer(itemContainer);
 
-            var uc = itemContainer.ContentTemplateRoot as UserControl;
+            var uc = itemContainer.ContentTemplateRoot as FrameworkElement;
             var childPanel = uc.FindName("ActivityListItemPanel") as RelativePanel;
 
             // Don't animate if we're not in the visible viewport
