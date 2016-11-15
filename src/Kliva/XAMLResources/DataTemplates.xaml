@@ -21,9 +21,13 @@
                                              HorizontalAlignment="Stretch"
                                              MouseSlidingEnabled="True"
                                              LeftBackground="{StaticResource KlivaMainBrush}"
+                                             LeftCommand="{Binding Path=Main.KudosCommand, Source={StaticResource Locator}}"
+                                             LeftCommandParameter="{x:Bind}"
                                              LeftIcon="Like"
                                              LeftLabel="Give Kudos"
                                              RightBackground="{StaticResource KlivaMainBrush}"
+                                             RightCommand="{Binding Path=Main.CommentCommand, Source={StaticResource Locator}}"
+                                             RightCommandParameter="{x:Bind}"
                                              RightIcon="Comment"
                                              RightLabel="Comment">
             <interactivity:Interaction.Behaviors>

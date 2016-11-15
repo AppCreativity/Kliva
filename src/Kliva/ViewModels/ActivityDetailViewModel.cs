@@ -92,10 +92,10 @@ namespace Kliva.ViewModels
         public int PhotoCount => SelectedActivity?.TotalPhotoCount ?? 0;
 
         private RelayCommand _kudosCommand;
-        public RelayCommand KudosCommand => _kudosCommand ?? (_kudosCommand = new RelayCommand(async () => await OnKudosAsync()));
+        public RelayCommand KudosCommand => _kudosCommand ?? (_kudosCommand = new RelayCommand(async () => await OnKudosAsync(this.SelectedActivity.Id)));
 
         private RelayCommand _commentCommand;
-        public RelayCommand CommentCommand => _commentCommand ?? (_commentCommand = new RelayCommand(async () => await OnCommentAsync()));
+        public RelayCommand CommentCommand => _commentCommand ?? (_commentCommand = new RelayCommand(async () => await OnCommentAsync(this.SelectedActivity.Id)));
 
         private RelayCommand _mapCommand;
         public RelayCommand MapCommand => _mapCommand ?? (_mapCommand = new RelayCommand(() => NavigationService.Navigate<MapPage>(SelectedActivity?.Map)));
@@ -117,6 +117,9 @@ namespace Kliva.ViewModels
             _stravaService = stravaService;
             _launcherService = launcherService;
             MessengerInstance.Register<ActivitySummaryMessage>(this, async item => await LoadActivityDetails(item.ActivitySummary.Id.ToString()));
+
+            MessengerInstance.Register<ActivitySummaryKudosMessage>(this, async item => await OnKudosAsync(item.ActivitySummary.Id));
+            MessengerInstance.Register<ActivitySummaryCommentMessage>(this, async item => await OnCommentAsync(item.ActivitySummary.Id));
         }
 
         private async Task LoadActivityDetails(string activityId)
@@ -178,14 +181,14 @@ namespace Kliva.ViewModels
             }
         }
 
-        private async Task OnKudosAsync()
+        private async Task OnKudosAsync(long activityId)
         {
-            await _stravaService.GiveKudosAsync(SelectedActivity.Id.ToString());
-            await LoadActivityDetails(SelectedActivity.Id.ToString());
+            await _stravaService.GiveKudosAsync(activityId.ToString());
+            await LoadActivityDetails(activityId.ToString());
             ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage<ActivityPivots>>(new PivotMessage<ActivityPivots>(ActivityPivots.Kudos, true, true), Tokens.ActivityPivotMessage);
         }
 
-        private async Task OnCommentAsync()
+        private async Task OnCommentAsync(long activityId)
         {
             CommentContentDialog dialog = new CommentContentDialog();
             dialog.AdjustSize();
@@ -194,10 +197,10 @@ namespace Kliva.ViewModels
 
             if (result == ContentDialogResult.Primary && !string.IsNullOrEmpty(dialog.Description))
             {
-                await _stravaService.PostComment(SelectedActivity.Id.ToString(), dialog.Description);
-                await LoadActivityDetails(SelectedActivity.Id.ToString());
-                ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage<ActivityPivots>>(new PivotMessage<ActivityPivots>(ActivityPivots.Comments, true, true));
+                await _stravaService.PostComment(activityId.ToString(), dialog.Description);
+                await LoadActivityDetails(activityId.ToString());
             }
+            ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage<ActivityPivots>>(new PivotMessage<ActivityPivots>(ActivityPivots.Comments, true, true), Tokens.ActivityPivotMessage);
         }
 
         private async Task OnEditAsync()
