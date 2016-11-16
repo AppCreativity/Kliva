@@ -199,8 +199,8 @@ namespace Kliva.ViewModels
             {
                 await _stravaService.PostComment(activityId.ToString(), dialog.Description);
                 await LoadActivityDetails(activityId.ToString());
+                ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage<ActivityPivots>>(new PivotMessage<ActivityPivots>(ActivityPivots.Comments, true, true), Tokens.ActivityPivotMessage);
             }
-            ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage<ActivityPivots>>(new PivotMessage<ActivityPivots>(ActivityPivots.Comments, true, true), Tokens.ActivityPivotMessage);
         }
 
         private async Task OnEditAsync()
