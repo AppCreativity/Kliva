@@ -96,10 +96,10 @@ namespace Kliva.ViewModels
         public RelayCommand SettingsCommand => _settingsCommand ?? (_settingsCommand = new RelayCommand(() => NavigationService.Navigate<SettingsPage>()));
 
         private RelayCommand<ActivitySummary> _kudosCommand;
-        public RelayCommand<ActivitySummary> KudosCommand => _kudosCommand ?? (_kudosCommand = new RelayCommand<ActivitySummary>(OnKudosAsync));
+        public RelayCommand<ActivitySummary> KudosCommand => _kudosCommand ?? (_kudosCommand = new RelayCommand<ActivitySummary>(OnKudos));
 
         private RelayCommand<ActivitySummary> _commentCommand;
-        public RelayCommand<ActivitySummary> CommentCommand => _commentCommand ?? (_commentCommand = new RelayCommand<ActivitySummary>(OnCommentAsync));
+        public RelayCommand<ActivitySummary> CommentCommand => _commentCommand ?? (_commentCommand = new RelayCommand<ActivitySummary>(OnComment));
 
         public MainViewModel(INavigationService navigationService, ISettingsService settingsService, IStravaService stravaService, IOService ioService) : base(navigationService)
         {
@@ -180,7 +180,7 @@ namespace Kliva.ViewModels
             }
         }
 
-        private void OnKudosAsync(ActivitySummary activitySummary)
+        private void OnKudos(ActivitySummary activitySummary)
         {
             // make sure we work with the swiped item
             // this could happen if we use the mouse to swipe and move the mouse outside the ListView and release it there
@@ -191,7 +191,7 @@ namespace Kliva.ViewModels
             MessengerInstance.Send<ActivitySummaryKudosMessage>(new ActivitySummaryKudosMessage(SelectedActivity));
         }
 
-        private void OnCommentAsync(ActivitySummary activitySummary)
+        private void OnComment(ActivitySummary activitySummary)
         {
             // make sure we work with the swiped item
             // this could happen if we use the mouse to swipe and move the mouse outside the ListView and release it there
