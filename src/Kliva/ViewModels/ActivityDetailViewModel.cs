@@ -92,10 +92,10 @@ namespace Kliva.ViewModels
         public int PhotoCount => SelectedActivity?.TotalPhotoCount ?? 0;
 
         private RelayCommand _kudosCommand;
-        public RelayCommand KudosCommand => _kudosCommand ?? (_kudosCommand = new RelayCommand(async () => await OnKudosAsync(SelectedActivity.Id), () => SelectedActivity != null));
+        public RelayCommand KudosCommand => _kudosCommand ?? (_kudosCommand = new RelayCommand(async () => await OnKudosAsync(SelectedActivity.Id)));
 
         private RelayCommand _commentCommand;
-        public RelayCommand CommentCommand => _commentCommand ?? (_commentCommand = new RelayCommand(async () => await OnCommentAsync(SelectedActivity.Id), () => SelectedActivity != null));
+        public RelayCommand CommentCommand => _commentCommand ?? (_commentCommand = new RelayCommand(async () => await OnCommentAsync(SelectedActivity.Id)));
 
         private RelayCommand _mapCommand;
         public RelayCommand MapCommand => _mapCommand ?? (_mapCommand = new RelayCommand(() => NavigationService.Navigate<MapPage>(SelectedActivity?.Map)));
