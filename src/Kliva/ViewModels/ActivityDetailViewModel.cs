@@ -137,7 +137,7 @@ namespace Kliva.ViewModels
 
             //TODO: Glenn - Why aren't we receiving private activities?
             var activity = await _stravaService.GetActivityAsync(activityId, true);
-            _athlete = await _stravaService.GetAthleteAsync();
+            _athlete = _athlete ?? await this._stravaService.GetAthleteAsync();
 
             if (activity != null)
             {
@@ -183,8 +183,13 @@ namespace Kliva.ViewModels
 
         private async Task OnKudosAsync(long activityId)
         {
-            await _stravaService.GiveKudosAsync(activityId.ToString());
-            await LoadActivityDetails(activityId.ToString());
+            _athlete = _athlete ?? await this._stravaService.GetAthleteAsync();
+            var canGiveKudos = _athlete.Id != SelectedActivity.Athlete.Id && !SelectedActivity.HasKudoed;
+            if (canGiveKudos)
+            {
+                await _stravaService.GiveKudosAsync(activityId.ToString());
+                await LoadActivityDetails(activityId.ToString());
+            }
             ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage<ActivityPivots>>(new PivotMessage<ActivityPivots>(ActivityPivots.Kudos, true, true), Tokens.ActivityPivotMessage);
         }
 
