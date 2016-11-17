@@ -95,6 +95,12 @@ namespace Kliva.ViewModels
         private RelayCommand _settingsCommand;
         public RelayCommand SettingsCommand => _settingsCommand ?? (_settingsCommand = new RelayCommand(() => NavigationService.Navigate<SettingsPage>()));
 
+        private RelayCommand<ActivitySummary> _kudosCommand;
+        public RelayCommand<ActivitySummary> KudosCommand => _kudosCommand ?? (_kudosCommand = new RelayCommand<ActivitySummary>(OnKudos));
+
+        private RelayCommand<ActivitySummary> _commentCommand;
+        public RelayCommand<ActivitySummary> CommentCommand => _commentCommand ?? (_commentCommand = new RelayCommand<ActivitySummary>(OnComment));
+
         public MainViewModel(INavigationService navigationService, ISettingsService settingsService, IStravaService stravaService, IOService ioService) : base(navigationService)
         {
             _settingsService = settingsService;
@@ -172,6 +178,28 @@ namespace Kliva.ViewModels
                     ActivityIncrementalCollection = new MyActivityIncrementalCollection(_stravaService);
                     break;
             }
+        }
+
+        private void OnKudos(ActivitySummary activitySummary)
+        {
+            // make sure we work with the swiped item
+            // this could happen if we use the mouse to swipe and move the mouse outside the ListView and release it there
+            if (activitySummary != SelectedActivity)
+            {
+                SelectedActivity = activitySummary;
+            }
+            MessengerInstance.Send<ActivitySummaryKudosMessage>(new ActivitySummaryKudosMessage(SelectedActivity));
+        }
+
+        private void OnComment(ActivitySummary activitySummary)
+        {
+            // make sure we work with the swiped item
+            // this could happen if we use the mouse to swipe and move the mouse outside the ListView and release it there
+            if (activitySummary != SelectedActivity)
+            {
+                SelectedActivity = activitySummary;
+            }
+            MessengerInstance.Send<ActivitySummaryCommentMessage>(new ActivitySummaryCommentMessage(SelectedActivity));
         }
     }
 }

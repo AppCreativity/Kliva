@@ -12,4 +12,18 @@ namespace Kliva.Messages
             ActivitySummary = activitySummary;
         }
     }
+
+    public class ActivitySummaryKudosMessage : ActivitySummaryMessage
+    {
+        public ActivitySummaryKudosMessage(ActivitySummary activitySummary) : base(activitySummary)
+        {
+        }
+    }
+
+    public class ActivitySummaryCommentMessage : ActivitySummaryMessage
+    {
+        public ActivitySummaryCommentMessage(ActivitySummary activitySummary) : base(activitySummary)
+        {
+        }
+    }
 }
