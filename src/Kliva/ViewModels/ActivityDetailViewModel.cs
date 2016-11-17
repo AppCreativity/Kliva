@@ -137,7 +137,7 @@ namespace Kliva.ViewModels
 
             //TODO: Glenn - Why aren't we receiving private activities?
             var activity = await _stravaService.GetActivityAsync(activityId, true);
-            _athlete = _athlete ?? await this._stravaService.GetAthleteAsync();
+            _athlete = await _stravaService.GetAthleteAsync();
 
             if (activity != null)
             {

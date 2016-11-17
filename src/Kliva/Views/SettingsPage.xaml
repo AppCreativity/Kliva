@@ -215,7 +215,7 @@
                             <LineBreak />
                             <Run Text="  - Kurt Alpaerts and Deani Hansen for their help on the Windows Phone 8 app" />
                             <LineBreak />
-                            <Run Text="  - Pieter Nijs, James Clarke, Tim Heuer and Jacob Stern for their great help with this UWP version" />
+                            <Run Text="  - Pieter Nijs, James Clarke, Tim Heuer, Jacob Stern and Jan Karger for their great help with this UWP version" />
                         </Bold>
                     </Paragraph>
                 </RichTextBlock>

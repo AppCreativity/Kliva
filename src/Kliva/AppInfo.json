@@ -17,5 +17,14 @@
     "BugFixes": [
       "- Fixing MapServiceToken warning."
     ]
+  },
+  {
+    "VersionAsString": "2.0.2.0",
+    "GeneralInfo": null,
+    "Features": [
+      "- Added swipe to right on activity list to give kudos",
+      "- Added swipe to left on activity list to add comment"
+    ],
+    "BugFixes": null
   }
 ]
