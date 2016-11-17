@@ -55,13 +55,13 @@ namespace Kliva.Models
         /// The segment's highest elevation.
         /// </summary>
         [JsonProperty("elevation_high")]
-        public float MaxElevation { get; set; }
+        public float? MaxElevation { get; set; }
 
         /// <summary>
         /// The segment's lowest elevation.
         /// </summary>
         [JsonProperty("elevation_low")]
-        public float MinElevation { get; set; }
+        public float? MinElevation { get; set; }
 
         /// <summary>
         /// the climb category of the segment.

@@ -25,6 +25,8 @@
       "- Added swipe to right on activity list to give kudos",
       "- Added swipe to left on activity list to add comment"
     ],
-    "BugFixes": null
+    "BugFixes": [
+      "- Bug fix for null to System.Single conversion exception on Get Activity"
+    ]
   }
 ]

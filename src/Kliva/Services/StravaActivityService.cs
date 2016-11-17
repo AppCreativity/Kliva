@@ -138,22 +138,27 @@ namespace Kliva.Services
                 string getUrl = $"{Endpoints.Activity}/{id}?include_all_efforts={includeEfforts}&access_token={accessToken}";
                 string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
 
-                var activity = Unmarshaller<Activity>.Unmarshal(json);
-                StravaService.SetMetricUnits(activity, defaultDistanceUnitType);
-                if (activity.SegmentEfforts != null)
+                if (!string.IsNullOrEmpty(json))
                 {
-                    foreach (SegmentEffort segment in activity.SegmentEfforts)
-                        StravaService.SetMetricUnits(segment, defaultDistanceUnitType);
+                    var activity = Unmarshaller<Activity>.Unmarshal(json);
+                    StravaService.SetMetricUnits(activity, defaultDistanceUnitType);
+                    if (activity.SegmentEfforts != null)
+                    {
+                        foreach (SegmentEffort segment in activity.SegmentEfforts)
+                            StravaService.SetMetricUnits(segment, defaultDistanceUnitType);
+                    }
+
+                    FillStatistics(activity);
+
+                    _perflog.GetActivityAsync(true, id, includeEfforts);
+
+                    string activityUri = $"{Endpoints.PublicActivity}/{id}";
+                    _logService.Log("API", "GetActivityAsync", activityUri);
+
+                    return activity;
                 }
-
-                FillStatistics(activity);
-
-                _perflog.GetActivityAsync(true, id, includeEfforts);
-
-                string activityUri = $"{Endpoints.PublicActivity}/{id}";
-                _logService.Log("API", "GetActivityAsync", activityUri);
-
-                return activity;
+                else
+                    throw new NullReferenceException("Strava returned no Json data for requested activity");
             }
             catch (Exception ex)
             {
