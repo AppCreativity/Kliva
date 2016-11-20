@@ -92,10 +92,10 @@ namespace Kliva.ViewModels
         public int PhotoCount => SelectedActivity?.TotalPhotoCount ?? 0;
 
         private RelayCommand _kudosCommand;
-        public RelayCommand KudosCommand => _kudosCommand ?? (_kudosCommand = new RelayCommand(async () => await OnKudosAsync(SelectedActivity.Id)));
+        public RelayCommand KudosCommand => _kudosCommand ?? (_kudosCommand = new RelayCommand(async () => await OnKudosAsync(SelectedActivity)));
 
         private RelayCommand _commentCommand;
-        public RelayCommand CommentCommand => _commentCommand ?? (_commentCommand = new RelayCommand(async () => await OnCommentAsync(SelectedActivity.Id)));
+        public RelayCommand CommentCommand => _commentCommand ?? (_commentCommand = new RelayCommand(async () => await OnCommentAsync(SelectedActivity)));
 
         private RelayCommand _mapCommand;
         public RelayCommand MapCommand => _mapCommand ?? (_mapCommand = new RelayCommand(() => NavigationService.Navigate<MapPage>(SelectedActivity?.Map)));
@@ -118,8 +118,8 @@ namespace Kliva.ViewModels
             _launcherService = launcherService;
             MessengerInstance.Register<ActivitySummaryMessage>(this, async item => await LoadActivityDetails(item.ActivitySummary.Id.ToString()));
 
-            MessengerInstance.Register<ActivitySummaryKudosMessage>(this, async item => await OnKudosAsync(item.ActivitySummary.Id));
-            MessengerInstance.Register<ActivitySummaryCommentMessage>(this, async item => await OnCommentAsync(item.ActivitySummary.Id));
+            MessengerInstance.Register<ActivitySummaryKudosMessage>(this, async item => await OnKudosAsync(item.ActivitySummary as ActivityMeta));
+            MessengerInstance.Register<ActivitySummaryCommentMessage>(this, async item => await OnCommentAsync(item.ActivitySummary as ActivityMeta));
         }
 
         private async Task LoadActivityDetails(string activityId)
@@ -181,20 +181,28 @@ namespace Kliva.ViewModels
             }
         }
 
-        private async Task OnKudosAsync(long activityId)
+        private async Task OnKudosAsync(ActivityMeta activity)
         {
-            _athlete = _athlete ?? await this._stravaService.GetAthleteAsync();
-            var canGiveKudos = _athlete.Id != SelectedActivity.Athlete.Id && !SelectedActivity.HasKudoed;
-            if (canGiveKudos)
+            if (activity != null && SelectedActivity != null)
             {
-                await _stravaService.GiveKudosAsync(activityId.ToString());
-                await LoadActivityDetails(activityId.ToString());
+                _athlete = _athlete ?? await this._stravaService.GetAthleteAsync();
+                var canGiveKudos = _athlete.Id != SelectedActivity.Athlete.Id && !SelectedActivity.HasKudoed;
+                if (canGiveKudos)
+                {
+                    await _stravaService.GiveKudosAsync(activity.Id.ToString());
+                    await LoadActivityDetails(activity.Id.ToString());
+                }
             }
             ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage<ActivityPivots>>(new PivotMessage<ActivityPivots>(ActivityPivots.Kudos, true, true), Tokens.ActivityPivotMessage);
         }
 
-        private async Task OnCommentAsync(long activityId)
+        private async Task OnCommentAsync(ActivityMeta activity)
         {
+            if (null == activity)
+            {
+                return;
+            }
+
             CommentContentDialog dialog = new CommentContentDialog();
             dialog.AdjustSize();
 
@@ -202,8 +210,8 @@ namespace Kliva.ViewModels
 
             if (result == ContentDialogResult.Primary && !string.IsNullOrEmpty(dialog.Description))
             {
-                await _stravaService.PostComment(activityId.ToString(), dialog.Description);
-                await LoadActivityDetails(activityId.ToString());
+                await _stravaService.PostComment(activity.Id.ToString(), dialog.Description);
+                await LoadActivityDetails(activity.Id.ToString());
                 ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage<ActivityPivots>>(new PivotMessage<ActivityPivots>(ActivityPivots.Comments, true, true), Tokens.ActivityPivotMessage);
             }
         }
