@@ -188,6 +188,9 @@ namespace Kliva.ViewModels
             {
                 SelectedActivity = activitySummary;
             }
+
+            //TODO: Glenn - The previous assigning of SelectedActivity, will force a load of the that activity in the ActivityDetailViewModel if that is loaded ( desktop mode )
+            //TODO: Glenn - Problem is that load is async / awaited, meaning we will send the Kudos message ( line below ) before it has finished :/
             MessengerInstance.Send<ActivitySummaryKudosMessage>(new ActivitySummaryKudosMessage(SelectedActivity));
         }
 

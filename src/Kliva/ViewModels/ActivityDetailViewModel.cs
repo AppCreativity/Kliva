@@ -136,7 +136,15 @@ namespace Kliva.ViewModels
             RelatedAthletes.Clear();
 
             //TODO: Glenn - Why aren't we receiving private activities?
-            var activity = await _stravaService.GetActivityAsync(activityId, true);
+            Activity activity = null;
+            try
+            {
+                activity = await _stravaService.GetActivityAsync(activityId, true);
+            }
+            catch (Exception ex)
+            {
+                var t = ex.Message;
+            }
             _athlete = await _stravaService.GetAthleteAsync();
 
             if (activity != null)
