@@ -246,6 +246,7 @@ namespace Kliva.ViewModels
 
             if (result == ContentDialogResult.Primary && !string.IsNullOrEmpty(dialog.ActivityName))
             {
+                //TODO: Glenn - Be sure to check if gear is selected! Null ref exception when not
                 await _stravaService.PutUpdate(SelectedActivity.Id.ToString(), dialog.ActivityName, dialog.ActivityCommute, dialog.ActivityPrivate, dialog.SelectedGear.GearID);
                 await LoadActivityDetails(SelectedActivity.Id.ToString());
             }
