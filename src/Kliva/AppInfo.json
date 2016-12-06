@@ -26,7 +26,8 @@
       "- Added swipe to left on activity list to add comment"
     ],
     "BugFixes": [
-      "- Bug fix for null to System.Single conversion exception on Get Activity"
+      "- Bug fix for null to System.Single conversion exception on Get Activity",
+      "- Bug fix for not being able to save edited activity information"
     ]
   }
 ]
