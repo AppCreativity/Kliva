@@ -239,15 +239,14 @@ namespace Kliva.ViewModels
                     break;
             }
 
-            EditContentDialog dialog = new EditContentDialog(SelectedActivity.Name, SelectedActivity.IsCommute, SelectedActivity.IsPrivate, gear);
+            EditContentDialog dialog = new EditContentDialog(SelectedActivity.Name, SelectedActivity.IsCommute, SelectedActivity.IsPrivate, SelectedActivity.GearId, gear);
             dialog.AdjustSize();
 
             ContentDialogResult result = await dialog.ShowAsync();
 
             if (result == ContentDialogResult.Primary && !string.IsNullOrEmpty(dialog.ActivityName))
             {
-                //TODO: Glenn - Be sure to check if gear is selected! Null ref exception when not
-                await _stravaService.PutUpdate(SelectedActivity.Id.ToString(), dialog.ActivityName, dialog.ActivityCommute, dialog.ActivityPrivate, dialog.SelectedGear.GearID);
+                await _stravaService.PutUpdate(SelectedActivity.Id.ToString(), dialog.ActivityName, dialog.ActivityCommute, dialog.ActivityPrivate, dialog.SelectedGear?.GearID);
                 await LoadActivityDetails(SelectedActivity.Id.ToString());
             }
         }
