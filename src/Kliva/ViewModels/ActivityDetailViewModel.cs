@@ -178,7 +178,7 @@ namespace Kliva.ViewModels
                 HasKudoed = _athlete.Id == SelectedActivity.Athlete.Id || SelectedActivity.HasKudoed;
                 IsEditEnabled = _athlete.Id == SelectedActivity.Athlete.Id;
 
-                //TODO: Glenn - Why oh why are we not yet able to show/hide PivotItems through Visibility bindable
+                //TODO: Glenn - Why oh why are we not yet able to show/hide PivotItems through Visibility binding
                 ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage<ActivityPivots>>(new PivotMessage<ActivityPivots>(ActivityPivots.Segments, HasSegments), Tokens.ActivityPivotMessage);
                 ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage<ActivityPivots>>(new PivotMessage<ActivityPivots>(ActivityPivots.Photos, HasPhotos), Tokens.ActivityPivotMessage);
 
