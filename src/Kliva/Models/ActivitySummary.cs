@@ -67,11 +67,16 @@ namespace Kliva.Models
         [JsonProperty("total_elevation_gain")]
         public float ElevationGain { get; set; }
 
+        private bool _hasKudoed = false;
         /// <summary>
         /// True if the currently authenticated athlete has kudoed this activity.
         /// </summary>
         [JsonProperty("has_kudoed")]
-        public bool HasKudoed { get; set; }
+        public bool HasKudoed
+        {
+            get { return _hasKudoed; }
+            set { Set(() => HasKudoed, ref _hasKudoed, value); }
+        }
 
         /// <summary>
         /// The athlete's average heartrate during this activity.
@@ -187,11 +192,16 @@ namespace Kliva.Models
         [JsonProperty("achievement_count")]
         public int AchievementCount { get; set; }
 
+        private int _kudosCount = 0;
         /// <summary>
         /// Activity's kudos count.
         /// </summary>
         [JsonProperty("kudos_count")]
-        public int KudosCount { get; set; }
+        public int KudosCount
+        {
+            get { return _kudosCount; }
+            set { Set(() => KudosCount, ref _kudosCount, value); }
+        }
 
         /// <summary>
         /// Activity's comment count.

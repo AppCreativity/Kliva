@@ -19,6 +19,7 @@ namespace Kliva.ViewModels
         private readonly IOService _ioService;
 
         private bool _viewModelLoaded = false;
+        private Athlete _athlete;
 
         private VisualState _currentState;
         public VisualState CurrentState
@@ -96,7 +97,7 @@ namespace Kliva.ViewModels
         public RelayCommand SettingsCommand => _settingsCommand ?? (_settingsCommand = new RelayCommand(() => NavigationService.Navigate<SettingsPage>()));
 
         private RelayCommand<ActivitySummary> _kudosCommand;
-        public RelayCommand<ActivitySummary> KudosCommand => _kudosCommand ?? (_kudosCommand = new RelayCommand<ActivitySummary>(OnKudos));
+        public RelayCommand<ActivitySummary> KudosCommand => _kudosCommand ?? (_kudosCommand = new RelayCommand<ActivitySummary>(async (item) => await OnKudosAsync(item)));
 
         private RelayCommand<ActivitySummary> _commentCommand;
         public RelayCommand<ActivitySummary> CommentCommand => _commentCommand ?? (_commentCommand = new RelayCommand<ActivitySummary>(OnComment));
@@ -140,7 +141,7 @@ namespace Kliva.ViewModels
 
                 ActivityFeedFilter filter = await _settingsService.GetStoredActivityFeedFilterAsync();
 
-                var athlete = await _stravaService.GetAthleteAsync();
+                _athlete = await _stravaService.GetAthleteAsync();
                 ApplyActivityFeedFilter(filter);
 
                 _viewModelLoaded = true;
@@ -180,18 +181,17 @@ namespace Kliva.ViewModels
             }
         }
 
-        private void OnKudos(ActivitySummary activitySummary)
+        private async Task OnKudosAsync(ActivitySummary activitySummary)
         {
-            // make sure we work with the swiped item
-            // this could happen if we use the mouse to swipe and move the mouse outside the ListView and release it there
-            if (activitySummary != SelectedActivity)
+            _athlete = _athlete ?? await this._stravaService.GetAthleteAsync();
+            var canGiveKudos = _athlete.Id != activitySummary.Athlete.Id && !activitySummary.HasKudoed;
+            if (canGiveKudos)
             {
-                SelectedActivity = activitySummary;
+                await _stravaService.GiveKudosAsync(activitySummary.Id.ToString());
+                activitySummary.HasKudoed = true;
+                ++activitySummary.KudosCount;
+                ActivityInvoked(activitySummary);
             }
-
-            //TODO: Glenn - The previous assigning of SelectedActivity, will force a load of the that activity in the ActivityDetailViewModel if that is loaded ( desktop mode )
-            //TODO: Glenn - Problem is that load is async / awaited, meaning we will send the Kudos message ( line below ) before it has finished :/
-            MessengerInstance.Send<ActivitySummaryKudosMessage>(new ActivitySummaryKudosMessage(SelectedActivity));
         }
 
         private void OnComment(ActivitySummary activitySummary)
@@ -202,6 +202,9 @@ namespace Kliva.ViewModels
             {
                 SelectedActivity = activitySummary;
             }
+
+            //TODO: Glenn - the previous setting of SelectedActivity will trigger a load of that activity, if it was not yet loaded ( detail screen still empty )
+            //TODO: Glenn - this loading is done async, hence we could have a potential problem that the user has entered a comment and tries to save it, before the activity has been loaded!
             MessengerInstance.Send<ActivitySummaryCommentMessage>(new ActivitySummaryCommentMessage(SelectedActivity));
         }
     }

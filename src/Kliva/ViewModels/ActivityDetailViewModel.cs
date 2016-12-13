@@ -118,7 +118,6 @@ namespace Kliva.ViewModels
             _launcherService = launcherService;
             MessengerInstance.Register<ActivitySummaryMessage>(this, async item => await LoadActivityDetails(item.ActivitySummary.Id.ToString()));
 
-            MessengerInstance.Register<ActivitySummaryKudosMessage>(this, async item => await OnKudosAsync(item.ActivitySummary as ActivityMeta));
             MessengerInstance.Register<ActivitySummaryCommentMessage>(this, async item => await OnCommentAsync(item.ActivitySummary as ActivityMeta));
         }
 
