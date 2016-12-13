@@ -7,8 +7,10 @@ using Kliva.ViewModels.Interfaces;
 using Kliva.Views;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
+using GalaSoft.MvvmLight.Messaging;
 using Kliva.Extensions;
 using Kliva.Services;
+using Microsoft.Practices.ServiceLocation;
 
 namespace Kliva.ViewModels
 {
@@ -187,11 +189,16 @@ namespace Kliva.ViewModels
             var canGiveKudos = _athlete.Id != activitySummary.Athlete.Id && !activitySummary.HasKudoed;
             if (canGiveKudos)
             {
+                IsBusy = true;
                 await _stravaService.GiveKudosAsync(activitySummary.Id.ToString());
                 activitySummary.HasKudoed = true;
                 ++activitySummary.KudosCount;
-                ActivityInvoked(activitySummary);
+                IsBusy = false;
             }
+
+            //TODO: Glenn - when we are triggering a kudos, open kudos tab in detail page
+            ActivityInvoked(activitySummary);
+            ServiceLocator.Current.GetInstance<IMessenger>().Send<PivotMessage<ActivityPivots>>(new PivotMessage<ActivityPivots>(ActivityPivots.Kudos, true, true), Tokens.ActivityPivotMessage);
         }
 
         private void OnComment(ActivitySummary activitySummary)
