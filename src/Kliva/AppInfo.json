@@ -19,7 +19,7 @@
     ]
   },
   {
-    "VersionAsString": "2.0.2.0",
+    "VersionAsString": "2.1.0.0",
     "GeneralInfo": null,
     "Features": [
       "- Added swipe to right on activity list to give kudos",
