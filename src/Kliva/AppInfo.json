@@ -29,5 +29,13 @@
       "- Bug fix for null to System.Single conversion exception on Get Activity",
       "- Bug fix for not being able to save edited activity information"
     ]
+  },
+  {
+    "VersionAsString": "2.1.1.0",
+    "GeneralInfo": null,
+    "Features": null,
+    "BugFixes": [
+      "- Bug fix for go to top button on Activity feed ( we hope )"
+    ]
   }
 ]
