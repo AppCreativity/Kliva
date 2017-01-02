@@ -126,6 +126,14 @@ namespace Kliva.Services
             return null;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="segmentId"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// When Strava flags a segment as Hazardous : we will receive an empty JSON payload!
+        /// </remarks>
         private async Task<Leaderboard> GetLeaderBoardFromServiceAsync(string segmentId)
         {
             try
@@ -135,6 +143,8 @@ namespace Kliva.Services
 
                 string getUrl = $"{string.Format(Endpoints.Leaderboard, segmentId)}?access_token={accessToken}";
                 string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
+
+                //TODO: Glenn - When we receive an empty JSON payload, this could mean the segment is marked as hazardous... do we notify user?
 
                 var leaderboard = Unmarshaller<Leaderboard>.Unmarshal(json);
                 if (leaderboard.Entries != null)
