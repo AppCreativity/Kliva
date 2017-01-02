@@ -37,5 +37,13 @@
     "BugFixes": [
       "- Bug fix for go to top button on Activity feed ( we hope )"
     ]
+  },
+  {
+    "VersionAsString": "2.1.2.0",
+    "GeneralInfo": null,
+    "Features": null,
+    "BugFixes": [
+      "- Bug fix so private activities' details would again be visible"
+    ]
   }
 ]
