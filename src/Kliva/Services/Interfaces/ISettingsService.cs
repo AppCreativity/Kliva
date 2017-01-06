@@ -18,6 +18,7 @@ namespace Kliva.Services.Interfaces
         Task<ActivitySort> GetStoredActivitySortAsync();
         Task SetActivitySortAsync(ActivitySort sort);
 
-        //Task<AppVersion> GetStoredAppVersion();
+        Task<AppVersion> GetStoredAppVersionAsync();
+        Task SetAppVersionAsync(AppVersion appVersionB);
     }
 }

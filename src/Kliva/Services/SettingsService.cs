@@ -3,6 +3,8 @@ using Kliva.Models;
 using Kliva.Services.Interfaces;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using System;
+using Windows.ApplicationModel;
 
 namespace Kliva.Services
 {
@@ -75,6 +77,21 @@ namespace Kliva.Services
             await LoadSettingsAsync(createIfNotExisting: true);
 
             _settings.ActivitySort = sort;
+
+            await SaveSettingsToStorageAsync();
+        }
+
+        public async Task<AppVersion> GetStoredAppVersionAsync()
+        {
+            await LoadSettingsAsync();
+            return _settings?.AppVersion ?? new AppVersion(new PackageVersion() { Major = 0, Minor = 0, Revision = 0, Build = 0 });
+        }
+
+        public async Task SetAppVersionAsync(AppVersion appVersion)
+        {
+            await LoadSettingsAsync(createIfNotExisting: true);
+
+            _settings.AppVersion = appVersion;
 
             await SaveSettingsToStorageAsync();
         }
