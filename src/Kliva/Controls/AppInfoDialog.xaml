@@ -6,12 +6,46 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Title="TITLE"
-    PrimaryButtonText="Button1"
-    SecondaryButtonText="Button2"
-    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
-    SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+    Title="Kliva - info">
 
-    <Grid>
-    </Grid>
+    <ContentDialog.Resources>
+        <CollectionViewSource x:Name="GroupedAppInfoOverviewItems"
+                              Source="{Binding CurrentVersion.OverviewItems, Mode=OneWay}"
+                              IsSourceGrouped="True"
+                              ItemsPath="Items" />
+    </ContentDialog.Resources>
+
+    <RelativePanel>
+        <TextBlock x:Name="CurrentVersionTextBlock" Style="{StaticResource BaseTextBlock}">
+            <Bold>
+                <Run FontSize="18" Text="{Binding CurrentVersion.Version, Mode=OneWay}" Foreground="{StaticResource KlivaDarkBrush}"/>
+            </Bold>
+            <LineBreak />
+            <Run Text="version" FontSize="12" Foreground="{StaticResource SubTextBrush}"/>
+        </TextBlock>
+
+        <TextBlock x:Name="GeneralInfoTextBlock"
+                               Style="{StaticResource BaseTextBlock}"
+                               Padding="0,10,0,5"
+                               TextWrapping="Wrap"
+                               RelativePanel.Below="CurrentVersionTextBlock">
+                        <Run Text="{Binding CurrentVersion.GeneralInfo, Mode=OneWay}" />
+        </TextBlock>
+
+        <ListView x:Name="AppInfoOverviewItemsList"
+            ItemsSource="{Binding Source={StaticResource GroupedAppInfoOverviewItems}}"
+            ItemTemplate="{StaticResource WhatsNewListItemDataTemplate}"
+            SelectionMode="None"
+            RelativePanel.Below="GeneralInfoTextBlock"
+            RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+            <ListView.GroupStyle>
+                <GroupStyle HeaderTemplate="{StaticResource WhatsNewGroupHeaderTemplate}" />
+            </ListView.GroupStyle>
+        </ListView>
+        
+        <Button Content="Ok"
+                MinWidth="100"
+                RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True"
+                Click="OnOkButtonClick"/>
+    </RelativePanel>
 </ContentDialog>

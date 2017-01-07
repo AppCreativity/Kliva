@@ -153,6 +153,15 @@ namespace Kliva.ViewModels
                     await _settingsService.SetAppVersionAsync(runTimeVersion);
                     //TODO: Glenn - Check loaded version with saved version in Settings, if different show what's new dialog and overwrite settings field
                     AppInfoDialog appInfo = new AppInfoDialog();
+                    //TODO: Change the strings to enums or constants for the visual states
+                    if (CurrentState.Name.Equals("Mobile", StringComparison.OrdinalIgnoreCase))
+                        appInfo.FullSizeDesired = true;
+                    else
+                    {
+                        appInfo.MinWidth = (double) (Window.Current.Bounds.Width * 90) / 100;
+                        appInfo.MinHeight = (double)(Window.Current.Bounds.Height * 90) / 100;
+                    }
+
                     await appInfo.ShowAsync();
                 }
 
