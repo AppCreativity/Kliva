@@ -1,5 +1,7 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Kliva.Models;
+using Kliva.ViewModels;
 
 namespace Kliva.Controls
 {
@@ -7,18 +9,12 @@ namespace Kliva.Controls
     {
         public AppInfoDialog()
         {
-            this.InitializeComponent(); 
+            this.InitializeComponent();
+            DataContext = ViewModelLocator.Get<SettingsViewModel>();
+            ((SettingsViewModel)DataContext).ViewLoadedCommand.Execute(null);
         }
 
-        private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
-        {
-        }
-
-        private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
-        {
-        }
-
-        private void OnOkButtonClick(object sender, RoutedEventArgs e)
+        private void OnContentDialogPrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             Hide();
         }

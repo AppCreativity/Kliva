@@ -109,8 +109,6 @@ namespace Kliva.ViewModels
 
             else if (e.PropertyName.Equals("SelectedSortType", StringComparison.OrdinalIgnoreCase))
                 await _settingsService.SetActivitySortAsync(Enum<ActivitySort>.Parse(SelectedSortType));
-
-            
         }
 
         private async Task ViewLoaded()
