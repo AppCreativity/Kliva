@@ -8,6 +8,8 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml.Controls;
 using Kliva.Models;
 using System.Linq;
+using System.Threading.Tasks;
+using Kliva.Services.Interfaces;
 
 namespace Kliva.ViewModels
 {
@@ -19,6 +21,7 @@ namespace Kliva.ViewModels
         };
 
         private Type _pageType;
+        private readonly ISettingsService _settingsService;
 
         private bool _isPaneOpen = false;
         public bool IsPaneOpen
@@ -96,6 +99,9 @@ namespace Kliva.ViewModels
                     {
                         switch (value.MenuItemType)
                         {
+                            case MenuItemType.LogOut:
+                                LogoutCommand.Execute(null);
+                                break;
                             case MenuItemType.Settings:
                                 SettingsCommand.Execute(null);
                                 break;
@@ -107,6 +113,9 @@ namespace Kliva.ViewModels
                 }                
             }
         }
+
+        private RelayCommand _logoutCommand;
+        public RelayCommand LogoutCommand => _logoutCommand ?? (_logoutCommand = new RelayCommand(async () => await this.Logout()));
 
         private RelayCommand _homeCommand;
         public RelayCommand HomeCommand => _homeCommand ?? (_homeCommand = new RelayCommand(() => ChangePage<MainPage>()));
@@ -128,7 +137,7 @@ namespace Kliva.ViewModels
         private RelayCommand _settingsCommand;
         public RelayCommand SettingsCommand => _settingsCommand ?? (_settingsCommand = new RelayCommand(() => ChangePage<SettingsPage>()));
 
-        public SidePaneViewModel(INavigationService navigationService) : base(navigationService)
+        public SidePaneViewModel(INavigationService navigationService, ISettingsService settingsService) : base(navigationService)
         {
             if (!IsInDesignMode)
             {
@@ -136,12 +145,15 @@ namespace Kliva.ViewModels
                 view.VisibleBoundsChanged += OnVisibleBoundsChanged;
             }
 
+            _settingsService = settingsService;
+
             TopMenuItems.Add(new MenuItem() { Icon = "", Title = "home", MenuItemType = MenuItemType.Home, MenuItemFontType = MenuItemFontType.MDL2 });
             //TopMenuItems.Add(new MenuItem() { Icon = "", Title = "statistics", MenuItemType = MenuItemType.Statistics, MenuItemFontType = MenuItemFontType.MDL2 });
             TopMenuItems.Add(new MenuItem() { Icon = "", Title = "statistics", MenuItemType = MenuItemType.Statistics, MenuItemFontType = MenuItemFontType.Material });
             TopMenuItems.Add(new MenuItem() { Icon = "", Title = "profile", MenuItemType = MenuItemType.Profile, MenuItemFontType = MenuItemFontType.MDL2 });
             TopMenuItems.Add(new MenuItem() { Icon = "", Title = "club", MenuItemType = MenuItemType.Clubs, MenuItemFontType = MenuItemFontType.Material });
 
+            BottomMenuItems.Add(new MenuItem() { Icon = "", Title = "log out", MenuItemType = MenuItemType.LogOut, MenuItemFontType = MenuItemFontType.MDL2 });
             BottomMenuItems.Add(new MenuItem() { Icon = "", Title = "settings", MenuItemType = MenuItemType.Settings, MenuItemFontType = MenuItemFontType.MDL2 });
             BottomMenuItems.Add(new MenuItem() { Icon = "", Title = null, MenuItemType = MenuItemType.Empty, MenuItemFontType = MenuItemFontType.MDL2 });
         }
@@ -228,6 +240,21 @@ namespace Kliva.ViewModels
         private bool IsNoneParameter()
         {
             return string.IsNullOrEmpty(NavigationService.CurrentParameter as string);
+        }
+
+        private async Task Logout()
+        {
+            this.IsBusy = true;
+
+            await _settingsService.RemoveStravaAccessTokenAsync();
+
+            //Remove the current 'main page' back entry and navigate to the login page
+            NavigationService.Navigate<LoginPage>();
+
+            while (NavigationService.CanGoBack)
+                NavigationService.RemoveBackEntry();
+
+            this.IsBusy = false;
         }
     }
 }

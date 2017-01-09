@@ -73,6 +73,7 @@
         Statistics,
         Profile,
         Clubs,
+        LogOut,
         Settings,
         Empty
     }
