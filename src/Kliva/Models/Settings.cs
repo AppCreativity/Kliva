@@ -15,5 +15,7 @@
         public ActivityFeedFilter ActivityFeedFilter { get; set; }
 
         public ActivitySort ActivitySort { get; set; }
+
+        public AppVersion AppVersion { get; set; }
     }
 }

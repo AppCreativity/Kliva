@@ -8,7 +8,7 @@
                Title="Edit activity"
                PrimaryButtonText="Ok"
                SecondaryButtonText="Cancel"
-               PrimaryButtonClick="OnContentDialogPrimaryButtonClick"               
+               PrimaryButtonClick="OnContentDialogPrimaryButtonClick"
                SecondaryButtonClick="OnContentDialogSecondaryButtonClick">
 
     <RelativePanel>
