@@ -61,8 +61,8 @@ namespace Kliva.ViewModels
                 {
                     if (value != null)
                     {
-                        if (this.IsPaneOpen)
-                            this.IsPaneOpen = !this.IsPaneOpen;
+                        if (IsPaneOpen)
+                            IsPaneOpen = !IsPaneOpen;
 
                         switch (value.MenuItemType)
                         {
@@ -115,7 +115,7 @@ namespace Kliva.ViewModels
         }
 
         private RelayCommand _logoutCommand;
-        public RelayCommand LogoutCommand => _logoutCommand ?? (_logoutCommand = new RelayCommand(async () => await this.Logout()));
+        public RelayCommand LogoutCommand => _logoutCommand ?? (_logoutCommand = new RelayCommand(async () => await Logout()));
 
         private RelayCommand _homeCommand;
         public RelayCommand HomeCommand => _homeCommand ?? (_homeCommand = new RelayCommand(() => ChangePage<MainPage>()));
@@ -131,7 +131,7 @@ namespace Kliva.ViewModels
         public RelayCommand ClubsCommand => _clubsCommand ?? (_clubsCommand = new RelayCommand(() => ChangePage<ClubsPage>()));
 
         private RelayCommand _hamburgerCommand;
-        public RelayCommand HamburgerCommand => _hamburgerCommand ?? (_hamburgerCommand = new RelayCommand(() => this.IsPaneOpen = !this.IsPaneOpen));
+        public RelayCommand HamburgerCommand => _hamburgerCommand ?? (_hamburgerCommand = new RelayCommand(() => IsPaneOpen = !IsPaneOpen));
 
         //TODO: Glenn - We hooked this up twice, once in SidePaneViewModel and once in MainViewModel because of difference in UI on desktop ( sidebar ) and mobile ( bottom appbar )
         private RelayCommand _settingsCommand;
@@ -160,7 +160,7 @@ namespace Kliva.ViewModels
 
         private void OnVisibleBoundsChanged(ApplicationView sender, object args)
         {
-            this.ShowHide();
+            ShowHide();
         }
 
         internal void ShowHide(Type pageType = null)
@@ -179,11 +179,11 @@ namespace Kliva.ViewModels
                 show = !_noSidePane.Contains(_pageType);
 
             if (show)
-                this.DisplayMode = SplitViewDisplayMode.CompactOverlay;
+                DisplayMode = SplitViewDisplayMode.CompactOverlay;
             else
             {
-                this.DisplayMode = SplitViewDisplayMode.Inline;
-                this.IsPaneOpen = false;
+                DisplayMode = SplitViewDisplayMode.Inline;
+                IsPaneOpen = false;
             }
 
             UpdateSelectionForPageType();
@@ -244,7 +244,7 @@ namespace Kliva.ViewModels
 
         private async Task Logout()
         {
-            this.IsBusy = true;
+            IsBusy = true;
 
             await _settingsService.RemoveStravaAccessTokenAsync();
 
@@ -254,7 +254,7 @@ namespace Kliva.ViewModels
             while (NavigationService.CanGoBack)
                 NavigationService.RemoveBackEntry();
 
-            this.IsBusy = false;
+            IsBusy = false;
         }
     }
 }

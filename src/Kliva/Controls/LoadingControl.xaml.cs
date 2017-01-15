@@ -16,7 +16,7 @@ namespace Kliva.Controls
 
         public LoadingControl()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         public static void SetLoading(bool isLoading)

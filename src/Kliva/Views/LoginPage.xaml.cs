@@ -9,7 +9,7 @@ namespace Kliva.Views
     {
         public LoginPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

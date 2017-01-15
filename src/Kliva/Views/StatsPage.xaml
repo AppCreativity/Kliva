@@ -23,8 +23,7 @@
                                 ItemsSource="{Binding Details, Mode=OneWay}"
                                 ItemTemplate="{StaticResource StatisticsListItemTemplate}"
                                 SelectionMode="None"
-                                ItemContainerStyle="{StaticResource NonTiltGridViewItemStyle}">
-                    </klivaControls:AdaptiveGridView>
+                                ItemContainerStyle="{StaticResource NonTiltGridViewItemStyle}" />
                     <VisualStateManager.VisualStateGroups>
                         <VisualStateGroup x:Name="VisualStateGroup">
                             <VisualState x:Name="Mobile">
@@ -120,3 +119,4 @@
         </Grid>
     </Grid>
 </Page>
+

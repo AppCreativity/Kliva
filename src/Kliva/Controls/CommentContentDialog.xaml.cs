@@ -8,7 +8,7 @@ namespace Kliva.Controls
 
         public CommentContentDialog()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private void OnContentDialogPrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)

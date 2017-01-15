@@ -23,8 +23,8 @@ namespace Kliva.Controls
 
         public IconPivotHeader()
         {
-            this.InitializeComponent();
-            this.DataContext = this;
+            InitializeComponent();
+            DataContext = this;
         }
     }
 }

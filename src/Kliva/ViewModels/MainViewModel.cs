@@ -78,7 +78,7 @@ namespace Kliva.ViewModels
         }));
 
         private RelayCommand _logoutCommand;
-        public RelayCommand LogoutCommand => _logoutCommand ?? (_logoutCommand = new RelayCommand(async () => await this.Logout()));
+        public RelayCommand LogoutCommand => _logoutCommand ?? (_logoutCommand = new RelayCommand(async () => await Logout()));
 
         private RelayCommand _viewLoadedCommand;
         public RelayCommand ViewLoadedCommand => _viewLoadedCommand ?? (_viewLoadedCommand = new RelayCommand(ViewLoaded));
@@ -121,7 +121,7 @@ namespace Kliva.ViewModels
 
         private async Task Logout()
         {
-            this.IsBusy = true;
+            IsBusy = true;
 
             await _settingsService.RemoveStravaAccessTokenAsync();
 
@@ -131,7 +131,7 @@ namespace Kliva.ViewModels
             while(NavigationService.CanGoBack)
                 NavigationService.RemoveBackEntry();
 
-            this.IsBusy = false;
+            IsBusy = false;
         }
 
         //TODO: Glenn - Can't remember, was this set up as async void for fire and forget reasons?
@@ -204,7 +204,7 @@ namespace Kliva.ViewModels
 
         private async Task OnKudosAsync(ActivitySummary activitySummary)
         {
-            _athlete = _athlete ?? await this._stravaService.GetAthleteAsync();
+            _athlete = _athlete ?? await _stravaService.GetAthleteAsync();
             var canGiveKudos = _athlete.Id != activitySummary.Athlete.Id && !activitySummary.HasKudoed;
             if (canGiveKudos)
             {

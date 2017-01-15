@@ -9,10 +9,10 @@ namespace Kliva.Controls
 
         public SidePaneControl()
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
             //Needed when using x:Bind in the SidePane control XAML
-            DataContextChanged += (sender, args) => this.Bindings.Update();
+            DataContextChanged += (sender, args) => Bindings.Update();
         }
     }
 }

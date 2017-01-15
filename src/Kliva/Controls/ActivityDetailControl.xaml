@@ -135,8 +135,7 @@
                                             ItemsSource="{x:Bind ViewModel.SelectedActivity.Statistics, Mode=OneWay}"
                                             ItemTemplate="{StaticResource StatisticsListItemTemplate}"
                                             SelectionMode="None"
-                                            ItemContainerStyle="{StaticResource NonTiltGridViewItemStyle}">
-                        </local:AdaptiveGridView>
+                                            ItemContainerStyle="{StaticResource NonTiltGridViewItemStyle}" />
                     </PivotItem>
                     <PivotItem x:Name="SegmentsPivot" Tag="Segments"
                            x:DeferLoadStrategy="Lazy"

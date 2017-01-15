@@ -3,7 +3,6 @@ using Kliva.Models;
 using Kliva.Services.Interfaces;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
-using System;
 using Windows.ApplicationModel;
 
 namespace Kliva.Services

@@ -7,7 +7,6 @@ using Kliva.Models;
 using Kliva.Services.Interfaces;
 using Kliva.Helpers;
 using Kliva.Services.Performance;
-using Microsoft.Practices.ServiceLocation;
 
 namespace Kliva.Services
 {

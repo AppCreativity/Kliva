@@ -7,7 +7,7 @@
     {
         public ClubDetailPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

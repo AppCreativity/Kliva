@@ -21,7 +21,7 @@ namespace Kliva.Views
 
         public ProfilePage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
             ServiceLocator.Current.GetInstance<IMessenger>().Register<PivotMessage<ProfilePivots>>(this, Tokens.ProfilePivotMessage, AdjustPivots);
         }

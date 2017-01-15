@@ -9,7 +9,7 @@ namespace Kliva.Controls
 
         public ClubDetailControl()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Kliva.Views
 
         public SettingsPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

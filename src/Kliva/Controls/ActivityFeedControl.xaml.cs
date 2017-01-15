@@ -44,8 +44,8 @@ namespace Kliva.Controls
 
         public ActivityFeedControl()
         {
-            this.InitializeComponent();
-            DataContextChanged += (sender, args) => this.Bindings.Update();
+            InitializeComponent();
+            DataContextChanged += (sender, args) => Bindings.Update();
         }
 
         private void OnActivityListLoaded(object sender, RoutedEventArgs e)

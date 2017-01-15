@@ -35,7 +35,7 @@ namespace Kliva.Views
 
             if (geopositions.Any())
             {
-                var polyLine = new MapPolyline { Path = new Geopath(geopositions), StrokeThickness = 4, StrokeColor = (Color)App.Current.Resources["StravaRedColor"] };
+                var polyLine = new MapPolyline { Path = new Geopath(geopositions), StrokeThickness = 4, StrokeColor = (Color)Application.Current.Resources["StravaRedColor"] };
                 ActivityMap.MapElements.Add(polyLine);
 
                 MapIcon startMapIcon = new MapIcon();

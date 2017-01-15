@@ -94,7 +94,7 @@ namespace Kliva.Views
 
             //TODO: Glenn - Can't we just grab : {ThemeResource SplitViewCompactPaneThemeLength} - we can but than it could be different from the actual size during runtime
             //TODO: Convert.ToInt32((Application.Current.Resources["SplitViewCompactPaneThemeLength"] as double?).Value)
-            SplitView splitView = ((KlivaApplicationFrame)this.Parent).GetVisualDescendents<SplitView>().FirstOrDefault();
+            SplitView splitView = ((KlivaApplicationFrame)Parent).GetVisualDescendents<SplitView>().FirstOrDefault();
             if (splitView.DisplayMode != SplitViewDisplayMode.Inline)
                 style.Setters.Add(new Setter(MarginProperty, new Thickness(splitView.CompactPaneLength, 0, 0, 0)));
 

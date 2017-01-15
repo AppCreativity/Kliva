@@ -11,7 +11,7 @@ namespace Kliva.Views
 
         public ActivityDetailPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

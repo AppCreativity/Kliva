@@ -192,7 +192,7 @@ namespace Kliva.ViewModels
         {
             if (activity != null && SelectedActivity != null)
             {
-                _athlete = _athlete ?? await this._stravaService.GetAthleteAsync();
+                _athlete = _athlete ?? await _stravaService.GetAthleteAsync();
                 var canGiveKudos = _athlete.Id != SelectedActivity.Athlete.Id && !SelectedActivity.HasKudoed;
                 if (canGiveKudos)
                 {

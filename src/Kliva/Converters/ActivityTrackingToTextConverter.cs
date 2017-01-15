@@ -26,7 +26,7 @@ namespace Kliva.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

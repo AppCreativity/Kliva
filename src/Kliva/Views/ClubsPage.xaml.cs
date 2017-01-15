@@ -10,7 +10,7 @@ namespace Kliva.Views
 
         public ClubsPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private void UpdateVisualState(VisualState currentState)

@@ -49,7 +49,7 @@ namespace Kliva.Models
         {
             get
             {
-                return _geopositions ?? (string.IsNullOrEmpty(this.SummaryPolyline) ? (_geopositions = PolylineConverter.DecodePolylinePoints(this.Polyline)) : (_geopositions = PolylineConverter.DecodePolylinePoints(this.SummaryPolyline)));
+                return _geopositions ?? (string.IsNullOrEmpty(SummaryPolyline) ? (_geopositions = PolylineConverter.DecodePolylinePoints(Polyline)) : (_geopositions = PolylineConverter.DecodePolylinePoints(SummaryPolyline)));
             }
         }
     }

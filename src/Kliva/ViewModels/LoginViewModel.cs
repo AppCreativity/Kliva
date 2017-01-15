@@ -39,7 +39,7 @@ namespace Kliva.ViewModels
             _stravaService.StatusEvent += OnStravaStatusEvent;
         }        
 
-        private async void OnStravaStatusEvent(object sender, Services.StravaServiceEventArgs e)
+        private async void OnStravaStatusEvent(object sender, StravaServiceEventArgs e)
         {
             switch (e.Status)
             {

@@ -40,7 +40,7 @@ namespace Kliva.Models
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void OnMetricPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void OnMetricPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if(e.PropertyName == nameof(UserMeasurementUnitMetric.FormattedValueWithUnit))
             {

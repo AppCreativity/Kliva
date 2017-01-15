@@ -14,7 +14,7 @@ namespace Kliva.Controls
 
         public ClubFeedControl()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             DataContextChanged += (sender, args) => Bindings.Update();
         }
 

@@ -1,5 +1,4 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Kliva.Models.Interfaces;
 
 namespace Kliva.Models

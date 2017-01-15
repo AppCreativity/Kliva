@@ -42,7 +42,7 @@
                         <VisualStateGroup x:Name="VisualStateGroup">
                             <VisualState x:Name="Mobile">
                                 <VisualState.StateTriggers>
-                                    <StateTrigger></StateTrigger>
+                                    <StateTrigger />
                                     <AdaptiveTrigger MinWindowWidth="320" />
                                 </VisualState.StateTriggers>
                                 <VisualState.Setters>
@@ -625,4 +625,6 @@
     </DataTemplate>
 
 </ResourceDictionary>
+
+
 

@@ -12,7 +12,7 @@ namespace Kliva.Views
 
         public StatsPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

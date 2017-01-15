@@ -192,7 +192,7 @@ namespace Kliva.ViewModels
                 }
             }
 
-            await this.GetMapSizes();
+            await GetMapSizes();
 
             IsBusy = false;
         }

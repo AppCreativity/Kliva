@@ -1,6 +1,4 @@
-﻿using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Kliva.Models;
+﻿using Windows.UI.Xaml.Controls;
 using Kliva.ViewModels;
 
 namespace Kliva.Controls
@@ -9,7 +7,7 @@ namespace Kliva.Controls
     {
         public AppInfoDialog()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             DataContext = ViewModelLocator.Get<SettingsViewModel>();
             ((SettingsViewModel)DataContext).ViewLoadedCommand.Execute(null);
         }

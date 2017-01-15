@@ -79,7 +79,7 @@ namespace Kliva.Models
 
                 if (!_hasLoaded)
                 {
-                    string data = await LocalCacheService.ReadCacheData(this._name);
+                    string data = await LocalCacheService.ReadCacheData(_name);
                     if (data != null && data.Length > 5)
                     {
                         var items = await HydrateItems(data);
@@ -93,7 +93,7 @@ namespace Kliva.Models
                     var items = await HydrateItems(data);
                     if (items != null && items.Count > 1)
                     {
-                        LocalCacheService.PersistCacheData(data, this._name);
+                        LocalCacheService.PersistCacheData(data, _name);
                     }
                     MergeInItems(items);
                 }

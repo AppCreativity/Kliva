@@ -40,7 +40,7 @@ namespace Kliva.Views
                 else
                     ExpandMapButton.Visibility = Visibility.Visible;
 
-                var polyLine = new MapPolyline { Path = new Geopath(geopositions), StrokeThickness = 4, StrokeColor = (Color)App.Current.Resources["StravaRedColor"] };
+                var polyLine = new MapPolyline { Path = new Geopath(geopositions), StrokeThickness = 4, StrokeColor = (Color)Application.Current.Resources["StravaRedColor"] };
                 SegmentMap.MapElements.Add(polyLine);
 
                 MapIcon startMapIcon = new MapIcon();

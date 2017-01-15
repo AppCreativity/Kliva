@@ -25,8 +25,8 @@ namespace Kliva.Controls
 
         public EditContentDialog(string activityName, bool activityCommute, bool activityPrivate, string gearId, List<GearSummary> gear)
         {
-            this.InitializeComponent();
-            this.DataContext = this;
+            InitializeComponent();
+            DataContext = this;
 
             foreach (GearSummary gearSummary in gear)
                 GearList.Add(new Gear() { DisplayName = gearSummary.Name, GearID = gearSummary.Id });

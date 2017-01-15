@@ -28,8 +28,8 @@ namespace Kliva
         /// </summary>
         public App()
         {
-            this.InitializeComponent();
-            this.Suspending += OnSuspending;
+            InitializeComponent();
+            Suspending += OnSuspending;
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace Kliva
                 var titleBar = ApplicationView.GetForCurrentView().TitleBar;
                 if (titleBar != null)
                 {
-                    titleBar.InactiveBackgroundColor = titleBar.BackgroundColor = titleBar.ButtonInactiveBackgroundColor = titleBar.ButtonBackgroundColor = (Color) App.Current.Resources["KlivaMainColor"];
+                    titleBar.InactiveBackgroundColor = titleBar.BackgroundColor = titleBar.ButtonInactiveBackgroundColor = titleBar.ButtonBackgroundColor = (Color) Current.Resources["KlivaMainColor"];
                     titleBar.ForegroundColor = titleBar.ButtonForegroundColor = Colors.White;
                 }
             }
@@ -98,7 +98,7 @@ namespace Kliva
             {
                 var statusBar = StatusBar.GetForCurrentView();
                 statusBar.BackgroundOpacity = 100;
-                statusBar.BackgroundColor = (Color)App.Current.Resources["KlivaMainColor"];
+                statusBar.BackgroundColor = (Color)Current.Resources["KlivaMainColor"];
                 statusBar.ForegroundColor = Colors.White;
 
                 DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait |

@@ -10,7 +10,7 @@ namespace Kliva.Messages
 
         public PolylineMessage(List<BasicGeoposition> geopositions)
         {
-            this.Geopositions = geopositions;
+            Geopositions = geopositions;
         }        
     }
 }

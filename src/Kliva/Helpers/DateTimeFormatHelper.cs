@@ -277,7 +277,7 @@ namespace Kliva.Helpers
         /// <returns>e.g. "Mon" for Monday when en-US.</returns>
         public static string GetAbbreviatedDay(DateTime dt)
         {
-            if (DateTimeFormatHelper.IsCurrentCultureJapanese() || DateTimeFormatHelper.IsCurrentCultureKorean())
+            if (IsCurrentCultureJapanese() || IsCurrentCultureKorean())
             {
                 return "(" + dt.ToString("ddd", CultureInfo.CurrentCulture) + ")";
             }
@@ -313,9 +313,9 @@ namespace Kliva.Helpers
                     seconds = RxSeconds.Match(result.ToString()).Value;
                     result.Replace(" ", string.Empty);
                     result.Replace(seconds, string.Empty);
-                    if (!(DateTimeFormatHelper.IsCurrentCultureJapanese()
-                        || DateTimeFormatHelper.IsCurrentCultureKorean()
-                        || DateTimeFormatHelper.IsCurrentCultureHungarian()))
+                    if (!(IsCurrentCultureJapanese()
+                        || IsCurrentCultureKorean()
+                        || IsCurrentCultureHungarian()))
                     {
                         result.Replace(DoubleMeridiemDesignator, SingleMeridiemDesignator);
                     }

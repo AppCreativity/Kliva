@@ -27,7 +27,7 @@ namespace Kliva.Controls
 
         public ActivityDetailControl()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             ActivityMap.MapServiceToken = StravaIdentityConstants.MAPS_SERVICETOKEN;
 
             //DataContextChanged += (sender, arg) => this.Bindings.Update();
@@ -79,7 +79,7 @@ namespace Kliva.Controls
                 else
                     ExpandMapButton.Visibility = Visibility.Visible;
 
-                var polyLine = new MapPolyline { Path = new Geopath(geopositions), StrokeThickness = 4, StrokeColor = (Color)App.Current.Resources["StravaRedColor"] };
+                var polyLine = new MapPolyline { Path = new Geopath(geopositions), StrokeThickness = 4, StrokeColor = (Color)Application.Current.Resources["StravaRedColor"] };
                 ActivityMap.MapElements.Add(polyLine);
 
                 MapIcon startMapIcon = new MapIcon();
