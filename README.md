@@ -21,8 +21,8 @@ Do read our wiki! It contains information on what the app is all about and also 
 [Kliva wiki](https://github.com/AppCreativity/Kliva/wiki)
 
 ### Application
-You can find the Windows Phone 8.1 app on the [Windows store](http://www.windowsphone.com/s?appid=ffc42ff1-52ec-4219-899b-1ee4e5fe585b) or scan the QR code:
+You can find the Windows 10 UWP app in the [Windows store](https://www.microsoft.com/en-us/store/p/kliva/9nblggh0c8d7)
+
+For the Windows Phone 8.1 app go [here](http://www.windowsphone.com/s?appid=ffc42ff1-52ec-4219-899b-1ee4e5fe585b) or scan the QR code:
 
 ![QR code Kliva](QR.png)
-
-Note that the Windows 10 UWP app is not available in the store yet, since we're currently adding more features to it. Stay tuned!
