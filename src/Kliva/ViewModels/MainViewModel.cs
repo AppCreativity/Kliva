@@ -193,7 +193,7 @@ namespace Kliva.ViewModels
             {
 
                 DeferringObservableCollection<ActivitySummary> activitySummaries;
-                new ActivitySummaryService(_stravaService).Bind(out activitySummaries);
+                new ActivitySummaryService(_stravaService, ServiceLocator.Current.GetInstance<IStravaAthleteService>()).Bind(out activitySummaries);
                 ActivityIncrementalCollection2 = activitySummaries;
             }
 

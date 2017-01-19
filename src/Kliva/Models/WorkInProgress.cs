@@ -24,7 +24,7 @@ namespace Kliva.Models
         private int _page;
         private int _pageSize = 30;
 
-        public ActivitySummaryService(IStravaService stravaService)
+        public ActivitySummaryService(IStravaService stravaService, IStravaAthleteService stravaAthleteService)
         {
             if (stravaService == null) throw new ArgumentNullException(nameof(stravaService));
 
@@ -32,9 +32,14 @@ namespace Kliva.Models
         }
 
         //TODO ActivityFeedfiltering : Filter (MainViewModel.ApplyActivityFeedFilter)
-        public IDisposable Bind(out DeferringObservableCollection<ActivitySummary> collection)
-        {            
-            return _sourceCache.Connect().Bind(out collection, LoadMoreItems, HasMoreItems).Subscribe();
+        public IDisposable Bind(
+            /*IObservable<Func<ActivityFeedFilter>> filter,*/ out DeferringObservableCollection<ActivitySummary> collection)
+        {   
+                     
+
+            return _sourceCache.Connect()
+                //.Filter(filter.Select())
+                .Bind(out collection, LoadMoreItems, HasMoreItems).Subscribe();
 
         }
 
