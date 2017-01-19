@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading;
@@ -18,13 +19,61 @@ namespace Kliva.Models
 {
     // this is all currently work in progress hacking so be kind :) ....
 
+    internal class ActivitySummaryCacheLoader
+    {
+        public delegate Task<string> LoadMethod(int page, int pageSize);
+
+        private readonly LoadMethod _loader;
+        private readonly Func<string, Task<List<ActivitySummary>>> _hydrater;
+        private readonly int _pageSize;
+        private int _page;
+        private readonly ISourceCache<ActivitySummary, long> _targetCache;
+
+        public ActivitySummaryCacheLoader(
+            LoadMethod loader,
+            Func<string, Task<List<ActivitySummary>>> hydrater,
+            int pageSize, ISourceCache<ActivitySummary, long> targetCache)
+        {
+            if (loader == null) throw new ArgumentNullException(nameof(loader));
+            if (hydrater == null) throw new ArgumentNullException(nameof(hydrater));
+            if (targetCache == null) throw new ArgumentNullException(nameof(targetCache));
+
+            _loader = loader;
+            _hydrater = hydrater;
+            _pageSize = pageSize;            
+            _targetCache = targetCache;
+        }
+
+        public IAsyncOperation<LoadMoreItemsResult> LoadMoreItems(uint count)
+        {
+            return AsyncInfo.Run(_ => LoadMoreItemsAsync());
+        }
+
+        private async Task<LoadMoreItemsResult> LoadMoreItemsAsync()
+        {
+            var data = await _loader(_page + 1, _pageSize);
+            if (data == null) return new LoadMoreItemsResult { Count = 0 };
+            _page++;
+            var items = await HydrateItems(data);
+
+            _targetCache.AddOrUpdate(items);                
+
+            return new LoadMoreItemsResult { Count = (uint)items.Count };
+        }
+
+        private async Task<List<ActivitySummary>> HydrateItems(string data)
+        {
+            IEnumerable<ActivitySummary> results = await _hydrater(data);            
+
+            return results.ToList();
+        }
+    }
+
     public class ActivitySummaryService
     {
         private readonly IStravaService _stravaService;
         private readonly IStravaAthleteService _stravaAthleteService;
-        private readonly ISourceCache<ActivitySummary, long> _sourceCache = new SourceCache<ActivitySummary, long>(activitySummary => activitySummary.Id);
-        private int _page;
-        private int _pageSize = 30;
+        
 
         public ActivitySummaryService(IStravaService stravaService, IStravaAthleteService stravaAthleteService)
         {
@@ -39,22 +88,62 @@ namespace Kliva.Models
         public IDisposable Bind(
             IObservable<ActivityFeedFilter> filter, out DeferringObservableCollection<ActivitySummary> collection)
         {
+            //could look at make these caches application wide, but for now scope to the subscription
+            var friendsActivitySummaryCache = new SourceCache<ActivitySummary, long>(activitySummary => activitySummary.Id);
+            var myActivitySummaryCache = new SourceCache<ActivitySummary, long>(activitySummary => activitySummary.Id);
+            var allActivityCache = new SourceCache<ActivitySummary, long>(activitySummary => activitySummary.Id);
+
+            //we have two caches, which we use to load friends (all)...
+            var friendsCacheLoader = new ActivitySummaryCacheLoader(_stravaService.GetFriendActivityDataAsync, _stravaService.HydrateActivityData, 30,
+                friendsActivitySummaryCache);
+            //..and just me. 
+            var myCacheLoader = new ActivitySummaryCacheLoader(_stravaService.GetMyActivityDataAsync, _stravaService.HydrateActivityData, 30,
+                myActivitySummaryCache);
+            //KEEP THIS ABOVE VARS...we can create a Reset() method, which will handle our pull to refresh
+
+            //...we have a third, combined, cache, which we use to serve data - which may be filtered again - to clients.
+            //we *could* just load everything into this, but then paging the Strava API would seem odd when we get minimal 
+            //results on "my feed" after the Strava API pages a *full" feed
+            var allSubscription = friendsActivitySummaryCache.Connect()
+                .Merge(myActivitySummaryCache.Connect())
+                .PopulateInto(allActivityCache);
+
             //TODO sort (see ActivityIncrementalCollection.HydrateItems)         
 
-            return _sourceCache.Connect()
-                .Filter(filter.Select(CreateActivitySummaryFilter))
-                .Bind(out collection, LoadMoreItems, HasMoreItems).Subscribe();
+            var activeCacheLoader = friendsCacheLoader;
+            Func<uint, IAsyncOperation<LoadMoreItemsResult>> loader = count => activeCacheLoader.LoadMoreItems(count);
+            loader(0);
+
+            var collectionSubscription = allActivityCache.Connect()                
+                .Sort(SortExpressionComparer<ActivitySummary>.Descending(activitySummary => activitySummary.DateTimeStart))
+                .Filter(filter.Select(activityFeedFilter =>
+                {
+
+                    var result = BuildActivitySummaryFilter(activityFeedFilter, friendsCacheLoader, myCacheLoader, out activeCacheLoader);
+                    return result;
+                }))
+                .Bind(out collection, loader, HasMoreItems).Subscribe();
+
+            return new CompositeDisposable(friendsActivitySummaryCache, myActivitySummaryCache, allActivityCache,
+                collectionSubscription, allSubscription);
         }
 
-        private Func<ActivitySummary, bool> CreateActivitySummaryFilter(ActivityFeedFilter activityFeedFilter)
+        private Func<ActivitySummary, bool> BuildActivitySummaryFilter(
+            ActivityFeedFilter activityFeedFilter,
+            ActivitySummaryCacheLoader friendsCacheLoader,
+            ActivitySummaryCacheLoader myCacheLoader,
+            out ActivitySummaryCacheLoader currentCacheLoader)
         {
             switch (activityFeedFilter)
             {
                 case ActivityFeedFilter.All:
+                    currentCacheLoader = friendsCacheLoader;
                     return _ => true;                    
                 case ActivityFeedFilter.My:
-                    return activitySummary => activitySummary.Athlete.Id == _stravaAthleteService.Athlete.Id;                
+                    currentCacheLoader = myCacheLoader;
+                    return activitySummary => activitySummary.Athlete == null || activitySummary.Athlete.Id == _stravaAthleteService.Athlete.Id;                
                 case ActivityFeedFilter.Followers:
+                    currentCacheLoader = friendsCacheLoader;
                     return activitySummary => activitySummary.Athlete.Id != _stravaAthleteService.Athlete.Id;                                
                 default:
                     throw new ArgumentOutOfRangeException(nameof(activityFeedFilter), activityFeedFilter, null);
@@ -65,75 +154,7 @@ namespace Kliva.Models
         private bool HasMoreItems()
         {
             return true;
-        }
-
-        private IAsyncOperation<LoadMoreItemsResult> LoadMoreItems(uint count)
-        {
-            /* TODO ...I dont know if we need this?
-            if (_busy)
-            {
-                throw new InvalidOperationException("Only one operation in flight at a time");
-            }
-
-            _busy = true;
-            */
-
-            return AsyncInfo.Run(_ => LoadMoreItemsAsync());
-        }
-
-        private async Task<LoadMoreItemsResult> LoadMoreItemsAsync()
-        {
-            try
-            {
-                var data = await FetchData(_page + 1, _pageSize);
-                if (data == null) return new LoadMoreItemsResult {Count = 0};
-                _page++;
-                var items = await HydrateItems(data);
-
-                _sourceCache.AddOrUpdate(items);
-
-                /*DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                    {
-                        MergeInItems(items);
-                        HasData = (items.Count > 1);
-                    });
-                    */
-
-                return new LoadMoreItemsResult {Count = (uint) items.Count};
-            }
-            finally
-            {
-                //TODO confirm usage?
-                //_busy = false;
-            }
-        }
-
-        private async Task<List<ActivitySummary>> HydrateItems(string data)
-        {
-            IEnumerable<ActivitySummary> results = await _stravaService.HydrateActivityData(data);
-
-            //TODO: filtering
-            /*
-            if (_filter == ActivityFeedFilter.Friends)
-                results = results.Where(activity => activity.Athlete.Id != _athleteService.Athlete.Id);
-                */
-
-            //TODO: local cache, (on startup?)
-            /*
-            ActivitySort sort = await _settingsService.GetStoredActivitySortAsync();
-            if (sort == ActivitySort.EndTime)
-                results = results.OrderByDescending(activity => activity.EndDate);
-                */
-
-            return results.ToList();
-        }
-
-
-        //TODO...act according to filter?
-        private Task<string> FetchData(int page, int pageSize)
-        {
-            return _stravaService.GetFriendActivityDataAsync(page, pageSize);
-        }
+        }        
     }
 
     public static class DynamicDataEx
