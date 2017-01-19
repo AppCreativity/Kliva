@@ -13,6 +13,10 @@ using Kliva.Services;
 using Microsoft.Practices.ServiceLocation;
 using Kliva.Controls;
 using System;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
+using DynamicData.Binding;
 
 namespace Kliva.ViewModels
 {
@@ -187,16 +191,20 @@ namespace Kliva.ViewModels
             return false;
         }
 
+        //TODO JW tidy up, set up at start up?
+        private readonly ReplaySubject<ActivityFeedFilter> _activitySubject = new ReplaySubject<ActivityFeedFilter>(1);
         private void ApplyActivityFeedFilter(ActivityFeedFilter filter)
         {
+            _activitySubject.OnNext(filter);
             if (ActivityIncrementalCollection2 == null)
             {
-
-                DeferringObservableCollection<ActivitySummary> activitySummaries;
-                new ActivitySummaryService(_stravaService, ServiceLocator.Current.GetInstance<IStravaAthleteService>()).Bind(out activitySummaries);
+                DeferringObservableCollection<ActivitySummary> activitySummaries;                
+                new ActivitySummaryService(_stravaService, ServiceLocator.Current.GetInstance<IStravaAthleteService>())
+                    .Bind(_activitySubject, out activitySummaries);
                 ActivityIncrementalCollection2 = activitySummaries;
-            }
+            }            
 
+            //TODO JW remove this code once we have filters working
             switch (filter)
             {
                 case ActivityFeedFilter.All:

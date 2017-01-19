@@ -12,6 +12,7 @@ using DynamicData;
 using DynamicData.Binding;
 using GalaSoft.MvvmLight.Threading;
 using Kliva.Services.Interfaces;
+using System.Reactive.Linq;
 
 namespace Kliva.Models
 {
@@ -20,6 +21,7 @@ namespace Kliva.Models
     public class ActivitySummaryService
     {
         private readonly IStravaService _stravaService;
+        private readonly IStravaAthleteService _stravaAthleteService;
         private readonly ISourceCache<ActivitySummary, long> _sourceCache = new SourceCache<ActivitySummary, long>(activitySummary => activitySummary.Id);
         private int _page;
         private int _pageSize = 30;
@@ -27,20 +29,36 @@ namespace Kliva.Models
         public ActivitySummaryService(IStravaService stravaService, IStravaAthleteService stravaAthleteService)
         {
             if (stravaService == null) throw new ArgumentNullException(nameof(stravaService));
+            if (stravaAthleteService == null) throw new ArgumentNullException(nameof(stravaAthleteService));
 
-            _stravaService = stravaService;            
+            _stravaService = stravaService;
+            _stravaAthleteService = stravaAthleteService;
         }
 
         //TODO ActivityFeedfiltering : Filter (MainViewModel.ApplyActivityFeedFilter)
         public IDisposable Bind(
-            /*IObservable<Func<ActivityFeedFilter>> filter,*/ out DeferringObservableCollection<ActivitySummary> collection)
-        {   
-                     
+            IObservable<ActivityFeedFilter> filter, out DeferringObservableCollection<ActivitySummary> collection)
+        {
+            //TODO sort (see ActivityIncrementalCollection.HydrateItems)         
 
             return _sourceCache.Connect()
-                //.Filter(filter.Select())
+                .Filter(filter.Select(CreateActivitySummaryFilter))
                 .Bind(out collection, LoadMoreItems, HasMoreItems).Subscribe();
+        }
 
+        private Func<ActivitySummary, bool> CreateActivitySummaryFilter(ActivityFeedFilter activityFeedFilter)
+        {
+            switch (activityFeedFilter)
+            {
+                case ActivityFeedFilter.All:
+                    return _ => true;                    
+                case ActivityFeedFilter.My:
+                    return activitySummary => activitySummary.Athlete.Id == _stravaAthleteService.Athlete.Id;                
+                case ActivityFeedFilter.Followers:
+                    return activitySummary => activitySummary.Athlete.Id != _stravaAthleteService.Athlete.Id;                                
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(activityFeedFilter), activityFeedFilter, null);
+            }            
         }
 
         //TODO previos version was checking initial load first I think
@@ -81,7 +99,7 @@ namespace Kliva.Models
                     });
                     */
 
-                return new LoadMoreItemsResult { Count = (uint)items.Count };                
+                return new LoadMoreItemsResult {Count = (uint) items.Count};
             }
             finally
             {
@@ -117,7 +135,7 @@ namespace Kliva.Models
             return _stravaService.GetFriendActivityDataAsync(page, pageSize);
         }
     }
-    
+
     public static class DynamicDataEx
     {
         /// <summary>
@@ -131,12 +149,7 @@ namespace Kliva.Models
         /// <param name="hasMoreItems"></param>
         /// <param name="resetThreshold"></param>
         /// <returns></returns>
-        public static IObservable<IChangeSet<TObject, TKey>> Bind<TObject, TKey>(
-            this IObservable<IChangeSet<TObject, TKey>> source, 
-            out DeferringObservableCollection<TObject> readOnlyObservableCollection,
-            Func<uint, IAsyncOperation<LoadMoreItemsResult>> loadMoreItems,
-            Func<bool> hasMoreItems,
-            int resetThreshold = 30)
+        public static IObservable<IChangeSet<TObject, TKey>> Bind<TObject, TKey>(this IObservable<IChangeSet<TObject, TKey>> source, out DeferringObservableCollection<TObject> readOnlyObservableCollection, Func<uint, IAsyncOperation<LoadMoreItemsResult>> loadMoreItems, Func<bool> hasMoreItems, int resetThreshold = 30)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
@@ -146,7 +159,6 @@ namespace Kliva.Models
             readOnlyObservableCollection = observableCollection;
             return source.Bind(collectionExtended, collectionAdaptor);
         }
-
     }
 
     public class DeferringObservableCollection<TContent> : ReadOnlyObservableCollection<TContent>, ISupportIncrementalLoading
@@ -154,10 +166,7 @@ namespace Kliva.Models
         private readonly Func<uint, IAsyncOperation<LoadMoreItemsResult>> _loadMoreItems;
         private readonly Func<bool> _hasMoreItems;
 
-        public DeferringObservableCollection(ObservableCollection<TContent> list, 
-            Func<uint, IAsyncOperation<LoadMoreItemsResult>> loadMoreItems, 
-            Func<bool> hasMoreItems 
-            ) : base(list)
+        public DeferringObservableCollection(ObservableCollection<TContent> list, Func<uint, IAsyncOperation<LoadMoreItemsResult>> loadMoreItems, Func<bool> hasMoreItems) : base(list)
         {
             _loadMoreItems = loadMoreItems;
             _hasMoreItems = hasMoreItems;
