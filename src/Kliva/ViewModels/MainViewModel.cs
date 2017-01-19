@@ -56,6 +56,12 @@ namespace Kliva.ViewModels
             get { return _activityIncrementalCollection; }
             set { Set(() => ActivityIncrementalCollection, ref _activityIncrementalCollection, value); }
         }
+        private DeferringObservableCollection<ActivitySummary> _activityIncrementalCollection2;
+        public DeferringObservableCollection<ActivitySummary> ActivityIncrementalCollection2
+        {
+            get { return _activityIncrementalCollection2; }
+            set { Set(() => ActivityIncrementalCollection2, ref _activityIncrementalCollection2, value); }
+        }
 
         private ActivitySummary _selectedActivity;
         public ActivitySummary SelectedActivity
@@ -183,6 +189,14 @@ namespace Kliva.ViewModels
 
         private void ApplyActivityFeedFilter(ActivityFeedFilter filter)
         {
+            if (ActivityIncrementalCollection2 == null)
+            {
+
+                DeferringObservableCollection<ActivitySummary> activitySummaries;
+                new ActivitySummaryService(_stravaService).Bind(out activitySummaries);
+                ActivityIncrementalCollection2 = activitySummaries;
+            }
+
             switch (filter)
             {
                 case ActivityFeedFilter.All:

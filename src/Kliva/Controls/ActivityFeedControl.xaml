@@ -70,7 +70,7 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <ListView x:Name="ActivityList"
-                  ItemsSource="{x:Bind ViewModel.ActivityIncrementalCollection, Mode=OneWay}"
+                  ItemsSource="{x:Bind ViewModel.ActivityIncrementalCollection2, Mode=OneWay}"
                   SelectedItem="{x:Bind ViewModel.SelectedActivity, Mode=OneWay, Converter={StaticResource XBindItemCastingConverter}}"
                   SelectionChanged="ActivityList_SelectionChanged"
                   ContainerContentChanging="ActivityList_ContainerContentChanging"
