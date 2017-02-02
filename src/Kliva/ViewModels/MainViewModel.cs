@@ -54,12 +54,6 @@ namespace Kliva.ViewModels
             set { Set(() => FilterText, ref _filterText, value); }
         }
 
-        private ActivityIncrementalCollection _activityIncrementalCollection;
-        public ActivityIncrementalCollection ActivityIncrementalCollection
-        {
-            get { return _activityIncrementalCollection; }
-            set { Set(() => ActivityIncrementalCollection, ref _activityIncrementalCollection, value); }
-        }
         private DeferringObservableCollection<ActivitySummary> _activityIncrementalCollection2;
         public DeferringObservableCollection<ActivitySummary> ActivityIncrementalCollection2
         {
@@ -203,25 +197,19 @@ namespace Kliva.ViewModels
                     .Bind(out _friendsCollection, out _myCollection, out _allCollection);                
             }            
 
-            //TODO JW remove this code once we have filters working
             switch (filter)
             {
                 case ActivityFeedFilter.All:
                     FilterText = "Showing all activities";
                     ActivityIncrementalCollection2 = _allCollection;
-                    //ActivityIncrementalCollection = new FriendActivityIncrementalCollection(_stravaService,
-                    //    ActivityFeedFilter.All);
                     break;
                 case ActivityFeedFilter.Followers:
                     FilterText = "Showing friends' activities";
                     ActivityIncrementalCollection2 = _friendsCollection;
-                    //ActivityIncrementalCollection = new FriendActivityIncrementalCollection(_stravaService,
-                    //    ActivityFeedFilter.Friends);
                     break;
                 case ActivityFeedFilter.My:
                     FilterText = "Showing my activities";
                     ActivityIncrementalCollection2 = _myCollection;
-                    //ActivityIncrementalCollection = new MyActivityIncrementalCollection(_stravaService);
                     break;
             }
         }
