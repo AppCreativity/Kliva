@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
@@ -14,6 +15,7 @@ using DynamicData.Binding;
 using GalaSoft.MvvmLight.Threading;
 using Kliva.Services.Interfaces;
 using System.Reactive.Linq;
+using DynamicData.Controllers;
 
 namespace Kliva.Models
 {
@@ -49,16 +51,29 @@ namespace Kliva.Models
             return AsyncInfo.Run(_ => LoadMoreItemsAsync());
         }
 
+        public bool IsLoading { get; private set; }
+
+        public bool LastLoadReturnedData { get; private set; }
+
         private async Task<LoadMoreItemsResult> LoadMoreItemsAsync()
         {
-            var data = await _loader(_page + 1, _pageSize);
-            if (data == null) return new LoadMoreItemsResult { Count = 0 };
-            _page++;
-            var items = await HydrateItems(data);
+            IsLoading = true;
+            try
+            {
+                var data = await _loader(_page + 1, _pageSize);
+                if (string.IsNullOrEmpty(data)) return new LoadMoreItemsResult { Count = 0 };
+                _page++;
+                var items = await HydrateItems(data);
 
-            _targetCache.AddOrUpdate(items);                
+                _targetCache.AddOrUpdate(items);
+                LastLoadReturnedData = items.Count > 0;
 
-            return new LoadMoreItemsResult { Count = (uint)items.Count };
+                return new LoadMoreItemsResult { Count = (uint)items.Count };
+            }
+            finally
+            {
+                IsLoading = false;
+            }            
         }
 
         private async Task<List<ActivitySummary>> HydrateItems(string data)
@@ -104,8 +119,8 @@ namespace Kliva.Models
             //...we have a third, combined, cache, which we use to serve data - which may be filtered again - to clients.
             //we *could* just load everything into this, but then paging the Strava API would seem odd when we get minimal 
             //results on "my feed" after the Strava API pages a *full" feed
-            var allSubscription = friendsActivitySummaryCache.Connect()
-                .Merge(myActivitySummaryCache.Connect())
+            var allSubscription = myActivitySummaryCache.Connect()
+                .Merge(friendsActivitySummaryCache.Connect())
                 .PopulateInto(allActivityCache);
 
             //TODO sort (see ActivityIncrementalCollection.HydrateItems)         
@@ -114,15 +129,16 @@ namespace Kliva.Models
             Func<uint, IAsyncOperation<LoadMoreItemsResult>> loader = count => activeCacheLoader.LoadMoreItems(count);
             loader(0);
 
-            var collectionSubscription = allActivityCache.Connect()                
-                .Sort(SortExpressionComparer<ActivitySummary>.Descending(activitySummary => activitySummary.DateTimeStart))
+            var collectionSubscription = allActivityCache.Connect()
                 .Filter(filter.Select(activityFeedFilter =>
                 {
-
                     var result = BuildActivitySummaryFilter(activityFeedFilter, friendsCacheLoader, myCacheLoader, out activeCacheLoader);
                     return result;
                 }))
-                .Bind(out collection, loader, HasMoreItems).Subscribe();
+                .Sort(SortExpressionComparer<ActivitySummary>.Descending(summary => summary.DateTimeStartLocal), filter.Select(_ => Unit.Default).StartWith(new [] { Unit.Default }))
+                .ObserveOn(DispatcherHelper.UIDispatcher)
+                .Bind(out collection, loader, () => !activeCacheLoader.IsLoading && activeCacheLoader.LastLoadReturnedData)
+                .Subscribe();
 
             return new CompositeDisposable(friendsActivitySummaryCache, myActivitySummaryCache, allActivityCache,
                 collectionSubscription, allSubscription);
@@ -148,13 +164,7 @@ namespace Kliva.Models
                 default:
                     throw new ArgumentOutOfRangeException(nameof(activityFeedFilter), activityFeedFilter, null);
             }            
-        }
-
-        //TODO previos version was checking initial load first I think
-        private bool HasMoreItems()
-        {
-            return true;
-        }        
+        }     
     }
 
     public static class DynamicDataEx
@@ -177,7 +187,7 @@ namespace Kliva.Models
             var collectionExtended = new ObservableCollectionExtended<TObject>();
             var observableCollection = new DeferringObservableCollection<TObject>(collectionExtended, loadMoreItems, hasMoreItems);
             var collectionAdaptor = new ObservableCollectionAdaptor<TObject, TKey>(resetThreshold);
-            readOnlyObservableCollection = observableCollection;
+            readOnlyObservableCollection = observableCollection;            
             return source.Bind(collectionExtended, collectionAdaptor);
         }
     }

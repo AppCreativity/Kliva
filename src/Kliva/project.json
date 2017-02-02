@@ -1,7 +1,7 @@
 ﻿{
   "dependencies": {
     "Cimbalino.Toolkit": "2.3.0",
-    "DynamicData": "5.0.6.2090",
+    "DynamicData": "5.1.4.2124",
     "GoogleAnalyticsSDK": "1.3.0",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
     "Microsoft.Toolkit.Uwp.UI.Controls": "1.1.0",
