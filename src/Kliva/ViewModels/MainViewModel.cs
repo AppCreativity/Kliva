@@ -25,6 +25,11 @@ namespace Kliva.ViewModels
         private readonly ISettingsService _settingsService;
         private readonly IStravaService _stravaService;
         private readonly IOService _ioService;
+        private readonly IStravaAthleteService _stravaAthleteService;
+        private ActivitySummaryService _activitySummaryService;
+        private DeferringObservableCollection<ActivitySummary> _friendsCollection;
+        private DeferringObservableCollection<ActivitySummary> _myCollection;
+        private DeferringObservableCollection<ActivitySummary> _allCollection;
 
         private bool _viewModelLoaded = false;
         private Athlete _athlete;
@@ -114,11 +119,13 @@ namespace Kliva.ViewModels
         private RelayCommand<ActivitySummary> _commentCommand;
         public RelayCommand<ActivitySummary> CommentCommand => _commentCommand ?? (_commentCommand = new RelayCommand<ActivitySummary>(OnComment));
 
-        public MainViewModel(INavigationService navigationService, ISettingsService settingsService, IStravaService stravaService, IOService ioService) : base(navigationService)
+        public MainViewModel(INavigationService navigationService, ISettingsService settingsService, IStravaService stravaService, IOService ioService,
+            IStravaAthleteService stravaAthleteService) : base(navigationService)
         {
             _settingsService = settingsService;
             _stravaService = stravaService;
             _ioService = ioService;
+            _stravaAthleteService = stravaAthleteService;
         }
 
         public void ActivityInvoked(ActivitySummary selectedActivity)
@@ -188,18 +195,12 @@ namespace Kliva.ViewModels
 
             return false;
         }
-
-        //TODO JW tidy up, set up at start up?
-        private ActivitySummaryService _activitySummaryService;
-        private DeferringObservableCollection<ActivitySummary> _friendsCollection;
-        private DeferringObservableCollection<ActivitySummary> _myCollection;
-        private DeferringObservableCollection<ActivitySummary> _allCollection;
+                        
         private void ApplyActivityFeedFilter(ActivityFeedFilter filter)
         {            
             if (_activitySummaryService == null)
             {
-                (_activitySummaryService = new ActivitySummaryService(_stravaService, ServiceLocator.Current.GetInstance<IStravaAthleteService>()))
-                    .Bind(out _friendsCollection, out _myCollection, out _allCollection);
+                (_activitySummaryService = new ActivitySummaryService(_stravaService, _stravaAthleteService)).Bind(out _friendsCollection, out _myCollection, out _allCollection);
             }            
 
             switch (filter)
