@@ -170,10 +170,13 @@
     <Compile Include="Messages\PivotMessage.cs" />
     <Compile Include="Models\AccessToken.cs" />
     <Compile Include="Models\Activity.cs" />
+    <Compile Include="Models\ActivitySummaryCacheLoader.cs" />
+    <Compile Include="Models\ActivitySummaryService.cs" />
     <Compile Include="Models\Bike.cs" />
     <Compile Include="Models\Converters\AthleteJsonConverter.cs" />
+    <Compile Include="Models\DynamicDataEx.cs" />
     <Compile Include="Models\GearSummary.cs" />
-    <Compile Include="Models\WorkInProgress.cs" />
+    <Compile Include="Models\DeferringObservableCollection.cs" />
     <Compile Include="Models\Incremental\ActivityIncrementalCollection.cs" />
     <Compile Include="Models\ActivityMeta.cs" />
     <Compile Include="Models\ActivitySummary.cs" />
