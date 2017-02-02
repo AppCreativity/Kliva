@@ -54,11 +54,11 @@ namespace Kliva.ViewModels
             set { Set(() => FilterText, ref _filterText, value); }
         }
 
-        private DeferringObservableCollection<ActivitySummary> _activityIncrementalCollection2;
-        public DeferringObservableCollection<ActivitySummary> ActivityIncrementalCollection2
+        private DeferringObservableCollection<ActivitySummary> _activityIncrementalCollection;
+        public DeferringObservableCollection<ActivitySummary> ActivityIncrementalCollection
         {
-            get { return _activityIncrementalCollection2; }
-            set { Set(() => ActivityIncrementalCollection2, ref _activityIncrementalCollection2, value); }
+            get { return _activityIncrementalCollection; }
+            set { Set(() => ActivityIncrementalCollection, ref _activityIncrementalCollection, value); }
         }
 
         private ActivitySummary _selectedActivity;
@@ -80,6 +80,10 @@ namespace Kliva.ViewModels
 
             ApplyActivityFeedFilter(filter);
         }));
+
+        private RelayCommand _refreshCommand;
+        public RelayCommand RefreshCommand
+            => _refreshCommand ?? (_refreshCommand = new RelayCommand(() => _activitySummaryService?.Refresh()));
 
         private RelayCommand _logoutCommand;
         public RelayCommand LogoutCommand => _logoutCommand ?? (_logoutCommand = new RelayCommand(async () => await Logout()));
@@ -186,30 +190,31 @@ namespace Kliva.ViewModels
         }
 
         //TODO JW tidy up, set up at start up?
-        DeferringObservableCollection<ActivitySummary> _friendsCollection;
-        DeferringObservableCollection<ActivitySummary> _myCollection;
-        DeferringObservableCollection<ActivitySummary> _allCollection;
+        private ActivitySummaryService _activitySummaryService;
+        private DeferringObservableCollection<ActivitySummary> _friendsCollection;
+        private DeferringObservableCollection<ActivitySummary> _myCollection;
+        private DeferringObservableCollection<ActivitySummary> _allCollection;
         private void ApplyActivityFeedFilter(ActivityFeedFilter filter)
         {            
-            if (ActivityIncrementalCollection2 == null)
+            if (_activitySummaryService == null)
             {
-                new ActivitySummaryService(_stravaService, ServiceLocator.Current.GetInstance<IStravaAthleteService>())
-                    .Bind(out _friendsCollection, out _myCollection, out _allCollection);                
+                (_activitySummaryService = new ActivitySummaryService(_stravaService, ServiceLocator.Current.GetInstance<IStravaAthleteService>()))
+                    .Bind(out _friendsCollection, out _myCollection, out _allCollection);
             }            
 
             switch (filter)
             {
                 case ActivityFeedFilter.All:
                     FilterText = "Showing all activities";
-                    ActivityIncrementalCollection2 = _allCollection;
+                    ActivityIncrementalCollection = _allCollection;
                     break;
                 case ActivityFeedFilter.Followers:
                     FilterText = "Showing friends' activities";
-                    ActivityIncrementalCollection2 = _friendsCollection;
+                    ActivityIncrementalCollection = _friendsCollection;
                     break;
                 case ActivityFeedFilter.My:
                     FilterText = "Showing my activities";
-                    ActivityIncrementalCollection2 = _myCollection;
+                    ActivityIncrementalCollection = _myCollection;
                     break;
             }
         }

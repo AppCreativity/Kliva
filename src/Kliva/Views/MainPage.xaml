@@ -122,24 +122,33 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Button x:Name="FilterButton"
-                    Style="{StaticResource EmptyButtonStyle}"
-                    Foreground="{StaticResource KlivaMainBrush}"
-                    HorizontalAlignment="Stretch"          
-                    Grid.Row="0"
-                    Grid.Column="0">
-                <Button.Flyout>
-                    <MenuFlyout x:Name="FilterFlyout" Opened="OnFilterFlyoutOpened">
-                        <MenuFlyoutItem Text="all activities" Command="{Binding FilterCommand}" CommandParameter="all" />
-                        <MenuFlyoutItem Text="my activities" Command="{Binding FilterCommand}" CommandParameter="my" />
-                        <MenuFlyoutItem Text="friends' activities" Command="{Binding FilterCommand}" CommandParameter="followers" />
-                    </MenuFlyout>
-                </Button.Flyout>
-                <TextBlock>
-                    <Run Text="{Binding FilterText}" FontFamily="{StaticResource OpenSansFontLight}"/>
-                    <Run Text="  " FontFamily="Segoe UI Symbol" />
-                </TextBlock>
-            </Button>
+            <Grid Grid.Row="0"
+                  Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Button x:Name="FilterButton"
+                        Style="{StaticResource EmptyButtonStyle}"
+                        Foreground="{StaticResource KlivaMainBrush}"
+                        HorizontalAlignment="Stretch">
+                    <Button.Flyout>
+                        <MenuFlyout x:Name="FilterFlyout" Opened="OnFilterFlyoutOpened">
+                            <MenuFlyoutItem Text="all activities" Command="{Binding FilterCommand}" CommandParameter="all" />
+                            <MenuFlyoutItem Text="my activities" Command="{Binding FilterCommand}" CommandParameter="my" />
+                            <MenuFlyoutItem Text="friends' activities" Command="{Binding FilterCommand}" CommandParameter="followers" />
+                        </MenuFlyout>
+                    </Button.Flyout>
+                    <TextBlock>
+                        <Run Text="{Binding FilterText}" FontFamily="{StaticResource OpenSansFontLight}"/>
+                        <Run Text="  " FontFamily="Segoe UI Symbol" />
+                    </TextBlock>
+                </Button>
+                <Button Grid.Column="1" Command="{Binding RefreshCommand}">
+                    Refresh
+                </Button>
+            </Grid>
+            
 
             <klivacontrols:ActivityFeedControl x:Name="ActivityFeed"
                                                Margin="0,0,0,0"

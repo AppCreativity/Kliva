@@ -17,9 +17,10 @@ namespace Kliva.Models
         private readonly LoadMethod _loader;
         private readonly Func<string, Task<List<ActivitySummary>>> _hydrater;
         private readonly int _pageSize;
-        private int _page;
         private readonly ISourceCache<ActivitySummary, long> _targetCache;
         private readonly string _backingStoreCacheName;
+        private int _page;
+        private bool _suppressNextBackingCacheGet = false;
 
         public ActivitySummaryCacheLoader(
             LoadMethod loader,
@@ -44,6 +45,14 @@ namespace Kliva.Models
             return AsyncInfo.Run(_ => LoadMoreItemsAsync());
         }
 
+        public async void Reset()
+        {
+            _page = 0;
+            _targetCache.Clear();
+            _suppressNextBackingCacheGet = true;
+            await LoadMoreItemsAsync();
+        }
+
         public bool IsLoading { get; private set; }        
 
         private async Task<LoadMoreItemsResult> LoadMoreItemsAsync()
@@ -52,7 +61,7 @@ namespace Kliva.Models
             try
             {
                 //grab from local cache to get some data quick
-                if (_page == 0)
+                if (_page == 0 && !_suppressNextBackingCacheGet)
                 {
                     var localCacheData = await LocalCacheService.ReadCacheData(_backingStoreCacheName);
                     if (localCacheData != null && localCacheData.Length > 5)
@@ -61,6 +70,7 @@ namespace Kliva.Models
                         _targetCache.AddOrUpdate(cachedItems);
                     }
                 }
+                _suppressNextBackingCacheGet = false;
 
                 //hit the strava api
                 var data = await _loader(_page + 1, _pageSize);
@@ -69,8 +79,7 @@ namespace Kliva.Models
                 var items = await HydrateItems(data);
                 _targetCache.AddOrUpdate(items);
 
-                //cache the first page for next time
-                //TODO check OK when implement refresh
+                //cache the first page for next time                
                 if (_page == 1)
                 {
                     LocalCacheService.PersistCacheData(data, _backingStoreCacheName);

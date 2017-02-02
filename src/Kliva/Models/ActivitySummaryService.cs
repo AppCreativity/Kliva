@@ -8,18 +8,38 @@ using Kliva.Services.Interfaces;
 
 namespace Kliva.Models
 {
-    public class ActivitySummaryService
-    {
-        private readonly IStravaService _stravaService;
-        private readonly IStravaAthleteService _stravaAthleteService;        
+    public class ActivitySummaryService : IDisposable
+    {        
+        private readonly IStravaAthleteService _stravaAthleteService;
+        private readonly SourceCache<ActivitySummary, long> _friendsActivitySummaryCache;
+        private readonly SourceCache<ActivitySummary, long> _myActivitySummaryCache;
+        private readonly ActivitySummaryCacheLoader _friendsCacheLoader;
+        private readonly ActivitySummaryCacheLoader _myCacheLoader;
+        private readonly CompositeDisposable _disposable;
 
         public ActivitySummaryService(IStravaService stravaService, IStravaAthleteService stravaAthleteService)
         {
             if (stravaService == null) throw new ArgumentNullException(nameof(stravaService));
             if (stravaAthleteService == null) throw new ArgumentNullException(nameof(stravaAthleteService));
 
-            _stravaService = stravaService;
             _stravaAthleteService = stravaAthleteService;
+
+            _friendsActivitySummaryCache = new SourceCache<ActivitySummary, long>(activitySummary => activitySummary.Id);
+            _myActivitySummaryCache = new SourceCache<ActivitySummary, long>(activitySummary => activitySummary.Id);
+
+            const int pageSize = 30;
+
+            //we have two caches, which we use to load friends (followers and me)...
+            _friendsCacheLoader = new ActivitySummaryCacheLoader(stravaService.GetFriendActivityDataAsync, stravaService.HydrateActivityData, pageSize,
+                _friendsActivitySummaryCache, "All");
+            //..and just me. 
+            _myCacheLoader = new ActivitySummaryCacheLoader(stravaService.GetMyActivityDataAsync, stravaService.HydrateActivityData, pageSize,
+                _myActivitySummaryCache, "My");
+
+            _friendsCacheLoader.LoadMoreItems(pageSize);
+            _myCacheLoader.LoadMoreItems(pageSize);
+
+            _disposable = new CompositeDisposable(_friendsActivitySummaryCache, _myActivitySummaryCache);
         }
         
         public IDisposable Bind(            
@@ -27,44 +47,37 @@ namespace Kliva.Models
             out DeferringObservableCollection<ActivitySummary> myCollection,
             out DeferringObservableCollection<ActivitySummary> allCollection
             )
-        {
-            //could look at make these caches application wide, but for now scope to the subscription
-            var friendsActivitySummaryCache = new SourceCache<ActivitySummary, long>(activitySummary => activitySummary.Id);
-            var myActivitySummaryCache = new SourceCache<ActivitySummary, long>(activitySummary => activitySummary.Id);
-            
-            const int pageSize = 30;
-
-            //we have two caches, which we use to load friends (followers and me)...
-            var friendsCacheLoader = new ActivitySummaryCacheLoader(_stravaService.GetFriendActivityDataAsync, _stravaService.HydrateActivityData, pageSize,
-                friendsActivitySummaryCache, "All");
-            //..and just me. 
-            var myCacheLoader = new ActivitySummaryCacheLoader(_stravaService.GetMyActivityDataAsync, _stravaService.HydrateActivityData, pageSize,
-                myActivitySummaryCache, "My");
-            //KEEP THIS ABOVE VARS...we can create a Reset() method, which will handle our pull to refresh
-
-            friendsCacheLoader.LoadMoreItems(pageSize);
-            myCacheLoader.LoadMoreItems(pageSize);
-
+        {                        
             var sortExpressionComparer = SortExpressionComparer<ActivitySummary>.Descending(summary => summary.DateTimeStartLocal);
-            var allCollectionSubscription = friendsActivitySummaryCache.Connect()
+            var allCollectionSubscription = _friendsActivitySummaryCache.Connect()
                 .Sort(sortExpressionComparer)
                 .ObserveOn(DispatcherHelper.UIDispatcher)
-                .Bind(out allCollection, friendsCacheLoader.LoadMoreItems, () => !friendsCacheLoader.IsLoading)
+                .Bind(out allCollection, _friendsCacheLoader.LoadMoreItems, () => !_friendsCacheLoader.IsLoading)
                 .Subscribe();
-            var friendsCollectionSubscription = friendsActivitySummaryCache.Connect()
+            var friendsCollectionSubscription = _friendsActivitySummaryCache.Connect()
                 .Filter(activitySummary => activitySummary.Athlete.Id != _stravaAthleteService.Athlete.Id)
                 .Sort(sortExpressionComparer)
                 .ObserveOn(DispatcherHelper.UIDispatcher)
-                .Bind(out friendsCollection, myCacheLoader.LoadMoreItems, () => !friendsCacheLoader.IsLoading)
+                .Bind(out friendsCollection, _myCacheLoader.LoadMoreItems, () => !_friendsCacheLoader.IsLoading)
                 .Subscribe();
-            var myCollectionSubscription = myActivitySummaryCache.Connect()
+            var myCollectionSubscription = _myActivitySummaryCache.Connect()
                 .Sort(sortExpressionComparer)
                 .ObserveOn(DispatcherHelper.UIDispatcher)
-                .Bind(out myCollection, myCacheLoader.LoadMoreItems, () => !myCacheLoader.IsLoading)
+                .Bind(out myCollection, _myCacheLoader.LoadMoreItems, () => !_myCacheLoader.IsLoading)
                 .Subscribe();
 
-            return new CompositeDisposable(friendsActivitySummaryCache, myActivitySummaryCache,
-                allCollectionSubscription, friendsCollectionSubscription, myCollectionSubscription);            
+            return new CompositeDisposable(allCollectionSubscription, friendsCollectionSubscription, myCollectionSubscription);            
+        }
+
+        public void Refresh()
+        {
+            _friendsCacheLoader.Reset();
+            _myCacheLoader.Reset();
+        }
+
+        public void Dispose()
+        {
+            _disposable.Dispose();
         }
     }
 }
