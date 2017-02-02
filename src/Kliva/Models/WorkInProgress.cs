@@ -87,8 +87,7 @@ namespace Kliva.Models
     public class ActivitySummaryService
     {
         private readonly IStravaService _stravaService;
-        private readonly IStravaAthleteService _stravaAthleteService;
-        
+        private readonly IStravaAthleteService _stravaAthleteService;        
 
         public ActivitySummaryService(IStravaService stravaService, IStravaAthleteService stravaAthleteService)
         {
@@ -98,73 +97,51 @@ namespace Kliva.Models
             _stravaService = stravaService;
             _stravaAthleteService = stravaAthleteService;
         }
-
-        //TODO ActivityFeedfiltering : Filter (MainViewModel.ApplyActivityFeedFilter)
-        public IDisposable Bind(
-            IObservable<ActivityFeedFilter> filter, out DeferringObservableCollection<ActivitySummary> collection)
+        
+        public IDisposable Bind(            
+            out DeferringObservableCollection<ActivitySummary> friendsCollection,
+            out DeferringObservableCollection<ActivitySummary> myCollection,
+            out DeferringObservableCollection<ActivitySummary> allCollection
+            )
         {
             //could look at make these caches application wide, but for now scope to the subscription
             var friendsActivitySummaryCache = new SourceCache<ActivitySummary, long>(activitySummary => activitySummary.Id);
             var myActivitySummaryCache = new SourceCache<ActivitySummary, long>(activitySummary => activitySummary.Id);
-            var allActivityCache = new SourceCache<ActivitySummary, long>(activitySummary => activitySummary.Id);
+            
+            const int pageSize = 30;
 
-            //we have two caches, which we use to load friends (all)...
-            var friendsCacheLoader = new ActivitySummaryCacheLoader(_stravaService.GetFriendActivityDataAsync, _stravaService.HydrateActivityData, 30,
+            //we have two caches, which we use to load friends (followers and me)...
+            var friendsCacheLoader = new ActivitySummaryCacheLoader(_stravaService.GetFriendActivityDataAsync, _stravaService.HydrateActivityData, pageSize,
                 friendsActivitySummaryCache);
             //..and just me. 
-            var myCacheLoader = new ActivitySummaryCacheLoader(_stravaService.GetMyActivityDataAsync, _stravaService.HydrateActivityData, 30,
+            var myCacheLoader = new ActivitySummaryCacheLoader(_stravaService.GetMyActivityDataAsync, _stravaService.HydrateActivityData, pageSize,
                 myActivitySummaryCache);
             //KEEP THIS ABOVE VARS...we can create a Reset() method, which will handle our pull to refresh
 
-            //...we have a third, combined, cache, which we use to serve data - which may be filtered again - to clients.
-            //we *could* just load everything into this, but then paging the Strava API would seem odd when we get minimal 
-            //results on "my feed" after the Strava API pages a *full" feed
-            var allSubscription = myActivitySummaryCache.Connect()
-                .Merge(friendsActivitySummaryCache.Connect())
-                .PopulateInto(allActivityCache);
+            friendsCacheLoader.LoadMoreItems(pageSize);
+            myCacheLoader.LoadMoreItems(pageSize);
 
-            //TODO sort (see ActivityIncrementalCollection.HydrateItems)         
-
-            var activeCacheLoader = friendsCacheLoader;
-            Func<uint, IAsyncOperation<LoadMoreItemsResult>> loader = count => activeCacheLoader.LoadMoreItems(count);
-            loader(0);
-
-            var collectionSubscription = allActivityCache.Connect()
-                .Filter(filter.Select(activityFeedFilter =>
-                {
-                    var result = BuildActivitySummaryFilter(activityFeedFilter, friendsCacheLoader, myCacheLoader, out activeCacheLoader);
-                    return result;
-                }))
-                .Sort(SortExpressionComparer<ActivitySummary>.Descending(summary => summary.DateTimeStartLocal), filter.Select(_ => Unit.Default).StartWith(new [] { Unit.Default }))
+            var sortExpressionComparer = SortExpressionComparer<ActivitySummary>.Descending(summary => summary.DateTimeStartLocal);
+            var allCollectionSubscription = friendsActivitySummaryCache.Connect()
+                .Sort(sortExpressionComparer)
                 .ObserveOn(DispatcherHelper.UIDispatcher)
-                .Bind(out collection, loader, () => !activeCacheLoader.IsLoading && activeCacheLoader.LastLoadReturnedData)
+                .Bind(out allCollection, friendsCacheLoader.LoadMoreItems, () => !friendsCacheLoader.IsLoading)
+                .Subscribe();
+            var friendsCollectionSubscription = friendsActivitySummaryCache.Connect()
+                .Filter(activitySummary => activitySummary.Athlete.Id != _stravaAthleteService.Athlete.Id)
+                .Sort(sortExpressionComparer)
+                .ObserveOn(DispatcherHelper.UIDispatcher)
+                .Bind(out friendsCollection, myCacheLoader.LoadMoreItems, () => !friendsCacheLoader.IsLoading)
+                .Subscribe();
+            var myCollectionSubscription = myActivitySummaryCache.Connect()
+                .Sort(sortExpressionComparer)
+                .ObserveOn(DispatcherHelper.UIDispatcher)
+                .Bind(out myCollection, myCacheLoader.LoadMoreItems, () => !myCacheLoader.IsLoading)
                 .Subscribe();
 
-            return new CompositeDisposable(friendsActivitySummaryCache, myActivitySummaryCache, allActivityCache,
-                collectionSubscription, allSubscription);
+            return new CompositeDisposable(friendsActivitySummaryCache, myActivitySummaryCache,
+                allCollectionSubscription, friendsCollectionSubscription, myCollectionSubscription);            
         }
-
-        private Func<ActivitySummary, bool> BuildActivitySummaryFilter(
-            ActivityFeedFilter activityFeedFilter,
-            ActivitySummaryCacheLoader friendsCacheLoader,
-            ActivitySummaryCacheLoader myCacheLoader,
-            out ActivitySummaryCacheLoader currentCacheLoader)
-        {
-            switch (activityFeedFilter)
-            {
-                case ActivityFeedFilter.All:
-                    currentCacheLoader = friendsCacheLoader;
-                    return _ => true;                    
-                case ActivityFeedFilter.My:
-                    currentCacheLoader = myCacheLoader;
-                    return activitySummary => activitySummary.Athlete == null || activitySummary.Athlete.Id == _stravaAthleteService.Athlete.Id;                
-                case ActivityFeedFilter.Followers:
-                    currentCacheLoader = friendsCacheLoader;
-                    return activitySummary => activitySummary.Athlete.Id != _stravaAthleteService.Athlete.Id;                                
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(activityFeedFilter), activityFeedFilter, null);
-            }            
-        }     
     }
 
     public static class DynamicDataEx

@@ -201,7 +201,7 @@
                                    FontSize="12" Margin="4, 4, 0, 0"
                                    RelativePanel.Below="ActivityDistance" 
                                    RelativePanel.AlignRightWithPanel="True"
-                                   Style="{StaticResource BaseTextBlock}" 
+                                   Style="{StaticResource BaseTextBlock}"
                                    Text="{x:Bind KudosCount, Mode=OneWay}" />
                     </RelativePanel>
                 </RelativePanel>

@@ -192,16 +192,15 @@ namespace Kliva.ViewModels
         }
 
         //TODO JW tidy up, set up at start up?
-        private readonly ReplaySubject<ActivityFeedFilter> _activitySubject = new ReplaySubject<ActivityFeedFilter>(1);
+        DeferringObservableCollection<ActivitySummary> _friendsCollection;
+        DeferringObservableCollection<ActivitySummary> _myCollection;
+        DeferringObservableCollection<ActivitySummary> _allCollection;
         private void ApplyActivityFeedFilter(ActivityFeedFilter filter)
-        {
-            _activitySubject.OnNext(filter);
+        {            
             if (ActivityIncrementalCollection2 == null)
             {
-                DeferringObservableCollection<ActivitySummary> activitySummaries;                
                 new ActivitySummaryService(_stravaService, ServiceLocator.Current.GetInstance<IStravaAthleteService>())
-                    .Bind(_activitySubject, out activitySummaries);
-                ActivityIncrementalCollection2 = activitySummaries;
+                    .Bind(out _friendsCollection, out _myCollection, out _allCollection);                
             }            
 
             //TODO JW remove this code once we have filters working
@@ -209,16 +208,19 @@ namespace Kliva.ViewModels
             {
                 case ActivityFeedFilter.All:
                     FilterText = "Showing all activities";
+                    ActivityIncrementalCollection2 = _allCollection;
                     //ActivityIncrementalCollection = new FriendActivityIncrementalCollection(_stravaService,
                     //    ActivityFeedFilter.All);
                     break;
                 case ActivityFeedFilter.Followers:
                     FilterText = "Showing friends' activities";
+                    ActivityIncrementalCollection2 = _friendsCollection;
                     //ActivityIncrementalCollection = new FriendActivityIncrementalCollection(_stravaService,
                     //    ActivityFeedFilter.Friends);
                     break;
                 case ActivityFeedFilter.My:
                     FilterText = "Showing my activities";
+                    ActivityIncrementalCollection2 = _myCollection;
                     //ActivityIncrementalCollection = new MyActivityIncrementalCollection(_stravaService);
                     break;
             }
