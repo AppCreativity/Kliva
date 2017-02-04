@@ -1,6 +1,8 @@
 using System;
+using System.Collections.ObjectModel;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using DynamicData;
 using DynamicData.Binding;
 using GalaSoft.MvvmLight.Threading;
@@ -36,8 +38,11 @@ namespace Kliva.Models
             _myCacheLoader = new ActivitySummaryCacheLoader(stravaService.GetMyActivityDataAsync, stravaService.HydrateActivityData, pageSize,
                 _myActivitySummaryCache, "My");
 
-            _friendsCacheLoader.LoadMoreItems(pageSize);
-            _myCacheLoader.LoadMoreItems(pageSize);
+            Task.Factory.StartNew(() =>
+            {
+                _friendsCacheLoader.LoadMoreItems(pageSize);
+                _myCacheLoader.LoadMoreItems(pageSize);
+            });
 
             _disposable = new CompositeDisposable(_friendsActivitySummaryCache, _myActivitySummaryCache);
         }
@@ -47,7 +52,7 @@ namespace Kliva.Models
             out DeferringObservableCollection<ActivitySummary> myCollection,
             out DeferringObservableCollection<ActivitySummary> allCollection
             )
-        {                        
+        {
             var sortExpressionComparer = SortExpressionComparer<ActivitySummary>.Descending(summary => summary.DateTimeStartLocal);
             var allCollectionSubscription = _friendsActivitySummaryCache.Connect()
                 .Sort(sortExpressionComparer)
@@ -65,7 +70,6 @@ namespace Kliva.Models
                 .ObserveOn(DispatcherHelper.UIDispatcher)
                 .Bind(out myCollection, _myCacheLoader.LoadMoreItems, () => !_myCacheLoader.IsLoading)
                 .Subscribe();
-
             return new CompositeDisposable(allCollectionSubscription, friendsCollectionSubscription, myCollectionSubscription);            
         }
 
