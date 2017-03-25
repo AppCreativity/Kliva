@@ -132,4 +132,7 @@
   <data name="LoginTitle.Text" xml:space="preserve">
     <value>Kliva</value>
   </data>
+  <data name="Segments" xml:space="preserve">
+    <value>segments</value>
+  </data>
 </root>

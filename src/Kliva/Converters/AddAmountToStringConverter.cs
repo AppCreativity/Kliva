@@ -1,5 +1,6 @@
 ﻿using System;
 using Windows.UI.Xaml.Data;
+using Kliva.Helpers;
 
 namespace Kliva.Converters
 {
@@ -15,14 +16,19 @@ namespace Kliva.Converters
         /// <returns></returns>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
+            string translatedValue = TranslationHelper.GetTranslation((string)parameter);
+            string result = string.IsNullOrEmpty(translatedValue) ? (string)parameter : translatedValue;
+
             if (value is int)
             {
                 int amount = (int) value;
                 if (amount != 0)
-                    return $"{parameter} ({amount})";
+                {
+                    return $"{result} ({amount})";
+                }
             }
 
-            return parameter;
+            return result;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
