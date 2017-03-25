@@ -128,8 +128,7 @@
                    Template="{StaticResource PivotWithIconsControlTemplate}">
                     <PivotItem x:Name="StatisticsPivot" Tag="Statistics">
                         <PivotItem.Header>
-                            <local:IconPivotHeader Label="statistics"
-                                               Glyph="&#xE1E9;" />
+                            <local:IconPivotHeader x:Uid="ActivityDetailActivityStatisticsPivotHeader" Glyph="&#xE1E9;" />
                         </PivotItem.Header>
                         <local:AdaptiveGridView x:Name="StatisticsGrid"
                                             ItemsSource="{x:Bind ViewModel.SelectedActivity.Statistics, Mode=OneWay}"
@@ -142,7 +141,7 @@
                            Visibility="{x:Bind ViewModel.HasSegments, Mode=OneWay}">
                         <PivotItem.Header>
                             <local:IconPivotHeader Label="{x:Bind ViewModel.SelectedActivity.SegmentEffortsCount, Converter={StaticResource AddAmountToStringConverter}, ConverterParameter=segments, Mode=OneWay}"
-                                               Glyph="&#xEC1B;" />
+                                                   Glyph="&#xEC1B;" />
                         </PivotItem.Header>
                         <ListView x:Name="AcitivtySegmentsList"
                               ItemsSource="{x:Bind ViewModel.SelectedActivity.SegmentEfforts, Mode=OneWay}"
@@ -158,7 +157,7 @@
                     <PivotItem x:Name="KudosPivot" Tag="Kudos">
                         <PivotItem.Header>
                             <local:IconPivotHeader Label="{x:Bind ViewModel.KudosCount, Converter={StaticResource AddAmountToStringConverter}, ConverterParameter=kudos, Mode=OneWay}"
-                                               Glyph="&#xE8E1;" />
+                                                   Glyph="&#xE8E1;" />
                         </PivotItem.Header>
                         <GridView x:Name="ActivityKudosList"
                               ItemsSource="{x:Bind ViewModel.Kudos, Mode=OneWay}"
@@ -187,7 +186,7 @@
                            Visibility="{x:Bind ViewModel.HasPhotos, Mode=OneWay}">
                         <PivotItem.Header>
                             <local:IconPivotHeader Label="{x:Bind ViewModel.PhotoCount, Converter={StaticResource AddAmountToStringConverter}, ConverterParameter=photos, Mode=OneWay}"
-                                               Glyph="&#xEB9F;" />
+                                                   Glyph="&#xEB9F;" />
                         </PivotItem.Header>
                         <GridView x:Name="ActivityPhotosGrid"
                               Margin="10,0,0,0"
@@ -213,7 +212,7 @@
               Background="White">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Image Source="ms-appx:///Assets/KlivaLogo.png" VerticalAlignment="Center" Stretch="None" />
-                <TextBlock Text="Select an Activity in the Activity Feed to view its details."
+                <TextBlock x:Uid="ActivityDetailEmptyTextBlock"
                            Style="{StaticResource WordTrimmingTextBlock}" />
             </StackPanel>
         </Grid>

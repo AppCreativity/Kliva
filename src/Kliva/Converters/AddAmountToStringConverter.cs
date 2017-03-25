@@ -19,7 +19,7 @@ namespace Kliva.Converters
             {
                 int amount = (int) value;
                 if (amount != 0)
-                    return string.Format("{0} ({1})", parameter, amount);
+                    return $"{parameter} ({amount})";
             }
 
             return parameter;

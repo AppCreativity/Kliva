@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ActivityDetailActivityStatisticsPivotHeader.Label" xml:space="preserve">
+    <value>statistics</value>
+  </data>
+  <data name="ActivityDetailEmptyTextBlock.Text" xml:space="preserve">
+    <value>Select an Activity in the Activity Feed to view its details.</value>
+  </data>
   <data name="LoginLoginButton.Content" xml:space="preserve">
     <value>log in with strava</value>
   </data>
