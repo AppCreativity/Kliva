@@ -249,7 +249,6 @@ namespace Kliva.Services
             return StravaActivityService.UploadActivityAsync(gpxFilePath, activityType, name, commute, isPrivate);
         }
 
-
         public Task<List<ClubSummary>> GetClubsAsync()
         {
             return StravaClubService.GetClubsAsync();

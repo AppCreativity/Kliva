@@ -10,7 +10,7 @@ namespace Kliva.Services.Interfaces
         Task<SegmentEffort> GetSegmentEffortAsync(string segmentEffortId);
         Task<List<SegmentSummary>> GetStarredSegmentsAsync();
         Task<List<SegmentSummary>> GetStarredSegmentsAsync(string athleteId);
-        Task<Leaderboard> GetLeaderBoardAsync(string segmentId);
+        Task<Leaderboard> GetLeaderBoardAsync(string segmentId, bool following = false);
         void FillStatistics(SegmentEffort segmentEffort, Leaderboard leaderboard);
     }
 }
