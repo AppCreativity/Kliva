@@ -123,6 +123,12 @@
   <data name="ActivityDetailEmptyTextBlock.Text" xml:space="preserve">
     <value>Select an Activity in the Activity Feed to view its details.</value>
   </data>
+  <data name="Comments" xml:space="preserve">
+    <value>comments</value>
+  </data>
+  <data name="Kudos" xml:space="preserve">
+    <value>kudos</value>
+  </data>
   <data name="LoginLoginButton.Content" xml:space="preserve">
     <value>log in with strava</value>
   </data>
@@ -131,6 +137,12 @@
   </data>
   <data name="LoginTitle.Text" xml:space="preserve">
     <value>Kliva</value>
+  </data>
+  <data name="Members" xml:space="preserve">
+    <value>members</value>
+  </data>
+  <data name="Photos" xml:space="preserve">
+    <value>photos</value>
   </data>
   <data name="Segments" xml:space="preserve">
     <value>segments</value>
