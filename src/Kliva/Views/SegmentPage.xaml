@@ -85,7 +85,7 @@
                    Template="{StaticResource PivotWithIconsControlTemplate}">
                 <PivotItem x:Name="StatisticsPivot" Tag="Statistics">
                     <PivotItem.Header>
-                        <controls:IconPivotHeader Label="statistics" Glyph="&#xE1E9;" />
+                        <controls:IconPivotHeader Label="leaderboards" Glyph="&#xE1E9;" />
                     </PivotItem.Header>
                     <controls:AdaptiveGridView x:Name="StatisticsGrid"
                                                ItemsSource="{Binding Source={StaticResource GroupedStatisticsDetails}}"
@@ -103,6 +103,11 @@
                             </Style>
                         </controls:AdaptiveGridView.ItemContainerStyle>
                     </controls:AdaptiveGridView>                    
+                </PivotItem>
+                <PivotItem x:Name="LeaderboardsPivot" Tag="Leaderboards">
+                    <PivotItem.Header>
+                        <controls:IconPivotHeader Label="statistics" Glyph="&#xE734;" />
+                    </PivotItem.Header>
                 </PivotItem>
             </Pivot>
 

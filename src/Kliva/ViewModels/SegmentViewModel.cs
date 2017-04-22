@@ -28,6 +28,20 @@ namespace Kliva.ViewModels
             set { Set(() => SegmentEffort, ref _segmentEffort, value); }
         }
 
+        private Leaderboard _leaderBoardOverall;
+        public Leaderboard LeaderBoardOverall
+        {
+            get { return _leaderBoardOverall; }
+            set { Set(() => LeaderBoardOverall, ref _leaderBoardOverall, value); }
+        }
+
+        private Leaderboard _leaderBoardFollowing;
+        public Leaderboard LeaderBoardFollowing
+        {
+            get { return _leaderBoardFollowing; }
+            set { Set(() => LeaderBoardFollowing, ref _leaderBoardFollowing, value); }
+        }
+
         private RelayCommand _viewLoadedCommand;       
         public RelayCommand ViewLoadedCommand => _viewLoadedCommand ?? (_viewLoadedCommand = new RelayCommand(() => ViewLoaded()));
 

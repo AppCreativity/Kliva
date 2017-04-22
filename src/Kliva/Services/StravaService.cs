@@ -299,6 +299,16 @@ namespace Kliva.Services
             return StravaSegmentService.GetStarredSegmentsAsync(athleteId);
         }
 
+        public Task<Leaderboard> GetLeaderBoardOverallAsync(string segmentId)
+        {
+            return StravaSegmentService.GetLeaderBoardAsync(segmentId);
+        }
+
+        public Task<Leaderboard> GetLeaderBoardFollowingAsync(string segmentId)
+        {
+            return StravaSegmentService.GetLeaderBoardAsync(segmentId, true);
+        }
+
         public AthleteSummary ConsolidateWithCache(AthleteMeta athlete)
         {
             return StravaAthleteService.ConsolidateWithCache(athlete);
