@@ -44,11 +44,11 @@ namespace Kliva.ViewModels
             set { Set(() => LeaderboardFollowing, ref _leaderboardFollowing, value); }
         }
 
-        private ObservableCollection<Grouping<string, LeaderboardEntry>> _groupdedLeaderboards = new ObservableCollection<Grouping<string, LeaderboardEntry>>();
-        public ObservableCollection<Grouping<string, LeaderboardEntry>> GroupdedLeaderboards
+        private ObservableCollection<Grouping<string, LeaderboardEntry>> _groupedLeaderboards = new ObservableCollection<Grouping<string, LeaderboardEntry>>();
+        public ObservableCollection<Grouping<string, LeaderboardEntry>> GroupedLeaderboards
         {
-            get { return _groupdedLeaderboards; }
-            set { Set(() => GroupdedLeaderboards, ref _groupdedLeaderboards, value); }
+            get { return _groupedLeaderboards; }
+            set { Set(() => GroupedLeaderboards, ref _groupedLeaderboards, value); }
         }
 
         private RelayCommand _viewLoadedCommand;       
@@ -87,20 +87,20 @@ namespace Kliva.ViewModels
                 LeaderboardOverall = await _stravaService.GetLeaderboardOverallAsync(SegmentEffort.Segment.Id.ToString());
                 LeaderboardFollowing = await _stravaService.GetLeaderboardFollowingAsync(SegmentEffort.Segment.Id.ToString());
 
-                GroupdedLeaderboards.Clear();
+                GroupedLeaderboards.Clear();
                 IEnumerable<LeaderboardEntry> overallEntries = LeaderboardOverall?.Entries.Take(10);
                 if (overallEntries != null)
                 {
                     //TODO: Glenn - Use translation!
                     Grouping<string, LeaderboardEntry> grouped = new Grouping<string, LeaderboardEntry>("overall", overallEntries);
-                    GroupdedLeaderboards.Add(grouped);
+                    GroupedLeaderboards.Add(grouped);
                 }
 
                 if (LeaderboardFollowing.Entries.Any())
                 {
                     //TODO: Glenn - Use translation!
                     Grouping<string, LeaderboardEntry> grouped = new Grouping<string, LeaderboardEntry>("following", LeaderboardFollowing.Entries);
-                    GroupdedLeaderboards.Add(grouped);
+                    GroupedLeaderboards.Add(grouped);
                 }
 
                 ServiceLocator.Current.GetInstance<IMessenger>()

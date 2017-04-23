@@ -25,8 +25,8 @@
                               IsSourceGrouped="true"
                               ItemsPath="Details"/>
 
-        <CollectionViewSource x:Name="GroupdedLeaderboards"
-                              Source="{x:Bind ViewModel.GroupdedLeaderboards, Mode=OneWay}"
+        <CollectionViewSource x:Name="GroupedLeaderboards"
+                              Source="{x:Bind ViewModel.GroupedLeaderboards, Mode=OneWay}"
                               IsSourceGrouped="True"
                               />
     </Page.Resources>
@@ -114,22 +114,13 @@
                     <PivotItem.Header>
                         <controls:IconPivotHeader Label="leaderboards" Glyph="&#xE734;" />
                     </PivotItem.Header>
-                    <ListView ItemsSource="{Binding Source={StaticResource GroupdedLeaderboards}}"
+                    <ListView ItemsSource="{Binding Source={StaticResource GroupedLeaderboards}}"
+                              ItemTemplate="{StaticResource LeaderboardsListItemTemplate}"
                               SelectionMode="None">
                         <ListView.GroupStyle>
-                            <GroupStyle>
-                                <GroupStyle.HeaderTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding Key}" />
-                                    </DataTemplate>
-                                </GroupStyle.HeaderTemplate>
+                            <GroupStyle HeaderTemplate="{StaticResource LeaderboardsGroupHeaderTemplate}">
                             </GroupStyle>
                         </ListView.GroupStyle>
-                        <ListView.ItemTemplate>
-                            <DataTemplate x:DataType="models:LeaderboardEntry">
-                                <TextBlock Text="{x:Bind AthleteName}" />
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
                     </ListView>
                 </PivotItem>
             </Pivot>

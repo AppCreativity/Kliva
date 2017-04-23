@@ -247,6 +247,49 @@
         </RelativePanel>
     </DataTemplate>
 
+    <DataTemplate x:Key="LeaderboardsGroupHeaderTemplate">
+        <TextBlock Text="{Binding Key}" Margin="0,-5,0,0" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="LeaderboardsListItemTemplate"
+                  x:DataType="models:LeaderboardEntry">
+        <!-- UserControl needed for visual state manager -->
+        <UserControl>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="VisualStateGroup">
+                        <VisualState x:Name="Mobile">
+                            <VisualState.StateTriggers>
+                                <AdaptiveTrigger MinWindowWidth="320" />
+                            </VisualState.StateTriggers>
+                            <VisualState.Setters>
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Desktop">
+                            <VisualState.StateTriggers>
+                                <AdaptiveTrigger MinWindowWidth="720" />
+                            </VisualState.StateTriggers>
+                            <VisualState.Setters>
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+                
+                <TextBlock Text="{x:Bind Rank}"
+                           Margin="10,0"
+                           Style="{StaticResource BaseTextBlock}"
+                           Grid.Column="0"/>
+                <TextBlock Text="{x:Bind AthleteName}"
+                           Style="{StaticResource BaseTextBlock}"
+                           Grid.Column="1" />
+            </Grid>
+        </UserControl>
+    </DataTemplate>
+
     <DataTemplate x:Key="SegmentEffortListItemTemplate"
                   x:DataType="models:SegmentEffort">
         <!-- UserControl needed for visual state manager -->
