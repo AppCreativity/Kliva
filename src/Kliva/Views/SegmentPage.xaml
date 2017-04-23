@@ -9,6 +9,7 @@
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
     xmlns:controls="using:Kliva.Controls"
+    xmlns:models="using:Kliva.Models"
     mc:Ignorable="d"
     DataContext="{Binding Segment, Source={StaticResource Locator}}">
 
@@ -23,6 +24,11 @@
                               Source="{x:Bind ViewModel.SegmentEffort.Statistics, Mode=OneWay}"
                               IsSourceGrouped="true"
                               ItemsPath="Details"/>
+
+        <CollectionViewSource x:Name="GroupdedLeaderboards"
+                              Source="{x:Bind ViewModel.GroupdedLeaderboards, Mode=OneWay}"
+                              IsSourceGrouped="True"
+                              />
     </Page.Resources>
 
     <Grid x:Name="PageRoot"
@@ -85,7 +91,7 @@
                    Template="{StaticResource PivotWithIconsControlTemplate}">
                 <PivotItem x:Name="StatisticsPivot" Tag="Statistics">
                     <PivotItem.Header>
-                        <controls:IconPivotHeader Label="leaderboards" Glyph="&#xE1E9;" />
+                        <controls:IconPivotHeader Label="statistics" Glyph="&#xE1E9;" />
                     </PivotItem.Header>
                     <controls:AdaptiveGridView x:Name="StatisticsGrid"
                                                ItemsSource="{Binding Source={StaticResource GroupedStatisticsDetails}}"
@@ -106,8 +112,25 @@
                 </PivotItem>
                 <PivotItem x:Name="LeaderboardsPivot" Tag="Leaderboards">
                     <PivotItem.Header>
-                        <controls:IconPivotHeader Label="statistics" Glyph="&#xE734;" />
+                        <controls:IconPivotHeader Label="leaderboards" Glyph="&#xE734;" />
                     </PivotItem.Header>
+                    <ListView ItemsSource="{Binding Source={StaticResource GroupdedLeaderboards}}"
+                              SelectionMode="None">
+                        <ListView.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Key}" />
+                                    </DataTemplate>
+                                </GroupStyle.HeaderTemplate>
+                            </GroupStyle>
+                        </ListView.GroupStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="models:LeaderboardEntry">
+                                <TextBlock Text="{x:Bind AthleteName}" />
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
                 </PivotItem>
             </Pivot>
 

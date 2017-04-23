@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
 using Cimbalino.Toolkit.Services;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using Kliva.Helpers;
 using Kliva.Messages;
 using Kliva.Models;
 using Kliva.Services.Interfaces;
@@ -28,18 +30,25 @@ namespace Kliva.ViewModels
             set { Set(() => SegmentEffort, ref _segmentEffort, value); }
         }
 
-        private Leaderboard _leaderBoardOverall;
-        public Leaderboard LeaderBoardOverall
+        private Leaderboard _leaderboardOverall;
+        public Leaderboard LeaderboardOverall
         {
-            get { return _leaderBoardOverall; }
-            set { Set(() => LeaderBoardOverall, ref _leaderBoardOverall, value); }
+            get { return _leaderboardOverall; }
+            set { Set(() => LeaderboardOverall, ref _leaderboardOverall, value); }
         }
 
-        private Leaderboard _leaderBoardFollowing;
-        public Leaderboard LeaderBoardFollowing
+        private Leaderboard _leaderboardFollowing;
+        public Leaderboard LeaderboardFollowing
         {
-            get { return _leaderBoardFollowing; }
-            set { Set(() => LeaderBoardFollowing, ref _leaderBoardFollowing, value); }
+            get { return _leaderboardFollowing; }
+            set { Set(() => LeaderboardFollowing, ref _leaderboardFollowing, value); }
+        }
+
+        private ObservableCollection<Grouping<string, LeaderboardEntry>> _groupdedLeaderboards = new ObservableCollection<Grouping<string, LeaderboardEntry>>();
+        public ObservableCollection<Grouping<string, LeaderboardEntry>> GroupdedLeaderboards
+        {
+            get { return _groupdedLeaderboards; }
+            set { Set(() => GroupdedLeaderboards, ref _groupdedLeaderboards, value); }
         }
 
         private RelayCommand _viewLoadedCommand;       
@@ -74,6 +83,25 @@ namespace Kliva.ViewModels
                 SegmentEffort = await _stravaService.GetSegmentEffortAsync(currentParameter);
                 //TODO: Glenn - We need to retrieve the actual segment too, for extra data ( like MAP ) - Look how we can combine/merge this with SegmentEffort.Segment
                 Segment = await _stravaService.GetSegmentAsync(SegmentEffort.Segment.Id.ToString());
+
+                LeaderboardOverall = await _stravaService.GetLeaderboardOverallAsync(SegmentEffort.Segment.Id.ToString());
+                LeaderboardFollowing = await _stravaService.GetLeaderboardFollowingAsync(SegmentEffort.Segment.Id.ToString());
+
+                GroupdedLeaderboards.Clear();
+                IEnumerable<LeaderboardEntry> overallEntries = LeaderboardOverall?.Entries.Take(10);
+                if (overallEntries != null)
+                {
+                    //TODO: Glenn - Use translation!
+                    Grouping<string, LeaderboardEntry> grouped = new Grouping<string, LeaderboardEntry>("overall", overallEntries);
+                    GroupdedLeaderboards.Add(grouped);
+                }
+
+                if (LeaderboardFollowing.Entries.Any())
+                {
+                    //TODO: Glenn - Use translation!
+                    Grouping<string, LeaderboardEntry> grouped = new Grouping<string, LeaderboardEntry>("following", LeaderboardFollowing.Entries);
+                    GroupdedLeaderboards.Add(grouped);
+                }
 
                 ServiceLocator.Current.GetInstance<IMessenger>()
                     .Send<PolylineMessage>(Segment.Map.GeoPositions.Any()
