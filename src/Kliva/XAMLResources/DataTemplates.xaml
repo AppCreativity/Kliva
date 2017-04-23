@@ -297,6 +297,24 @@
                                Text="{x:Bind AthleteName}"
                                Style="{StaticResource BaseTextBlock}"
                                RelativePanel.RightOf="LeaderboardEntryRank" />
+
+                    <Grid RelativePanel.Below="LeaderboardEntryRank" RelativePanel.AlignLeftWith="LeaderboardEntryAthleteName">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="65" />
+                            <ColumnDefinition Width="65" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0"
+                               Text="{x:Bind ElapsedTime, Mode=OneWay, Converter={StaticResource SecondsToTimeStringConverter}}"
+                               Style="{StaticResource BaseTextBlock}"
+                               FontSize="12" />
+
+                        <TextBlock Grid.Column="1"
+                               Style="{StaticResource BaseTextBlock}"
+                               FontSize="12">
+                            <Run Text="{x:Bind AverageSpeedUserMeasurementUnit.FormattedValueWithUnit, Mode=OneWay}" />
+                        </TextBlock>
+                    </Grid>
                 </RelativePanel>
             </RelativePanel>
         </UserControl>
