@@ -136,6 +136,17 @@ namespace Kliva.Models
     {
         public Segment Segment { get; set; }
 
+        public string AthleteProfileFormatted
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(AthleteProfile) && AthleteProfile.Contains("http"))
+                    return AthleteProfile;
+                else
+                    return Constants.STRAVA_DEFAULT_AVATAR;
+            }
+        }
+
         //TODO: Glenn - This should be calculated with Segment.Distance to get same average speed for each athlete against segment, but maybe that is not actual 100% accurate?
         public float AverageSpeed => Distance / ElapsedTime;
 

@@ -118,8 +118,7 @@
                               ItemTemplate="{StaticResource LeaderboardsListItemTemplate}"
                               SelectionMode="None">
                         <ListView.GroupStyle>
-                            <GroupStyle HeaderTemplate="{StaticResource LeaderboardsGroupHeaderTemplate}">
-                            </GroupStyle>
+                            <GroupStyle HeaderTemplate="{StaticResource LeaderboardsGroupHeaderTemplate}" />
                         </ListView.GroupStyle>
                     </ListView>
                 </PivotItem>

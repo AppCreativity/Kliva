@@ -255,18 +255,16 @@
                   x:DataType="models:LeaderboardEntry">
         <!-- UserControl needed for visual state manager -->
         <UserControl>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="40" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+            <RelativePanel Margin="10,0,0,5">
                 <VisualStateManager.VisualStateGroups>
                     <VisualStateGroup x:Name="VisualStateGroup">
                         <VisualState x:Name="Mobile">
                             <VisualState.StateTriggers>
+                                <StateTrigger />
                                 <AdaptiveTrigger MinWindowWidth="320" />
                             </VisualState.StateTriggers>
                             <VisualState.Setters>
+                                <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseMobile}" />
                             </VisualState.Setters>
                         </VisualState>
                         <VisualState x:Name="Desktop">
@@ -274,19 +272,33 @@
                                 <AdaptiveTrigger MinWindowWidth="720" />
                             </VisualState.StateTriggers>
                             <VisualState.Setters>
+                                <Setter Target="AthleteProfilePicture.Style" Value="{StaticResource ProfileEllipseDesktop}" />
                             </VisualState.Setters>
                         </VisualState>
                     </VisualStateGroup>
                 </VisualStateManager.VisualStateGroups>
-                
-                <TextBlock Text="{x:Bind Rank}"
-                           Margin="10,0"
-                           Style="{StaticResource BaseTextBlock}"
-                           Grid.Column="0"/>
-                <TextBlock Text="{x:Bind AthleteName}"
-                           Style="{StaticResource BaseTextBlock}"
-                           Grid.Column="1" />
-            </Grid>
+                <Ellipse x:Name="AthleteProfilePicture"
+                        RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True"
+                        RelativePanel.AlignLeftWithPanel="True">
+                    <Ellipse.Fill>
+                        <ImageBrush Stretch="UniformToFill" ImageSource="{x:Bind AthleteProfileFormatted, Mode=OneWay}" />
+                    </Ellipse.Fill>
+                </Ellipse>
+
+                <RelativePanel Margin="10,0"
+                               RelativePanel.RightOf="AthleteProfilePicture"
+                               RelativePanel.AlignTopWithPanel="True">
+                    <TextBlock x:Name="LeaderboardEntryRank"
+                               Text="{x:Bind Rank}"
+                               Style="{StaticResource BaseTextBlock}"
+                               MinWidth="25"
+                               RelativePanel.AlignLeftWithPanel="True"/>
+                    <TextBlock x:Name="LeaderboardEntryAthleteName"
+                               Text="{x:Bind AthleteName}"
+                               Style="{StaticResource BaseTextBlock}"
+                               RelativePanel.RightOf="LeaderboardEntryRank" />
+                </RelativePanel>
+            </RelativePanel>
         </UserControl>
     </DataTemplate>
 
