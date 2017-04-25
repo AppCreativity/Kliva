@@ -126,14 +126,14 @@ namespace Kliva.Services
             return null;
         }
 
-        private async Task<Leaderboard> GetLeaderboardFollowingFromServiceAsync(string segmentId)
+        private Task<Leaderboard> GetLeaderboardFollowingFromServiceAsync(string segmentId)
         {
-            return await GetLeaderboardFromServiceAsync(segmentId, true);
+            return GetLeaderboardFromServiceAsync(segmentId, true);
         }
 
-        private async Task<Leaderboard> GetLeaderboardOverallFromServiceAsync(string segmentId)
+        private Task<Leaderboard> GetLeaderboardOverallFromServiceAsync(string segmentId)
         {
-            return await GetLeaderboardFromServiceAsync(segmentId, false);
+            return GetLeaderboardFromServiceAsync(segmentId);
         }
 
         /// <summary>
