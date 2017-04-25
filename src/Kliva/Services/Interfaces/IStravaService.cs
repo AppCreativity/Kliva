@@ -57,6 +57,9 @@ namespace Kliva.Services.Interfaces
         Task<List<SegmentSummary>> GetStarredSegmentsAsync();
         Task<List<SegmentSummary>> GetStarredSegmentsAsync(string athleteId);
 
+        Task<Leaderboard> GetLeaderboardOverallAsync(string segmentId);
+        Task<Leaderboard> GetLeaderboardFollowingAsync(string segmentId);
+
         AthleteSummary ConsolidateWithCache(AthleteMeta athlete);
     }
 }

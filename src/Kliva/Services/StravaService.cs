@@ -249,7 +249,6 @@ namespace Kliva.Services
             return StravaActivityService.UploadActivityAsync(gpxFilePath, activityType, name, commute, isPrivate);
         }
 
-
         public Task<List<ClubSummary>> GetClubsAsync()
         {
             return StravaClubService.GetClubsAsync();
@@ -281,7 +280,7 @@ namespace Kliva.Services
             if (segmentEffort != null)
             {
                 //TODO: Glenn - Load up Leaderboard to show PR in SegmentEffort!
-                Leaderboard leaderboard = await StravaSegmentService.GetLeaderBoardAsync(segmentEffort.Segment.Id.ToString());
+                Leaderboard leaderboard = await StravaSegmentService.GetLeaderboardAsync(segmentEffort.Segment.Id.ToString());
 
                 if (leaderboard != null && segmentEffort.Statistics.FirstOrDefault(item => item.Type == StatisticGroupType.PR) == null)
                     StravaSegmentService.FillStatistics(segmentEffort, leaderboard);
@@ -298,6 +297,16 @@ namespace Kliva.Services
         public Task<List<SegmentSummary>> GetStarredSegmentsAsync(string athleteId)
         {
             return StravaSegmentService.GetStarredSegmentsAsync(athleteId);
+        }
+
+        public Task<Leaderboard> GetLeaderboardOverallAsync(string segmentId)
+        {
+            return StravaSegmentService.GetLeaderboardAsync(segmentId);
+        }
+
+        public Task<Leaderboard> GetLeaderboardFollowingAsync(string segmentId)
+        {
+            return StravaSegmentService.GetLeaderboardAsync(segmentId, true);
         }
 
         public AthleteSummary ConsolidateWithCache(AthleteMeta athlete)

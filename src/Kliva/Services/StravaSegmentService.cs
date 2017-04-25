@@ -20,7 +20,8 @@ namespace Kliva.Services
         //TODO: Glenn - How long before we invalidate an in memory cached segment? Maybe use MemoryCache? https://msdn.microsoft.com/en-us/library/system.runtime.caching.memorycache(v=vs.110).aspx
         private readonly ConcurrentDictionary<string, Task<Segment>> _cachedSegmentTasks = new ConcurrentDictionary<string, Task<Segment>>();
         private readonly ConcurrentDictionary<string, Task<SegmentEffort>> _cachedSegmentEffortTasks = new ConcurrentDictionary<string, Task<SegmentEffort>>();
-        private readonly ConcurrentDictionary<string, Task<Leaderboard>> _cachedLeaderBoardTasks = new ConcurrentDictionary<string, Task<Leaderboard>>();
+        private readonly ConcurrentDictionary<string, Task<Leaderboard>> _cachedLeaderboardTasks = new ConcurrentDictionary<string, Task<Leaderboard>>();
+        private readonly ConcurrentDictionary<string, Task<Leaderboard>> _cachedLeaderboardFollowingTasks = new ConcurrentDictionary<string, Task<Leaderboard>>();
 
         public StravaSegmentService(ISettingsService settingsService, ILogService logService, StravaWebClient stravaWebClient)
         {
@@ -125,15 +126,26 @@ namespace Kliva.Services
             return null;
         }
 
+        private async Task<Leaderboard> GetLeaderboardFollowingFromServiceAsync(string segmentId)
+        {
+            return await GetLeaderboardFromServiceAsync(segmentId, true);
+        }
+
+        private async Task<Leaderboard> GetLeaderboardOverallFromServiceAsync(string segmentId)
+        {
+            return await GetLeaderboardFromServiceAsync(segmentId, false);
+        }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="segmentId"></param>
+        /// <param name="following"></param>
         /// <returns></returns>
         /// <remarks>
         /// When Strava flags a segment as Hazardous : we will receive an empty JSON payload!
         /// </remarks>
-        private async Task<Leaderboard> GetLeaderBoardFromServiceAsync(string segmentId)
+        private async Task<Leaderboard> GetLeaderboardFromServiceAsync(string segmentId, bool following = false)
         {
             try
             {
@@ -141,6 +153,8 @@ namespace Kliva.Services
                 var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitTypeAsync();
 
                 string getUrl = $"{string.Format(Endpoints.Leaderboard, segmentId)}?access_token={accessToken}";
+                if (following)
+                    getUrl += "&following=true";
                 string json = await _stravaWebClient.GetAsync(new Uri(getUrl));
 
                 //TODO: Glenn - When we receive an empty JSON payload, this could mean the segment is marked as hazardous... do we notify user?
@@ -156,7 +170,7 @@ namespace Kliva.Services
             }
             catch (Exception ex)
             {
-                string title = $"StravaSegmentService.GetLeaderBoardFromServiceAsync - segmentId {segmentId}";
+                string title = $"StravaSegmentService.GetLeaderboardFromServiceAsync - segmentId {segmentId} - following {following}";
                 _logService.LogException(title, ex);
             }
 
@@ -294,9 +308,12 @@ namespace Kliva.Services
             return _cachedStarredSegmentsTasks.GetOrAdd(athleteId, GetStarredSegmentsFromServiceAsync);
         }
 
-        public Task<Leaderboard> GetLeaderBoardAsync(string segmentId)
+        public Task<Leaderboard> GetLeaderboardAsync(string segmentId, bool following = false)
         {
-            return _cachedLeaderBoardTasks.GetOrAdd(segmentId, GetLeaderBoardFromServiceAsync);
+            if (following)
+                return _cachedLeaderboardFollowingTasks.GetOrAdd(segmentId, GetLeaderboardFollowingFromServiceAsync);
+            else
+                return _cachedLeaderboardTasks.GetOrAdd(segmentId, GetLeaderboardOverallFromServiceAsync);
         }
     }
 }

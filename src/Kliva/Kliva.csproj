@@ -157,6 +157,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Helpers\Converters.cs" />
     <Compile Include="Helpers\DateTimeFormatHelper.cs" />
+    <Compile Include="Helpers\Grouping.cs" />
     <Compile Include="Helpers\MeasurementHelper.cs" />
     <Compile Include="Helpers\PolylineConverter.cs" />
     <Compile Include="Extensions\ScrollViewerExtensions.cs" />
