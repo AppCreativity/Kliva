@@ -152,6 +152,9 @@ namespace Kliva.Services
                 var accessToken = await _settingsService.GetStoredStravaAccessTokenAsync();
                 var defaultDistanceUnitType = await _settingsService.GetStoredDistanceUnitTypeAsync();
 
+                //TODO: Glenn - Segment is needed to correctly calculate measurement values!
+                Segment segment = await GetSegmentAsync(segmentId);
+
                 string getUrl = $"{string.Format(Endpoints.Leaderboard, segmentId)}?access_token={accessToken}";
                 if (following)
                     getUrl += "&following=true";
@@ -163,7 +166,10 @@ namespace Kliva.Services
                 if (leaderboard.Entries != null)
                 {
                     foreach (LeaderboardEntry entry in leaderboard.Entries)
+                    {
+                        entry.Segment = segment;
                         StravaService.SetMetricUnits(entry, defaultDistanceUnitType);
+                    }
                 }
 
                 return leaderboard;
@@ -217,8 +223,9 @@ namespace Kliva.Services
                 if (entry != null)
                 {
                     //TODO: Glenn - Verify SegmentViewModel - There we also retrieve the corresponding Segment for MAP info, maybe better we do it here in the Service?? ( Merge/Combine )
-                    //TODO: Glenn - each leaderboard entry should need a segment to calculate the averagespeed a
-                    entry.Segment = segmentEffort.Segment;
+                    //TODO: Glenn - moved segment setting logic into GetLeaderboardFromServiceAsync
+                    //TODO: Glenn - each leaderboard entry should need a segment to calculate the averagespeed
+                    //entry.Segment = segmentEffort.Segment;
 
                     StatisticsGroup pr = new StatisticsGroup() {Name = "personal record", Sort = 1, Type = StatisticGroupType.PR};
                     StatisticsDetail movingTimePR = new StatisticsDetail()

@@ -134,7 +134,7 @@ namespace Kliva.Models
     /// </summary>
     public partial class LeaderboardEntry : BaseClass, ISupportUserMeasurementUnits
     {
-        public Segment Segment { get; set; }
+        public Segment Segment { get; set; } 
 
         public string AthleteProfileFormatted
         {
@@ -148,7 +148,16 @@ namespace Kliva.Models
         }
 
         //TODO: Glenn - This should be calculated with Segment.Distance to get same average speed for each athlete against segment, but maybe that is not actual 100% accurate?
-        public float AverageSpeed => Distance / ElapsedTime;
+        public float AverageSpeed
+        {
+            get
+            {
+                if (Segment != null)
+                    return Segment.Distance / ElapsedTime;
+
+                return Distance / ElapsedTime;
+            }
+        }
 
         public float AverageHeartrateDisplay => AverageHeartrate ?? 0;
 
