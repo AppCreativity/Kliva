@@ -56,5 +56,13 @@
     "BugFixes": [
       "- Bug fix for not being able to see your own private activities"
     ]
+  },
+  {
+    "VersionAsString": "2.1.4.0",
+    "GeneralInfo": null,
+    "Features": [
+      "- Get an overview of the leaderboard entries for a selected segment"
+    ],
+    "BugFixes": null
   }
 ]
