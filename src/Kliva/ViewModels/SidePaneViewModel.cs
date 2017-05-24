@@ -90,7 +90,7 @@ namespace Kliva.ViewModels
         private MenuItem _selectedBottomMenuItem;
         public MenuItem SelectedBottomMenuItem
         {
-            get { return _selectedBottomMenuItem; }
+            get { return null; }
             set
             {
                 if (Set(() => SelectedBottomMenuItem, ref _selectedBottomMenuItem, value))
