@@ -4,6 +4,9 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Cimbalino.Toolkit.Extensions;
 using Kliva.Controls;
+using Windows.UI;
+using Kliva.Extensions;
+using System.Numerics;
 
 namespace Kliva.Views
 {
@@ -14,6 +17,21 @@ namespace Kliva.Views
         public MainPage()
         {
             InitializeComponent();
+            InitializeFluentDesign();
+        }
+
+        private void InitializeFluentDesign()
+        {
+            var compositor = this.Visual().Compositor;
+
+            ActivityFeedGrid.EnableImplicitAnimation(VisualPropertyType.Offset, 200);
+            ActivityDetail.EnableImplicitAnimation(VisualPropertyType.Offset, 200);
+            //RightGrid.EnableImplicitAnimation(VisualPropertyType.Offset, 200);
+
+            // Enable implicit Visible/Collapsed animations.
+            ActivityFeedGrid.EnableFluidVisibilityAnimation(showFromScale: 0.6f, hideToScale: 0.8f, showDuration: 300, hideDuration: 250);
+            ActivityDetail.EnableFluidVisibilityAnimation(showFromScale: 0.6f, hideToScale: 0.8f, showDelay: 200, showDuration: 300, hideDuration: 250);
+            //RightGrid.EnableFluidVisibilityAnimation(showFromScale: 0.6f, hideToScale: 0.8f, showDelay: 200, showDuration: 300, hideDuration: 250);
         }
 
         private void UpdateVisualState(VisualState currentState)
