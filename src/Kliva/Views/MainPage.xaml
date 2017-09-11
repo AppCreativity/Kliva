@@ -71,10 +71,11 @@
     </Page.BottomAppBar>
 
     <Grid x:Name="LayoutRoot" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+        
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup" CurrentStateChanged="OnCurrentStateChanged">
                 <VisualState x:Name="Mobile">
@@ -84,22 +85,99 @@
                     <VisualState.Setters>
                         <Setter Target="BottomAppBar.Visibility" Value="Visible" />
                         <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockMobile}" />
-                        <Setter Target="ListColumn.Width" Value="*" />
-                        <Setter Target="ListItemColumn.Width" Value="0" />
                         <Setter Target="FilterButton.Margin" Value="10,5,0,10" />
+
+                        <Setter Target="ActivityFeedGrid.(UIElement.Visibility)"
+                                Value="Visible" />
+                        <Setter Target="ActivityDetail.(UIElement.Visibility)"
+                                Value="Collapsed" />
+                        <!--<Setter Target="RightGrid.(UIElement.Visibility)"
+                                Value="Collapsed" />-->
+                        <Setter Target="ActivityFeedGrid.(Grid.RowSpan)"
+                                Value="2" />
+                        <Setter Target="ActivityFeedGrid.(Grid.Column)"
+                                Value="0" />
+                        <Setter Target="MainGrid.ColumnDefinitions[1].Width"
+                                Value="0" />
+                        <Setter Target="MainGrid.ColumnDefinitions[0].Width"
+                                Value="*" />
+                        <Setter Target="MainGrid.ColumnDefinitions[2].Width"
+                                Value="0" />
                     </VisualState.Setters>
                 </VisualState>
-                <VisualState x:Name="Desktop">
+                <VisualState x:Name="DesktopSmall">
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="720" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="BottomAppBar.Visibility" Value="Collapsed" />
                         <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockDesktopWithSideBar}" />
-                        <Setter Target="ListColumn.Width" Value="*" />
-                        <Setter Target="ListItemColumn.Width" Value="1.8*" />
                         <Setter Target="FilterButton.Height" Value="45" />
                         <Setter Target="FilterButton.Margin" Value="10,0,0,0" />
+
+                        <Setter Target="MainGrid.RowDefinitions[0].Height"
+                                Value="2*" />
+                        <Setter Target="MainGrid.RowDefinitions[1].Height"
+                                Value="3*" />
+                        <Setter Target="MainGrid.ColumnDefinitions[1].Width"
+                                Value="2*" />
+                        <Setter Target="MainGrid.ColumnDefinitions[0].Width"
+                                Value="1*" />
+                        <Setter Target="MainGrid.ColumnDefinitions[2].Width"
+                                Value="0" />
+                        <Setter Target="ActivityFeedGrid.(UIElement.Visibility)"
+                                Value="Visible" />
+                        <Setter Target="ActivityDetail.(UIElement.Visibility)"
+                                Value="Visible" />
+                        <!--<Setter Target="RightGrid.(UIElement.Visibility)"
+                                Value="Visible" />
+                        <Setter Target="RightGrid.(Grid.Column)"
+                                Value="1" />-->
+                        <!--<Setter Target="RightGrid.(Grid.Row)"
+                                Value="1" />-->
+                        <Setter Target="ActivityFeedGrid.(Grid.Column)"
+                                Value="0" />
+                        <Setter Target="ActivityFeedGrid.(Grid.RowSpan)"
+                                Value="2" />
+                        <Setter Target="ActivityDetail.(Grid.Column)"
+                                Value="1" />
+                        <Setter Target="ActivityDetail.(Grid.Row)"
+                                Value="0" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="DesktopLarge">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="1200" />
+                    </VisualState.StateTriggers>
+
+                    <VisualState.Setters>
+                        <Setter Target="BottomAppBar.Visibility" Value="Collapsed" />
+                        <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockDesktopWithSideBar}" />
+                        <Setter Target="FilterButton.Height" Value="45" />
+                        <Setter Target="FilterButton.Margin" Value="10,0,0,0" />
+
+                        <Setter Target="ActivityFeedGrid.(UIElement.Visibility)"
+                                Value="Visible" />
+                        <!--<Setter Target="MiddleGrid.(UIElement.Visibility)"
+                                Value="Visible" />-->
+                        <Setter Target="ActivityDetail.(UIElement.Visibility)"
+                                Value="Visible" />
+                        <Setter Target="MainGrid.RowDefinitions[0].Height"
+                                Value="*" />
+                        <Setter Target="MainGrid.RowDefinitions[1].Height"
+                                Value="0" />
+                        <Setter Target="MainGrid.ColumnDefinitions[1].Width"
+                                Value="2*" />
+                        <Setter Target="MainGrid.ColumnDefinitions[2].Width"
+                                Value="1*" />
+                        <!--<Setter Target="MiddleGrid.(Grid.Row)"
+                                Value="0" />
+                        <Setter Target="MiddleGrid.(Grid.Column)"
+                                Value="1" />-->
+                        <Setter Target="ActivityDetail.(Grid.Row)"
+                                Value="0" />
+                        <Setter Target="ActivityDetail.(Grid.Column)"
+                                Value="2" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -113,42 +191,47 @@
         </StackPanel>
 
         <Grid Grid.Row="1" x:Name="MainGrid">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition x:Name="ListColumn" />
-                <ColumnDefinition x:Name="ListItemColumn" />
-            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="2*" />
             </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="LeftPanel" Width="1*" />
+                <ColumnDefinition x:Name="MidPanel" Width="2*" />
+                <ColumnDefinition x:Name="RightPanel" Width="1*" />
+            </Grid.ColumnDefinitions>
 
-            <Button x:Name="FilterButton"
+            <Grid x:Name="ActivityFeedGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Button x:Name="FilterButton"
                     Style="{StaticResource EmptyButtonStyle}"
                     Foreground="{StaticResource KlivaMainBrush}"
                     HorizontalAlignment="Stretch"          
-                    Grid.Row="0"
-                    Grid.Column="0">
-                <Button.Flyout>
-                    <MenuFlyout x:Name="FilterFlyout" Opened="OnFilterFlyoutOpened">
-                        <MenuFlyoutItem Text="all activities" Command="{Binding FilterCommand}" CommandParameter="all" />
-                        <MenuFlyoutItem Text="my activities" Command="{Binding FilterCommand}" CommandParameter="my" />
-                        <MenuFlyoutItem Text="friends' activities" Command="{Binding FilterCommand}" CommandParameter="followers" />
-                    </MenuFlyout>
-                </Button.Flyout>
-                <TextBlock>
+                    Grid.Row="0">
+                    <Button.Flyout>
+                        <MenuFlyout x:Name="FilterFlyout" Opened="OnFilterFlyoutOpened">
+                            <MenuFlyoutItem Text="all activities" Command="{Binding FilterCommand}" CommandParameter="all" />
+                            <MenuFlyoutItem Text="my activities" Command="{Binding FilterCommand}" CommandParameter="my" />
+                            <MenuFlyoutItem Text="friends' activities" Command="{Binding FilterCommand}" CommandParameter="followers" />
+                        </MenuFlyout>
+                    </Button.Flyout>
+                    <TextBlock>
                     <Run Text="{Binding FilterText}" FontFamily="{StaticResource OpenSansFontLight}"/>
                     <Run Text="  " FontFamily="Segoe UI Symbol" />
-                </TextBlock>
-            </Button>
+                    </TextBlock>
+                </Button>
 
-            <klivacontrols:ActivityFeedControl x:Name="ActivityFeed"
-                                               Margin="0,0,0,0"
-                                               Grid.Row="1"
-                                               Grid.Column="0" />
+                <klivacontrols:ActivityFeedControl x:Name="ActivityFeed"
+                                                   Margin="0,0,0,0"
+                                                   Grid.Row="1"/>
+            </Grid>
 
-            <klivacontrols:ActivityDetailControl Margin="10,0,0,0"
-                                                 Grid.Row="0" Grid.RowSpan="2"
-                                                 Grid.Column="1" />
+            <klivacontrols:ActivityDetailControl x:Name="ActivityDetail"
+                                                 Margin="10,0,0,0" />
         </Grid>
     </Grid>
 </Page>

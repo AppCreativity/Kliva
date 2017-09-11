@@ -49,7 +49,7 @@ namespace Kliva.Views
         {
             MenuFlyout menuFlyout = sender as MenuFlyout;
             Style style = new Style { TargetType = typeof(MenuFlyoutPresenter) };
-            style.Setters.Add(new Setter(MinWidthProperty, ListColumn.ActualWidth));
+            style.Setters.Add(new Setter(MinWidthProperty, LeftPanel.ActualWidth));
 
             //TODO: Glenn - Can't we just grab : {ThemeResource SplitViewCompactPaneThemeLength} - we can but than it could be different from the actual size during runtime
             //TODO: Convert.ToInt32((Application.Current.Resources["SplitViewCompactPaneThemeLength"] as double?).Value)
