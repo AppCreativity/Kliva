@@ -28,11 +28,6 @@ namespace Kliva.Controls
         public ActivityDetailControl()
         {
             InitializeComponent();
-            ActivityMap.MapServiceToken = StravaIdentityConstants.MAPS_SERVICETOKEN;
-
-            //DataContextChanged += (sender, arg) => this.Bindings.Update();
-
-            ServiceLocator.Current.GetInstance<IMessenger>().Register<PolylineMessage>(this, Tokens.ActivityPolylineMessage, async message => await DrawPolyline(message.Geopositions));
             ServiceLocator.Current.GetInstance<IMessenger>().Register<PivotMessage<ActivityPivots>>(this, Tokens.ActivityPivotMessage, AdjustPivots);
         }
 
@@ -66,41 +61,6 @@ namespace Kliva.Controls
 
             if (message.Show.HasValue && message.Show.Value)
                 ActivityPivot.SelectedIndex = ActivityPivot.Items.IndexOf(_pivotDictionary[message.Pivot].Item2);
-        }
-
-        private async Task DrawPolyline(List<BasicGeoposition> geopositions)
-        {
-            ActivityMap.MapElements.Clear();
-
-            if (geopositions.Any())
-            {
-                if (ExpandMapButton == null)
-                    FindName("ExpandMapButton");
-                else
-                    ExpandMapButton.Visibility = Visibility.Visible;
-
-                var polyLine = new MapPolyline { Path = new Geopath(geopositions), StrokeThickness = 4, StrokeColor = (Color)Application.Current.Resources["StravaRedColor"] };
-                ActivityMap.MapElements.Add(polyLine);
-
-                MapIcon startMapIcon = new MapIcon();
-                startMapIcon.Location = new Geopoint(geopositions.First());
-                startMapIcon.NormalizedAnchorPoint = new Point(0.5, 0.5);
-                startMapIcon.Image = RandomAccessStreamReference.CreateFromUri(new Uri("ms-appx:///Assets/Start.png"));
-                ActivityMap.MapElements.Add(startMapIcon);
-
-                MapIcon endMapIcon = new MapIcon();
-                endMapIcon.Location = new Geopoint(geopositions.Last());
-                endMapIcon.NormalizedAnchorPoint = new Point(0.5, 0.5);
-                endMapIcon.Image = RandomAccessStreamReference.CreateFromUri(new Uri("ms-appx:///Assets/End.png"));
-                ActivityMap.MapElements.Add(endMapIcon);
-
-                var zoomed = false;
-                while (!zoomed)
-                    zoomed = await ActivityMap.TrySetViewBoundsAsync(GeoboundingBox.TryCompute(geopositions), null, MapAnimationKind.None);
-            }
-            else
-                if (ExpandMapButton != null)
-                    ExpandMapButton.Visibility = Visibility.Collapsed;
         }
 
         private void OnActivityDetailControlLoaded(object sender, RoutedEventArgs e)

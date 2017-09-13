@@ -1,0 +1,88 @@
+﻿<UserControl
+    x:Class="Kliva.Controls.ActivityMapControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Kliva.Controls"
+    xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
+    xmlns:converters="using:Kliva.Converters"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    DataContext="{Binding ActivityDetail, Source={StaticResource Locator}}">
+
+    <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState x:Name="Mobile">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="320" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="ActivityName.Background" Value="{StaticResource KlivaMainBrush}"/>
+                        <Setter Target="ActivityNameTextBlock.Style" Value="{StaticResource ActivityNameTextBlockMobile}" />
+                        <Setter Target="ActivityNameTextBlock.Margin" Value="10,0,10,5" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Desktop">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="720" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="ActivityName.Background" Value="Transparent"/>
+                        <Setter Target="ActivityNameTextBlock.Foreground" Value="{StaticResource KlivaMainBrush}"/>
+                        <Setter Target="ActivityNameTextBlock.Style" Value="{StaticResource ActivityNameTextBlockDesktop}" />
+                        <Setter Target="ActivityNameTextBlock.Margin" Value="0,10,10,5" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Border x:Name="ActivityName"
+                    Grid.Row="0">
+            <TextBlock x:Name="ActivityNameTextBlock"
+                           Text="{x:Bind ViewModel.SelectedActivity.Name, Mode=OneWay}"
+                           TextWrapping="WrapWholeWords" MaxLines="2" />
+        </Border>
+
+        <maps:MapControl x:Name="ActivityMap"
+                             VerticalContentAlignment="Stretch"
+                             Grid.Row="1"/>
+
+        <ListView x:Name="RelatedAthletesList"
+                      ItemsSource="{x:Bind ViewModel.RelatedAthletes}"
+                      Style="{StaticResource HorizontalListViewStyle}"
+                      Margin="5,5,0,0"
+                      SelectionMode="None"
+                      HorizontalAlignment="Left" VerticalAlignment="Top"
+                      Grid.Row="1">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Ellipse Style="{StaticResource ProfileEllipseTiny}"
+                                 Margin="0,0,5,0">
+                        <Ellipse.Fill>
+                            <ImageBrush Stretch="Uniform" ImageSource="{Binding ProfileMediumFormatted}" />
+                        </Ellipse.Fill>
+                    </Ellipse>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <Button x:Name="ExpandMapButton"
+                    x:DeferLoadStrategy="Lazy"                    
+                    Margin="0,0,0,0"
+                    Command="{x:Bind ViewModel.MapCommand}"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                    Grid.Row="1">
+            <TextBlock Text=""
+                           Style="{StaticResource PaneIconMaterialTextBlock}"
+                           Foreground="Black"/>
+        </Button>
+    </Grid>
+</UserControl>

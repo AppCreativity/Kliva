@@ -91,8 +91,8 @@
                                 Value="Visible" />
                         <Setter Target="ActivityDetail.(UIElement.Visibility)"
                                 Value="Collapsed" />
-                        <!--<Setter Target="RightGrid.(UIElement.Visibility)"
-                                Value="Collapsed" />-->
+                        <Setter Target="ActivityMap.(UIElement.Visibility)"
+                                Value="Collapsed" />
                         <Setter Target="ActivityFeedGrid.(Grid.RowSpan)"
                                 Value="2" />
                         <Setter Target="ActivityFeedGrid.(Grid.Column)"
@@ -129,12 +129,12 @@
                                 Value="Visible" />
                         <Setter Target="ActivityDetail.(UIElement.Visibility)"
                                 Value="Visible" />
-                        <!--<Setter Target="RightGrid.(UIElement.Visibility)"
+                        <Setter Target="ActivityMap.(UIElement.Visibility)"
                                 Value="Visible" />
-                        <Setter Target="RightGrid.(Grid.Column)"
-                                Value="1" />-->
-                        <!--<Setter Target="RightGrid.(Grid.Row)"
-                                Value="1" />-->
+                        <Setter Target="ActivityMap.(Grid.Column)"
+                                Value="1" />
+                        <Setter Target="ActivityMap.(Grid.Row)"
+                                Value="0" />
                         <Setter Target="ActivityFeedGrid.(Grid.Column)"
                                 Value="0" />
                         <Setter Target="ActivityFeedGrid.(Grid.RowSpan)"
@@ -142,7 +142,7 @@
                         <Setter Target="ActivityDetail.(Grid.Column)"
                                 Value="1" />
                         <Setter Target="ActivityDetail.(Grid.Row)"
-                                Value="0" />
+                                Value="1" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="DesktopLarge">
@@ -158,8 +158,8 @@
 
                         <Setter Target="ActivityFeedGrid.(UIElement.Visibility)"
                                 Value="Visible" />
-                        <!--<Setter Target="MiddleGrid.(UIElement.Visibility)"
-                                Value="Visible" />-->
+                        <Setter Target="ActivityMap.(UIElement.Visibility)"
+                                Value="Visible" />
                         <Setter Target="ActivityDetail.(UIElement.Visibility)"
                                 Value="Visible" />
                         <Setter Target="MainGrid.RowDefinitions[0].Height"
@@ -170,10 +170,10 @@
                                 Value="2*" />
                         <Setter Target="MainGrid.ColumnDefinitions[2].Width"
                                 Value="1*" />
-                        <!--<Setter Target="MiddleGrid.(Grid.Row)"
+                        <Setter Target="ActivityMap.(Grid.Row)"
                                 Value="0" />
-                        <Setter Target="MiddleGrid.(Grid.Column)"
-                                Value="1" />-->
+                        <Setter Target="ActivityMap.(Grid.Column)"
+                                Value="1" />
                         <Setter Target="ActivityDetail.(Grid.Row)"
                                 Value="0" />
                         <Setter Target="ActivityDetail.(Grid.Column)"
@@ -230,8 +230,9 @@
                                                    Grid.Row="1"/>
             </Grid>
 
-            <klivacontrols:ActivityDetailControl x:Name="ActivityDetail"
-                                                 Margin="10,0,0,0" />
+            <klivacontrols:ActivityMapControl x:Name="ActivityMap" />
+
+            <klivacontrols:ActivityDetailControl x:Name="ActivityDetail" />
         </Grid>
     </Grid>
 </Page>

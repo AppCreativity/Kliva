@@ -116,6 +116,9 @@
     <Compile Include="Controls\ActivityFeedControl.xaml.cs">
       <DependentUpon>ActivityFeedControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ActivityMapControl.xaml.cs">
+      <DependentUpon>ActivityMapControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\AdaptiveGridView.cs" />
     <Compile Include="Controls\AppInfoDialog.xaml.cs">
       <DependentUpon>AppInfoDialog.xaml</DependentUpon>
@@ -341,6 +344,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\ActivityFeedControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ActivityMapControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
