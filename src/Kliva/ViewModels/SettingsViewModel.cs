@@ -55,6 +55,20 @@ namespace Kliva.ViewModels
             set { Set(() => SelectedSortType, ref _selectedSortType, value); }
         }
 
+        private ObservableCollection<string> _activityTypes = new ObservableCollection<string>();
+        public ObservableCollection<string> ActivityTypes
+        {
+            get => _activityTypes;
+            set => Set(() => ActivityTypes, ref _activityTypes, value);
+        }
+
+        private string _selectedActivityType;
+        public string SelectedActivityType
+        {
+            get => _selectedActivityType;
+            set => Set(() => SelectedActivityType, ref _selectedActivityType, value);
+        }
+
         private string _mapSizes;
         public string MapSizes
         {
@@ -93,6 +107,9 @@ namespace Kliva.ViewModels
 
             SortTypes.Add(ActivitySort.StartTime.ToString());
             SortTypes.Add(ActivitySort.EndTime.ToString());
+
+            ActivityTypes.Add(ActivityRecording.Cycling.ToString());
+            ActivityTypes.Add(ActivityRecording.Running.ToString());
         }
 
         private async void OnSettingsViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -107,8 +124,11 @@ namespace Kliva.ViewModels
                 await _settingsService.SetDistanceUnitTypeAsync(newValue);
             }
 
-            else if (e.PropertyName.Equals("SelectedSortType", StringComparison.OrdinalIgnoreCase))
+            if (e.PropertyName.Equals("SelectedSortType", StringComparison.OrdinalIgnoreCase))
                 await _settingsService.SetActivitySortAsync(Enum<ActivitySort>.Parse(SelectedSortType));
+
+            if (e.PropertyName.Equals(nameof(SelectedActivityType), StringComparison.OrdinalIgnoreCase))
+                await _settingsService.SetActivityRecordingTypeAsync(Enum<ActivityRecording>.Parse(SelectedActivityType));
         }
 
         private async Task ViewLoaded()
@@ -120,6 +140,9 @@ namespace Kliva.ViewModels
 
             ActivitySort activitySort = await _settingsService.GetStoredActivitySortAsync();
             SelectedSortType = activitySort.ToString();
+
+            ActivityRecording activityRecordingType = await _settingsService.GetStoredActivityRecordingTypeAsync();
+            SelectedActivityType = activityRecordingType.ToString();
 
             var appInfoList = await _settingsService.GetAppInfoAsync();
             CurrentVersion = appInfoList.FirstOrDefault();

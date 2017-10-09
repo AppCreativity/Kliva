@@ -50,6 +50,21 @@ namespace Kliva.Services
             await SaveSettingsToStorageAsync();
         }
 
+        public async Task<ActivityRecording> GetStoredActivityRecordingTypeAsync()
+        {
+            await LoadSettingsAsync();
+            return _settings?.ActivityRecordingType ?? ActivityRecording.Cycling;
+        }
+
+        public async Task SetActivityRecordingTypeAsync(ActivityRecording activityRecordingType)
+        {
+            await LoadSettingsAsync(createIfNotExisting: true);
+
+            _settings.ActivityRecordingType = activityRecordingType;
+
+            await SaveSettingsToStorageAsync();
+        }
+
         public async Task<ActivityFeedFilter> GetStoredActivityFeedFilterAsync()
         {
             await LoadSettingsAsync();

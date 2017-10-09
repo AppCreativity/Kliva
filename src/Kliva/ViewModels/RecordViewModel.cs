@@ -23,6 +23,7 @@ namespace Kliva.ViewModels
         private string _gpxFile;
         private readonly ILocationService _locationService;
         private readonly IStravaService _stravaService;
+        private readonly ISettingsService _settingsService;
         private readonly IGPXService _gpxService;
         private readonly IMessageBoxService _messageBoxService;
 
@@ -78,10 +79,11 @@ namespace Kliva.ViewModels
 
         public RecordViewModel(INavigationService navigationService, 
             ILocationService locationService, IGPXService gpxService,
-            IStravaService stravaService, IMessageBoxService messageBoxService) : base(navigationService)
+            ISettingsService settingsService, IStravaService stravaService, IMessageBoxService messageBoxService) : base(navigationService)
         {
             _gpxService = gpxService;
             _locationService = locationService;
+            _settingsService = settingsService;
             _stravaService = stravaService;
             _messageBoxService = messageBoxService;
             //_locationService.StatusChanged += OnLocationServiceStatusChanged;
@@ -102,8 +104,8 @@ namespace Kliva.ViewModels
         {
             _loading = true;
 
-            //TODO: Glenn - refactor to settings option
-            ActivityText = ActivityRecording.Cycling.ToString();            
+            var activityRecordingType = await _settingsService.GetStoredActivityRecordingTypeAsync();
+            ActivityText = activityRecordingType.ToString();
 
             //TODO: Glenn - Better the GPS tracking based on sport type and during activity
             /*

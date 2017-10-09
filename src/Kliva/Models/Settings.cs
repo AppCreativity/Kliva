@@ -16,6 +16,8 @@
 
         public ActivitySort ActivitySort { get; set; }
 
+        public ActivityRecording ActivityRecordingType { get; set; }
+
         public AppVersion AppVersion { get; set; }
     }
 }

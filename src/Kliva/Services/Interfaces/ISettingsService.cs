@@ -18,6 +18,9 @@ namespace Kliva.Services.Interfaces
         Task<ActivitySort> GetStoredActivitySortAsync();
         Task SetActivitySortAsync(ActivitySort sort);
 
+        Task<ActivityRecording> GetStoredActivityRecordingTypeAsync();
+        Task SetActivityRecordingTypeAsync(ActivityRecording activityRecordingType);
+
         Task<AppVersion> GetStoredAppVersionAsync();
         Task SetAppVersionAsync(AppVersion appVersionB);
     }

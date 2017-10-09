@@ -52,6 +52,7 @@
                         <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockMobile}" />
                         <Setter Target="MeasurementUnitsCombobox.HorizontalAlignment" Value="Stretch" />
                         <Setter Target="SortTypeCombobox.HorizontalAlignment" Value="Stretch" />
+                        <Setter Target="ActivityRecordingTypeCombobox.HorizontalAlignment" Value="Stretch" />
                         <Setter Target="ClearMapsButton.Visibility" Value="Collapsed" />
                         <Setter Target="BottomAppBar.Visibility" Value="Visible" />
                     </VisualState.Setters>
@@ -64,6 +65,7 @@
                         <Setter Target="TitleTextBlock.Style" Value="{StaticResource TitleTextBlockDesktopWithSideBar}" />
                         <Setter Target="MeasurementUnitsCombobox.HorizontalAlignment" Value="Left" />
                         <Setter Target="SortTypeCombobox.HorizontalAlignment" Value="Left" />
+                        <Setter Target="ActivityRecordingTypeCombobox.HorizontalAlignment" Value="Left" />
                         <Setter Target="ClearMapsButton.Visibility" Value="Visible" />
                         <Setter Target="BottomAppBar.Visibility" Value="Collapsed" />
                     </VisualState.Setters>
@@ -149,10 +151,23 @@
                                TextWrapping="WrapWholeWords"
                                RelativePanel.Below="SortTypeCombobox"
                                Text="* We usually sort the activities on the time they started, but the Strava website shows them sorted by end time. This difference is mostly visible in longer running activities." />
-                    <TextBlock FontSize="12" Foreground="{StaticResource SubTextBrush}"
+                    <TextBlock x:Name="RemarkMoreTextBlock" FontSize="12" Foreground="{StaticResource SubTextBrush}"
                                TextWrapping="WrapWholeWords"
                                RelativePanel.Below="RemarkTextBlock"
                                Text="** Changing these settings currently need a restart of the application." />
+
+                    <TextBlock x:Name="ActivityRecordingTypeTextBlock" Text="defaut activity type for activity tracking"  Margin="0,10,0,0"
+                               FontFamily="{StaticResource OpenSansFontLight}"
+                               RelativePanel.Below="RemarkMoreTextBlock"
+                               RelativePanel.AlignLeftWithPanel="True"/>
+                    <ComboBox x:Name="ActivityRecordingTypeCombobox"
+                              HorizontalContentAlignment="Stretch"
+                              ItemsSource="{x:Bind ViewModel.ActivityTypes, Mode=OneWay}"
+                              SelectedItem="{x:Bind ViewModel.SelectedActivityType, Mode=TwoWay}"
+                              Margin="0,10"
+                              MinWidth="150"
+                              RelativePanel.Below="ActivityRecordingTypeTextBlock"
+                              RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
                 </RelativePanel>
             </PivotItem>
             <PivotItem x:Name="CachePivot"
