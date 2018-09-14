@@ -171,10 +171,13 @@
     <Compile Include="Messages\PivotMessage.cs" />
     <Compile Include="Models\AccessToken.cs" />
     <Compile Include="Models\Activity.cs" />
+    <Compile Include="Models\ActivitySummaryCacheLoader.cs" />
+    <Compile Include="Models\ActivitySummaryService.cs" />
     <Compile Include="Models\Bike.cs" />
     <Compile Include="Models\Converters\AthleteJsonConverter.cs" />
+    <Compile Include="Models\DynamicDataEx.cs" />
     <Compile Include="Models\GearSummary.cs" />
-    <Compile Include="Models\Incremental\ActivityIncrementalCollection.cs" />
+    <Compile Include="Models\DeferringObservableCollection.cs" />
     <Compile Include="Models\ActivityMeta.cs" />
     <Compile Include="Models\ActivitySummary.cs" />
     <Compile Include="Models\AppVersion.cs" />
@@ -189,10 +192,6 @@
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\IncrementalLoadingBase.cs" />
-    <Compile Include="Models\Incremental\CachedKeyedIncrementalLoadingBase.cs" />
-    <Compile Include="Models\Incremental\FriendActivityIncrementalCollection.cs" />
-    <Compile Include="Models\Incremental\IKey.cs" />
-    <Compile Include="Models\Incremental\MyActivityIncrementalCollection.cs" />
     <Compile Include="Models\Info.cs" />
     <Compile Include="Models\Interfaces\ISupportUserMeasurementUnits.cs" />
     <Compile Include="Models\Leaderboard.cs" />
@@ -438,6 +437,7 @@
       <Name>Windows Mobile Extensions for the UWP</Name>
     </SDKReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

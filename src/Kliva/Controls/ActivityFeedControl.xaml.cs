@@ -11,6 +11,7 @@ using Windows.UI.Xaml.Media;
 using Cimbalino.Toolkit.Extensions;
 using Kliva.Extensions;
 using Kliva.Models;
+using Kliva.ViewModels;
 
 namespace Kliva.Controls
 {
@@ -163,6 +164,9 @@ namespace Kliva.Controls
 
         private async Task StartLoadingAnimation(Action completed)
         {
+            //make sure this is reset, just tapping wont fire OnDirectManipStarted
+            _refresh = false;
+
             var modes = _scrollViewer.ManipulationMode;
 
             // Create a short delay to allow the expression rotation animation to more smoothly transition
@@ -173,8 +177,7 @@ namespace Kliva.Controls
 
             _scrollViewer.ManipulationMode = Windows.UI.Xaml.Input.ManipulationModes.None;
 
-            //TODO: Glenn - reload data!
-            //((MainViewModel)ViewModel).ActivityIncrementalCollection.LoadNewData();
+            ((MainViewModel)ViewModel).RefreshCommand.Execute(null);
 
             // Gratiuitous demo delay to ensure the animation shows :-)
             await Task.Delay(1500);

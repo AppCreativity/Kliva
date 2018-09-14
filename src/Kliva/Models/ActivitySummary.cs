@@ -364,7 +364,7 @@ namespace Kliva.Models
     /// <summary>
     /// Separated added fields from original response class!
     /// </summary>
-    public partial class ActivitySummary : IKey
+    public partial class ActivitySummary
     {
         private AthleteSummary _athlete;
         public AthleteSummary Athlete
@@ -511,9 +511,7 @@ namespace Kliva.Models
         /// <summary>
         /// AthleteCount = Athlete + other
         /// </summary>
-        public int OtherAthleteCount => AthleteCount -1;
-
-        long IKey.Key => Id;
+        public int OtherAthleteCount => AthleteCount -1;        
 
         private void ConsolidateWithCache(AthleteMeta meta)
         {

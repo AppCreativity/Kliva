@@ -6,7 +6,8 @@ namespace Kliva.ViewModels.Interfaces
 {
     public interface IStravaViewModel : INotifyPropertyChanged
     {
-        ActivityIncrementalCollection ActivityIncrementalCollection { get; set; }
+        DeferringObservableCollection<ActivitySummary> ActivityIncrementalCollection { get; }
+
         ActivitySummary SelectedActivity { get; set; }
 
         /// <summary>

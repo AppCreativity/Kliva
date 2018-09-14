@@ -87,6 +87,7 @@
                         <Setter Target="ListColumn.Width" Value="*" />
                         <Setter Target="ListItemColumn.Width" Value="0" />
                         <Setter Target="FilterButton.Margin" Value="10,5,0,10" />
+                        <Setter Target="RefreshButton.Visibility" Value="Collapsed" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="Desktop">
@@ -122,24 +123,42 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Button x:Name="FilterButton"
-                    Style="{StaticResource EmptyButtonStyle}"
-                    Foreground="{StaticResource KlivaMainBrush}"
-                    HorizontalAlignment="Stretch"          
-                    Grid.Row="0"
-                    Grid.Column="0">
-                <Button.Flyout>
-                    <MenuFlyout x:Name="FilterFlyout" Opened="OnFilterFlyoutOpened">
-                        <MenuFlyoutItem Text="all activities" Command="{Binding FilterCommand}" CommandParameter="all" />
-                        <MenuFlyoutItem Text="my activities" Command="{Binding FilterCommand}" CommandParameter="my" />
-                        <MenuFlyoutItem Text="friends' activities" Command="{Binding FilterCommand}" CommandParameter="followers" />
-                    </MenuFlyout>
-                </Button.Flyout>
-                <TextBlock>
-                    <Run Text="{Binding FilterText}" FontFamily="{StaticResource OpenSansFontLight}"/>
-                    <Run Text="  " FontFamily="Segoe UI Symbol" />
-                </TextBlock>
-            </Button>
+            <Grid Grid.Row="0"
+                  Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Button x:Name="FilterButton"
+                        Style="{StaticResource EmptyButtonStyle}"
+                        Foreground="{StaticResource KlivaMainBrush}"
+                        HorizontalAlignment="Stretch">
+                    <Button.Flyout>
+                        <MenuFlyout x:Name="FilterFlyout" Opened="OnFilterFlyoutOpened">
+                            <MenuFlyoutItem Text="all activities" Command="{Binding FilterCommand}" CommandParameter="all" />
+                            <MenuFlyoutItem Text="my activities" Command="{Binding FilterCommand}" CommandParameter="my" />
+                            <MenuFlyoutItem Text="friends' activities" Command="{Binding FilterCommand}" CommandParameter="followers" />
+                        </MenuFlyout>
+                    </Button.Flyout>
+                    <TextBlock>
+                        <Run Text="{Binding FilterText}" FontFamily="{StaticResource OpenSansFontLight}"/>
+                        <Run Text="  " FontFamily="Segoe UI Symbol" />
+                    </TextBlock>
+                </Button>
+                <Button x:Name="RefreshButton" 
+                        Grid.Column="1" 
+                        Command="{Binding RefreshCommand}">
+                    <ToolTipService.ToolTip>
+                        <TextBlock>Refresh</TextBlock>
+                    </ToolTipService.ToolTip>
+                    <Viewbox Width="24" Height="24">
+                        <Canvas Width="24" Height="24">
+                            <Path Data="M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z" Fill="Black" />
+                        </Canvas>
+                    </Viewbox>
+                </Button>
+            </Grid>
+            
 
             <klivacontrols:ActivityFeedControl x:Name="ActivityFeed"
                                                Margin="0,0,0,0"
